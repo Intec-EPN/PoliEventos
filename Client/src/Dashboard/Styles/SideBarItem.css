@@ -1,0 +1,42 @@
+.sidebar-item {
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    color:white;
+    padding-left: 2rem;
+  }
+  
+  .sidebar-item.selected {
+    background-color: #fff;
+    color: #1E2C4F;;
+  }
+  
+  .sidebar-item-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sidebar-submenu {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0 20px;
+  }
+  
+  .sidebar-submenu-item {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  .sidebar-submenu-item a {
+    color: #1E2C4F;;
+    text-decoration: none;
+  }
+  
+  .sidebar-submenu-item a:hover {
+    text-decoration: underline;
+  }
+  
