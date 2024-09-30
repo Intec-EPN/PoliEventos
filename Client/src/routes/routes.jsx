@@ -1,6 +1,6 @@
 import { AdministracionMain } from "../Administracion/AdministracionMain";
 import { Categorizaciones } from "../Administracion/views/Categorizaciones/Categorizaciones";
-import { Logs } from "../Administracion/views/Logs/Logs";
+import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
 
@@ -33,7 +33,7 @@ export const routes = [
       },
       {
         path: "logs",
-        element: <Logs />,
+        element: <Loges />,
       },
     ],
   },

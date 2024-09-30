@@ -39,7 +39,7 @@ export const RolesSubItem = () => {
         <List
           component="div"
           disablePadding
-          sx={{ display: "block", backgroundColor: "#d9d9d9", borderRadius: "0 0 20px 20px", ml: 3, mr: 3 }}
+          sx={{ display: "block", backgroundColor: "#d9d9d9", borderRadius: "0 0 20px 20px", ml: 3, mr: 3, mb:1 }}
         >
           <ListItemButton 
             selected={false} // No se usa estado
