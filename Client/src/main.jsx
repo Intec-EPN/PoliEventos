@@ -4,11 +4,12 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { AdminDashboard } from './Dashboard/AdminDashboard'
+import { AdministracionMain } from './Administracion/AdministracionMain';
+import { AppPoliEventos } from './AppPoliEventos';
 // import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AdminDashboard />
+    <AppPoliEventos/>
   </StrictMode>,
 )
