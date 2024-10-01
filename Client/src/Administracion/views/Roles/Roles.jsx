@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 export const Roles = () => {
   return (
     <>
-      <div>Roles</div>
       <Outlet />
     </>
   );

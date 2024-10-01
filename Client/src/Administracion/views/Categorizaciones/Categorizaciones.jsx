@@ -1,11 +1,21 @@
-import { StarOutline } from "@mui/icons-material";
-import { Box, Grid2, Typography } from "@mui/material";
-import React from "react";
+import { Box, Typography } from "@mui/material";
+import { ListaCategorias } from "./components/Listar";
+import { useParams } from "react-router-dom";
 
-export const Categorizaciones = () => {
+export const Categorizaciones = ({ action }) => {
+  const resp = useParams();
   return (
-    <Box>
-      Categorizaciones
+    <Box ml={3} mr={3}>
+      <Typography
+        variant="h6"
+        color="primary"
+        sx={{ fontWeight: 700, mb: 1, mt: 1.5 }}
+      >
+        {
+          action === "edit" ? `Editando ${resp.categoria}` :"Categorías"
+        }
+      </Typography>
+      <ListaCategorias />
     </Box>
   );
 };

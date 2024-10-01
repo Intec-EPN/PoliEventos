@@ -9,14 +9,14 @@ import {
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { opcionActual } from "../store/administracionSlice";
+import { opcionActual } from "../../store/Administracion/administracionSlice";
 
 export const RolesSubItem = () => {
   // Para manejar el valor de la opción
   const dispatch = useDispatch();
 
   // Manejar el submenú
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen(!open);
     dispatch(opcionActual("Roles"));

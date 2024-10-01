@@ -45,13 +45,13 @@ export const NavBar = ({ drawerWidth, setChangeMediaQuery }) => {
             fontWeight="600"
             noWrap
             component="div"
-            color="primario"
+            color="primary"
           >
             {opcion}
           </Typography>
           <Box>
             <Typography variant="p">Jonathan Puente</Typography>
-            <IconButton onClick={onLogout} color="primario">
+            <IconButton onClick={onLogout} color="primary">
               <LogoutOutlined />
             </IconButton>
           </Box>

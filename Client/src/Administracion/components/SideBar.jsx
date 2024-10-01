@@ -56,7 +56,7 @@ export const SideBar = ({ drawerWidth, mquery, setChangeMediaQuery }) => {
           </IconButton>
 
           <SpeedIcon sx={{ color: "white", mr: 1 }} />
-          <Typography variant="h6" noWrap component="div" color="secundario">
+          <Typography variant="h6" noWrap component="div" color="secondary">
             Administración
           </Typography>
         </Toolbar>

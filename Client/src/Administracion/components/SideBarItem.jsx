@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { RolesSubItem } from "./RolesSubItem";
 import { useDispatch } from "react-redux";
-import { opcionActual } from "../store/administracionSlice";
+import { opcionActual } from "../../store/Administracion/administracionSlice";
 
 export const SideBarItem = ({ opcion = " ", onClickNavigation }) => {
   // Manejar store en redux para seleccionar la opción actual:
