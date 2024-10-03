@@ -8,6 +8,7 @@ export const rolSlice = createSlice({
       id: '',
       rol: '',
       descripcion: '',
+      departamentos: [],
       permisos: {
         Propio: {
           nombre: "Propio",
