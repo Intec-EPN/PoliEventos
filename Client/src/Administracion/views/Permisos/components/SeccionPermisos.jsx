@@ -1,5 +1,4 @@
 import { Grid2 } from "@mui/material";
-import React from "react";
 import { CategoriaPermiso } from "./CategoriaPermiso";
 
 export const SeccionPermisos = ({niveles, align = false, separacion = 0}) => {

@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import { useState } from 'react';
 import { Grid2 } from '@mui/material';
-import { dept } from '../../permisos';
+import { dept } from '../../../permisos';
 
 const names = dept;
 

@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
-import { TarjetaRol } from "./TarjetaRol";
-import { rol } from "../../permisos";
-
-const rolPrueba = rol;
+import { TarjetaRol } from "../TarjetaRol";
+import { useSelector } from "react-redux";
 
 export const VistaPrevia = () => {
+
+  const {rolEnCreacion} = useSelector(state => state.rol)
 
   return (
     <Box sx={{ml:{md:4}}}>
@@ -16,7 +16,7 @@ export const VistaPrevia = () => {
       >
         VISTA PREVIA
       </Typography>
-      <TarjetaRol { ... rolPrueba }/>
+      <TarjetaRol { ... rolEnCreacion }/>
     </Box>
   );
 };

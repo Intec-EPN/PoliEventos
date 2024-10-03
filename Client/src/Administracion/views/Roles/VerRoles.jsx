@@ -6,17 +6,22 @@ import {
   Typography,
 } from "@mui/material";
 import { TarjetaRol } from "./components/TarjetaRol";
-import { dept, permisos, roles } from "../permisos";
-import { Filtro } from "./components/Filtro";
-
+import { acciones, dept, permisos, roles } from "../permisos";
+import { Filtro } from "./components/Lista/Filtro";
 const rolesPrueba = roles;
 const deptPrueba = dept;
 
-
-const obtenerAccionesDePermisos = (permisos) => {
-  return Object.values(permisos).flatMap(permiso => permiso.acciones);
+// Obtener acciones basadas en los IDs de permisos
+const obtenerAccionesDePermisos = (permisos, acciones) => {
+  return Object.values(permisos).flatMap(permiso =>
+    permiso.acciones.map(id => acciones.find(accion => accion.id === id))
+  );
 };
-const permisosPrueba = obtenerAccionesDePermisos(permisos).map(element =>  element.accion + ' : ' + element.tooltip.split(' ')[element.tooltip.split(' ').length-1]);
+
+// Obtenemos las acciones completas y formateamos para el filtro
+const permisosPrueba = obtenerAccionesDePermisos(permisos, acciones).map(accion => 
+  `${accion.accion} : ${accion.tooltip.split(' ').slice(-1)[0]}`
+);
 
 export const VerRoles = ({ roles = rolesPrueba }) => {
   return (
@@ -30,8 +35,8 @@ export const VerRoles = ({ roles = rolesPrueba }) => {
           Filtro
         </Typography>
         <Grid2 container display="flex" gap={2}>
-          <Filtro opciones={deptPrueba} filtro="Departamento" size={200}/>
-          <Filtro opciones={permisosPrueba} filtro="Nivel" size={350}/>
+          <Filtro opciones={deptPrueba} filtro="Departamento" size={200} />
+          <Filtro opciones={permisosPrueba} filtro="Nivel" size={350} />
         </Grid2>
       </Grid2>
       <Grid2

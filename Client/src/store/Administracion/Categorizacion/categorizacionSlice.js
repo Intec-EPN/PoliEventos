@@ -6,15 +6,18 @@ export const categorizacionSlice = createSlice({
         categorias: [
             {
                 Nombre: 'Uno',
-                Tipo: ['A', 'B', 'C']
+                Tipos: [{ tipo: 'A', view: true }, { tipo: 'B', view: true }, { tipo: 'C', view: true }],
+                view: true,
             },
             {
                 Nombre: 'Dos',
-                Tipo: ['D', 'E', 'G']
+                Tipos: [{ tipo: 'D', view: true }, { tipo: 'E', view: true }, { tipo: 'F', view: true }],
+                view: true
             },
             {
                 Nombre: 'Tres',
-                Tipo: ['W', 'X', 'Z']
+                Tipos: [{ tipo: 'X', view: true }, { tipo: 'Y', view: true }, { tipo: 'Z', view: true }],
+                view: true
             }
         ]
     },
@@ -27,7 +30,18 @@ export const categorizacionSlice = createSlice({
             // Encuentra la categoría correspondiente
             const categoriaEncontrada = state.categorias.find(cat => cat.Nombre === categoria);
             if (categoriaEncontrada) {
-                categoriaEncontrada.Tipo.push(nuevoTipo);
+                categoriaEncontrada.Tiposipo.push(nuevoTipo);
+            }
+        },
+        cambiarViewDeTipo: (state, action) => {
+            const { categoria, tipo } = action.payload;
+            // Encuentra la categoría correspondiente
+            const categoriaEncontrada = state.categorias.find(cat => cat.Nombre === categoria);
+            if(categoriaEncontrada){
+                const tipoEncontrado = categoriaEncontrada.Tipos.find( t => t.tipo === tipo);
+                if(tipoEncontrado){
+                    tipoEncontrado.view = false;
+                }
             }
         },
 
@@ -35,4 +49,4 @@ export const categorizacionSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setCategorias } = categorizacionSlice.actions;
+export const { setCategorias, agregarTipo, cambiarViewDeTipo } = categorizacionSlice.actions;

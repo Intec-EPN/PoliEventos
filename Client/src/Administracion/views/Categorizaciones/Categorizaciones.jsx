@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { ListaCategorias } from "./components/Listar";
+import { ListaCategorias } from "./components/ListaCategorias";
 import { useParams } from "react-router-dom";
 
 export const Categorizaciones = ({ action }) => {

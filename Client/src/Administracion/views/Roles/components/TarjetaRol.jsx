@@ -2,6 +2,7 @@ import { Card, CardContent, Typography } from "@mui/material";
 import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
 
 export const TarjetaRol = ({ rol = "", descripcion = "", permisos }) => {
+  console.log(rol, descripcion, permisos )
   return (
     <>
       <Card

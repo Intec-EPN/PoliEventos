@@ -1,19 +1,21 @@
 import { Grid2, Typography } from "@mui/material";
-import { SeleccionarDept } from "../../Roles/components/seleccionarDept";
+import { SeleccionarDept } from "../../Roles/components/Crear/SeleccionarDept";
 import { ChipPermiso } from "./ChipPermiso";
+import { acciones } from "../../permisos";
 
 export const CategoriaPermiso = ({
   nombre = "",
   color = "",
-  acciones = [],
+  acciones: idsAcciones = [],
   clickable = false,
   align = false,
   dept = false,
   separacion = 0,
+  onPermisoClick,
 }) => {
   return (
     <Grid2 sx={{ mb: separacion }}>
-      {acciones.length === 0 ? null : (
+      {idsAcciones.length === 0 ? null : (
         <Typography
           variant="h6"
           noWrap
@@ -28,14 +30,20 @@ export const CategoriaPermiso = ({
 
       {dept ? <SeleccionarDept /> : null}
       <Grid2 container display="flex" justifyContent="center">
-        {acciones.map((item) => {
+        {idsAcciones.map((id) => {
+          // Busco el objeto desde mi tabla de acciones
+          const item = acciones.find((accion) => accion.id === id);
           return (
-            <ChipPermiso
-              key={item.id}
-              {...item}
-              clickable={clickable}
-              color={color}
-            />
+            item && (
+              <ChipPermiso
+                key={item.id}
+                {...item} // Esto pasará {id, accion, tooltip, bgColor}
+                clickable={clickable}
+                color={color}
+                nombre={nombre}
+                onPermisoClick={onPermisoClick}
+              />
+            )
           );
         })}
       </Grid2>

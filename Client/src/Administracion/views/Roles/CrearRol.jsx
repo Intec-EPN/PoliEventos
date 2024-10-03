@@ -1,6 +1,6 @@
-import { Box, Slide } from "@mui/material";
-import { FormRol } from "./components/FormRol";
-import { VistaPrevia } from "./components/VistaPrevia";
+import { Box } from "@mui/material";
+import { FormRol } from "./components/Crear/FormRol";
+import { VistaPrevia } from "./components/Crear/VistaPrevia";
 
 export const CrearRol = () => {
   return (
