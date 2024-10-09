@@ -1,10 +1,20 @@
 import { Box, Typography } from "@mui/material";
-import { permisos } from "../permisos";
 import { SeccionPermisos } from "./components/SeccionPermisos";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { startLoadingPermisosAcciones } from "../../../store/Permisos/thunk";
 
-const niveles = permisos;
+
 
 export const Permisos = () => {
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(startLoadingPermisosAcciones());
+  }, [dispatch]);
+
+  const {permisosAcciones: niveles} = useSelector((state) => state.permiso)
+  
 
   return (
     <Box sx={{ mt: 2 }}>

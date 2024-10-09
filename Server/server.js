@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const { sequelize, authenticateDB } = require('./config/db');
 const routes = require('./modules/routes');
-const definirAsociaciones = require('./config/asociaciones');
 
 const app = express();
 
@@ -21,8 +20,6 @@ const PORT = process.env.PORT || 5000;
 // Autenticar la conexión a la base de datos
 authenticateDB(); // Esto llamará a la función que autentica la base de datos
 
-// Definir asociaciones
-definirAsociaciones();
 
 // Sincronizar modelo y BDD
 sequelize.sync({ force: false }) 

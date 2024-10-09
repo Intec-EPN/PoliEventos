@@ -1,30 +1,20 @@
 import { Grid2 } from "@mui/material";
 import { CategoriaPermiso } from "./CategoriaPermiso";
 
-export const SeccionPermisos = ({niveles, align = false, separacion = 0}) => {
+export const SeccionPermisos = ({ niveles, departamentos, align = false, separacion = 0 }) => {
+  
   return (
     <>
-      <Grid2
-        container
-        justifyContent="center"
-      >
-        <CategoriaPermiso {...niveles.Propio} align={align} separacion={separacion}/>
-      </Grid2>
-
-      {/* //Nivel Departamento */}
-      <Grid2
-        container
-        justifyContent="center"
-      >
-        <CategoriaPermiso {...niveles.Departamento} align={align} separacion={separacion}/>
-      </Grid2>
-      {/* //Nivel Facultad */}
-      <Grid2
-        container
-        justifyContent="center"
-      >
-        <CategoriaPermiso {...niveles.Facultad} align={align} separacion={separacion}/>
-      </Grid2>
+      {niveles.map((nivel, index) => (
+        <Grid2 container justifyContent="center" key={index}>
+          <CategoriaPermiso
+            {...nivel}
+            align={align}
+            separacion={separacion}
+            departamentos = {departamentos}
+          />
+        </Grid2>
+      ))}
     </>
   );
 };

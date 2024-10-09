@@ -104,7 +104,6 @@ export const EditarCategoria = () => {
     // Alerta
     setAlertOpen(true);
     setEditTipo(false);
-    console.log(categoriaEditadas); // Muestra los nuevos tipos agregados
 
     //Generar dispatch, por ej:
     // dispatch(actualizarCategorias(categoriasEditadas)); // Usa la acción adecuada para actualizar tu estad

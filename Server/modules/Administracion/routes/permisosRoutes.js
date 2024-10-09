@@ -1,8 +1,11 @@
+// Rutas de Permisos
 const express = require('express');
-const { getPermisos } = require('../controllers/permisoController');
-
 const router = express.Router();
+const { obtenerPermisosBase, obtenerPermisosAcciones } = require('../controllers/permisosController');
 
-router.get('/', getPermisos);
+// Obtener permisos base
+router.get('/get', obtenerPermisosAcciones); 
+router.get('/getbase', obtenerPermisosBase); 
 
 module.exports = router;
+

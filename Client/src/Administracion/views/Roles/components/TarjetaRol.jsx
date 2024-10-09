@@ -1,9 +1,8 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
 
-export const TarjetaRol = ({ rol = "", descripcion = "", permisos }) => {
-  console.log(rol, descripcion, permisos )
-  return (
+export const TarjetaRol = ({ rol = "", descripcion = "", permisos=[], departamentos=[] }) => {
+    return (
     <>
       <Card
         sx={{
@@ -18,7 +17,7 @@ export const TarjetaRol = ({ rol = "", descripcion = "", permisos }) => {
           <Typography textAlign="justify">{descripcion}</Typography>
         </CardContent>
         <CardContent sx={{ width: "100%", padding: 2 }}>
-          <SeccionPermisos niveles={permisos} />
+          <SeccionPermisos niveles={permisos} departamentos={departamentos}/>
         </CardContent>
       </Card>
     </>

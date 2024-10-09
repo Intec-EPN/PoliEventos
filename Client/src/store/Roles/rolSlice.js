@@ -9,23 +9,11 @@ export const rolSlice = createSlice({
       rol: '',
       descripcion: '',
       departamentos: [],
-      permisos: {
-        Propio: {
-          nombre: "Propio",
-          color: "primary",
-          acciones: []
-        },
-        Departamento: {
-          nombre: "Departamento",
-          color: "#c44b00",
-          acciones: []
-        },
-        Facultad: {
-          nombre: "Facultad",
-          color: "#0055a4",
-          acciones: []
-        }
-      }
+      permisos: [
+        { nombre: "Propio", color: "primary", acciones: [] },
+        { nombre: "Departamento", color: "#c44b00", acciones: [] },
+        { nombre: "Facultad", color: "#0055a4", acciones: [] },
+      ],
     },
     creandoRol: false,
   },
@@ -41,14 +29,19 @@ export const rolSlice = createSlice({
     manejarPermiso: (state, action) => {
       state.creandoRol = true;
       const { nivel, permisoId } = action.payload;
-      const permisosNivel = state.rolEnCreacion.permisos[nivel].acciones
 
-      if (permisosNivel.includes(permisoId)) {
-        // Si ya está el permiso, lo quitamos, porque quiere decir que se lo estaba quitando.
-        state.rolEnCreacion.permisos[nivel].acciones = permisosNivel.filter(id => id !== permisoId);
-      } else {
-        // si es que no está, entonces se lo estaba agregando.
-        state.rolEnCreacion.permisos[nivel].acciones.push(permisoId);
+      // Encontrar el objeto del permiso correspondiente al nivel
+      const permisoNivel = state.rolEnCreacion.permisos.find(permiso => permiso.nombre.toLowerCase() === nivel.toLowerCase());
+
+      if (permisoNivel) {
+        // Verificar si el permisoId ya está en el array de acciones del nivel
+        if (permisoNivel.acciones.includes(permisoId)) {
+          // Si ya está el permiso, lo quitamos
+          permisoNivel.acciones = permisoNivel.acciones.filter(id => id !== permisoId);
+        } else {
+          // Si no está, lo agregamos
+          permisoNivel.acciones.push(permisoId);
+        }
       }
     },
     agregarRol: (state) => {
@@ -60,32 +53,23 @@ export const rolSlice = createSlice({
         id: '',
         rol: '',
         descripcion: '',
-        permisos: {
-          Propio: {
-            nombre: "Propio",
-            color: "primary",
-            acciones: []
-          },
-          Departamento: {
-            nombre: "Departamento",
-            color: "#c44b00",
-            acciones: []
-          },
-          Facultad: {
-            nombre: "Facultad",
-            color: "#0055a4",
-            acciones: []
-          }
-        }
+        departamentos: [],
+        permisos: [
+          { nombre: "Propio", color: "primary", acciones: [] },
+          { nombre: "Departamento", color: "#c44b00", acciones: [] },
+          { nombre: "Facultad", color: "#0055a4", acciones: [] },
+        ],
       };
       state.creandoRol = false;
     },
+    setRoles: (state, action) => {
+      state.roles = action.payload;
+    },
     setCreandoRol: (state, action) => {
-      state.creandoRol = action.payload
-    }
-
-  }
+      state.creandoRol = action.payload;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function
-export const { setRol, setDescripcion, manejarPermiso, agregarRol, setCreandoRol } = rolSlice.actions;
+export const { setRol, setDescripcion, manejarPermiso, agregarRol, setRoles, setCreandoRol } = rolSlice.actions;

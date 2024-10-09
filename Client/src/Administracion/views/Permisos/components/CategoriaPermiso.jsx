@@ -1,6 +1,8 @@
-import { Grid2, Typography } from "@mui/material";
+import { Chip, Grid2, Typography } from "@mui/material";
 import { SeleccionarDept } from "../../Roles/components/Crear/SeleccionarDept";
 import { ChipPermiso } from "./ChipPermiso";
+
+// TODO IMPORTAR ACCIONES CON THUNK
 import { acciones } from "../../permisos";
 
 export const CategoriaPermiso = ({
@@ -12,6 +14,7 @@ export const CategoriaPermiso = ({
   dept = false,
   separacion = 0,
   onPermisoClick,
+  departamentos = [],
 }) => {
   return (
     <Grid2 sx={{ mb: separacion }}>
@@ -29,6 +32,19 @@ export const CategoriaPermiso = ({
       )}
 
       {dept ? <SeleccionarDept /> : null}
+      {
+        departamentos.length > 0 && nombre === "Departamento" 
+      ? 
+      <Grid2 container display="flex" justifyContent="center" mb={1}>
+        {
+          departamentos.map((dep, index) => (
+            <Chip key={index} label={dep} variant="outlined"/>
+          ))
+        }
+      </Grid2>
+      : 
+        null
+      }
       <Grid2 container display="flex" justifyContent="center">
         {idsAcciones.map((id) => {
           // Busco el objeto desde mi tabla de acciones
