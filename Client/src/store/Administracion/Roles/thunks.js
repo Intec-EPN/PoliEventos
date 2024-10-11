@@ -1,4 +1,4 @@
-import axiosInstance from "../../api/axiosConfig";
+import axiosInstance from "../../../api/axiosConfig";
 import { setRoles } from "./rolSlice";
 
 export const startLoadingRoles = () => {

@@ -6,14 +6,14 @@ DELIMITER $$
 CREATE PROCEDURE Get_Departamentos_Rol_Id(IN in_rol_id BIGINT UNSIGNED)
 BEGIN
     SELECT d.nombre AS departamento
-    FROM Rol_Departamentos rd
-    JOIN Departamentos d ON rd.departamento_id = d.id
-    WHERE rd.rol_id = in_rol_id;
+    FROM Roles r
+    JOIN Departamentos d ON r.departamento_id = d.id
+    WHERE r.id = in_rol_id;
 END $$
 DELIMITER ;
 
 -- Llamar a los departamentos de un rol en específico
-CALL Get_Departamentos_Rol_Id(2);
+CALL Get_Departamentos_Rol_Id(1);
 
 
 
@@ -60,5 +60,13 @@ DELIMITER ;
 call ObtenerNiveles();
 
 
+DELIMITER $$
+CREATE PROCEDURE Get_Departamentos_Facultad_Id(IN facultadId BIGINT UNSIGNED)
+BEGIN
+  SELECT d.nombre
+  FROM Departamentos d
+  WHERE d.facultad_id = facultadId;
+END $$
+DELIMITER ;
 
-
+call Get_Departamentos_Facultad_Id(1);

@@ -8,8 +8,9 @@ import {
   manejarPermiso,
   setDescripcion,
   setRol,
-} from "../../../../../store/Roles/rolSlice";
+} from "../../../../../store/Administracion/Roles/rolSlice";
 import { useEffect } from "react";
+import { RadioButton } from "./RadioButton";
 
 const niveles = permisos;
 
@@ -25,7 +26,7 @@ export const FormRol = () => {
   // Hook para guardar en el creando rol actual la información:
   const dispatch = useDispatch();
 
-  const { creandoRol } = useSelector((state) => state.rol);
+  const { creandoRol, seleccionNivel, rolEnCreacion } = useSelector((state) => state.rol);
 
   useEffect(() => {
     if (!creandoRol) {
@@ -37,8 +38,14 @@ export const FormRol = () => {
   }, [creandoRol, reset]);
 
   const onSubmit = (data) => {
+    // TODO quitar console log
     console.log(data); // Muestra los datos ingresados en la consola
+    if (rolEnCreacion.departamentos.length < 1) {
+      alert("Debes seleccionar un departamento antes de crear el rol.");
+      return;
+    }
     dispatch(agregarRol()); // Se crea el rol con el rol que se tenga en ese momento.
+
   };
 
   const manejarPermisoClick = (nivel, permisoId) => {
@@ -104,9 +111,7 @@ export const FormRol = () => {
           />
         </Grid2>
         <Grid2 container display="flex" flexDirection="column">
-          <Box component="div" sx={{ fontWeight: 700, color: "primary" }}>
-            Selecciona los permisos:
-          </Box>
+          <RadioButton />
           <Box
             display="block"
             justifyContent="start"
@@ -121,25 +126,28 @@ export const FormRol = () => {
                 onPermisoClick={manejarPermisoClick}
               />
             </Grid2>
-            {/* //Nivel Departamento */}
-            <Grid2 container display="block">
-              <CategoriaPermiso
-                {...niveles.Departamento}
-                clickable={true}
-                dept={true}
-                align={true}
-                onPermisoClick={manejarPermisoClick}
-              />
-            </Grid2>
-            {/* //Nivel Facultad */}
-            <Grid2 container>
-              <CategoriaPermiso
-                {...niveles.Facultad}
-                clickable={true}
-                align={true}
-                onPermisoClick={manejarPermisoClick}
-              />
-            </Grid2>
+            {seleccionNivel === "Departamento" ? (
+              //Nivel Departamento
+              <Grid2 container display="block">
+                <CategoriaPermiso
+                  {...niveles.Departamento}
+                  clickable={true}
+                  dept={true}
+                  align={true}
+                  onPermisoClick={manejarPermisoClick}
+                />
+              </Grid2>
+            ) : (
+              // Nivel Facultad 
+              <Grid2 container>
+                <CategoriaPermiso
+                  {...niveles.Facultad}
+                  clickable={true}
+                  align={true}
+                  onPermisoClick={manejarPermisoClick}
+                />
+              </Grid2>
+            )}
           </Box>
         </Grid2>
       </Grid2>

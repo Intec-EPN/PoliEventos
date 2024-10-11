@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { administracionSlice } from './Administracion/administracionSlice';
 import { categorizacionSlice } from './Administracion/Categorizacion/categorizacionSlice';
-import { rolSlice } from './Roles/rolSlice';
-import { permisoSlice } from './Permisos/permisoSlice';
+import { rolSlice } from './Administracion/Roles/rolSlice';
+import { permisoSlice } from './Administracion/Permisos/permisoSlice';
 
 export const store = configureStore({
   reducer: {

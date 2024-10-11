@@ -16,6 +16,7 @@ export const rolSlice = createSlice({
       ],
     },
     creandoRol: false,
+    seleccionNivel: 'Departamento'
   },
   reducers: {
     setRol: (state, action) => {
@@ -25,6 +26,16 @@ export const rolSlice = createSlice({
     setDescripcion: (state, action) => {
       state.creandoRol = true;
       state.rolEnCreacion.descripcion = action.payload;
+    },
+    setDepartamento: (state, action) => {
+      state.creandoRol = true;
+      if(state.seleccionNivel === 'Departamento'){
+        state.rolEnCreacion.departamentos = [];
+        state.rolEnCreacion.departamentos.push(action.payload);
+      }else{
+        // TODO SELECCION DEPARTAMENTO
+        state.rolEnCreacion.departamentos = ['Prueba'];
+      }
     },
     manejarPermiso: (state, action) => {
       state.creandoRol = true;
@@ -68,8 +79,19 @@ export const rolSlice = createSlice({
     setCreandoRol: (state, action) => {
       state.creandoRol = action.payload;
     },
+    handleSeleccion: (state, action) => {
+      state.seleccionNivel = action.payload;
+      // Reiniciar permisos
+      state.rolEnCreacion = {
+       permisos: [
+          { nombre: "Propio", color: "primary", acciones: [] },
+          { nombre: "Departamento", color: "#c44b00", acciones: [] },
+          { nombre: "Facultad", color: "#0055a4", acciones: [] },
+        ],
+      };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setRol, setDescripcion, manejarPermiso, agregarRol, setRoles, setCreandoRol } = rolSlice.actions;
+export const { setRol, setDescripcion, setDepartamento, manejarPermiso, agregarRol, setRoles, setCreandoRol, handleSeleccion } = rolSlice.actions;

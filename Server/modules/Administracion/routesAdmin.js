@@ -9,6 +9,8 @@ const nivelesRoutes = require('./routes/nivelesRoutes')
 const permisosRoutes = require('./routes/permisosRoutes')
 // Rutas de departamentos
 const departamentosRoutes = require('./routes/departamentosRoutes')
+// Rutas de facultades
+const facultadesRoutes = require('./routes/facultadesRoutes')
 
 
 // Usar las rutas de roles
@@ -19,6 +21,8 @@ router.use('/niveles', nivelesRoutes);
 router.use('/permisos', permisosRoutes);
 // Usar las rutas de departamentos
 router.use('/departamentos', departamentosRoutes);
+// Usar las rutas de facultades
+router.use('/facultades', facultadesRoutes);
 
 
 module.exports = router;

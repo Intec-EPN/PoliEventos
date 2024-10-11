@@ -2,9 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { SeccionPermisos } from "./components/SeccionPermisos";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { startLoadingPermisosAcciones } from "../../../store/Permisos/thunk";
-
-
+import { startLoadingPermisosAcciones } from "../../../store/Administracion/Permisos/thunk";
 
 export const Permisos = () => {
 

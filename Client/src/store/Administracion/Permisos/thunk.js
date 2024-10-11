@@ -1,4 +1,4 @@
-import axiosInstance from "../../api/axiosConfig";
+import axiosInstance from "../../../api/axiosConfig";
 import { setPermisosAcciones } from "./permisoSlice";
 
 export const startLoadingPermisosAcciones = () => {
