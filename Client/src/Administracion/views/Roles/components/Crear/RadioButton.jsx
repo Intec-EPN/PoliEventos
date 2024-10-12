@@ -7,13 +7,24 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { handleSeleccion } from "../../../../../store/Administracion/Roles/rolSlice";
+import { startLoadingDepartamentosFacultades } from "../../../../../store/Administracion/Roles/thunks";
 
-export const RadioButton = () => {
+export const RadioButton = ({ reset }) => {
   const dispatch = useDispatch();
 
   const onRadioChange = (e) => {
+    // Reinicio de los campos del formulario cuando cambia el radioButton
+    reset({
+      nombreRol: "",
+      descripcionRol: "",
+    });
+
+    // Analisis de dispatch y demás.
     const selectedValue = e.target.value;
-    dispatch(handleSeleccion(selectedValue))
+    dispatch(handleSeleccion(selectedValue));
+    if (selectedValue === "Facultad") {
+      dispatch(startLoadingDepartamentosFacultades());
+    }
   };
 
   return (
@@ -34,7 +45,7 @@ export const RadioButton = () => {
           label="Departamento"
         />
         <FormControlLabel
-          value="Facutlad"
+          value="Facultad"
           control={<Radio />}
           label="Facultad"
         />

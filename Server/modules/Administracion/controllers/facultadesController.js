@@ -19,7 +19,7 @@ const obtenerFacultades = async (req, res) => {
 };
 
 // Obtener los departamentos dependiendo el id de la facultad.
-const obtenerDepartamentosFacultad = async (req, res) => {
+const obtenerDepartamentosFacultadId = async (req, res) => {
     const facultadId = req.params.id;
     try {
         // Obtengo los departamentos de la facultad con el id que ingresa.
@@ -39,4 +39,21 @@ const obtenerDepartamentosFacultad = async (req, res) => {
     }
 };
 
-module.exports = { obtenerFacultades, obtenerDepartamentosFacultad };
+// Función interna para obtener departamentos de una facultad por su ID
+const obtenerDeptFacultadId = async (facultadId) => {
+    try {
+        const departamentos = await sequelize.query('call Get_Departamentos_Facultad_Id(:facultadId);', {
+            replacements: { facultadId: facultadId },
+        });
+        // Retornar los departamentos en un formato adecuado
+        return departamentos.map(dep => ({
+            departamento: dep.nombre
+        }));
+    } catch (error) {
+        console.error(`Error al obtener departamentos para la facultad ${facultadId}: ${error.message}`);
+        return [];
+    }
+};
+
+
+module.exports = { obtenerFacultades, obtenerDepartamentosFacultadId, obtenerDeptFacultadId };

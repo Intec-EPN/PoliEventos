@@ -1,6 +1,5 @@
 import { Box, Button, Grid2, TextField, Typography } from "@mui/material";
 import { CategoriaPermiso } from "../../../Permisos/components/CategoriaPermiso";
-import { permisos } from "../../../permisos";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,8 +10,6 @@ import {
 } from "../../../../../store/Administracion/Roles/rolSlice";
 import { useEffect } from "react";
 import { RadioButton } from "./RadioButton";
-
-const niveles = permisos;
 
 export const FormRol = () => {
   // Hook Form
@@ -26,7 +23,18 @@ export const FormRol = () => {
   // Hook para guardar en el creando rol actual la información:
   const dispatch = useDispatch();
 
-  const { creandoRol, seleccionNivel, rolEnCreacion } = useSelector((state) => state.rol);
+  const { creandoRol, seleccionNivel, rolEnCreacion } = useSelector(
+    (state) => state.rol
+  );
+
+  // Traigo los permisos como array para convertirlos a objeto.
+  const { permisosAcciones } = useSelector((state) => state.permiso);
+
+  // Convertir array de niveles en un objeto con las claves "Propio", "Departamento", "Facultad"
+  const niveles = permisosAcciones.reduce((acc, nivel) => {
+    acc[nivel.nombre] = nivel;
+    return acc;
+  }, {});
 
   useEffect(() => {
     if (!creandoRol) {
@@ -38,14 +46,11 @@ export const FormRol = () => {
   }, [creandoRol, reset]);
 
   const onSubmit = (data) => {
-    // TODO quitar console log
-    console.log(data); // Muestra los datos ingresados en la consola
     if (rolEnCreacion.departamentos.length < 1) {
       alert("Debes seleccionar un departamento antes de crear el rol.");
       return;
     }
     dispatch(agregarRol()); // Se crea el rol con el rol que se tenga en ese momento.
-
   };
 
   const manejarPermisoClick = (nivel, permisoId) => {
@@ -111,7 +116,7 @@ export const FormRol = () => {
           />
         </Grid2>
         <Grid2 container display="flex" flexDirection="column">
-          <RadioButton />
+          <RadioButton reset={reset}/>
           <Box
             display="block"
             justifyContent="start"
@@ -138,7 +143,7 @@ export const FormRol = () => {
                 />
               </Grid2>
             ) : (
-              // Nivel Facultad 
+              // Nivel Facultad
               <Grid2 container>
                 <CategoriaPermiso
                   {...niveles.Facultad}

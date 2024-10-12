@@ -1,5 +1,5 @@
 import axiosInstance from "../../../api/axiosConfig";
-import { setRoles } from "./rolSlice";
+import { setDepartamento, setRoles } from "./rolSlice";
 
 export const startLoadingRoles = () => {
     return async (dispatch) => {
@@ -12,3 +12,18 @@ export const startLoadingRoles = () => {
     };
 };
 
+export const startLoadingDepartamentosFacultades = () => {
+    return async (dispatch) => {
+        try {
+            // Para escalar a más facultades, aquí se enviará el id de la facultad.
+            const {data : deptFacultad} = await axiosInstance.get('admin/facultades/getdept/1');
+
+            const departamentosFacultad = deptFacultad.map(dept => dept.departamento);
+
+            dispatch(setDepartamento(departamentosFacultad))
+            
+        } catch (error) {
+            throw new Error("Error al cargar", error);
+        }
+    }
+}

@@ -8,10 +8,6 @@ import { Grid2 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setDepartamento } from "../../../../../store/Administracion/Roles/rolSlice";
 
-// TODO Cambiar por los permisos que vienen de slice
-import { dept } from "../../../permisos";
-
-const names = dept;
 
 export const SeleccionarDept = () => {
   const { creandoRol } = useSelector((state) => state.rol);
@@ -25,6 +21,8 @@ export const SeleccionarDept = () => {
     dispatch(setDepartamento(event.target.value))
   };
 
+  // Obtengo los departamentos
+  const {departamentos} = useSelector((state) => state.departamento);
 
   // Para reiniciar el select al enviar un formulario
   const resetSelect = () => {
@@ -49,7 +47,7 @@ export const SeleccionarDept = () => {
           }
           sx={{ width: 150 }}
         >
-          {names.map((name) => (
+          {departamentos.map((name) => (
             <MenuItem key={name} value={name}>
               {name}
             </MenuItem>

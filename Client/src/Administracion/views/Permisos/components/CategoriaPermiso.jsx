@@ -1,9 +1,9 @@
 import { Chip, Grid2, Typography } from "@mui/material";
 import { SeleccionarDept } from "../../Roles/components/Crear/SeleccionarDept";
 import { ChipPermiso } from "./ChipPermiso";
+import { useSelector } from "react-redux";
 
-// TODO IMPORTAR ACCIONES CON THUNK
-import { acciones } from "../../permisos";
+
 
 export const CategoriaPermiso = ({
   nombre = "",
@@ -16,6 +16,8 @@ export const CategoriaPermiso = ({
   onPermisoClick,
   departamentos = [],
 }) => {
+
+  const { acciones } = useSelector((state) => state.permiso);
   return (
     <Grid2 sx={{ mb: separacion }}>
       {idsAcciones.length === 0 ? null : (

@@ -1,5 +1,6 @@
 const RolesModel = require("../models/rolesModel");
 const { obtenerDepartamentosArray } = require("./departamentosController");
+const { obtenerDeptFacultadId } = require("./facultadesController");
 const { obtenerNivelesArray } = require("./nivelesController");
 const { obtenerPermisosRol } = require("./permisosController");
 
@@ -47,14 +48,22 @@ const obtenerRoles = async (req, res) => {
     try {
         // findAll para obtener todos
         const rolesIniciales = await RolesModel.findAll({
-            attributes: ['id', 'nombre', 'descripcion']
+            attributes: ['id', 'nombre', 'descripcion', 'departamento_id', 'facultad_id']
         });
         const niveles = await obtenerNivelesArray(); // Obtengo los niveels para comparar luego.
 
         const roles = await Promise.all(
             rolesIniciales.map(async (rol) => {
+                let departamentos;
                 // Obtener los departamentos
-                const departamentos = await obtenerDepartamentosArray(rol.id)
+                if(rol.departamento_id){
+                    // Si tengo id de departamento, lo incluyo.
+                    departamentos = await obtenerDepartamentosArray(rol.id);
+                }else{
+                    // Si no tengo id, significa que es la facultad, incluyo los departamentos de la facultad:
+                    departamentos = await obtenerDeptFacultadId(rol.facultad_id);
+                }
+
                 const acciones = await obtenerPermisosRol(rol.id)
                 // Agrupo las acciones por nivel_id (obtengo nivel de permisos)
                 const permisos = niveles.map(nivel => {
