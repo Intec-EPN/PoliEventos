@@ -15,19 +15,22 @@ import { cambiarViewDeTipo } from "../../../../../store/Administracion/Categoriz
 import { AlertCorrecto } from "./AlertCorrecto";
 import { TipoItem } from "./TipoItem";
 import { NuevoTipoItem } from "./NuevoTipoItem";
+import { CatTituloDescrip } from "./CatTituloDescrip";
 
 export const EditarCategoria = () => {
   // Obtener la categoría desde los params
-  const { categoria } = useParams();
+  const { categoria: categoriaActual } = useParams();
   // Obtengo el useNavigate para volver en caso de cancelar
   const navigate = useNavigate();
   // Generar dispatch para llamar a funciones usando REDUX
   const dispatch = useDispatch();
   // Obtener las categorías del estado de Redux
   const { categorias } = useSelector((state) => state.categorias);
-  const listCategoria = categorias.filter((x) => x.Nombre === categoria);
-  const tipo = listCategoria[0].Tipos;
-  const listItem = tipo;
+  // Obtengo la descripción
+  const { Descripcion } = categorias.find((x) => x.Nombre === categoriaActual);
+  // Obtengo los tipos
+  const tipos = categorias.find((x) => x.Nombre === categoriaActual).Tipos;
+
   // Uso del formulario a través de react form hook
   const {
     handleSubmit,
@@ -83,7 +86,7 @@ export const EditarCategoria = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   // SUBMIT FORMULARIO
   const onSubmit = (data) => {
-    const tiposEditados = tipo.map((t, index) => ({
+    const tiposEditados = tipos.map((t, index) => ({
       tipo: data.tipos[index] || t.tipo,
       view: t.view,
     }));
@@ -91,9 +94,11 @@ export const EditarCategoria = () => {
     // Asegúrate de que 'nuevosTipos' obtenga los valores del formulario
     const nuevosTiposData = data.nuevosTipos || [];
 
+    // TODO quitar console.log
+    console.log(tiposEditados.concat(nuevosTiposData));
     // Genero el objeto a enviar
     const categoriaEditadas = {
-      Nombre: categoria,
+      Nombre: categoriaActual,
       Tipos: [
         ...tiposEditados,
         ...nuevosTiposData.map((nuevo) => ({ tipo: nuevo, view: true })),
@@ -116,21 +121,7 @@ export const EditarCategoria = () => {
 
   return (
     <Box ml={3} mr={3}>
-      <Grid2
-        container
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Typography
-          variant="h6"
-          color="primary"
-          sx={{ fontWeight: 700, mb: 1, mt: 1.5 }}
-        >
-          Categoría: {categoria}
-        </Typography>
-      </Grid2>
-
+      <CatTituloDescrip categoriaActual={categoriaActual} descripcion={Descripcion}/>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Button
           sx={{ mr: 1, backgroundColor: "#e3320e" }}
@@ -152,7 +143,7 @@ export const EditarCategoria = () => {
 
         <List sx={{ width: "100%" }}>
           <Grid2 container>
-            {tipo.map(
+            {tipos.map(
               ({ tipo, view }, index) =>
                 view && (
                   <TipoItem

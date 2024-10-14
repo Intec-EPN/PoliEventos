@@ -1,9 +1,12 @@
 import { Alert, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AlertCorrecto = ({openT}) => {
   const [open, setOpen] = useState(openT);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -16,6 +19,7 @@ export const AlertCorrecto = ({openT}) => {
               size="small"
               onClick={() => {
                 setOpen(false);
+                navigate(-1);
               }}
             >
               <CloseIcon fontSize="inherit" />

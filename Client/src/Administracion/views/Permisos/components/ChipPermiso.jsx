@@ -9,6 +9,7 @@ export const ChipPermiso = ({id, accion, tooltip, bgColor, clickable = false, co
                 label={accion}
                 sx={{
                   backgroundColor: `${bgColor}`,
+                  fontSize: 17,
                   fontWeight: 600,
                   color: color ,
                   mb: 1,

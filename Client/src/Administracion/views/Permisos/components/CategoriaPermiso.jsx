@@ -56,7 +56,7 @@ export const CategoriaPermiso = ({
           ))}
         </Grid2>
       ) : null}
-      <Grid2 container display="flex" justifyContent="center">
+      <Grid2 container display="flex" justifyContent={align ? "left" : "center"}>
         {idsAcciones.map((id) => {
           // Busco el objeto desde mi tabla de acciones
           const item = acciones.find((accion) => accion.id === id);

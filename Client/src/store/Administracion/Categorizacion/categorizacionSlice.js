@@ -6,16 +6,19 @@ export const categorizacionSlice = createSlice({
         categorias: [
             {
                 Nombre: 'Uno',
+                Descripcion: 'Ejemplo UNO',
                 Tipos: [{ tipo: 'A', view: true }, { tipo: 'B', view: true }, { tipo: 'C', view: true }],
                 view: true,
             },
             {
                 Nombre: 'Dos',
+                Descripcion: 'Ejemplo DOS',
                 Tipos: [{ tipo: 'D', view: true }, { tipo: 'E', view: true }, { tipo: 'F', view: true }],
                 view: true
             },
             {
                 Nombre: 'Tres',
+                Descripcion: 'Ejemplo TRES',
                 Tipos: [{ tipo: 'X', view: true }, { tipo: 'Y', view: true }, { tipo: 'Z', view: true }],
                 view: true
             }
