@@ -8,7 +8,7 @@ import { departamentoSlice } from './Administracion/Departamentos/departamentoSl
 export const store = configureStore({
   reducer: {
     administracion: administracionSlice.reducer,
-    categorias: categorizacionSlice.reducer,
+    categorizacion: categorizacionSlice.reducer,
     rol: rolSlice.reducer,
     permiso: permisoSlice.reducer,
     departamento: departamentoSlice.reducer

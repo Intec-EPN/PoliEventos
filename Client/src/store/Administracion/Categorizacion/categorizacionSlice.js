@@ -3,30 +3,32 @@ import { createSlice } from '@reduxjs/toolkit';
 export const categorizacionSlice = createSlice({
     name: 'categorizacion',
     initialState: {
-        categorias: [
-            {
-                Nombre: 'Uno',
-                Descripcion: 'Ejemplo UNO',
-                Tipos: [{ tipo: 'A', view: true }, { tipo: 'B', view: true }, { tipo: 'C', view: true }],
-                view: true,
-            },
-            {
-                Nombre: 'Dos',
-                Descripcion: 'Ejemplo DOS',
-                Tipos: [{ tipo: 'D', view: true }, { tipo: 'E', view: true }, { tipo: 'F', view: true }],
-                view: true
-            },
-            {
-                Nombre: 'Tres',
-                Descripcion: 'Ejemplo TRES',
-                Tipos: [{ tipo: 'X', view: true }, { tipo: 'Y', view: true }, { tipo: 'Z', view: true }],
-                view: true
-            }
-        ]
+        esquemas: []
+            // {
+            //     Nombre: 'Uno',
+            //     Descripcion: 'Ejemplo UNO',
+            //     Tipos: [{ tipo: 'A', view: true }, { tipo: 'B', view: true }, { tipo: 'C', view: true }],
+            //     view: true,
+            // },
+            //
+            //
+            // {
+            // "id": 1,
+            // "nombre": "CES",
+            // "descripcion": "Tipos de eventos correspondientes al CES",
+            // "visible": true,
+            // "categorias": [
+            //     {
+            //         "id": 1,
+            //         "nombre": "Servicios a la sociedad que no generen beneficio económico",
+            //         "visible": true,
+            //         "esquema_id": 1
+            //     },
+            // }
     },
     reducers: {
         setCategorias: (state, action) => {
-            state.categorias = action.payload;
+            state.esquemas = action.payload;
         },
         agregarTipo: (state, action) => {
             const { categoria, nuevoTipo } = action.payload; 

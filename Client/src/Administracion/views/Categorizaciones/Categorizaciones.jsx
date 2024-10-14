@@ -1,7 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { ListaCategorias } from "./components/ListaCategorias";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { startLoadingEsquemas } from "../../../store/Administracion/Categorizacion/thunks";
 
 export const Categorizaciones = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(startLoadingEsquemas())  ;
+  }, [dispatch]);
+
   return (
     <Box ml={3} mr={3}>
       <Typography

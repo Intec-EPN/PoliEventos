@@ -1,36 +1,48 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  Grid2,
-  List,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid2, List, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cambiarViewDeTipo } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
 import { AlertCorrecto } from "./AlertCorrecto";
 import { TipoItem } from "./TipoItem";
 import { NuevoTipoItem } from "./NuevoTipoItem";
 import { CatTituloDescrip } from "./CatTituloDescrip";
+import { startLoadingEsquemas } from "../../../../../store/Administracion/Categorizacion/thunks";
 
 export const EditarCategoria = () => {
-  // Obtener la categoría desde los params
-  const { categoria: categoriaActual } = useParams();
-  // Obtengo el useNavigate para volver en caso de cancelar
-  const navigate = useNavigate();
   // Generar dispatch para llamar a funciones usando REDUX
   const dispatch = useDispatch();
-  // Obtener las categorías del estado de Redux
-  const { categorias } = useSelector((state) => state.categorias);
-  // Obtengo la descripción
-  const { Descripcion } = categorias.find((x) => x.Nombre === categoriaActual);
-  // Obtengo los tipos
-  const tipos = categorias.find((x) => x.Nombre === categoriaActual).Tipos;
+  // Obtener la categoría desde los params
+  const { categoria: esquemaActual } = useParams();
 
+  // Obtengo el useNavigate para volver en caso de cancelar
+  const navigate = useNavigate();
+
+  // Estado para manejar el estado 
+  const [esquemas, setEsquemas] = useState([]);
+  // Obtener las categorías del estado de Redux
+  setEsquemas(useSelector((state) => state.categorizacion));
+  console.log(esquemas)
+
+  // useEffect(() => {
+  //   if (esquemas.length < 1) {
+  //     // Aquí deberías despachar una acción para cargar los datos desde el backend
+  //     dispatch(startLoadingEsquemas());
+  //     setEsquemas(useSelector((state) => state.categorizacion));
+  //   }
+  // }, [esquemas, dispatch]);
+  
+
+  // Obtengo la descripción
+  const { descripcion } = esquemas.find((x) => x.nombre === esquemaActual);
+  // Obtengo las categorias
+  const categorias = esquemas.find(
+    (x) => x.nombre === esquemaActual
+  ).categorias;
+  console.log(categorias);
   // Uso del formulario a través de react form hook
   const {
     handleSubmit,
@@ -86,7 +98,7 @@ export const EditarCategoria = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   // SUBMIT FORMULARIO
   const onSubmit = (data) => {
-    const tiposEditados = tipos.map((t, index) => ({
+    const tiposEditados = categorias.map((t, index) => ({
       tipo: data.tipos[index] || t.tipo,
       view: t.view,
     }));
@@ -98,7 +110,7 @@ export const EditarCategoria = () => {
     console.log(tiposEditados.concat(nuevosTiposData));
     // Genero el objeto a enviar
     const categoriaEditadas = {
-      Nombre: categoriaActual,
+      Nombre: esquemaActual,
       Tipos: [
         ...tiposEditados,
         ...nuevosTiposData.map((nuevo) => ({ tipo: nuevo, view: true })),
@@ -121,7 +133,10 @@ export const EditarCategoria = () => {
 
   return (
     <Box ml={3} mr={3}>
-      <CatTituloDescrip categoriaActual={categoriaActual} descripcion={Descripcion}/>
+      <CatTituloDescrip
+        categoriaActual={esquemaActual}
+        descripcion={descripcion}
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Button
           sx={{ mr: 1, backgroundColor: "#e3320e" }}
@@ -143,13 +158,13 @@ export const EditarCategoria = () => {
 
         <List sx={{ width: "100%" }}>
           <Grid2 container>
-            {tipos.map(
-              ({ tipo, view }, index) =>
-                view && (
+            {categorias.map(
+              ({ id, nombre, visible }) =>
+                visible && (
                   <TipoItem
-                    key={index}
-                    index={index}
-                    tipo={tipo}
+                    key={id}
+                    index={id}
+                    tipo={nombre}
                     editTipo={editTipo}
                     control={control}
                     errors={errors}
@@ -158,11 +173,11 @@ export const EditarCategoria = () => {
                   />
                 )
             )}
-            {nuevosTipos.map((tipo, index) => (
+            {nuevosTipos.map((categoria, index) => (
               <NuevoTipoItem
                 key={index}
                 index={index}
-                tipo={tipo}
+                tipo={categoria}
                 editTipo={editTipo}
                 control={control}
                 errors={errors}

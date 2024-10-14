@@ -15,8 +15,7 @@ import { useSelector } from "react-redux";
 export const ListaCategorias = () => {
   const navigate = useNavigate();
 
-  const { categorias } = useSelector((state) => state.categorias);
-  const listItem = categorias;
+  const {esquemas} = useSelector((state) => state.categorizacion);
 
   const onEdit = (value) => {
     navigate(`/admin/categorizaciones/${value}/editar`);
@@ -25,14 +24,14 @@ export const ListaCategorias = () => {
   return (
     <Box>
       <List sx={{ width: "100%", bgcolor: "white" }}>
-        {listItem.map((item) => (
+        {esquemas.map((esquema) => (
           <ListItem
             sx={{ bgcolor: "#2c4175", mb: 2 }}
-            key={item.Nombre}
+            key={esquema.id}
             mb={2}
             secondaryAction={
               <>
-                <IconButton onClick={() => onEdit(item.Nombre)}>
+                <IconButton onClick={() => onEdit(esquema.nombre)}>
                   <EditIcon sx={{ color: "white" }} />
                 </IconButton>
                 <IconButton>
@@ -41,8 +40,8 @@ export const ListaCategorias = () => {
               </>
             }
           >
-            <Tooltip title={item.Descripcion}>
-              <ListItemText primary={item.Nombre} sx={{ color: "white" }} />
+            <Tooltip title={esquema.descripcion}>
+              <ListItemText primary={esquema.nombre} sx={{ color: "white" }} />
             </Tooltip>
           </ListItem>
         ))}
