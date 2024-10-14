@@ -84,12 +84,12 @@ DELIMITER ;
 
 -- Colores de chips
 -- Propio
-CALL ActualizarBgColorPorId('#38b6ff', 1);
+CALL ActualizarBgColorPorId('#53cacf', 1);
 -- Departamento
-CALL ActualizarBgColorPorId('#2df3ac', 2);
-CALL ActualizarBgColorPorId('#1c9a6c', 3);
-CALL ActualizarBgColorPorId('#126648', 4);
-CALL ActualizarBgColorPorId('#083323', 5);
+CALL ActualizarBgColorPorId('#4da93a', 2);
+CALL ActualizarBgColorPorId('#248d18', 3);
+CALL ActualizarBgColorPorId('#017b00', 4);
+CALL ActualizarBgColorPorId('#006f00', 5);
 
 -- Facultad
 CALL ActualizarBgColorPorId('#006af9', 6);

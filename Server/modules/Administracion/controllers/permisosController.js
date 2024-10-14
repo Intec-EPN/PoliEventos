@@ -34,6 +34,27 @@ const obtenerPermisosAcciones = async (req, res) => {
     }
 };
 
+// Obtener Estructura
+const obtenerEstructura = async (req, res) => {
+    try {
+        // Obtengo todos los niveles:
+        const niveles = await sequelize.query('call ObtenerNiveles();');
+       
+        const permisosEstructurados = niveles.map(nivel => {
+            return {
+                nombre: nivel.nombre,
+                color: nivel.color,
+                icono: nivel.icono,
+                acciones: []
+            }
+        });
+        res.status(200).json(permisosEstructurados);
+    } catch (error) {
+        console.error(`Error al obtener permisos estructurados: ${error}`);
+        res.status(500).json({ error: 'Error al obtener permisos estructurados.' });
+    }
+};
+
 
 // Métodos no API Rest (para funcionamiento del controlador)
 // Obtener permisos correspondientes a un rol, tengo incluidos los id de los niveles a los que eprtenecen.
@@ -51,4 +72,4 @@ const obtenerPermisosRol = async (permisoId) => {
 
 
 
-module.exports = { obtenerPermisosBase, obtenerPermisosAcciones, obtenerPermisosRol };
+module.exports = { obtenerPermisosBase, obtenerPermisosAcciones, obtenerEstructura, obtenerPermisosRol };

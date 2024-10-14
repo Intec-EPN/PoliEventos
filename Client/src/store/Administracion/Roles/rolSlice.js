@@ -14,6 +14,7 @@ export const rolSlice = createSlice({
     creandoRol: false,
     seleccionNivel: 'Departamento',
     filtros: [],
+    estructuraPermisos: []
   },
   reducers: {
     setRol: (state, action) => {
@@ -69,9 +70,9 @@ export const rolSlice = createSlice({
         rol: '',
         descripcion: '',
         departamentos: [],
-        // TODO Revisar si al reiniciarlo se llena luego.
-        permisos: [],
       };
+      // Reiniciar permisos
+      state.rolEnCreacion.permisos = state.estructuraPermisos;
       state.creandoRol = false;
     },
     setRoles: (state, action) => {
@@ -83,13 +84,12 @@ export const rolSlice = createSlice({
     handleSeleccion: (state, action) => {
       state.seleccionNivel = action.payload;
       // Reiniciar permisos
-      state.rolEnCreacion = {
-        // TODO Revisar si al reiniciarlo se llena luego.
-        permisos: [],
-      };
+      state.rolEnCreacion.permisos = state.estructuraPermisos;
     },
     setPermisos: (state, action) => {
-      state.rolEnCreacion.permisos = action.payload; // Seteo la estructura de permisos inicialmente desde la base, esto para tener los colores configurados.
+      state.rolEnCreacion.permisos = action.payload;
+      state.estructuraPermisos = action.payload;
+      // Seteo la estructura de permisos inicialmente desde la base, esto para tener los colores configurados.
       // { nombre: "Propio", color: "primary", acciones: [] },
       // { nombre: "Departamento", color: "#c44b00", acciones: [] },
       // { nombre: "Facultad", color: "#bd0000", acciones: [] },
