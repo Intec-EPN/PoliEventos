@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 export const Permisos = () => {
   const {permisosAcciones: niveles} = useSelector((state) => state.permiso)
-
   return (
     <Box sx={{ mt: 2 }}>
       <Typography  color="primary" pr={3} sx={{ml:2, display:"flex", textAlign:"justify"}} >

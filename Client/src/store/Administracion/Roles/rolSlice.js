@@ -30,7 +30,6 @@ export const rolSlice = createSlice({
     },
     setDepartamento: (state, action) => {
       state.creandoRol = true;
-      console.log(action.payload);
       if (state.seleccionNivel === 'Departamento') {
         state.rolEnCreacion.departamentos = [];
         state.rolEnCreacion.departamentos.push(action.payload);

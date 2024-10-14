@@ -38,9 +38,7 @@ export const FiltroTag = ({ permisosAcciones = [], acciones = [] }) => {
       const newSelected = isSelected
         ? prevSelected.filter((id) => id !== accionId)
         : [...prevSelected, accionId];
-
-      // Despacha el id cada vez que se selecciona o deselecciona
-      console.log(accionId);
+        
       dispatch(setFiltro(accionId)); // Enviar el id
       return newSelected;
     });

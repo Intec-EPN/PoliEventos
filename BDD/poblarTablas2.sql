@@ -25,6 +25,19 @@ INSERT INTO Niveles (nombre, color) VALUES
 ('Propio','primary'), 
 ('Departamento','#c44b00'), 
 ('Facultad','#bd0000');
+-- Agregar Iconos a los niveles:
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Niveles
+SET icono = CASE
+    WHEN nombre = 'Propio' THEN 'PersonIcon'
+    WHEN nombre = 'Departamento' THEN 'ApartmentIcon'
+    WHEN nombre = 'Facultad' THEN 'AccountBalanceIcon'
+    ELSE NULL
+END;
+SET SQL_SAFE_UPDATES = 1;
+
+
+
 
 -- Insertar permisos con sus niveles (sin cambios)
 INSERT INTO Permisos (accion, tooltip, bgColor, nivel_id) VALUES

@@ -16,6 +16,10 @@ const NivelesModel = sequelize.define('Niveles',{
         type: DataTypes.STRING(10),
         allowNull: false,
     },
+    icono: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
+    },
 },{
     tableName: 'niveles',
     timestamps: false,

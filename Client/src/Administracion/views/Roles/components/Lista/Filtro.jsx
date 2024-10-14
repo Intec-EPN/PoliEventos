@@ -32,9 +32,6 @@ export const Filtro = ({ opciones = [], filtro = "", size }) => {
       const newSelected = isSelected
         ? prevSelected.filter((item) => item !== opcion)
         : [...prevSelected, opcion];
-
-      // Siempre enviar la opción seleccionada/deseleccionada
-      console.log(opcion);
       
       dispatch(setFiltro(opcion)); // Enviar la opción seleccionada/deseleccionada
 

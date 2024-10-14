@@ -74,12 +74,14 @@ const obtenerRoles = async (req, res) => {
                         return {
                             nombre: nivel.nombre, 
                             color: nivel.color,
+                            icono: nivel.icono,
                             acciones: accionesFiltradas.map(acc => acc.permiso_id)
                         }
                     };
                     return {
                         nombre: nivel.nombre, 
                         color: nivel.color,
+                        icono: nivel.icono,
                         acciones: []
                     }
                 }); 

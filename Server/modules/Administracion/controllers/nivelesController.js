@@ -16,7 +16,7 @@ const obtenerNivelesBase = async(req, res) => {
 const obtenerNivelesArray = async () => {
     try {
         const niveles = await NivelesModel.findAll({
-            attributes: ['id', 'nombre', 'color']
+            attributes: ['id', 'nombre', 'color', 'icono']
         });
         return niveles;
     } catch (error) {

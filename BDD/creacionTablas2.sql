@@ -32,6 +32,10 @@ CREATE TABLE Niveles (
   nombre VARCHAR(50),  -- ('Propio', 'Departamento', 'Facultad')
   color varchar(10) -- Color del texto
 );
+-- Agregar icono
+ALTER TABLE Niveles
+ADD COLUMN icono VARCHAR(30);
+
 
 -- Tabla de Permisos
 CREATE TABLE Permisos (

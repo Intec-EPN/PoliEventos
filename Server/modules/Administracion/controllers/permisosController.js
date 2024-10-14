@@ -23,6 +23,7 @@ const obtenerPermisosAcciones = async (req, res) => {
             return {
                 nombre: nivel.nombre,
                 color: nivel.color,
+                icono: nivel.icono,
                 acciones: permisoPorNivel.map(permiso => permiso.id) //obtengo solo los ids
             }
         });

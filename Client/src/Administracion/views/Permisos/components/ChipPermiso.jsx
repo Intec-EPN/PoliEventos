@@ -1,8 +1,6 @@
 import { Chip, Tooltip } from "@mui/material"
 
 export const ChipPermiso = ({id, accion, tooltip, bgColor, clickable = false, color, nombre, onPermisoClick}) => {
-  console.log("Chip color for", nombre, "is:", color);
-
   return (
     <>
         <Tooltip title={tooltip} arrow >
