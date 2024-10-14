@@ -9,11 +9,7 @@ export const rolSlice = createSlice({
       rol: '',
       descripcion: '',
       departamentos: [],
-      permisos: [
-        { nombre: "Propio", color: "primary", acciones: [] },
-        { nombre: "Departamento", color: "#c44b00", acciones: [] },
-        { nombre: "Facultad", color: "#bd0000", acciones: [] },
-      ],
+      permisos: [],
     },
     creandoRol: false,
     seleccionNivel: 'Departamento',
@@ -38,10 +34,10 @@ export const rolSlice = createSlice({
       }
     },
     setFiltro: (state, action) => {
-      if(state.filtros.includes(action.payload)){
+      if (state.filtros.includes(action.payload)) {
         // Existe, lo elimino
         state.filtros = state.filtros.filter(filt => filt !== action.payload)
-      }else{
+      } else {
         state.filtros.push(action.payload);
       }
     },
@@ -73,11 +69,8 @@ export const rolSlice = createSlice({
         rol: '',
         descripcion: '',
         departamentos: [],
-        permisos: [
-          { nombre: "Propio", color: "primary", acciones: [] },
-          { nombre: "Departamento", color: "#c44b00", acciones: [] },
-          { nombre: "Facultad", color: "#bd0000", acciones: [] },
-        ],
+        // TODO Revisar si al reiniciarlo se llena luego.
+        permisos: [],
       };
       state.creandoRol = false;
     },
@@ -91,15 +84,31 @@ export const rolSlice = createSlice({
       state.seleccionNivel = action.payload;
       // Reiniciar permisos
       state.rolEnCreacion = {
-        permisos: [
-          { nombre: "Propio", color: "primary", acciones: [] },
-          { nombre: "Departamento", color: "#c44b00", acciones: [] },
-          { nombre: "Facultad", color: "#bd0000", acciones: [] },
-        ],
+        // TODO Revisar si al reiniciarlo se llena luego.
+        permisos: [],
       };
+    },
+    setPermisos: (state, action) => {
+      state.rolEnCreacion.permisos = action.payload; // Seteo la estructura de permisos inicialmente desde la base, esto para tener los colores configurados.
+      // { nombre: "Propio", color: "primary", acciones: [] },
+      // { nombre: "Departamento", color: "#c44b00", acciones: [] },
+      // { nombre: "Facultad", color: "#bd0000", acciones: [] },
+
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setRol, setDescripcion, setDepartamento, setFiltro, manejarPermiso, agregarRol, setRoles, setCreandoRol, handleSeleccion } = rolSlice.actions;
+export const {
+  setRol,
+  setDescripcion,
+  setDepartamento,
+  setFiltro,
+  manejarPermiso,
+  agregarRol,
+  setRoles,
+  setCreandoRol,
+  handleSeleccion,
+  setPermisos
+} = rolSlice.actions;
+
