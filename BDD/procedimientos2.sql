@@ -70,3 +70,46 @@ END $$
 DELIMITER ;
 
 call Get_Departamentos_Facultad_Id(1);
+
+
+-- Actualizar colores:
+DELIMITER $$
+CREATE PROCEDURE ActualizarBgColorPorId(nuevoBgColor VARCHAR(7), permisoId INT)
+BEGIN
+    UPDATE Permisos
+    SET bgColor = nuevoBgColor
+    WHERE id = permisoId;
+END $$
+DELIMITER ;
+
+-- Colores de chips
+-- Propio
+CALL ActualizarBgColorPorId('#38b6ff', 1);
+-- Departamento
+CALL ActualizarBgColorPorId('#2df3ac', 2);
+CALL ActualizarBgColorPorId('#1c9a6c', 3);
+CALL ActualizarBgColorPorId('#126648', 4);
+CALL ActualizarBgColorPorId('#083323', 5);
+
+-- Facultad
+CALL ActualizarBgColorPorId('#006af9', 6);
+CALL ActualizarBgColorPorId('#005ad3', 7);
+CALL ActualizarBgColorPorId('#004aad', 8);
+CALL ActualizarBgColorPorId('#00347a', 9);
+
+-- Colores de texto
+DELIMITER $$
+CREATE PROCEDURE ActualizarColorPorId(nuevoColor VARCHAR(20), nivelId INT)
+BEGIN
+    UPDATE Niveles
+    SET color = nuevoColor
+    WHERE id = nivelId;
+END $$
+DELIMITER ;
+-- Color de letra
+-- Propio
+CALL ActualizarColorPorId('#FFF', 1);
+-- Departamento
+CALL ActualizarColorPorId('#FFF', 2);
+-- Facultad
+CALL ActualizarColorPorId('#FFF', 3);
