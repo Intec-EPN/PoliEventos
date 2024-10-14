@@ -1,7 +1,7 @@
 // Rutas de roles
 const express = require('express');
 const router = express.Router();
-const { obtenerRolDescripcionId, obtenerRolesDescripcion, obtenerRoles } = require('../controllers/rolesController');
+const { obtenerRolDescripcionId, obtenerRolesDescripcion, obtenerRoles } = require('../../controllers/Roles/rolesController');
 
 
 // Obtener roles por id

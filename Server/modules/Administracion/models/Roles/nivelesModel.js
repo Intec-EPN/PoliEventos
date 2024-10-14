@@ -1,6 +1,6 @@
 // Modelo Niveles
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../../config/db');
+const { sequelize } = require('../../../../config/db');
 
 const NivelesModel = sequelize.define('Niveles',{
     id: {

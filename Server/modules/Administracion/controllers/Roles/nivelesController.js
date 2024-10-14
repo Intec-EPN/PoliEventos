@@ -1,5 +1,5 @@
-const { sequelize } = require("../../../config/db");
-const NivelesModel = require("../models/nivelesModel");
+const { sequelize } = require("../../../../config/db");
+const NivelesModel = require("../../models/Roles/nivelesModel");
 
 // Obtener niveles base
 const obtenerNivelesBase = async(req, res) => {

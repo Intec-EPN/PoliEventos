@@ -1,4 +1,4 @@
-const RolesModel = require("../models/rolesModel");
+const RolesModel = require("../../models/Roles/rolesModel");
 const { obtenerDepartamentosArray } = require("./departamentosController");
 const { obtenerDeptFacultadId } = require("./facultadesController");
 const { obtenerNivelesArray } = require("./nivelesController");

@@ -1,7 +1,7 @@
 // Rutas de Niveles
 const express = require('express');
 const router = express.Router();
-const { obtenerNivelesBase } = require('../controllers/nivelesController');
+const { obtenerNivelesBase } = require('../../controllers/Roles/nivelesController');
 
 // Obtener niveles base
 router.get('/getbase', obtenerNivelesBase); 

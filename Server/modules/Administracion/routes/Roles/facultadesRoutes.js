@@ -1,6 +1,6 @@
 // Rutas de Facultades
 const express = require('express');
-const { obtenerFacultades, obtenerDepartamentosFacultadId } = require('../controllers/facultadesController');
+const { obtenerFacultades, obtenerDepartamentosFacultadId } = require('../../controllers/Roles/facultadesController');
 const router = express.Router();
 
 // Obtener todas las facultades

@@ -1,6 +1,6 @@
 // Modelo Departamento
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../../../config/db');
+const { sequelize } = require('../../../../config/db');
 const FacultadesModel = require('./facultadesModel');
 
 const DepartamentosModel = sequelize.define('Departamentos',{

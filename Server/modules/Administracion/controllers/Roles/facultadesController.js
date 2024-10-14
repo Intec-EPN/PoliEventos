@@ -1,5 +1,5 @@
-const { sequelize } = require("../../../config/db");
-const FacultadesModel = require("../models/facultadesModel");
+const { sequelize } = require("../../../../config/db");
+const FacultadesModel = require("../../models/Roles/facultadesModel");
 
 // Obtener el nombre y el id de la facultad:
 const obtenerFacultades = async (req, res) => {

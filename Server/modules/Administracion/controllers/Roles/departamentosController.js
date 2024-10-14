@@ -1,5 +1,5 @@
-const { sequelize } = require("../../../config/db");
-const DepartamentosModel = require("../models/departamentosModel");
+const { sequelize } = require("../../../../config/db");
+const DepartamentosModel = require("../../models/Roles/departamentosModel");
 
 // API REST
 // Tabla Roles
