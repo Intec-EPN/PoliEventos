@@ -47,5 +47,12 @@ const obtenerDepartamentosArray = async (rolId) => {
     }
 };
 
+// Función para obtener el ID del departamento
+const obtenerDepartamentoId = async (departamentoCodigo) => {
+    const departamento = await DepartamentosModel.findOne({
+        where: { nombre: departamentoCodigo }
+    });
+    return departamento ? departamento.id : null;
+};
 
-module.exports = { obtenerDepartamentosRolId, obtenerDepartamentos, obtenerDepartamentosArray };
+module.exports = { obtenerDepartamentosRolId, obtenerDepartamentos, obtenerDepartamentosArray, obtenerDepartamentoId };

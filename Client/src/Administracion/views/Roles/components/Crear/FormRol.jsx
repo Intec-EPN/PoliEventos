@@ -3,13 +3,14 @@ import { CategoriaPermiso } from "../../../Permisos/components/CategoriaPermiso"
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  agregarRol,
   manejarPermiso,
+  reiniciarRol,
   setDescripcion,
   setRol,
 } from "../../../../../store/Administracion/Roles/rolSlice";
 import { useEffect } from "react";
 import { RadioButton } from "./RadioButton";
+import { startCreatingRoles } from "../../../../../store/Administracion/Roles/thunks";
 
 export const FormRol = () => {
   // Hook Form
@@ -45,12 +46,17 @@ export const FormRol = () => {
     }
   }, [creandoRol, reset]);
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     if (rolEnCreacion.departamentos.length < 1) {
       alert("Debes seleccionar un departamento antes de crear el rol.");
       return;
     }
-    dispatch(agregarRol()); // Se crea el rol con el rol que se tenga en ese momento.
+    if (rolEnCreacion.permisos.every(permiso => permiso.acciones.length === 0)) {
+      alert("Debes seleccionar al menos una permiso antes de crear el rol.");
+      return;
+    }
+    dispatch(startCreatingRoles(rolEnCreacion));
+    dispatch(reiniciarRol());
   };
 
   const manejarPermisoClick = (nivel, permisoId) => {
@@ -68,6 +74,7 @@ export const FormRol = () => {
         CREAR UN ROL
       </Typography>
       <Grid2 container gap={3}>
+        <RadioButton reset={reset} />
         <Grid2 width="95%">
           <Controller
             name="nombreRol"
@@ -75,21 +82,34 @@ export const FormRol = () => {
             defaultValue=""
             rules={{
               required: "El nombre del rol es obligatorio.",
+              maxLength: {
+                value: 30,
+                message:
+                  "El nombre del rol no puede exceder los 30 caracteres.",
+              },
             }}
             render={({ field }) => (
-              <TextField
-                {...field}
-                label="Ingresa el nombre del rol"
-                variant="outlined"
-                placeholder="Nombre del rol"
-                fullWidth={true}
-                error={!!errors.nombreRol} // Muestra el error si existe
-                helperText={errors.nombreRol ? errors.nombreRol.message : ""}
-                onChange={(e) => {
-                  field.onChange(e);
-                  dispatch(setRol(e.target.value));
-                }}
-              />
+              <div>
+                <TextField
+                  {...field}
+                  label="Ingresa el nombre del rol"
+                  variant="outlined"
+                  placeholder="Nombre del rol"
+                  fullWidth={true}
+                  error={!!errors.nombreRol} // Muestra el error si existe
+                  helperText={errors.nombreRol ? errors.nombreRol.message : ""}
+                  maxLength={30}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 30) {
+                      field.onChange(e);
+                      dispatch(setRol(e.target.value));
+                    }
+                  }}
+                />
+                <Typography variant="caption" color="textSecondary">
+                  Máximo 30 caracteres.
+                </Typography>
+              </div>
             )}
           />
         </Grid2>
@@ -98,25 +118,43 @@ export const FormRol = () => {
             name="descripcionRol"
             control={control}
             defaultValue=""
+            rules={{
+              maxLength: {
+                value: 150,
+                message:
+                  "La descripción del rol no puede exceder los 255 caracteres.",
+              },
+            }}
             render={({ field }) => (
-              <TextField
-                {...field}
-                label="Ingresa la descripción del rol"
-                placeholder="Descripción del rol"
-                multiline
-                rows={4}
-                variant="outlined"
-                fullWidth={true}
-                onChange={(e) => {
-                  field.onChange(e); // Asegúrate de llamar a field.onChange
-                  dispatch(setDescripcion(e.target.value));
-                }}
-              />
+              <div>
+                <TextField
+                  {...field}
+                  label="Ingresa la descripción del rol"
+                  placeholder="Descripción del rol"
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  fullWidth={true}
+                  error={!!errors.descripcionRol} // Muestra el error si existe
+                  helperText={
+                    errors.descripcionRol ? errors.descripcionRol.message : ""
+                  }
+                  maxLength={150}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 150) {
+                      field.onChange(e); // Llama a field.onChange solo si está dentro del límite
+                      dispatch(setDescripcion(e.target.value));
+                    }
+                  }}
+                />
+                <Typography variant="caption" color="textSecondary">
+                  Máximo 150 caracteres.
+                </Typography>
+              </div>
             )}
           />
         </Grid2>
         <Grid2 container display="flex" flexDirection="column">
-          <RadioButton reset={reset}/>
           <Box
             display="block"
             justifyContent="start"

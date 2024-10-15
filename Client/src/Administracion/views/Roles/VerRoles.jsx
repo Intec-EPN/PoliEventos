@@ -1,9 +1,10 @@
 import { Grid2, Typography } from "@mui/material";
 import { TarjetaRol } from "./components/TarjetaRol";
 import { Filtro } from "./components/Lista/Filtro";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FiltroTag } from "./components/Lista/FiltroTag";
 import { useEffect, useState } from "react";
+import { startLoadingRoles } from "../../../store/Administracion/Roles/thunks";
 
 export const VerRoles = () => {
   // Obtengo los departamentos.
@@ -14,6 +15,14 @@ export const VerRoles = () => {
   const { roles } = useSelector((state) => state.rol);
   // Obtengo los filtros:
   const { filtros } = useSelector((state) => state.rol);
+
+  // Traigo los roles
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(startLoadingRoles());
+  }, [dispatch]);
+  
+  
 
   // Estado para roles filtrados
   const [rolesFiltrados, setRolesFiltrados] = useState([]);

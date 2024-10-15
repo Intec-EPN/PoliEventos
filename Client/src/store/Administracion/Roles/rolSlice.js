@@ -5,16 +5,17 @@ export const rolSlice = createSlice({
   initialState: {
     roles: [], // Array con todos los roles que existen.
     rolEnCreacion: {
-      id: '',
       rol: '',
       descripcion: '',
+      facultad_id: 1,
       departamentos: [],
       permisos: [],
     },
     creandoRol: false,
+    creandoRolEnBase: false,
     seleccionNivel: 'Departamento',
     filtros: [],
-    estructuraPermisos: []
+    estructuraPermisos: [],
   },
   reducers: {
     setRol: (state, action) => {
@@ -60,15 +61,15 @@ export const rolSlice = createSlice({
         }
       }
     },
-    agregarRol: (state) => {
+    reiniciarRol: (state) => {
+      // Método solo para reiniciar el Rol cuando se lo crea.
       state.creandoRol = true;
-      state.roles.push(state.rolEnCreacion);
-
       // Reiniciar el rol en creación después de agregar
       state.rolEnCreacion = {
         id: '',
         rol: '',
         descripcion: '',
+        facultad_id: 1,
         departamentos: [],
       };
       // Reiniciar permisos
@@ -89,12 +90,10 @@ export const rolSlice = createSlice({
     setPermisos: (state, action) => {
       state.rolEnCreacion.permisos = action.payload;
       state.estructuraPermisos = action.payload;
-      // Seteo la estructura de permisos inicialmente desde la base, esto para tener los colores configurados.
-      // { nombre: "Propio", color: "primary", acciones: [] },
-      // { nombre: "Departamento", color: "#c44b00", acciones: [] },
-      // { nombre: "Facultad", color: "#bd0000", acciones: [] },
-
     },
+    setCreandoRolEnBase: (state, action) => {
+      state.creandoRolEnBase = action.payload;
+    }
   },
 });
 
@@ -105,10 +104,11 @@ export const {
   setDepartamento,
   setFiltro,
   manejarPermiso,
-  agregarRol,
+  reiniciarRol,
   setRoles,
   setCreandoRol,
   handleSeleccion,
-  setPermisos
+  setPermisos,
+  setCreandoRolEnBase
 } = rolSlice.actions;
 

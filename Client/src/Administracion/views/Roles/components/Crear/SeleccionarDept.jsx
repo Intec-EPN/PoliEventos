@@ -4,38 +4,45 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
-import { Grid2 } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setDepartamento } from "../../../../../store/Administracion/Roles/rolSlice";
-
+import { red } from "@mui/material/colors";
 
 export const SeleccionarDept = () => {
   const { creandoRol } = useSelector((state) => state.rol);
-  
+
   const dispatch = useDispatch();
 
   const [dept, setDept] = useState("");
 
   const handleChange = (event) => {
     setDept(event.target.value);
-    dispatch(setDepartamento(event.target.value))
+    dispatch(setDepartamento(event.target.value));
   };
 
   // Obtengo los departamentos
-  const {departamentos} = useSelector((state) => state.departamento);
+  const { departamentos } = useSelector((state) => state.departamento);
 
   // Para reiniciar el select al enviar un formulario
   const resetSelect = () => {
     setDept(""); // Resetea el valor del select
   };
   useEffect(() => {
-    if(!creandoRol){
+    if (!creandoRol) {
       resetSelect();
     }
   }, [creandoRol]);
 
   return (
-    <Grid2 container mb={2}>
+    <Grid2
+      container
+      mb={2}
+      gap={2}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <FormControl>
         <InputLabel>Departamento</InputLabel>
         <Select
@@ -54,6 +61,11 @@ export const SeleccionarDept = () => {
           ))}
         </Select>
       </FormControl>
+      {!dept && (
+        <Typography sx={{ color: "red" }}>
+          Recuerda seleccionar un departamento incluso si no asignas permisos de este nivel.
+        </Typography>
+      )}
     </Grid2>
   );
 };

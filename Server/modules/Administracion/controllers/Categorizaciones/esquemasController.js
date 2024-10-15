@@ -42,18 +42,3 @@ const obtenerEsquemasCategorias = async (req, res) => {
 };
 
 module.exports = {obtenerEsquemasCategorias};
-
-// [
-//     {
-//         "id": 1,
-//         "nombre": "CES",
-//         "descripcion": "Tipos de eventos correspondientes al CES",
-//         "visible": true
-//     },
-//     {
-//         "id": 2,
-//         "nombre": "EPN",
-//         "descripcion": "Tipos de eventos correspondientes al EPN",
-//         "visible": true
-//     }
-// ]

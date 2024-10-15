@@ -14,3 +14,5 @@ CREATE TABLE Categorias (
     esquema_id BIGINT UNSIGNED,
     FOREIGN KEY (esquema_id) REFERENCES Esquemas_Categorizacion(id)
 );
+
+select * from Categorias;

@@ -1,5 +1,5 @@
 import axiosInstance from "../../../api/axiosConfig";
-import { setDepartamento, setPermisos, setRoles } from "./rolSlice";
+import { setCreandoRolEnBase, setDepartamento, setPermisos, setRoles } from "./rolSlice";
 
 export const startLoadingRoles = () => {
     return async (dispatch) => {
@@ -36,6 +36,22 @@ export const startLoadingPermisosEstructura = () => {
             dispatch(setPermisos(data));
         } catch (error) {
             throw new Error("Error al cargar", error);
+        }
+    }
+};
+
+export const startCreatingRoles = (rolData) => {
+    return async (dispatch) => {
+        dispatch(setCreandoRolEnBase(true));
+        try {
+            const response = await axiosInstance.post('admin/roles/create', rolData);
+            dispatch(startLoadingRoles());
+            dispatch(setCreandoRolEnBase(false));
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                alert(error.response.data.message); 
+            }            
+            dispatch(setCreandoRolEnBase(false)); 
         }
     }
 };

@@ -55,3 +55,6 @@ CREATE TABLE Rol_Permisos (
   FOREIGN KEY (rol_id) REFERENCES Roles(id) ON DELETE CASCADE,
   FOREIGN KEY (permiso_id) REFERENCES Permisos(id) ON DELETE CASCADE
 );
+
+
+select * from roles;

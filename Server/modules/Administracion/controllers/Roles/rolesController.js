@@ -1,5 +1,8 @@
+const { validationResult } = require('express-validator'); // Importa body y validationResult
 const RolesModel = require("../../models/Roles/rolesModel");
-const { obtenerDepartamentosArray } = require("./departamentosController");
+const DepartamentosModel = require('../../models/Roles/departamentosModel');
+const RolPermisosModel = require('../../models/Roles/tablas-intermedias/rol_permisosModel');
+const { obtenerDepartamentosArray, obtenerDepartamentoId } = require("./departamentosController");
 const { obtenerDeptFacultadId } = require("./facultadesController");
 const { obtenerNivelesArray } = require("./nivelesController");
 const { obtenerPermisosRol } = require("./permisosController");
@@ -56,10 +59,10 @@ const obtenerRoles = async (req, res) => {
             rolesIniciales.map(async (rol) => {
                 let departamentos;
                 // Obtener los departamentos
-                if(rol.departamento_id){
+                if (rol.departamento_id) {
                     // Si tengo id de departamento, lo incluyo.
                     departamentos = await obtenerDepartamentosArray(rol.id);
-                }else{
+                } else {
                     // Si no tengo id, significa que es la facultad, incluyo los departamentos de la facultad:
                     departamentos = await obtenerDeptFacultadId(rol.facultad_id);
                 }
@@ -68,23 +71,23 @@ const obtenerRoles = async (req, res) => {
                 // Agrupo las acciones por nivel_id (obtengo nivel de permisos)
                 const permisos = niveles.map(nivel => {
                     // Filtro por el id del nivel
-                    const accionesFiltradas = acciones.filter( acc => acc.nivel_id === nivel.id);
+                    const accionesFiltradas = acciones.filter(acc => acc.nivel_id === nivel.id);
                     // Retorno mi nuevo objeto con lo necesario del nivel y las acciones correspondientes.
-                    if(accionesFiltradas.length>0){
+                    if (accionesFiltradas.length > 0) {
                         return {
-                            nombre: nivel.nombre, 
+                            nombre: nivel.nombre,
                             color: nivel.color,
                             icono: nivel.icono,
                             acciones: accionesFiltradas.map(acc => acc.permiso_id)
                         }
                     };
                     return {
-                        nombre: nivel.nombre, 
+                        nombre: nivel.nombre,
                         color: nivel.color,
                         icono: nivel.icono,
                         acciones: []
                     }
-                }); 
+                });
 
                 return {
                     rol: rol.nombre,
@@ -101,4 +104,53 @@ const obtenerRoles = async (req, res) => {
     }
 };
 
-module.exports = { obtenerRolDescripcionId, obtenerRolesDescripcion, obtenerRoles };
+
+// Crear un rol
+const crearRol = async (req, res) => {
+
+    // Valido los errores
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { rol, descripcion, departamentos, permisos, facultad_id } = req.body;
+    try {
+        // Verifico si el rol ya existe:
+        const rolExistente = await RolesModel.findOne({ where: { nombre: rol } });
+        if (rolExistente) {
+            return res.status(400).json({ message: 'El rol ya existe.' });
+        }
+
+        // Guardo el rol en la tabla roles:
+        const nuevoRol = await RolesModel.create({
+            nombre: rol,
+            descripcion: descripcion,
+            // necesito solo guardar el id del departamento
+            departamento_id: departamentos.length < 2 ? await obtenerDepartamentoId(departamentos[0]) : null,
+            facultad_id: facultad_id
+
+        });
+        // Guardo en Rol_Permisos las referencias a permisos:
+        if (permisos.length) {
+            // Extraigo los ids de permisos
+            const permisosIds = permisos.flatMap(p => p.acciones);
+            const rolPermisos = permisosIds.map(permisoId => ({
+                rol_id: nuevoRol.id,
+                permiso_id: permisoId
+            }));
+            // Creo un rol permiso con lo que tengo en rolPermisos:
+            await RolPermisosModel.bulkCreate(rolPermisos);
+        }
+        // Mensaje de confirmación
+        res.status(201).json({ mensaje: 'Rol creado exitosamente', rol: nuevoRol });
+    } catch (error) {
+        console.error("Error al crear el rol:", error);
+        return res.status(500).json({ message: "Error al crear el rol", error: error.message });
+    }
+
+};
+
+
+
+module.exports = { obtenerRolDescripcionId, obtenerRolesDescripcion, obtenerRoles, crearRol };

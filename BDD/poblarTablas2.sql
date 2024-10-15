@@ -80,3 +80,6 @@ INSERT INTO Rol_Permisos (rol_id, permiso_id) VALUES
 (4, 7),  -- Eliminar evento (Facultad)
 (4, 8),  -- Generar reporte (Facultad)
 (4, 9);  -- Descargar privada (Facultad)
+
+
+select * from roles;

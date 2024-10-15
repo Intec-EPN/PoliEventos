@@ -3,11 +3,10 @@ import { TarjetaRol } from "../TarjetaRol";
 import { useSelector } from "react-redux";
 
 export const VistaPrevia = () => {
-
-  const {rolEnCreacion} = useSelector(state => state.rol)
+  const { rolEnCreacion } = useSelector((state) => state.rol);
 
   return (
-    <Box sx={{ml:{md:4}}}>
+    <Box sx={{ ml: { md: 4 } }}>
       <Typography
         variant="h6"
         noWrap
@@ -16,7 +15,9 @@ export const VistaPrevia = () => {
       >
         VISTA PREVIA
       </Typography>
-      <TarjetaRol { ... rolEnCreacion }/>
+      <Box height="100vh">
+        <TarjetaRol {...rolEnCreacion} />
+      </Box>
     </Box>
   );
 };
