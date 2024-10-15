@@ -10,31 +10,39 @@ import { AlertCorrecto } from "./AlertCorrecto";
 import { TipoItem } from "./TipoItem";
 import { NuevoTipoItem } from "./NuevoTipoItem";
 import { CatTituloDescrip } from "./CatTituloDescrip";
-import { startLoadingEsquemas } from "../../../../../store/Administracion/Categorizacion/thunks";
 
 export const EditarCategoria = () => {
   // Generar dispatch para llamar a funciones usando REDUX
   const dispatch = useDispatch();
+
   // Obtener la categoría desde los params
-  const { categoria: esquemaActual } = useParams();
+  const { esquemaActual } = useSelector((state) => state.categorizacion);
 
   // Obtengo el useNavigate para volver en caso de cancelar
   const navigate = useNavigate();
+  if (esquemaActual === "") {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+      >
+        <Typography variant="h6" color="error" mb={2}>
+          No fue posible cargar la página.
+        </Typography>
+        <Button
+          onClick={() => navigate("/admin/categorizaciones")}
+          variant="contained"
+        >
+          Volver
+        </Button>
+      </Box>
+    );
+  }
 
-  // Estado para manejar el estado 
-  const [esquemas, setEsquemas] = useState([]);
   // Obtener las categorías del estado de Redux
-  setEsquemas(useSelector((state) => state.categorizacion));
-  console.log(esquemas)
-
-  // useEffect(() => {
-  //   if (esquemas.length < 1) {
-  //     // Aquí deberías despachar una acción para cargar los datos desde el backend
-  //     dispatch(startLoadingEsquemas());
-  //     setEsquemas(useSelector((state) => state.categorizacion));
-  //   }
-  // }, [esquemas, dispatch]);
-  
+  const { esquemas } = useSelector((state) => state.categorizacion);
 
   // Obtengo la descripción
   const { descripcion } = esquemas.find((x) => x.nombre === esquemaActual);
@@ -51,21 +59,20 @@ export const EditarCategoria = () => {
   } = useForm();
 
   // Errores para el formulario:
-  const [errorMsg, setErrorMsg] = useState("");
   const validateTipo = (value) => {
     if (!value) {
-      setErrorMsg("Este campo es obligatorio");
-      return false;
+      // Devuelve un mensaje de error si está vacío
+      return "Este campo es obligatorio";
     }
-    // Regex para letras, números, espacios y puntuación
-    const regex = /^[A-Za-z0-9\s.,;:'"()?!-]+$/;
+    const regex = /^[A-Za-z0-9\s.,;:'"()?!&%$@/-áéíóúñÁÉÍÓÚÑ]+$/;
     if (!regex.test(value)) {
-      setErrorMsg("Solo se permiten letras, números y puntuación");
-      return false;
+      // Mensaje de error si no coincide con el regex
+      return "Solo se permiten letras, números y puntuación";
     }
-    setErrorMsg(""); // Limpia el mensaje de error si la validación pasa
+    // Pasa la validación.
     return true;
   };
+
 
   // Editar tipo (para habilitar o deshabilitar botones cuando se edita), si se pulsa editar, ya NO se puede volver, ya que podría generar un error, la solución será salir con cancelar.
   const [editTipo, setEditTipo] = useState(false);
@@ -183,7 +190,6 @@ export const EditarCategoria = () => {
                 errors={errors}
                 validateTipo={validateTipo}
                 onEliminarTipo={onEliminarTipo}
-                errorMsg={errorMsg}
               />
             ))}
           </Grid2>

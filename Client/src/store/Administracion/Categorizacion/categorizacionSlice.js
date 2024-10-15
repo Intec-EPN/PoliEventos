@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const categorizacionSlice = createSlice({
     name: 'categorizacion',
     initialState: {
+        esquemaActual: '',
         esquemas: []
             // {
             //     Nombre: 'Uno',
@@ -38,6 +39,9 @@ export const categorizacionSlice = createSlice({
                 categoriaEncontrada.Tiposipo.push(nuevoTipo);
             }
         },
+        setEsquemaActual: (state, action) => {
+            state.esquemaActual = action.payload;
+        },
         cambiarViewDeTipo: (state, action) => {
             const { categoria, tipo } = action.payload;
             // Encuentra la categoría correspondiente
@@ -54,4 +58,4 @@ export const categorizacionSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setCategorias, agregarTipo, cambiarViewDeTipo } = categorizacionSlice.actions;
+export const { setCategorias, agregarTipo, setEsquemaActual, cambiarViewDeTipo } = categorizacionSlice.actions;

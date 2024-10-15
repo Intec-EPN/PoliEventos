@@ -10,15 +10,18 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setEsquemaActual } from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
 
 export const ListaCategorias = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {esquemas} = useSelector((state) => state.categorizacion);
 
   const onEdit = (value) => {
     navigate(`/admin/categorizaciones/${value}/editar`);
+    dispatch(setEsquemaActual(value));
   };
 
   return (
