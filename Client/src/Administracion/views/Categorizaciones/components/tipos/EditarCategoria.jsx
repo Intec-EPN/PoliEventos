@@ -79,7 +79,6 @@ export const EditarCategoria = () => {
   // Arreglo para nuevos tipos (Con esto puedo agregar los que necesite)
   const [nuevosTipos, setNuevosTipos] = useState([]);
   const onNuevoTipo = () => {
-    // Añade un nuevo campo vacío al arreglo (es para contabilizarm, nada más, ya que luego se usa un map).
     setNuevosTipos([...nuevosTipos, ""]);
   };
 

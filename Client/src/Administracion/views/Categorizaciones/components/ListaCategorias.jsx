@@ -11,7 +11,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEsquemaActual } from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
+import { setEsquemaActual, setNuevoEsquemaCategorizacionActual } from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
 import { useState } from "react";
 import { FormularNuevoEsquema } from "./tipos/FormularNuevoEsquema";
 
@@ -43,14 +43,22 @@ export const ListaCategorias = () => {
   const handleGuardarClick = () => {
     if (nuevoEsquema.nombre.trim() && nuevoEsquema.descripcion) {
       const nombre = nuevoEsquema.nombre;
-      navigate(`/admin/categorizaciones/${nombre}/editar`);
+      navigate(`/admin/categorizaciones/${nombre}/crear`);
       dispatch(setEsquemaActual(nombre));
+
+      const esquemaActual = {
+        nombre: nuevoEsquema.nombre,
+        descripcion: nuevoEsquema.descripcion,
+        visible: true,
+        categorias: []
+      }
+
+      dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
 
       setNuevoEsquema({
         nombre: "",
         descripcion: "",
       });
-
       setAgregando(false);
     }
   };

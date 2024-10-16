@@ -49,6 +49,9 @@ export const categorizacionSlice = createSlice({
                 console.log('No se encontró el esquema.');
             }
         },
+        setNuevoEsquemaCategorizacionActual: (state,action) => {
+            state.esquemaCategorizacionActual = action.payload;
+        },
         actualizarEsquemaCategoriaActual: (state, action) => {
             state.esquemaCategorizacionActual.categorias = action.payload;
         },
@@ -68,5 +71,6 @@ export const {
     setEsquemaCategorizacionActual,
     actualizarEsquemaCategoriaActual,
     limpiarEsquemaCategorizacionActual,
-    actualizarEsquemas
+    actualizarEsquemas,
+    setNuevoEsquemaCategorizacionActual
 } = categorizacionSlice.actions;

@@ -9,11 +9,11 @@ export const CatTituloDescrip = ({categoriaActual, descripcion}) => {
       sx={{mt: 1.5, mb: 1.5 }}
     >
       <Typography
-        variant="h6"
+        variant="h5"
         color="primary"
         sx={{ fontWeight: 700 }}
       >
-        Esquema de categorización: {categoriaActual}
+        {categoriaActual}
       </Typography>
       <Typography
         variant="p"

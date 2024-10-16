@@ -28,8 +28,21 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Crear el store con el reducer persistente:
+// export const store = configureStore({
+//   reducer: persistedReducer,
+// });
+
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [
+          'persist/PERSIST', // Ignora acciones de persistencia
+          'persist/REHYDRATE' // También puedes ignorar otras acciones de persistencia
+        ],
+      },
+    }),
 });
 
 // Configuro el persistor

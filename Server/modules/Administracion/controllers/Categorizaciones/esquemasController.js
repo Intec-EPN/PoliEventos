@@ -88,4 +88,41 @@ const atualizarEsquemasCategorias = async (req, res) => {
 };
 
 
-module.exports = { obtenerEsquemasCategorias, atualizarEsquemasCategorias };
+const crearEsquemasCategorias = async (req, res) => {
+    const { nombre, descripcion, visible, categorias } = req.body;
+
+    try {
+        // Iniciar transacción que asegure la operación (create)
+        await sequelize.transaction(async (t) => {
+            // Primero, creo el esquema principal
+            const nuevoEsquema = await EsquemasCategorizacionModel.create(
+                {
+                    nombre,
+                    descripcion,
+                    visible
+                },
+                { transaction: t } // Transacción para asegurar la atomicidad
+            );
+
+            // Luego, creo las categorías asociadas
+            for (const categoria of categorias) {
+                await CategoriasModel.create(
+                    {
+                        nombre: categoria.nombre,
+                        visible: categoria.visible,
+                        esquema_id: nuevoEsquema.id // Relaciono la categoría con el nuevo esquema creado
+                    },
+                    { transaction: t } // Transacción para asegurar la atomicidad
+                );
+            }
+        });
+
+        res.status(201).json({ message: "Esquema y categorías creadas correctamente." });
+    } catch (error) {
+        console.error(`Error al crear el esquema y categorías: ${error}`);
+        res.status(500).json({ error: "Error al crear el esquema y categorías." });
+    }
+};
+
+
+module.exports = { obtenerEsquemasCategorias, atualizarEsquemasCategorias, crearEsquemasCategorias };
