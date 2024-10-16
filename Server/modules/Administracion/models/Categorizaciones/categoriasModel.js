@@ -1,7 +1,6 @@
 // Modelo Categorías
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../../config/db');
-const EsquemasCategorizacionModel = require('./esquemasModel');
 
 const CategoriasModel = sequelize.define('Categorias',{
     id: {

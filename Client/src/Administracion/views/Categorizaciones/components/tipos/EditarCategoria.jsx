@@ -5,52 +5,48 @@ import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { cambiarViewDeTipo } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
+import {
+  actualizarEsquemaCategoriaActual,
+  cambiarViewDeTipo,
+  limpiarEsquemaCategorizacionActual,
+  setEsquemaCategorizacionActual,
+} from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
 import { AlertCorrecto } from "./AlertCorrecto";
 import { TipoItem } from "./TipoItem";
 import { NuevoTipoItem } from "./NuevoTipoItem";
 import { CatTituloDescrip } from "./CatTituloDescrip";
+import {
+  startEditingEsquema,
+  startLoadingEsquemas,
+} from "../../../../../store/Administracion/Categorizacion/thunks";
 
 export const EditarCategoria = () => {
-  // Generar dispatch para llamar a funciones usando REDUX
   const dispatch = useDispatch();
 
-  // Obtener la categoría desde los params
-  const { esquemaActual } = useSelector((state) => state.categorizacion);
+  // Verificar si esquemas está vacío y cargarlo si es necesario
+  useEffect(() => {
+    dispatch(startLoadingEsquemas());
+  }, [dispatch]);
 
-  // Obtengo el useNavigate para volver en caso de cancelar
   const navigate = useNavigate();
-  if (esquemaActual === "") {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-      >
-        <Typography variant="h6" color="error" mb={2}>
-          No fue posible cargar la página.
-        </Typography>
-        <Button
-          onClick={() => navigate("/admin/categorizaciones")}
-          variant="contained"
-        >
-          Volver
-        </Button>
-      </Box>
-    );
-  }
+
+  // Obtengo el esquema
+  const { esquemaActual } = useParams();
 
   // Obtener las categorías del estado de Redux
   const { esquemas } = useSelector((state) => state.categorizacion);
 
+  useEffect(() => {
+    dispatch(setEsquemaCategorizacionActual(esquemaActual));
+  }, [dispatch]);
+
   // Obtengo la descripción
-  const { descripcion } = esquemas.find((x) => x.nombre === esquemaActual);
+  const { id, descripcion } = esquemas.find((x) => x.nombre === esquemaActual);
   // Obtengo las categorias
   const categorias = esquemas.find(
     (x) => x.nombre === esquemaActual
   ).categorias;
-  console.log(categorias);
+
   // Uso del formulario a través de react form hook
   const {
     handleSubmit,
@@ -72,7 +68,6 @@ export const EditarCategoria = () => {
     // Pasa la validación.
     return true;
   };
-
 
   // Editar tipo (para habilitar o deshabilitar botones cuando se edita), si se pulsa editar, ya NO se puede volver, ya que podría generar un error, la solución será salir con cancelar.
   const [editTipo, setEditTipo] = useState(false);
@@ -97,44 +92,45 @@ export const EditarCategoria = () => {
 
   // REDUX
   // Para dejar de ver
-  const onViewClick = (categoria, tipo) => {
-    dispatch(cambiarViewDeTipo({ categoria, tipo }));
+  const onViewClick = (esquema, tipo) => {
+    dispatch(cambiarViewDeTipo({ esquema, tipo }));
   };
 
   // Para alerta del success:
   const [alertOpen, setAlertOpen] = useState(false);
+
   // SUBMIT FORMULARIO
   const onSubmit = (data) => {
-    const tiposEditados = categorias.map((t, index) => ({
-      tipo: data.tipos[index] || t.tipo,
-      view: t.view,
+    const categoriasEditados = categorias.map((cat) => ({
+      id: cat.id,
+      nombre: data.tipos[cat.id] || cat.tipo,
+      visible: cat.visible,
+      esquemas_id: id,
     }));
 
-    // Asegúrate de que 'nuevosTipos' obtenga los valores del formulario
-    const nuevosTiposData = data.nuevosTipos || [];
+    const nuevasCategoriasData = data.nuevosTipos || [];
 
-    // TODO quitar console.log
-    console.log(tiposEditados.concat(nuevosTiposData));
     // Genero el objeto a enviar
-    const categoriaEditadas = {
-      Nombre: esquemaActual,
-      Tipos: [
-        ...tiposEditados,
-        ...nuevosTiposData.map((nuevo) => ({ tipo: nuevo, view: true })),
-      ],
-      view: true,
-    };
+    const categoriaEditadas = [
+      ...categoriasEditados,
+      ...nuevasCategoriasData.map((nuevo) => ({
+        nombre: nuevo,
+        visible: true,
+        esquemas_id: id,
+      })),
+    ];
 
     // Alerta
     setAlertOpen(true);
     setEditTipo(false);
 
-    //Generar dispatch, por ej:
-    // dispatch(actualizarCategorias(categoriasEditadas)); // Usa la acción adecuada para actualizar tu estad
+    dispatch(actualizarEsquemaCategoriaActual(categoriaEditadas));
+    dispatch(startEditingEsquema(id));
   };
 
   // Cancelar (volver)
   const onCancel = () => {
+    dispatch(limpiarEsquemaCategorizacionActual());
     navigate(-1);
   };
 

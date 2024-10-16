@@ -16,7 +16,7 @@ export const NuevoTipoItem = ({ index, tipo, editTipo, control, errors, validate
             fullWidth
             hiddenLabel
             disabled={!editTipo}
-            label="Ingrese un nuevo tipo"
+            label="Ingrese una nueva categoría"
             sx={{ mr: 3 }}
             error={!!errors.nuevosTipos?.[index]}
             helperText={errors.nuevosTipos?.[index]?.message || errorMsg}

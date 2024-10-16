@@ -13,7 +13,7 @@ export const CatTituloDescrip = ({categoriaActual, descripcion}) => {
         color="primary"
         sx={{ fontWeight: 700 }}
       >
-        Categoría: {categoriaActual}
+        Esquema de categorización: {categoriaActual}
       </Typography>
       <Typography
         variant="p"

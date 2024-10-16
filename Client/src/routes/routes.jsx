@@ -15,7 +15,7 @@ export const routes = [
         element: <Categorizaciones />,
       },
       {
-        path: "categorizaciones/:categoria/editar",  
+        path: "categorizaciones/:esquemaActual/editar",  
         element: <EditarCategoria />, 
       },
       {
