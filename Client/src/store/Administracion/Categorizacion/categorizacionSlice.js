@@ -5,7 +5,8 @@ export const categorizacionSlice = createSlice({
     initialState: {
         esquemaActual: '',
         esquemas: [],
-        esquemaCategorizacionActual: {}
+        esquemaCategorizacionActual: {},
+        idEsquemaCambiarVisibilidad: '',
     },
     reducers: {
         setEsquemas: (state, action) => {
@@ -21,6 +22,13 @@ export const categorizacionSlice = createSlice({
         },
         setEsquemaActual: (state, action) => {
             state.esquemaActual = action.payload;
+        },
+        cambiarVisibilidadEsquema: (state, action) => {
+            const esquemaEncontrado = state.esquemas.find(esq => esq.nombre === action.payload);
+            if(esquemaEncontrado){
+                esquemaEncontrado.visible = !esquemaEncontrado.visible;
+                state.idEsquemaCambiarVisibilidad = esquemaEncontrado.id;
+            }
         },
         cambiarViewDeTipo: (state, action) => {
             const { esquema, tipo } = action.payload;
@@ -66,6 +74,7 @@ export const {
     setEsquemas,
     agregarTipo,
     setEsquemaActual,
+    cambiarVisibilidadEsquema,
     cambiarViewDeTipo,
     agregarEsquema,
     setEsquemaCategorizacionActual,

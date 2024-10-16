@@ -63,3 +63,16 @@ export const startCreatingEsquema = () => {
         }
     };
 };
+
+export const startChangingVisible = () => {
+    return async (dispatch, getState) => {
+        try {
+            // Obtengo ell id del esquema
+            const {idEsquemaCambiarVisibilidad} = getState().categorizacion;
+            await axiosInstance.put(`/admin/esquemas/visibilidad/${idEsquemaCambiarVisibilidad}`);
+
+        } catch (error) {
+            
+        }
+    }
+}

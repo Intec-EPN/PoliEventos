@@ -1,25 +1,27 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Grid2, List } from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { actualizarEsquemaCategoriaActual, limpiarEsquemaCategorizacionActual } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
+import {
+  actualizarEsquemaCategoriaActual,
+  limpiarEsquemaCategorizacionActual,
+} from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
 import { AlertCorrecto } from "./AlertCorrecto";
 import { NuevoTipoItem } from "./NuevoTipoItem";
 import { CatTituloDescrip } from "./CatTituloDescrip";
-import {
-  startCreatingEsquema
-} from "../../../../../store/Administracion/Categorizacion/thunks";
+import { startCreatingEsquema } from "../../../../../store/Administracion/Categorizacion/thunks";
 
 export const CrearCategoria = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Obtengo la descripción
-  const {esquemaCategorizacionActual} = useSelector((state) => state.categorizacion);
-  const {nombre, descripcion} = esquemaCategorizacionActual;
-  
+  const { esquemaCategorizacionActual } = useSelector(
+    (state) => state.categorizacion
+  );
+  const { nombre, descripcion } = esquemaCategorizacionActual;
+
   // Estado para controlar nuevos tipos
   const [nuevosTipos, setNuevosTipos] = useState([]);
 
@@ -33,9 +35,12 @@ export const CrearCategoria = () => {
     formState: { errors },
   } = useForm();
 
-  // Función para agregar un nuevo tipo
+  // Estado para saber si estoy editando
+  const [editCategoria, setEditCategoria] = useState(false);
+
   const onNuevoTipo = () => {
-    setNuevosTipos([...nuevosTipos, ""]); // Agregar un nuevo tipo vacío
+    setNuevosTipos([...nuevosTipos, ""]);
+    setEditCategoria(true);
   };
 
   // Función para eliminar un tipo
@@ -46,16 +51,16 @@ export const CrearCategoria = () => {
 
   // SUBMIT FORMULARIO
   const onSubmit = (data) => {
-
     const categoriasNuevasData = data.nuevosTipos || [];
     const categoriasNuevas = categoriasNuevasData.map((nuevo) => ({
       nombre: nuevo,
-      visible: true, 
+      visible: true,
     }));
     dispatch(actualizarEsquemaCategoriaActual(categoriasNuevas));
     dispatch(startCreatingEsquema());
     dispatch(limpiarEsquemaCategorizacionActual());
     setAlertOpen(true);
+    setEditCategoria(false);
   };
 
   // Cancelar (volver)
@@ -64,61 +69,68 @@ export const CrearCategoria = () => {
     navigate(-1);
   };
 
+  // Gestión de errores del formulario:
+  const validateTipo = (value) => {
+    if (!value) {
+      // Devuelve un mensaje de error si está vacío
+      return "Este campo es obligatorio";
+    }
+    const regex = /^[A-Za-z0-9\s.,;:'"()?!&%$@/-áéíóúñÁÉÍÓÚÑ]+$/;
+    if (!regex.test(value)) {
+      // Mensaje de error si no coincide con el regex
+      return "Solo se permiten letras, números y puntuación";
+    }
+    // Pasa la validación.
+    return true;
+  };
+
   return (
     <Box ml={3} mr={3}>
-      <CatTituloDescrip
-        categoriaActual={nombre}
-        descripcion={descripcion}
-      />
+      <CatTituloDescrip categoriaActual={nombre} descripcion={descripcion} />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Button
-          sx={{ mr: 1, backgroundColor: "#e3320e" }}
-          variant="contained"
-          onClick={onCancel}
-        >
-          <ArrowBackIosIcon sx={{ width: "15px" }} />
-          Retroceder
-        </Button>
-
         <List sx={{ width: "100%" }}>
           <Grid2 container>
-            {nuevosTipos.map((tipo, index) => (
+            {nuevosTipos.map((categoria, index) => (
               <NuevoTipoItem
                 key={index}
-                editTipo={true}
                 index={index}
-                tipo={tipo}
-                control={control} 
-                errors={errors} 
+                tipo={categoria}
+                editTipo={true}
+                control={control}
+                errors={errors}
+                validateTipo={validateTipo}
                 onEliminarTipo={onEliminarTipo}
               />
             ))}
           </Grid2>
         </List>
 
-        <Box display="flex" justifyContent="end">
+        <Box display="flex" justifyContent="left">
           <Button
             variant="contained"
             sx={{ backgroundColor: "#2c4175", mb: 2, mr: 2 }}
-            onClick={onNuevoTipo}
+            onClick={handleSubmit(onNuevoTipo)}
           >
-            Agregar Tipo
+            Agregar categoría
           </Button>
 
           <Button
             variant="contained"
             sx={{ backgroundColor: "#2c4175", mb: 2, mr: 2 }}
             type="submit"
+            disabled={!editCategoria}
           >
             Guardar
           </Button>
 
           <Button
             variant="contained"
-            sx={{ backgroundColor: "#e3320e" }}
+            sx={{ backgroundColor: "#e3320e", mb: 2, mr: 2 }}
             onClick={onCancel}
           >
-            Cancelar
+            {
+              editCategoria ? "Cancelar" : "Regresar"
+            }
           </Button>
         </Box>
 

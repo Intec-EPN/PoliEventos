@@ -8,12 +8,18 @@ import {
   Tooltip,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEsquemaActual, setNuevoEsquemaCategorizacionActual } from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
+import {
+  cambiarVisibilidadEsquema,
+  setEsquemaActual,
+  setNuevoEsquemaCategorizacionActual,
+} from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
 import { useState } from "react";
 import { FormularNuevoEsquema } from "./tipos/FormularNuevoEsquema";
+import { startChangingVisible } from "../../../../store/Administracion/Categorizacion/thunks";
 
 export const ListaCategorias = () => {
   const navigate = useNavigate();
@@ -23,13 +29,20 @@ export const ListaCategorias = () => {
     esquemas: [],
   };
 
+  // Lógica para editar un esquema.
   const onEdit = (value) => {
-    console.log(value)
     navigate(`/admin/categorizaciones/${value}/editar`);
     dispatch(setEsquemaActual(value));
   };
 
-  // Lógica de nuevos esquemas:
+  // Lógica para cambiar la visibilidad de un esquema (al usuario).
+  const onChangeVisibility = (value) => {
+    console.log(value);
+    dispatch(cambiarVisibilidadEsquema(value));
+    dispatch(startChangingVisible());
+  };
+
+  // Lógica para crear nuevos esquemas:
   const [nuevoEsquema, setNuevoEsquema] = useState({
     nombre: "",
     descripcion: "",
@@ -39,7 +52,6 @@ export const ListaCategorias = () => {
   const handleAgregarClick = () => {
     setAgregando(true);
   };
-
   const handleGuardarClick = () => {
     if (nuevoEsquema.nombre.trim() && nuevoEsquema.descripcion) {
       const nombre = nuevoEsquema.nombre;
@@ -50,8 +62,8 @@ export const ListaCategorias = () => {
         nombre: nuevoEsquema.nombre,
         descripcion: nuevoEsquema.descripcion,
         visible: true,
-        categorias: []
-      }
+        categorias: [],
+      };
 
       dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
 
@@ -77,9 +89,20 @@ export const ListaCategorias = () => {
                     <IconButton onClick={() => onEdit(esquema.nombre)}>
                       <EditIcon sx={{ color: "white" }} />
                     </IconButton>
-                    <IconButton>
-                      <VisibilityIcon sx={{ color: "white" }} />
-                    </IconButton>
+
+                    {esquema.visible ? (
+                      <IconButton
+                        onClick={() => onChangeVisibility(esquema.nombre)}
+                      >
+                        <VisibilityIcon sx={{ color: "white" }} />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        onClick={() => onChangeVisibility(esquema.nombre)}
+                      >
+                        <VisibilityOffIcon sx={{ color: "white" }} />
+                      </IconButton>
+                    )}
                   </>
                 }
               >

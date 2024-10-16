@@ -27,3 +27,6 @@ VALUES ('Proyectos de vinculación (CF)', TRUE, 2),
        ('Entrevistas en medios de comunicación', TRUE, 2),
        ('Evento en redes sociales', TRUE, 2),
        ('Cursos de educación continua', TRUE, 2);
+       
+select * from Esquemas_Categorizacion;
+select * from Categorias;

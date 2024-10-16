@@ -124,5 +124,26 @@ const crearEsquemasCategorias = async (req, res) => {
     }
 };
 
+const cambiarVisibilidadEsquema = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // Inicio transacción par acuidar los datos
+        await sequelize.transaction(async (t) => {
+            // Recupero el esquema en específico
+            const esquema = await EsquemasCategorizacionModel.findByPk(id, { transaction: t });
+            if (!esquema) {
+                return res.status(404).json({ error: 'Esquema no encontrado' });
+            }
+            // Si es que si está el esquema, cambio su estado:
+            esquema.visible = !esquema.visible;
+            await esquema.save({ transaction: t });
+        });
+        res.json({ message: 'Visibilidad correctamente actualizada.' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al actualizar la visibilidad' });
+    }
+};
 
-module.exports = { obtenerEsquemasCategorias, atualizarEsquemasCategorias, crearEsquemasCategorias };
+
+
+module.exports = { obtenerEsquemasCategorias, atualizarEsquemasCategorias, crearEsquemasCategorias, cambiarVisibilidadEsquema };
