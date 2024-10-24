@@ -12,7 +12,7 @@ export const categorizacionSlice = createSlice({
     },
     reducers: {
         setEsquemas: (state, action) => {
-            state.esquemas = action.payload;
+        state.esquemas = action.payload;
         },
         eliminarEsquema: (state, action) => {
             const idEsquemaEliminar = action.payload;

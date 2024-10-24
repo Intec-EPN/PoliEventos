@@ -107,17 +107,21 @@ export const EditarCategorias = () => {
       console.log("Hay errores en los campos del hijo");
       return;
     }
+
     const categoriasExistentesEditadas = categorias.map((cat) => ({
       id: cat.id,
       nombre: data.tipos[cat.id] || cat.tipo,
       visible: cat.visible,
       esquemas_id: id,
     }));
+
     // Genero el objeto a enviar
     const categoriaEditadas = [...categoriasExistentesEditadas];
+
     // Alerta
     setAlertOpen(true);
     setEditCategoria(false);
+
     dispatch(actualizarEsquemaCategoriaActual(categoriaEditadas));
     dispatch(startEditingEsquema(id));
   };

@@ -107,17 +107,22 @@ export const EditarCategorias = () => {
       console.log("Hay errores en los campos del hijo");
       return;
     }
+
+    // TODO REFACORIZAR
     const categoriasExistentesEditadas = categorias.map((cat) => ({
       id: cat.id,
       nombre: data.tipos[cat.id] || cat.tipo,
       visible: cat.visible,
       esquemas_id: id,
     }));
+
     // Genero el objeto a enviar
     const categoriaEditadas = [...categoriasExistentesEditadas];
+
     // Alerta
     setAlertOpen(true);
     setEditCategoria(false);
+
     dispatch(actualizarEsquemaCategoriaActual(categoriaEditadas));
     dispatch(startEditingEsquema(id));
   };
@@ -143,7 +148,7 @@ export const EditarCategorias = () => {
         <ArrowBackIosIcon sx={{ width: "15px" }} />
         Retroceder
       </Button>
-      <Divider sx={{mb: 2}}>o</Divider>
+
       <CatTituloDescrip
         control={control}
         errors={errors}
@@ -201,8 +206,8 @@ export const EditarCategorias = () => {
           </Button>
         </Box>
       </form>
-      <Divider sx={{mt:2, mb: 2}}>o</Divider>
-      <Box display="flex" alignItems="center">
+      <Divider></Divider>
+      <Box display="flex" alignItems="center" mt={3}>
         <Checkbox
           checked={handleAgregarCategoria}
           onChange={() => setHandleAgregarCategoria(!handleAgregarCategoria)}
@@ -218,7 +223,6 @@ export const EditarCategorias = () => {
           onCancelAgregar={onCancelAgregar}
         />
       )}
-      <Divider sx={{mt:2, mb: 2}}>o</Divider>
     </Box>
   );
 };

@@ -18,6 +18,12 @@ export const categorizacionSlice = createSlice({
             const idEsquemaEliminar = action.payload;
             state.esquemas = state.esquemas.filter(esq => esq.id != idEsquemaEliminar);
         },
+        // agregarCategoria: (state, action) => {
+        //     state.categoriasActuales.push(action.payload);
+        // },
+        // limpiarCategoriasActuales: (state) => {
+        //     state.categoriasActuales = [];
+        // },
         eliminarCategoria: (state, action) => {
             const { idCategoria, idEsquema } = action.payload;
             const esquemaEncontrado = state.esquemas.find(esq => esq.id === idEsquema);
@@ -47,6 +53,7 @@ export const categorizacionSlice = createSlice({
                     state.idCategoriaCambiarVisibilidad = categoriaEncontrada.id;
                 }
             }
+
         },
         agregarEsquema: (state, action) => {
             const esquema = {
@@ -96,6 +103,7 @@ export const categorizacionSlice = createSlice({
 export const {
     setEsquemas,
     eliminarEsquema,
+    agregarCategoria,
     eliminarCategoria,
     setEsquemaActual,
     cambiarVisibilidadEsquema,

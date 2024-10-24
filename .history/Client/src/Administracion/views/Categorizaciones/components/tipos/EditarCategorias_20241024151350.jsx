@@ -1,14 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  Grid2,
-  List,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Checkbox, Divider, Grid2, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AlertCorrecto } from "./AlertCorrecto";
@@ -52,9 +44,12 @@ export const EditarCategorias = () => {
   }, [dispatch]);
 
   // Obtener las categorías del estado de Redux
-  const { esquemas, cancelar } = useSelector((state) => state.categorizacion);
+  const { esquemas, cancelar } = useSelector(
+    (state) => state.categorizacion
+  );
 
   const [handleAgregarCategoria, setHandleAgregarCategoria] = useState(false);
+
 
   useEffect(() => {
     if (cancelar) {
@@ -107,17 +102,22 @@ export const EditarCategorias = () => {
       console.log("Hay errores en los campos del hijo");
       return;
     }
+
+    // TODO REFACORIZAR
     const categoriasExistentesEditadas = categorias.map((cat) => ({
       id: cat.id,
       nombre: data.tipos[cat.id] || cat.tipo,
       visible: cat.visible,
       esquemas_id: id,
     }));
+
     // Genero el objeto a enviar
     const categoriaEditadas = [...categoriasExistentesEditadas];
+
     // Alerta
     setAlertOpen(true);
     setEditCategoria(false);
+
     dispatch(actualizarEsquemaCategoriaActual(categoriaEditadas));
     dispatch(startEditingEsquema(id));
   };
@@ -143,7 +143,7 @@ export const EditarCategorias = () => {
         <ArrowBackIosIcon sx={{ width: "15px" }} />
         Retroceder
       </Button>
-      <Divider sx={{mb: 2}}>o</Divider>
+
       <CatTituloDescrip
         control={control}
         errors={errors}
@@ -201,8 +201,7 @@ export const EditarCategorias = () => {
           </Button>
         </Box>
       </form>
-      <Divider sx={{mt:2, mb: 2}}>o</Divider>
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" mt={3}>
         <Checkbox
           checked={handleAgregarCategoria}
           onChange={() => setHandleAgregarCategoria(!handleAgregarCategoria)}
@@ -211,14 +210,14 @@ export const EditarCategorias = () => {
           Agregar categorías
         </Typography>
       </Box>
+      <Divider></Divider>
       {handleAgregarCategoria && (
         <AgregarCategorias
           validarCategoria={validarCategoria}
           idEsquemaActual={id}
-          onCancelAgregar={onCancelAgregar}
+          onCancelAgregar = {onCancelAgregar}
         />
       )}
-      <Divider sx={{mt:2, mb: 2}}>o</Divider>
     </Box>
   );
 };

@@ -12,8 +12,6 @@ DELIMITER ;
 select * from Esquemas_Categorizacion;
 CALL EliminarEsquemaCategorizacion(5); 
 
-
-
 DELIMITER $$
 CREATE PROCEDURE EliminarCategoria(IN categoriaId BIGINT UNSIGNED)
 BEGIN

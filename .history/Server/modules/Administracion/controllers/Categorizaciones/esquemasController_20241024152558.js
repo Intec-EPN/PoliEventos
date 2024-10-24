@@ -1,7 +1,6 @@
 const { sequelize } = require("../../../../config/db");
 const CategoriasModel = require("../../models/Categorizaciones/categoriasModel");
 const EsquemasCategorizacionModel = require("../../models/Categorizaciones/esquemasModel");
-const { Op } = require('sequelize'); 
 
 const obtenerEsquemasCategorias = async (req, res) => {
     try {
@@ -43,21 +42,16 @@ const obtenerEsquemasCategorias = async (req, res) => {
 };
 
 
-
 const atualizarEsquemasCategorias = async (req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, visible, categorias } = req.body;
+    console.log(id)
 
     try {      
-        // Verificar si el nombre ya está en uso por otro esquema
-        const esquemaExistente = await EsquemasCategorizacionModel.findOne({
-            where: {
-                nombre,
-                id: { [Op.ne]: id } // Excluir el esquema actual
-            }
-        });
-
-        if (esquemaExistente) {
+        // Verificar si el esquema ya existe:
+        const esquemaExistente = await EsquemasCategorizacionModel.findOne({ where: { nombre } });
+        console.log('id esquema existente: ', esquemaExistente.id);
+        if (esquemaExistente.id != id) {
             return res.status(400).json({ message: 'El nombre ingresado ya está en uso.' });
         }
 
@@ -72,7 +66,7 @@ const atualizarEsquemasCategorias = async (req, res) => {
             // Actualizo o creo categorías
             for (const categoria of categorias) {
                 if (categoria.id) {
-                    // Si la categoría tiene un id, significa que estoy actualizando una existente:
+                    // Si la categoría tiene un id, significa que estoy actualizando uno:
                     await CategoriasModel.update(
                         {
                             nombre: categoria.nombre,
@@ -82,7 +76,7 @@ const atualizarEsquemasCategorias = async (req, res) => {
                         { where: { id: categoria.id }, transaction: t }
                     );
                 } else {
-                    // Si no tiene id significa que es una nueva categoría, por lo que hay que crearla:
+                    // Si no tiene id significa que es una nueva categoríá, por lo que hay que crear.
                     await CategoriasModel.create(
                         {
                             nombre: categoria.nombre,
@@ -92,17 +86,14 @@ const atualizarEsquemasCategorias = async (req, res) => {
                         { transaction: t }
                     );
                 }
-            }
+            };
         });
-
-        res.status(200).json({ message: "Esquema y categorías actualizados correctamente." });
-
+        res.status(200).json({ message: "Esquema y categorías actualizadas correctamente." });
     } catch (error) {
         console.error(`Error al actualizar el esquema y categorías: ${error}`);
         res.status(500).json({ error: "Error al actualizar el esquema y categorías." });
     }
 };
-
 
 
 const crearEsquemasCategorias = async (req, res) => {

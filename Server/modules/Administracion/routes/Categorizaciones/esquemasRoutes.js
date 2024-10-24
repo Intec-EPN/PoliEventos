@@ -1,6 +1,6 @@
 // Rutas de esquemas
 const express = require('express');
-const { obtenerEsquemasCategorias, atualizarEsquemasCategorias, crearEsquemasCategorias, cambiarVisibilidadEsquema, cambiarVisibilidadCategoria, eliminarEsquemaCategorias } = require('../../controllers/Categorizaciones/esquemasController');
+const { obtenerEsquemasCategorias, atualizarEsquemasCategorias, crearEsquemasCategorias, cambiarVisibilidadEsquema, cambiarVisibilidadCategoria, eliminarEsquemaCategorias, eliminarCategoria } = require('../../controllers/Categorizaciones/esquemasController');
 const router = express.Router();
 
 // Obtener Esquemas y Categorías construidas:

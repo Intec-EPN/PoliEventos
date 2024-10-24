@@ -62,10 +62,6 @@ export const ListaCategorias = () => {
   const [agregando, setAgregando] = useState(false);
 
   const handleAgregarClick = () => {
-    setNuevoEsquema({
-      nombre: "",
-      descripcion: "",
-    });
     setAgregando(true);
   };
   const handleGuardarClick = (data, setError) => {
@@ -103,10 +99,6 @@ export const ListaCategorias = () => {
 
   // Lógica para cancelar creación de esquema:
   const handleCancelarClick = () => {
-    setNuevoEsquema({
-      nombre: "",
-      descripcion: "",
-    });
     setAgregando(false);
   };
 

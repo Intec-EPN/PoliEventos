@@ -62,10 +62,6 @@ export const ListaCategorias = () => {
   const [agregando, setAgregando] = useState(false);
 
   const handleAgregarClick = () => {
-    setNuevoEsquema({
-      nombre: "",
-      descripcion: "",
-    });
     setAgregando(true);
   };
   const handleGuardarClick = (data, setError) => {

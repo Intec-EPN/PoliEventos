@@ -16,7 +16,7 @@ export const NuevaCategoria = ({
   return (
     <ListItem sx={{ border: "blue" }} mb={2}>
       <Controller
-        name={`nuevosTipos[${index}]`}
+        name={`nuevasCategorias[${index}]`}
         control={control}
         defaultValue={categoria || ""}
         rules={{ validate: validateTipo }}
