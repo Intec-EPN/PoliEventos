@@ -104,6 +104,7 @@ export const AgregarCategorias = ({
               name={`fields.${index}.value`} // Registrar el campo dinámico
               defaultValue={field.value} // Asignar valor inicial
               rules={{
+                required: "Este campo es obligatorio", // Validación de campo obligatorio
                 maxLength: {
                   value: 50,
                   message: "Máximo 50 caracteres", // Mensaje si se excede el límite

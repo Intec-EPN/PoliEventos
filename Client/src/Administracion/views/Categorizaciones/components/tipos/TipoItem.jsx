@@ -64,7 +64,13 @@ export const TipoItem = ({
           name={`tipos[${index}]`}
           control={control}
           defaultValue={categoria || ""}
-          rules={{ validate: validateTipo }}
+          rules={{ 
+            validate: validateTipo,
+            maxLength: {
+              value: 150,
+              message: "La descripción no puede tener más de 150 caracteres",
+            },
+           }}
           render={({ field }) => (
             <OutlinedInput
               {...field}

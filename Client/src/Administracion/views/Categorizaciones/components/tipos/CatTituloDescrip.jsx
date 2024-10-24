@@ -23,13 +23,19 @@ export const CatTituloDescrip = ({ editTipo, control, errors }) => {
       <Controller
         name="nombre"
         control={control}
-        rules={{ required: "Este campo es obligatorio." }}
+        rules={{ 
+          required: "Este campo es obligatorio.",
+          maxLength: {
+            value: 50,
+            message: "El nombre no puede tener más de 50 caracteres",
+          },
+         }}
         render={({ field }) => (
           <TextField
             {...field}
             value={field.value || ''}
             error={!!errors.nombre}
-            helperText={errors.nombre ? errors.nombre.message : null}
+            helperText={errors.nombre ? errors.nombre.message : "Máximo 50 caracteres"}
             disabled={!editTipo}
             variant="outlined"
             label="Nombre"
@@ -45,13 +51,19 @@ export const CatTituloDescrip = ({ editTipo, control, errors }) => {
       <Controller
         name="descripcion"
         control={control}
-        rules={{ required: "Este campo es obligatorio." }}
+        rules={{ 
+          required: "Este campo es obligatorio.",
+          maxLength: {
+            value: 150,
+            message: "La descripción no puede tener más de 150 caracteres",
+          },
+         }}
         render={({ field }) => (
           <TextField
             {...field}
             value={field.value || ''}
             error={!!errors.descripcion}
-            helperText={errors.descripcion ? errors.descripcion.message : null}
+            helperText={errors.descripcion ? errors.descripcion.message : "Máximo 150 caracteres"}
             disabled={!editTipo}
             variant="outlined"
             label="Descripción"

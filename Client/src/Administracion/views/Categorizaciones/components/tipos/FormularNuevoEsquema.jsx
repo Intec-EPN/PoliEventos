@@ -37,7 +37,13 @@ export const FormularNuevoEsquema = ({
       <Controller
         name="nombre"
         control={control}
-        rules={{ required: "El nombre es obligatorio" }}
+        rules={{ 
+          required: "El nombre es obligatorio",
+          maxLength: {
+            value: 50,
+            message: "El nombre no puede tener más de 50 caracteres",
+          },
+         }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -45,17 +51,23 @@ export const FormularNuevoEsquema = ({
             value={nuevoEsquema.nombre}
             onChange={(e) => {
               setNuevoEsquema({ ...nuevoEsquema, nombre: e.target.value });
-              field.onChange(e); // Sincroniza con react-hook-form
+              field.onChange(e); 
             }}
             error={!!errors.nombre}
-            helperText={errors.nombre?.message}
+            helperText={errors.nombre?.message || "Máximo 50 caracteres"}
           />
         )}
       />
       <Controller
         name="descripcion"
         control={control}
-        rules={{ required: "La descripción es obligatoria" }}
+        rules={{ 
+          required: "La descripción es obligatoria",
+          maxLength: {
+            value: 150,
+            message: "La descripción no puede tener más de 150 caracteres",
+          },
+         }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -66,7 +78,7 @@ export const FormularNuevoEsquema = ({
               field.onChange(e); // Sincroniza con react-hook-form
             }}
             error={!!errors.descripcion}
-            helperText={errors.descripcion?.message}
+            helperText={errors.descripcion?.message || "Máximo 150 caracteres"}
           />
         )}
       />

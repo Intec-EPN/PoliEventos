@@ -11,17 +11,14 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { nuevasCategoriasEsquemaCategoriaActual } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
-import {
-  startCreatingEsquema,
-  startEditingEsquema,
-} from "../../../../../store/Administracion/Categorizacion/thunks";
+import { startCreatingEsquema, startEditingEsquema } from "../../../../../store/Administracion/Categorizacion/thunks";
 import { AlertCorrecto } from "./AlertCorrecto";
 
 export const AgregarCategorias = ({
   validarCategoria,
   idEsquemaActual,
   onCancelAgregar,
-  crear = false,
+  crear = false
 }) => {
   const { control, handleSubmit, getValues, setError, clearErrors } = useForm({
     defaultValues: {
@@ -65,13 +62,15 @@ export const AgregarCategorias = ({
     setAlertOpen(true);
     setEnviado(true);
     dispatch(nuevasCategoriasEsquemaCategoriaActual(categoriasNuevas));
-
-    if (crear) {
-      dispatch(startCreatingEsquema());
-    } else {
-      dispatch(startEditingEsquema(idEsquemaActual));
+    
+    if(crear){
+        dispatch(startCreatingEsquema());
+    }else{
+        dispatch(startEditingEsquema(idEsquemaActual));
     }
   };
+
+
 
   // Validación de existencia de campos y errores.
   const handleAddField = () => {
@@ -103,12 +102,6 @@ export const AgregarCategorias = ({
               control={control}
               name={`fields.${index}.value`} // Registrar el campo dinámico
               defaultValue={field.value} // Asignar valor inicial
-              rules={{
-                maxLength: {
-                  value: 50,
-                  message: "Máximo 50 caracteres", // Mensaje si se excede el límite
-                },
-              }}
               render={({ field: { onChange, onBlur, value, ref } }) => {
                 const errorMessage =
                   getValues(`fields.${index}.error`)?.message ||
@@ -139,7 +132,9 @@ export const AgregarCategorias = ({
               }}
             />
             <IconButton onClick={() => remove(index)} disabled={enviado}>
-              <DeleteIcon sx={{ color: `${!enviado ? "red" : "#90a4ae"}` }} />
+              <DeleteIcon
+                sx={{ color: `${!enviado ? "red" : "#90a4ae"}` }}
+              />
             </IconButton>
           </ListItem>
         ))}
@@ -173,7 +168,9 @@ export const AgregarCategorias = ({
           sx={{ backgroundColor: "#e3320e", width: { xs: "100%", md: "10%" } }}
           onClick={onCancelAgregar}
         >
-          {enviado ? "Cerrar" : "Cancelar"}
+          {
+            enviado ? 'Cerrar' : 'Cancelar' 
+          }
         </Button>
       </Box>
     </form>

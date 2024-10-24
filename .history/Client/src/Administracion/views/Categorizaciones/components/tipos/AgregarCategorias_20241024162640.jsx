@@ -103,12 +103,6 @@ export const AgregarCategorias = ({
               control={control}
               name={`fields.${index}.value`} // Registrar el campo dinámico
               defaultValue={field.value} // Asignar valor inicial
-              rules={{
-                maxLength: {
-                  value: 50,
-                  message: "Máximo 50 caracteres", // Mensaje si se excede el límite
-                },
-              }}
               render={({ field: { onChange, onBlur, value, ref } }) => {
                 const errorMessage =
                   getValues(`fields.${index}.error`)?.message ||
