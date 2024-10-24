@@ -47,15 +47,6 @@ const atualizarEsquemasCategorias = async (req, res) => {
     const { nombre, descripcion, visible, categorias } = req.body;
 
     try {
-        console.log('id que llega: ', id);
-        
-        // Verificar si el esquema ya existe:
-        const esquemaExistente = await EsquemasCategorizacionModel.findOne({ where: { nombre } });
-        console.log('id esquema existente: ', esquemaExistente.id);
-        if (esquemaExistente.id != id) {
-            return res.status(400).json({ message: 'El nombre ingresado ya está en uso.' });
-        }
-
         // Iniciar transacción que asegure la operación (update)
         await sequelize.transaction(async (t) => {
             // Actualizo el esquema principal:
@@ -101,12 +92,6 @@ const crearEsquemasCategorias = async (req, res) => {
     const { nombre, descripcion, visible, categorias } = req.body;
 
     try {
-        // Verificar si el esquema ya existe:
-        const esquemaExistente = await EsquemasCategorizacionModel.findOne({ where: { nombre } });
-        if (esquemaExistente) {
-            return res.status(400).json({ message: 'El esquema de categorización ya existe.' });
-        }
-
         // Iniciar transacción que asegure la operación (create)
         await sequelize.transaction(async (t) => {
             // Primero, creo el esquema principal
@@ -158,87 +143,7 @@ const cambiarVisibilidadEsquema = async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar la visibilidad' });
     }
 };
-const cambiarVisibilidadCategoria = async (req, res) => {
-    const { id } = req.params;
-    try {
-        // Inicio transacción par acuidar los datos
-        await sequelize.transaction(async (t) => {
-            // Recupero la categoria en específico
-            const categoria = await CategoriasModel.findByPk(id, { transaction: t });
-            if (!categoria) {
-                return res.status(404).json({ error: 'Esquema no encontrado' });
-            }
-            // Si es que si está el esquema, cambio su estado:
-            categoria.visible = !categoria.visible;
-            await categoria.save({ transaction: t });
-        });
-        res.json({ message: 'Visibilidad correctamente actualizada.' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar la visibilidad' });
-    }
-};
-
-const eliminarEsquemaCategorias = async (req, res) => {
-    const { id } = req.params;
-    // TODO VALIDAR QUE NO EXISTAN EVENTOS CON RELACION A ALGUNA CATEGORIA DE ESTE ESQUEMA
-    try {
-        // Verificamos si el esquema existe antes de intentar eliminar
-        const esquemaExistente = await EsquemasCategorizacionModel.findByPk(id);
-        
-        if (!esquemaExistente) {
-            return res.status(404).json({ message: 'Esquema no encontrado.' });
-        }
-
-        // Llamar al procedimiento almacenado para eliminar el esquema (si es que existe).
-        await sequelize.query("CALL EliminarEsquemaCategorizacion(:esquemaId)", {
-            replacements: { esquemaId: id },
-        });
-
-        // Si llegamos aquí, significa que la eliminación se realizó
-        return res.status(200).json({ message: 'Esquema eliminado correctamente.' });
-
-    } catch (error) {
-        console.error(`Error al eliminar el esquema de categorización: ${error}`);
-        res.status(500).json({ error: "Error al eliminar el esquema de categorización." });
-    }
-};
-
-
-const eliminarCategoria = async (req, res) => {
-    const { id } = req.params;
-    
-    // TODO VALIDAR QUE NO EXISTAN EVENTOS CON RELACIÓN A ESTA CATEGORÍA
-    
-    try {
-        // Verificamos si la categoría existe antes de intentar eliminar
-        const categoriaExistente = await CategoriasModel.findByPk(id);
-        
-        if (!categoriaExistente) {
-            return res.status(404).json({ message: 'Categoría no encontrada.' });
-        }
-
-        // Llamar al procedimiento almacenado para eliminar la categoría
-        await sequelize.query("CALL EliminarCategoria(:categoriaId)", {
-            replacements: { categoriaId: id },
-        });
-
-        // Si llegamos aquí, significa que la eliminación se realizó
-        return res.status(200).json({ message: 'Categoría eliminada correctamente.' });
-
-    } catch (error) {
-        console.error(`Error al eliminar la categoría: ${error}`);
-        res.status(500).json({ error: "Error al eliminar la categoría." });
-    }
-};
 
 
 
-module.exports = { 
-    obtenerEsquemasCategorias, 
-    atualizarEsquemasCategorias, 
-    crearEsquemasCategorias, 
-    cambiarVisibilidadEsquema, 
-    cambiarVisibilidadCategoria, 
-    eliminarEsquemaCategorias,
-    eliminarCategoria
-};
+module.exports = { obtenerEsquemasCategorias, atualizarEsquemasCategorias, crearEsquemasCategorias, cambiarVisibilidadEsquema };

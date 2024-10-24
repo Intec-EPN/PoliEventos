@@ -8,41 +8,26 @@ import {
   Tooltip,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cambiarVisibilidadEsquema,
-  eliminarEsquema,
-  setCancelar,
   setEsquemaActual,
   setNuevoEsquemaCategorizacionActual,
 } from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormularNuevoEsquema } from "./tipos/FormularNuevoEsquema";
-import {
-  startChangingVisible,
-  startDeletingEsquema,
-} from "../../../../store/Administracion/Categorizacion/thunks";
-import { Indicadores } from "./tipos/Indicadores";
+import { startChangingVisible } from "../../../../store/Administracion/Categorizacion/thunks";
 
 export const ListaCategorias = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { esquemas, cancelar } = useSelector(
-    (state) => state.categorizacion
-  ) || {
+  const { esquemas } = useSelector((state) => state.categorizacion) || {
     esquemas: [],
   };
-
-  useEffect(() => {
-    if (cancelar) {
-      dispatch(setCancelar(false));
-    }
-  }, [cancelar]);
 
   // Lógica para editar un esquema.
   const onEdit = (value) => {
@@ -52,6 +37,7 @@ export const ListaCategorias = () => {
 
   // Lógica para cambiar la visibilidad de un esquema (al usuario).
   const onChangeVisibility = (value) => {
+    console.log(value);
     dispatch(cambiarVisibilidadEsquema(value));
     dispatch(startChangingVisible());
   };
@@ -66,30 +52,20 @@ export const ListaCategorias = () => {
   const handleAgregarClick = () => {
     setAgregando(true);
   };
-  const handleGuardarClick = (data, setError) => {
-    const esquemaRepetido = esquemas.find((esq) => esq.nombre === data.nombre);
-    if (esquemaRepetido) {
-      setError("nombre", {
-        type: "manual",
-        message: "El nombre del esquema ya existe.",
-      });
-      return;
-    }
+  const handleGuardarClick = () => {
     if (nuevoEsquema.nombre.trim() && nuevoEsquema.descripcion) {
       const nombre = nuevoEsquema.nombre;
       navigate(`/admin/categorizaciones/${nombre}/crear`);
       dispatch(setEsquemaActual(nombre));
 
-      const esquemaCategorizacionActual = {
+      const esquemaActual = {
         nombre: nuevoEsquema.nombre,
         descripcion: nuevoEsquema.descripcion,
         visible: true,
         categorias: [],
       };
 
-      dispatch(
-        setNuevoEsquemaCategorizacionActual(esquemaCategorizacionActual)
-      );
+      dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
 
       setNuevoEsquema({
         nombre: "",
@@ -99,24 +75,8 @@ export const ListaCategorias = () => {
     }
   };
 
-  // Lógica para cancelar creación de esquema:
-  const handleCancelarClick = () => {
-    setAgregando(false);
-  };
-
-  // Lógica para obrrar un esquema:
-  const onBorrar = (id) => {
-    const confirmacion = window.confirm(
-      "¿Estás seguro de que quieres eliminar esta categorización?"
-    );
-    if (confirmacion) {
-      dispatch(startDeletingEsquema(id));
-    }
-  };
-
   return (
     <Box>
-      <Indicadores value={"una categorización"} editar={true}/>
       <List sx={{ width: "100%", bgcolor: "white" }}>
         {esquemas &&
           esquemas.map((esquema) =>
@@ -143,10 +103,6 @@ export const ListaCategorias = () => {
                         <VisibilityOffIcon sx={{ color: "white" }} />
                       </IconButton>
                     )}
-
-                    <IconButton onClick={() => onBorrar(esquema.id)}>
-                      <DeleteIcon sx={{ color: "white" }} />
-                    </IconButton>
                   </>
                 }
               >
@@ -166,7 +122,6 @@ export const ListaCategorias = () => {
           nuevoEsquema={nuevoEsquema}
           setNuevoEsquema={setNuevoEsquema}
           onGuardar={handleGuardarClick}
-          onCancel={handleCancelarClick}
         />
       )}
 

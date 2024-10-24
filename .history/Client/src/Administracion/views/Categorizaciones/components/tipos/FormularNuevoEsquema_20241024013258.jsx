@@ -5,13 +5,11 @@ export const FormularNuevoEsquema = ({
   nuevoEsquema,
   setNuevoEsquema,
   onGuardar,
-  onCancel
 }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setError
   } = useForm({
     defaultValues: {
       nombre: nuevoEsquema.nombre,
@@ -19,8 +17,8 @@ export const FormularNuevoEsquema = ({
     },
   });
 
-  const onSubmit = (data) => {
-    onGuardar(data, setError);
+  const onSubmit = () => {
+    onGuardar();
   };
 
   return (
@@ -70,24 +68,9 @@ export const FormularNuevoEsquema = ({
           />
         )}
       />
-      <Box display="flex" justifyContent="space-between" gap={2}>
-        <Button
-          fullWidth
-          type="submit"
-          variant="contained"
-          sx={{ backgroundColor: "#2c4175" }}
-        >
-          Guardar
-        </Button>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ backgroundColor: "#e3320e" }}
-          onClick={onCancel}
-        >
-          Cancelar
-        </Button>
-      </Box>
+      <Button type="submit" variant="contained" sx={{ backgroundColor: "#2c4175" }}>
+        Guardar
+      </Button>
     </Box>
   );
 };

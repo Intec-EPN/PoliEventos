@@ -1,5 +1,5 @@
 import axiosInstance from "../../../api/axiosConfig";
-import { eliminarCategoria, eliminarEsquema, setCancelar, setEsquemas } from "./categorizacionSlice";
+import { eliminarCategoria, setCancelar, setEsquemas } from "./categorizacionSlice";
 
 export const startLoadingEsquemas = () => {
     return async (dispatch) => {

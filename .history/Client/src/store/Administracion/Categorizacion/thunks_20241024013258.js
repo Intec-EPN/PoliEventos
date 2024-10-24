@@ -1,5 +1,5 @@
 import axiosInstance from "../../../api/axiosConfig";
-import { eliminarCategoria, eliminarEsquema, setCancelar, setEsquemas } from "./categorizacionSlice";
+import { setEsquemas } from "./categorizacionSlice";
 
 export const startLoadingEsquemas = () => {
     return async (dispatch) => {
@@ -33,16 +33,10 @@ export const startEditingEsquema = (id) => {
 
             await axiosInstance.put(`/admin/esquemas/${id}`, data);
         } catch (error) {
-            if (error.response && error.response.status === 400) {
-                alert(error.response.data.message);
-            } else {
-                console.error("Error creando el esquema:", error);
-            }
-            dispatch(setCancelar(true));
+
         }
     };
 };
-
 // Thunk para crear un nuevo esquema
 export const startCreatingEsquema = () => {
     return async (dispatch, getState) => {
@@ -59,14 +53,13 @@ export const startCreatingEsquema = () => {
             };
 
             // Realiza la petición POST para crear el nuevo esquema
-            await axiosInstance.post('/admin/esquemas', data);
+            const response = await axiosInstance.post('/admin/esquemas', data);
+
+            // Supongamos que recibes el nuevo esquema creado en la respuesta
+            console.log(response.data)
 
         } catch (error) {
-            if (error.response && error.response.status === 400) {
-                alert(error.response.data.message);
-            } else {
-                throw new Error(error);
-            }
+            console.error("Error creando el esquema:", error);
         }
     };
 };
@@ -75,53 +68,11 @@ export const startChangingVisible = () => {
     return async (dispatch, getState) => {
         try {
             // Obtengo ell id del esquema
-            const { idEsquemaCambiarVisibilidad } = getState().categorizacion;
+            const {idEsquemaCambiarVisibilidad} = getState().categorizacion;
             await axiosInstance.put(`/admin/esquemas/visibilidad/${idEsquemaCambiarVisibilidad}`);
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-};
 
-
-export const startChangingCategoryVisible = () => {
-    return async (dispatch, getState) => {
-        try {
-            // Obtengo ell id del esquema
-            const { idCategoriaCambiarVisibilidad } = getState().categorizacion;
-            await axiosInstance.put(`/admin/esquemas/categoria/visibilidad/${idCategoriaCambiarVisibilidad}`);
         } catch (error) {
-            throw new Error(error);
+            
         }
     }
 }
-
-export const startDeletingEsquema = (id) => {
-    return async (dispatch) => {
-        try {
-            // Se manda a eliminar con el id simplemente:
-            await axiosInstance.delete(`/admin/esquemas/${id}`);
-            dispatch(eliminarEsquema(id));
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-};
-
-
-export const startDeletingCategory = ({idCategoria, idEsquema}) => {
-    console.log(idCategoria, idEsquema);
-    
-    return async (dispatch) => {
-        try {
-            // Se manda a eliminar con el id simplemente:
-            await axiosInstance.delete(`/admin/esquemas/categoria/${idCategoria}`);
-            dispatch(eliminarCategoria({idCategoria, idEsquema}));
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-};
-
-
-

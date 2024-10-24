@@ -1,7 +1,7 @@
 import { AdministracionMain } from "../Administracion/AdministracionMain";
 import { Categorizaciones } from "../Administracion/views/Categorizaciones/Categorizaciones";
-import { CrearEsquema } from "../Administracion/views/Categorizaciones/components/tipos/CrearEsquema";
-import { EditarCategorias } from "../Administracion/views/Categorizaciones/components/tipos/EditarCategorias";
+import { CrearCategoria } from "../Administracion/views/Categorizaciones/components/tipos/CrearCategoria";
+import { EditarCategoria } from "../Administracion/views/Categorizaciones/components/tipos/EditarCategoria";
 import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
@@ -17,11 +17,11 @@ export const routes = [
       },
       {
         path: "categorizaciones/:esquemaActual/editar",  
-        element: <EditarCategorias />, 
+        element: <EditarCategoria />, 
       },
       {
         path: "categorizaciones/:esquemaActual/crear",  
-        element: <CrearEsquema />, 
+        element: <CrearCategoria />, 
       },
       {
         path: "roles",
