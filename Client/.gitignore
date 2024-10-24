@@ -25,4 +25,4 @@ src/api/api.js
 *.sln
 *.sw?
 
-.history
+*.history
