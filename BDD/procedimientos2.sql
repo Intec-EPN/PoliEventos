@@ -84,18 +84,22 @@ DELIMITER ;
 
 -- Colores de chips
 -- Propio
-CALL ActualizarBgColorPorId('#53cacf', 1);
+CALL ActualizarBgColorPorId('#23a5d9', 1);
 -- Departamento
-CALL ActualizarBgColorPorId('#4da93a', 2);
-CALL ActualizarBgColorPorId('#248d18', 3);
-CALL ActualizarBgColorPorId('#017b00', 4);
-CALL ActualizarBgColorPorId('#006f00', 5);
+CALL ActualizarBgColorPorId('#b030ff', 2);
+CALL ActualizarBgColorPorId('#a330ff', 3);
+CALL ActualizarBgColorPorId('#9631ff', 4);
+CALL ActualizarBgColorPorId('#7E23D9', 5);
 
 -- Facultad
-CALL ActualizarBgColorPorId('#006af9', 6);
-CALL ActualizarBgColorPorId('#005ad3', 7);
-CALL ActualizarBgColorPorId('#004aad', 8);
-CALL ActualizarBgColorPorId('#00347a', 9);
+CALL ActualizarBgColorPorId('#4da93a', 6);
+CALL ActualizarBgColorPorId('#248d18', 7);
+CALL ActualizarBgColorPorId('#017b00', 8);
+CALL ActualizarBgColorPorId('#006f00', 9);
+
+
+
+
 
 -- Colores de texto
 DELIMITER $$

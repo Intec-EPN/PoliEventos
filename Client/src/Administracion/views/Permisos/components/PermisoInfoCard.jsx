@@ -8,7 +8,7 @@ import {
 
 export const PermisoInfoCard = ({ permiso, tooltip, bgColor, colorLetra }) => {
   return (
-    <Box display={"flex"} justifyContent={"center"} mb={2}>
+    <Box display={"flex"} justifyContent={"center"} mb={3}>
       <Card
         sx={{
           display: { xs: "block", md: "flex" },
@@ -23,7 +23,7 @@ export const PermisoInfoCard = ({ permiso, tooltip, bgColor, colorLetra }) => {
             {permiso}
           </Typography>
         </CardContent>
-        <CardContent sx={{ backgroundColor: "#f9f9f9", flex: "8" }}>
+        <CardContent display="flex"  sx={{ alignContent:"center", backgroundColor: "#f9f9f9", flex: "8" }}>
           <Typography variant="body1" sx={{ fontSize: 17, fontWeight: 600 }}>
             {tooltip}
           </Typography>
