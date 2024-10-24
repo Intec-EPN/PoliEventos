@@ -1,9 +1,8 @@
 import React from 'react'
+import RolesComponent from './AccionCard'
 
 export const Loges = () => {
   return (
-    <div>
-      Logs
-    </div>
+    <RolesComponent />
   )
 }
