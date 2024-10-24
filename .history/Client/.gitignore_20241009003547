@@ -24,5 +24,3 @@ src/api/api.js
 *.njsproj
 *.sln
 *.sw?
-
-.history
