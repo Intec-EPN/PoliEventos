@@ -10,6 +10,7 @@ DELIMITER ;
 
 
 select * from Esquemas_Categorizacion;
+
 CALL EliminarEsquemaCategorizacion(5); 
 
 DELIMITER $$

@@ -45,11 +45,11 @@ INSERT INTO Permisos (accion, tooltip, bgColor, nivel_id) VALUES
 ('Editar evento', 'Editar evento que pertenezca al departamento.', '#f2e6b2', 2),  -- Nivel departamento
 ('Eliminar evento', 'Eliminar evento que pertenezca al departamento', '#f2d89f', 2),  -- Nivel departamento
 ('Generar reporte', 'Generar reporte de cualquier evento en el departamento.', '#f1ce81', 2),  -- Nivel departamento
-('Descargar privada', 'Descargar información privada de evento de departamento.', '#f2b873', 2),  -- Nivel departamento
+('Descarga privada', 'Descargar información privada de evento de departamento.', '#f2b873', 2),  -- Nivel departamento
 ('Editar evento', 'Editar evento que pertenezca al facultad.', '#f2c9c9', 3),  -- Nivel facultad
 ('Eliminar evento', 'Eliminar evento que pertenezca al facultad', '#f2a1a1', 3),  -- Nivel facultad
 ('Generar reporte', 'Generar reporte de cualquier evento en el facultad.', '#f28585', 3),  -- Nivel facultad
-('Descargar privada', 'Descargar información privada de evento de facultad.', '#f57171', 3);  -- Nivel facultad
+('Descarga privada', 'Descargar información privada de evento de facultad.', '#f57171', 3);  -- Nivel facultad
 
 -- Asignar permisos al Rol 1
 INSERT INTO Rol_Permisos (rol_id, permiso_id) VALUES

@@ -8,8 +8,6 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 
 export const PermisosInfo = () => {
   const { permisosAcciones, acciones } = useSelector((state) => state.permiso);
-  console.log("permisosAcciones:", permisosAcciones);
-  console.log("acciones:", acciones);
 
   const iconosMap = {
     PersonIcon: <PersonIcon />,
@@ -18,13 +16,12 @@ export const PermisosInfo = () => {
   };
 
   const aux = acciones.filter((acc) => acc.nivel_id == 2);
-  console.log("debug", aux);
 
   return (
     <>
       {permisosAcciones.map((nivelPermiso, id) => (
-        <Box>
-          <Box container display="flex" gap={1} justifyContent={"center"}>
+        <Box key={id}>
+          <Box display="flex" gap={1} justifyContent={"center"}>
             <Icon>{iconosMap[nivelPermiso.icono] || null}</Icon>
             <Typography
               align="center"

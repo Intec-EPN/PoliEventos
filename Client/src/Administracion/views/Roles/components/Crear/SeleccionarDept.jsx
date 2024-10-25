@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Grid2, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setDepartamento } from "../../../../../store/Administracion/Roles/rolSlice";
-import { red } from "@mui/material/colors";
 
 export const SeleccionarDept = () => {
   const { creandoRol } = useSelector((state) => state.rol);
@@ -36,8 +35,8 @@ export const SeleccionarDept = () => {
 
   return (
     <Grid2
+      mt={1}
       container
-      mb={2}
       gap={2}
       display="flex"
       justifyContent="space-between"
@@ -61,11 +60,6 @@ export const SeleccionarDept = () => {
           ))}
         </Select>
       </FormControl>
-      {!dept && (
-        <Typography sx={{ color: "red" }}>
-          Recuerda seleccionar un departamento incluso si no asignas permisos de este nivel.
-        </Typography>
-      )}
     </Grid2>
   );
 };

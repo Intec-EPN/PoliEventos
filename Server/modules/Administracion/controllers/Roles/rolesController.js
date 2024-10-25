@@ -6,6 +6,7 @@ const { obtenerDepartamentosArray, obtenerDepartamentoId } = require("./departam
 const { obtenerDeptFacultadId } = require("./facultadesController");
 const { obtenerNivelesArray } = require("./nivelesController");
 const { obtenerPermisosRol } = require("./permisosController");
+const { sequelize } = require('../../../../config/db');
 
 const obtenerRolDescripcionId = async (req, res) => {
     const rolId = req.params.id; // Obtengo el id desde los params.
@@ -151,6 +152,31 @@ const crearRol = async (req, res) => {
 
 };
 
+const eliminarRolPorNombre = async (req, res) => {
+    const { nombre } = req.params; 
+    // TODO VALIDAR QUE NO EXISTAN EVENTOS CON RELACIÓN A ALGUNA CATEGORÍA DE LOS USUARIOS
+    try {
+        // Verificamos si el rol existe antes de intentar eliminar
+        const rolExistente = await RolesModel.findOne({ where: { nombre } });
+        
+        if (!rolExistente) {
+            return res.status(404).json({ message: 'Rol no encontrado.' });
+        }
+
+        // Llamar al procedimiento almacenado para eliminar el rol (si es que existe).
+        await sequelize.query("CALL BorrarRol(:rolNombre)", {
+            replacements: { rolNombre: rolExistente.id }, // Pasamos el id del rol
+        });
+
+        // Si llegamos aquí, significa que la eliminación se realizó
+        return res.status(200).json({ message: 'Rol eliminado correctamente.' });
+
+    } catch (error) {
+        console.error(`Error al eliminar el rol: ${error}`);
+        res.status(500).json({ error: "Error al eliminar el rol." });
+    }
+};
 
 
-module.exports = { obtenerRolDescripcionId, obtenerRolesDescripcion, obtenerRoles, crearRol };
+
+module.exports = { obtenerRolDescripcionId, obtenerRolesDescripcion, obtenerRoles, crearRol, eliminarRolPorNombre };

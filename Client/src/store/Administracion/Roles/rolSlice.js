@@ -29,10 +29,11 @@ export const rolSlice = createSlice({
     setDepartamento: (state, action) => {
       state.creandoRol = true;
       if (state.seleccionNivel === 'Departamento') {
-        state.rolEnCreacion.departamentos = [];
-        state.rolEnCreacion.departamentos.push(action.payload);
+        // Asegúrate de que sea un arreglo y agrega el nuevo departamento
+        state.rolEnCreacion.departamentos = [action.payload];
       } else {
-        state.rolEnCreacion.departamentos = action.payload;
+        // En caso de que sea otro nivel, simplemente asigna un arreglo
+        state.rolEnCreacion.departamentos = Array.isArray(action.payload) ? action.payload : [action.payload];
       }
     },
     setFiltro: (state, action) => {
@@ -93,7 +94,10 @@ export const rolSlice = createSlice({
     },
     setCreandoRolEnBase: (state, action) => {
       state.creandoRolEnBase = action.payload;
-    }
+    },
+    resetDepartamentos: (state) => {
+      state.rolEnCreacion.departamentos = [];
+    },
   },
 });
 
@@ -109,6 +113,7 @@ export const {
   setCreandoRol,
   handleSeleccion,
   setPermisos,
-  setCreandoRolEnBase
+  setCreandoRolEnBase,
+  resetDepartamentos,
 } = rolSlice.actions;
 

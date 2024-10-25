@@ -1,5 +1,4 @@
 import { Chip, Grid2, Icon, Typography } from "@mui/material";
-import { SeleccionarDept } from "../../Roles/components/Crear/SeleccionarDept";
 import { ChipPermiso } from "./ChipPermiso";
 import { useSelector } from "react-redux";
 
@@ -15,7 +14,6 @@ export const CategoriaPermiso = ({
   acciones: idsAcciones = [],
   clickable = false,
   align = false,
-  dept = false,
   separacion = 0,
   onPermisoClick,
   departamentos = [],
@@ -48,7 +46,6 @@ export const CategoriaPermiso = ({
         </Grid2>
       )}
 
-      {dept ? <SeleccionarDept /> : null}
       {departamentos.length > 0 && nombre === "Departamento" ? (
         <Grid2 container display="flex" justifyContent="center" mb={1}>
           {departamentos.map((dep, index) => (

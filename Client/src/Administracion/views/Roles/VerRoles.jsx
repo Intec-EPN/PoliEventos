@@ -75,7 +75,7 @@ export const VerRoles = () => {
       >
         {rolesFiltrados.map((rol, index) => (
           <Grid2 key={index} size={{ xs: 4, sm: 4 }}>
-            <TarjetaRol {...rol} />
+            <TarjetaRol {...rol} id={index} lista={true}/>
           </Grid2>
         ))}
       </Grid2>

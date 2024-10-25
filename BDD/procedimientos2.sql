@@ -117,3 +117,33 @@ CALL ActualizarColorPorId('#FFF', 1);
 CALL ActualizarColorPorId('#FFF', 2);
 -- Facultad
 CALL ActualizarColorPorId('#FFF', 3);
+
+
+USE poli_eventos_db;
+
+SELECT * FROM Permisos WHERE accion = 'Descargar privada';
+SELECT * FROM Permisos WHERE accion = 'Descarga privada';
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE Permisos
+SET accion = 'Descarga privada'
+WHERE accion = 'Descargar privada';
+
+SET SQL_SAFE_UPDATES = 1;  -- Rehabilitar la actualización segura
+
+-- borrar roles
+
+DELIMITER //
+CREATE PROCEDURE BorrarRol(
+    IN rolId BIGINT UNSIGNED
+)
+BEGIN
+    DELETE FROM Roles
+    WHERE id = rolId;
+END //
+DELIMITER ;
+
+select * from roles;
+
+CALL BorrarRol(38);  -- Reemplaza 1 con el ID del rol que deseas eliminar

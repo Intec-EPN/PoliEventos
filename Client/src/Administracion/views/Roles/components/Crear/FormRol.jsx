@@ -8,9 +8,10 @@ import {
   setDescripcion,
   setRol,
 } from "../../../../../store/Administracion/Roles/rolSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RadioButton } from "./RadioButton";
 import { startCreatingRoles } from "../../../../../store/Administracion/Roles/thunks";
+import { SnackBarSuccess } from "./SnackBarSuccess";
 
 export const FormRol = () => {
   // Hook Form
@@ -46,17 +47,30 @@ export const FormRol = () => {
     }
   }, [creandoRol, reset]);
 
-  const onSubmit = () => {
+  // Estado para el Snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const onSubmit = async () => {
     if (rolEnCreacion.departamentos.length < 1) {
       alert("Debes seleccionar un departamento antes de crear el rol.");
       return;
     }
-    if (rolEnCreacion.permisos.every(permiso => permiso.acciones.length === 0)) {
+    if (
+      rolEnCreacion.permisos.every((permiso) => permiso.acciones.length === 0)
+    ) {
       alert("Debes seleccionar al menos una permiso antes de crear el rol.");
       return;
     }
-    dispatch(startCreatingRoles(rolEnCreacion));
+    const success = await dispatch(startCreatingRoles(rolEnCreacion));
+    if (success) {
+      // Solo muestra el Snackbar si la creación fue exitosa
+      setSnackbarOpen(true);
+    }
+
     dispatch(reiniciarRol());
+  };
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   const manejarPermisoClick = (nivel, permisoId) => {
@@ -154,6 +168,12 @@ export const FormRol = () => {
             )}
           />
         </Grid2>
+        <Box display="flex" width="100%">
+          <Typography sx={{ fontWeight: 700, color: "primary" }}>
+            Selecciona los permisos:
+          </Typography>
+        </Box>
+
         <Grid2 container display="flex" flexDirection="column">
           <Box
             display="block"
@@ -161,7 +181,7 @@ export const FormRol = () => {
             sx={{ justifyContent: { xs: "start" } }}
           >
             {/* //Nivel Propio */}
-            <Grid2 container sx={{ mt: 2 }}>
+            <Grid2 container>
               <CategoriaPermiso
                 {...niveles.Propio}
                 clickable={true}
@@ -169,8 +189,8 @@ export const FormRol = () => {
                 onPermisoClick={manejarPermisoClick}
               />
             </Grid2>
-            {seleccionNivel === "Departamento" ? (
-              //Nivel Departamento
+            {seleccionNivel === "Departamento" && niveles.Departamento ? (
+              // Nivel Departamento
               <Grid2 container display="block">
                 <CategoriaPermiso
                   {...niveles.Departamento}
@@ -180,7 +200,7 @@ export const FormRol = () => {
                   onPermisoClick={manejarPermisoClick}
                 />
               </Grid2>
-            ) : (
+            ) : niveles.Facultad ? (
               // Nivel Facultad
               <Grid2 container>
                 <CategoriaPermiso
@@ -190,6 +210,11 @@ export const FormRol = () => {
                   onPermisoClick={manejarPermisoClick}
                 />
               </Grid2>
+            ) : (
+              // Manejo de casos donde no hay niveles definidos
+              <Typography color="error">
+                No hay permisos disponibles.
+              </Typography>
             )}
           </Box>
         </Grid2>
@@ -201,6 +226,11 @@ export const FormRol = () => {
       >
         CREAR ROL
       </Button>
+      <SnackBarSuccess
+        open={snackbarOpen}
+        message="Rol creado exitosamente!"
+        onClose={handleCloseSnackbar}
+      />
     </form>
   );
 };
