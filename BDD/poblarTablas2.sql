@@ -41,15 +41,15 @@ SET SQL_SAFE_UPDATES = 1;
 
 -- Insertar permisos con sus niveles (sin cambios)
 INSERT INTO Permisos (accion, tooltip, bgColor, nivel_id) VALUES
-('Gestionar evento', 'Crear, editar, eliminar y descargar información privada de un elemento propio.', '#d4e1f2', 1),  -- Nivel propio
-('Editar evento', 'Editar evento que pertenezca al departamento.', '#f2e6b2', 2),  -- Nivel departamento
-('Eliminar evento', 'Eliminar evento que pertenezca al departamento', '#f2d89f', 2),  -- Nivel departamento
-('Generar reporte', 'Generar reporte de cualquier evento en el departamento.', '#f1ce81', 2),  -- Nivel departamento
-('Descarga privada', 'Descargar información privada de evento de departamento.', '#f2b873', 2),  -- Nivel departamento
-('Editar evento', 'Editar evento que pertenezca al facultad.', '#f2c9c9', 3),  -- Nivel facultad
-('Eliminar evento', 'Eliminar evento que pertenezca al facultad', '#f2a1a1', 3),  -- Nivel facultad
-('Generar reporte', 'Generar reporte de cualquier evento en el facultad.', '#f28585', 3),  -- Nivel facultad
-('Descarga privada', 'Descargar información privada de evento de facultad.', '#f57171', 3);  -- Nivel facultad
+('Gestionar evento', 'Crear, editar, eliminar y descargar información privada de un elemento propio.', '#23a5d9', 1),  -- Nivel propio
+('Editar evento', 'Editar evento que pertenezca al departamento.', '#b030ff', 2),  -- Nivel departamento
+('Eliminar evento', 'Eliminar evento que pertenezca al departamento', '#a330ff', 2),  -- Nivel departamento
+('Generar reporte', 'Generar reporte de cualquier evento en el departamento.', '#9631ff', 2),  -- Nivel departamento
+('Descarga privada', 'Descargar información privada de evento de departamento.', '#7e23d9', 2),  -- Nivel departamento
+('Editar evento', 'Editar evento que pertenezca al facultad.', '#4da93a', 3),  -- Nivel facultad
+('Eliminar evento', 'Eliminar evento que pertenezca al facultad', '#248d18', 3),  -- Nivel facultad
+('Generar reporte', 'Generar reporte de cualquier evento en el facultad.', '#017b00', 3),  -- Nivel facultad
+('Descarga privada', 'Descargar información privada de evento de facultad.', '#006f00', 3);  -- Nivel facultad
 
 -- Asignar permisos al Rol 1
 INSERT INTO Rol_Permisos (rol_id, permiso_id) VALUES
