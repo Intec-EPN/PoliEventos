@@ -4,6 +4,7 @@ export const rolSlice = createSlice({
   name: 'rol',
   initialState: {
     roles: [], // Array con todos los roles que existen.
+    facultades: [],
     rolEnCreacion: {
       rol: '',
       descripcion: '',
@@ -98,6 +99,9 @@ export const rolSlice = createSlice({
     resetDepartamentos: (state) => {
       state.rolEnCreacion.departamentos = [];
     },
+    setFacultades: (state, action) => {
+      state.facultades = action.payload;
+    }
   },
 });
 
@@ -115,5 +119,6 @@ export const {
   setPermisos,
   setCreandoRolEnBase,
   resetDepartamentos,
+  setFacultades
 } = rolSlice.actions;
 

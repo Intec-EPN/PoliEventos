@@ -3,6 +3,13 @@ USE poli_eventos_db;
 -- Agregar la Facultad de Ingeniería Eléctrica y Electrónica
 INSERT INTO Facultades (nombre) VALUES 
 ('Facultad de Ingeniería Eléctrica y Electrónica');
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Facultades
+SET nombre = 'FIEE'
+WHERE nombre = 'Facultad de Ingeniería Eléctrica y Electrónica';
+SET SQL_SAFE_UPDATES = 1;
+
+select * from Facultades;
 
 -- Asociar los departamentos a la facultad recién creada
 INSERT INTO Departamentos (nombre, facultad_id) VALUES 

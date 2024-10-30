@@ -7,6 +7,7 @@ const { obtenerDeptFacultadId } = require("./facultadesController");
 const { obtenerNivelesArray } = require("./nivelesController");
 const { obtenerPermisosRol } = require("./permisosController");
 const { sequelize } = require('../../../../config/db');
+const FacultadesModel = require('../../models/Roles/facultadesModel');
 
 const obtenerRolDescripcionId = async (req, res) => {
     const rolId = req.params.id; // Obtengo el id desde los params.
@@ -59,6 +60,15 @@ const obtenerRoles = async (req, res) => {
         const roles = await Promise.all(
             rolesIniciales.map(async (rol) => {
                 let departamentos;
+                // Guardar la facultad
+                let facultad = null;
+                if (rol.facultad_id) {
+                    const facultadInfo = await FacultadesModel.findByPk(rol.facultad_id);
+                    facultad = facultadInfo ? facultadInfo.nombre : null;
+                }
+
+                // Observar si este rol tienen nivel facultad:
+                let esFacultad = !rol.departamento_id;
                 // Obtener los departamentos
                 if (rol.departamento_id) {
                     // Si tengo id de departamento, lo incluyo.
@@ -94,7 +104,9 @@ const obtenerRoles = async (req, res) => {
                     rol: rol.nombre,
                     descripcion: rol.descripcion,
                     departamentos: departamentos.map(dep => dep.departamento), // Solo me traigo el nombre
-                    permisos: permisos
+                    permisos: permisos,
+                    facultad: facultad,
+                    esFacultad: esFacultad
                 };
             })
         );

@@ -1,11 +1,22 @@
 import axiosInstance from "../../../api/axiosConfig";
-import { setCreandoRolEnBase, setDepartamento, setPermisos, setRoles } from "./rolSlice";
+import { setCreandoRolEnBase, setDepartamento, setFacultades, setPermisos, setRoles } from "./rolSlice";
 
 export const startLoadingRoles = () => {
     return async (dispatch) => {
         try {
             const response = await axiosInstance.get('/admin/roles/array');
             dispatch(setRoles(response.data));
+        } catch (error) {
+            throw new Error("Error al cargar", error);
+        }
+    };
+};
+
+export const startLoadingFacultades = () => {
+    return async (dispatch) => {
+        try {
+            const response = await axiosInstance.get('/admin/facultades/');
+            dispatch(setFacultades(response.data));
         } catch (error) {
             throw new Error("Error al cargar", error);
         }
