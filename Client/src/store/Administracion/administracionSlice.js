@@ -4,12 +4,12 @@ export const administracionSlice = createSlice({
     name: 'administracion',
     initialState: {
         // TODO cambiarlo para mandar de cada componente el nombre.
-        opcion: 'Bienvenido, selecciona una opción.'
+        opcion: 'Selecciona una opción.'
     },
     reducers: {
         opcionActual: (state, action) => {
             state.opcion = action.payload;
-        },
+        }
     }
 });
 

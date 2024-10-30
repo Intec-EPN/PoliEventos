@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { opcionActual } from "../../store/Administracion/administracionSlice";
 
-export const RolesSubItem = () => {
+export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
   // Para manejar el valor de la opción
   const dispatch = useDispatch();
 
@@ -24,6 +24,15 @@ export const RolesSubItem = () => {
 
   // Creo el hook para navegar en el sidebar
   const navigate = useNavigate();
+
+  const handleSubNavigation = (path, label) => {
+    navigate(path);
+    dispatch(opcionActual(label));
+    // Cierra la barra si estamos en una pantalla pequeña
+    if (isOpen && window.innerWidth <= 600) {
+      toggleDrawer();
+    }
+  };
 
   return (
     <ListItem disablePadding sx={{ display: "block" }}>
@@ -39,12 +48,19 @@ export const RolesSubItem = () => {
         <List
           component="div"
           disablePadding
-          sx={{ display: "block", backgroundColor: "#d9d9d9", borderRadius: "0 0 20px 20px", ml: 3, mr: 3, mb:1 }}
+          sx={{
+            display: "block",
+            backgroundColor: "#d9d9d9",
+            borderRadius: "0 0 20px 20px",
+            ml: 3,
+            mr: 3,
+            mb: 1,
+          }}
         >
-          <ListItemButton 
+          <ListItemButton
             selected={false} // No se usa estado
             sx={{
-              pl: 4, 
+              pl: 4,
               width: "100%",
               "&.Mui-selected": {
                 backgroundColor: "#004aad",
@@ -64,18 +80,15 @@ export const RolesSubItem = () => {
                   color: "white", // Texto blanco al tener foco
                 },
               },
-            }} 
-            onClick={() => {
-              navigate("roles/lista");
-              dispatch(opcionActual("Lista de Roles"));
-            }} 
+            }}
+            onClick={() => handleSubNavigation("roles/lista", "Lista de Roles")}
           >
             <ListItemText primary="Lista de Roles" />
           </ListItemButton>
-          <ListItemButton 
+          <ListItemButton
             selected={false} // No se usa estado
             sx={{
-              pl: 4, 
+              pl: 4,
               width: "100%",
               "&.Mui-selected": {
                 backgroundColor: "#004aad",
@@ -95,11 +108,8 @@ export const RolesSubItem = () => {
                   color: "white",
                 },
               },
-            }} 
-            onClick={() => {
-              navigate("roles/crear");
-              dispatch(opcionActual("Crea un Rol"));
-            }} 
+            }}
+            onClick={() => handleSubNavigation("roles/crear", "Crea un Rol")}
           >
             <ListItemText primary="Crear un Rol" />
           </ListItemButton>

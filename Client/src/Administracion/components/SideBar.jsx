@@ -19,15 +19,18 @@ const opciones = [
   { label: "Logs", path: "logs" },
 ];
 
-export const SideBar = ({ drawerWidth, mquery, setChangeMediaQuery }) => {
+export const SideBar = ({ drawerWidth, isOpen, toggleDrawer }) => {
   // Creo el hook para navegar en el sidebar
   const navigate = useNavigate();
   // Ejecuto la navegación dependiendo el path
   const handleNavigation = (path) => {
     navigate(path);
+    // Solo cierra la barra si estamos en una pantalla pequeña
+    if (isOpen && window.innerWidth <= 600) {
+      toggleDrawer();
+    }
   };
 
-  
   return (
     // Div para observar un buen comportaiendo del sidebar en cuanto a tamaños.
     <Box
@@ -37,7 +40,7 @@ export const SideBar = ({ drawerWidth, mquery, setChangeMediaQuery }) => {
     >
       <Drawer
         variant="persistent" // Para que la barra siempre aparezca
-        open={!mquery}
+        open={isOpen}
         sx={{
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
@@ -50,7 +53,7 @@ export const SideBar = ({ drawerWidth, mquery, setChangeMediaQuery }) => {
           <IconButton
             edge="start"
             sx={{ mr: { xs: 0, sm: 2 }, display: { sm: "none" } }}
-            onClick={setChangeMediaQuery}
+            onClick={toggleDrawer}
           >
             <MenuOutlined sx={{ color: "white" }} />
           </IconButton>
@@ -62,7 +65,13 @@ export const SideBar = ({ drawerWidth, mquery, setChangeMediaQuery }) => {
         </Toolbar>
         <List>
           {opciones.map((opcion) => (
-            <SideBarItem key={opcion.label} opcion={opcion.label} onClickNavigation={()=>handleNavigation(opcion.path)}/>
+            <SideBarItem
+              key={opcion.label}
+              opcion={opcion.label}
+              isOpen={isOpen}
+              toggleDrawer={toggleDrawer}
+              onClickNavigation={() => handleNavigation(opcion.path)}
+            />
           ))}
         </List>
       </Drawer>

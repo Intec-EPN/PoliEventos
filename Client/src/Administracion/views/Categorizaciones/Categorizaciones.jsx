@@ -3,10 +3,12 @@ import { ListaCategorias } from "./components/ListaCategorias";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { startLoadingEsquemas } from "../../../store/Administracion/Categorizacion/thunks";
+import { opcionActual } from "../../../store/Administracion/administracionSlice";
 
 export const Categorizaciones = () => {
   const dispatch = useDispatch()
   useEffect(() => {
+    dispatch(opcionActual('Categorizaciones'));
     dispatch(startLoadingEsquemas())  ;
   }, [dispatch]);
 

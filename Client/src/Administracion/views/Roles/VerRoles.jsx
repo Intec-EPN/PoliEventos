@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiltroTag } from "./components/Lista/FiltroTag";
 import { useEffect, useState } from "react";
 import { startLoadingFacultades, startLoadingRoles } from "../../../store/Administracion/Roles/thunks";
+import { opcionActual } from "../../../store/Administracion/administracionSlice";
 
 export const VerRoles = () => {
   // Obtengo los departamentos.
@@ -21,6 +22,7 @@ export const VerRoles = () => {
   useEffect(() => {
     dispatch(startLoadingRoles());
     dispatch(startLoadingFacultades());
+    dispatch(opcionActual('Lista de Roles'));
   }, [dispatch]);
   
   const nombresFacultades = facultades.map(facultad => facultad.nombre);
