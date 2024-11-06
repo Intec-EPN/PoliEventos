@@ -43,6 +43,7 @@ export const CrearEsquema = () => {
     navigate(-1);
   };
 
+  // TODO COMPONENTE NO UTILIZADO (?)
   return (
     <Box ml={3} mr={3}>
       <CrearCatTituloDescrip nombre={nombre} descripcion={descripcion} />

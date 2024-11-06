@@ -23,9 +23,12 @@ export const TipoItem = ({
   validateTipo,
 }) => {
   const dispatch = useDispatch();
-  const { esquemaCategorizacionActual } = useSelector(
+  const { esquemaCategorizacionActual, esquemas } = useSelector(
     (state) => state.categorizacion
   );
+
+  console.log(esquemaCategorizacionActual);
+  
 
   if (
     !esquemaCategorizacionActual ||
@@ -34,7 +37,10 @@ export const TipoItem = ({
     return <div>Cargando...</div>;
   }
 
-  const categoriaActual = esquemaCategorizacionActual.categorias.find(
+
+  const esquemaActual = esquemas.find( esq => esq.nombre === esquemaCategorizacionActual.nombre);
+
+  const categoriaActual = esquemaActual.categorias.find(
     (cat) => cat.id === index
   );
 

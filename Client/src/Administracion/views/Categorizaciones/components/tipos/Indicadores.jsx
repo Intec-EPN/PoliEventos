@@ -58,6 +58,24 @@ export const Indicadores = ({ value, editar = false }) => {
           </Box>
         </>
       ) : null}
+      {value === "una categorización" ? (
+        <>
+          |
+          <Typography>
+            <span
+              style={{
+                display: "inline-block",
+                width: "10px",
+                height: "10px",
+                backgroundColor: "#dc8626",
+                borderRadius: "50%",
+                marginRight: "8px",
+              }}
+            ></span>
+            Categorización Vacía
+          </Typography>
+        </>
+      ) : null}
     </Box>
   );
 };

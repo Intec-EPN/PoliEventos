@@ -66,6 +66,7 @@ export const AgregarCategorias = ({
     setEnviado(true);
     dispatch(nuevasCategoriasEsquemaCategoriaActual(categoriasNuevas));
 
+    // TODO CREAR ESQUEMA
     if (crear) {
       dispatch(startCreatingEsquema());
     } else {

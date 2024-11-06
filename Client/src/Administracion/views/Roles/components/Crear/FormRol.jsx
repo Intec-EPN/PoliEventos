@@ -8,12 +8,12 @@ import {
   setDescripcion,
   setRol,
 } from "../../../../../store/Administracion/Roles/rolSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { RadioButton } from "./RadioButton";
 import { startCreatingRoles } from "../../../../../store/Administracion/Roles/thunks";
-import { SnackBarSuccess } from "./SnackBarSuccess";
+import { useNavigate } from "react-router-dom";
 
-export const FormRol = () => {
+export const FormRol = ({ setSnackbarOpen }) => {
   // Hook Form
   const {
     handleSubmit,
@@ -24,6 +24,8 @@ export const FormRol = () => {
 
   // Hook para guardar en el creando rol actual la información:
   const dispatch = useDispatch();
+  // Hook para navegar
+  const navigate = useNavigate();
 
   const { creandoRol, seleccionNivel, rolEnCreacion } = useSelector(
     (state) => state.rol
@@ -47,9 +49,6 @@ export const FormRol = () => {
     }
   }, [creandoRol, reset]);
 
-  // Estado para el Snackbar
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
   const onSubmit = async () => {
     if (rolEnCreacion.departamentos.length < 1) {
       alert("Debes seleccionar un departamento antes de crear el rol.");
@@ -63,14 +62,12 @@ export const FormRol = () => {
     }
     const success = await dispatch(startCreatingRoles(rolEnCreacion));
     if (success) {
-      // Solo muestra el Snackbar si la creación fue exitosa
+      dispatch(reiniciarRol());
       setSnackbarOpen(true);
+      setTimeout(() => {
+        navigate('/admin/roles/lista');
+      }, 1000); 
     }
-
-    dispatch(reiniciarRol());
-  };
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
   };
 
   const manejarPermisoClick = (nivel, permisoId) => {
@@ -226,11 +223,6 @@ export const FormRol = () => {
       >
         CREAR ROL
       </Button>
-      <SnackBarSuccess
-        open={snackbarOpen}
-        message="Rol creado exitosamente!"
-        onClose={handleCloseSnackbar}
-      />
     </form>
   );
 };

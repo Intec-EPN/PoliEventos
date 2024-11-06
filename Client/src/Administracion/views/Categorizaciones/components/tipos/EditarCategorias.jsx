@@ -53,7 +53,7 @@ export const EditarCategorias = () => {
 
   // Obtener las categorías del estado de Redux
   const { esquemas, cancelar } = useSelector((state) => state.categorizacion);
-
+  
   const [handleAgregarCategoria, setHandleAgregarCategoria] = useState(false);
 
   useEffect(() => {

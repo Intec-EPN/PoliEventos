@@ -111,7 +111,7 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
             }}
             onClick={() => handleSubNavigation("roles/crear", "Crea un Rol")}
           >
-            <ListItemText primary="Crear un Rol" />
+            <ListItemText primary="Crea un Rol" />
           </ListItemButton>
         </List>
       </Collapse>

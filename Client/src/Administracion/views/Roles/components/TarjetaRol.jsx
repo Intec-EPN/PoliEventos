@@ -6,9 +6,10 @@ import {
   Typography,
 } from "@mui/material";
 import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const TarjetaRol = ({
   rol = "",
@@ -36,7 +37,7 @@ export const TarjetaRol = ({
           {lista && (
             <Box display="flex" justifyContent="end">
               <IconButton onClick={() => onBorrarRol(rol)}>
-                <HighlightOffIcon sx={{ color: "red" }} />
+                <DeleteIcon sx={{ color: "red" }} />
               </IconButton>
             </Box>
           )}
