@@ -69,8 +69,9 @@ export const ChipPermiso = ({
                 fontSize: 17,
                 fontWeight: 600,
                 color: color,
-                // mb: 1,
+                mb: 1,
                 mr: 1,
+                borderRadius:"6px",
                 "&:hover": clickable
                   ? {
                       backgroundColor: "#d3d3d3", // Color de fondo cuando está en hover
@@ -92,6 +93,7 @@ export const ChipPermiso = ({
               color: color,
               mb: 1,
               mr: 1,
+              borderRadius:"6px",
               "&:hover": clickable
                 ? {
                     backgroundColor: "#d3d3d3", // Color de fondo cuando está en hover

@@ -96,6 +96,10 @@ export const EditarCategorias = () => {
       // Mensaje de error si no coincide con el regex
       return "Solo se permiten letras, números y puntuación";
     }
+    if (value.trim() !== value) {
+      // Mensaje de error si comienza o termina con un espacio
+      return "La categoría no puede comenzar o terminar con un espacio";
+    }
     // Pasa la validación.
     return true;
   };

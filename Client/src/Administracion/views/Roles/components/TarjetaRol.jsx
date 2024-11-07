@@ -20,7 +20,7 @@ export const TarjetaRol = ({
 }) => {
   const dispatch = useDispatch();
   const onBorrarRol = (rol) => {
-    dispatch(startDeletingRol(rol));
+    dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
   };
   
   return (

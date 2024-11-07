@@ -86,10 +86,10 @@ DELIMITER ;
 -- Propio
 CALL ActualizarBgColorPorId('#23a5d9', 1);
 -- Departamento
-CALL ActualizarBgColorPorId('#b030ff', 2);
-CALL ActualizarBgColorPorId('#a330ff', 3);
-CALL ActualizarBgColorPorId('#9631ff', 4);
-CALL ActualizarBgColorPorId('#7E23D9', 5);
+CALL ActualizarBgColorPorId('#f09b3c', 2);
+CALL ActualizarBgColorPorId('#f09229', 3);
+CALL ActualizarBgColorPorId('#dc8626', 4);
+CALL ActualizarBgColorPorId('#dc7400', 5);
 
 -- Facultad
 CALL ActualizarBgColorPorId('#4da93a', 6);

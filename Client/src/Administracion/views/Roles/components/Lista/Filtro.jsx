@@ -8,6 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { useDispatch } from "react-redux";
 import { setFiltro } from "../../../../../store/Administracion/Roles/rolSlice";
 import { useState } from "react";
+import { Box } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,33 +33,39 @@ export const Filtro = ({ opciones = [], filtro = "", size }) => {
       const newSelected = isSelected
         ? prevSelected.filter((item) => item !== opcion)
         : [...prevSelected, opcion];
-      
+
       dispatch(setFiltro(opcion)); // Enviar la opción seleccionada/deseleccionada
 
-      return newSelected; 
+      return newSelected;
     });
   };
 
   return (
-    <FormControl sx={{ m: 1, width: size }}>
-      <InputLabel id="filtro-label">{filtro}</InputLabel>
-      <Select
-        labelId="filtro-label"
-        id="filtro-select"
-        multiple
-        value={selectedOptions}
-        onChange={(event) => setSelectedOptions(event.target.value)} // Solo actualiza el estado aquí
-        input={<OutlinedInput label={filtro} />}
-        renderValue={(selected) => selected.join(", ")}
-        MenuProps={MenuProps}
-      >
-        {opciones.map((opcion) => (
-          <MenuItem key={opcion} value={opcion} onClick={() => handleToggle(opcion)}>
-            <Checkbox checked={selectedOptions.includes(opcion)} />
-            <ListItemText primary={opcion} />
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <Box sx={{flex:1}}>
+      <FormControl sx={{ m: 1, width: size }}>
+        <InputLabel id="filtro-label">{filtro}</InputLabel>
+        <Select
+          labelId="filtro-label"
+          id="filtro-select"
+          multiple
+          value={selectedOptions}
+          onChange={(event) => setSelectedOptions(event.target.value)} // Solo actualiza el estado aquí
+          input={<OutlinedInput label={filtro} />}
+          renderValue={(selected) => selected.join(", ")}
+          MenuProps={MenuProps}
+        >
+          {opciones.map((opcion) => (
+            <MenuItem
+              key={opcion}
+              value={opcion}
+              onClick={() => handleToggle(opcion)}
+            >
+              <Checkbox checked={selectedOptions.includes(opcion)} />
+              <ListItemText primary={opcion} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
 };

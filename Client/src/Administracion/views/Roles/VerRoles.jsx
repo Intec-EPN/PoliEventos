@@ -1,4 +1,4 @@
-import { Button, Grid2, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Grid2, Typography, useMediaQuery } from "@mui/material";
 import { TarjetaRol } from "./components/TarjetaRol";
 import { Filtro } from "./components/Lista/Filtro";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,19 +81,21 @@ export const VerRoles = () => {
         >
           Filtro
         </Typography>
-        <Grid2 container display="flex" gap={2} alignItems="center">
+        <Box container display="flex" gap={2} alignItems="center">
           <Filtro opciones={nombresFacultades} filtro="Facultad" size={360} />
           <Filtro opciones={departamentos} filtro="Departamento" size={360} />
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "#2c4175", display: "flex" }}
-            onClick={handleCrearRol}
-          >
-            Crear Rol
-          </Button>
+          <Box sx={{flex:2, mr:"1rem", display:"flex", justifyContent:"end"}}>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "#2c4175", display: "flex", height:55 }}
+              onClick={handleCrearRol}
+            >
+              Crear Rol
+            </Button>
+          </Box>
           {/* Filtro para permisos y acciones (en funcionamiento pero fuera de requerimientos). */}
           {/* <FiltroTag permisosAcciones={permisosAcciones} acciones={acciones} /> */}
-        </Grid2>
+        </Box>
       </Grid2>
       <Grid2
         container

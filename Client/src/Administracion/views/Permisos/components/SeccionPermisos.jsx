@@ -1,4 +1,4 @@
-import { Grid2 } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import { CategoriaPermiso } from "./CategoriaPermiso";
 
 export const SeccionPermisos = ({
@@ -11,7 +11,7 @@ export const SeccionPermisos = ({
   return (
     <>
       {niveles.map((nivel, index) => (
-        <Grid2 container key={index} justifyContent="center" sx={{ flex: nivel.acciones && nivel.acciones.length > 0 ? (nivel.nombre === 'Propio' ? 1 : nivel.nombre === 'Departamento' ? 3 : nivel.nombre === 'Facultad' ? 3 : 0) : 0 }} >
+        <Box container key={index} justifyContent="center" sx={{ flex: nivel.acciones && nivel.acciones.length > 0 ? (nivel.nombre === 'Propio' ? 1 : nivel.nombre === 'Departamento' ? 3 : nivel.nombre === 'Facultad' ? 3 : 0) : 0 }} >
           <CategoriaPermiso
             {...nivel}
             align={align}
@@ -19,7 +19,7 @@ export const SeccionPermisos = ({
             departamentos={departamentos}
             horizontal = {horizontal}
           />
-        </Grid2>
+        </Box>
       ))}
       
     </>

@@ -21,7 +21,7 @@ export const TarjetaRolLista = ({
 }) => {
   const dispatch = useDispatch();
   const onBorrarRol = (rol) => {
-    dispatch(startDeletingRol(rol));
+    dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
   };
 
   return (
@@ -30,7 +30,7 @@ export const TarjetaRolLista = ({
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        // maxWidth: "600px",
+        boxShadow: "10px 0px 30px rgba(0, 0, 0, 0.15)",
         margin: "0 auto",
         overflow: "hidden",
       }}
@@ -53,13 +53,20 @@ export const TarjetaRolLista = ({
         <Typography textAlign="justify">{descripcion}</Typography>
         <Grid2 container justifyContent="center" alignItems="center" mt={2}>
           {departamentos.map((dep, index) => (
-            <Chip key={index} label={dep} variant="outlined" sx={{ backgroundColor: '#004aad', color: 'white' }}/>
+            <Chip
+              key={index}
+              label={dep}
+              variant="outlined"
+              sx={{ backgroundColor: "#004aad", color: "white" }}
+            />
           ))}
         </Grid2>
       </CardContent>
 
       {/* Sección de permisos */}
-      <CardContent sx={{ flex: 2, padding: 2, display: "flex", alignItems:"center" }}>
+      <CardContent
+        sx={{ width: "100%", flex: 2, display: "flex", alignItems: "center", ml:2 }}
+      >
         <SeccionPermisos
           niveles={permisos}
           departamentos={departamentos}

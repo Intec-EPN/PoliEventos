@@ -43,20 +43,19 @@ export const CategoriaPermiso = ({
             <Box>
               {idsAcciones.length > 0 ? (
                 <>
-                  <Grid2 container  >
-                    <Icon>{iconosMap[icono] || null}</Icon>
+                  <Box sx={{display:"flex"}}>
+                    <Icon sx={{mr:1}}>{iconosMap[icono] || null}</Icon>
                     <Typography
                       width="100%"
                       variant="h6"
                       noWrap
                       component="div"
                       color="primary"
-                      mr="2rem"
                       sx={{ fontWeight: 700, mb: 1 }}
                     >
                       NIVEL {nombre.toUpperCase()}
                     </Typography>
-                  </Grid2>
+                  </Box>
                   <Grid2 justifyContent={align ? "left" : "center"} width="100%">
                     {idsAcciones.map((id) => {
                       // Busco el objeto desde mi tabla de acciones
@@ -88,6 +87,7 @@ export const CategoriaPermiso = ({
             <Grid2
               container
               display="flex"
+              flex="row"
               gap={1}
               justifyContent={align ? "left" : "center"}
             >

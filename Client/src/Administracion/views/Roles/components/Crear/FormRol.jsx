@@ -8,12 +8,13 @@ import {
   setDescripcion,
   setRol,
 } from "../../../../../store/Administracion/Roles/rolSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RadioButton } from "./RadioButton";
 import { startCreatingRoles } from "../../../../../store/Administracion/Roles/thunks";
 import { useNavigate } from "react-router-dom";
+import PopUpCrear from "./PopUpCrear";
 
-export const FormRol = ({ setSnackbarOpen }) => {
+export const FormRol = () => {
   // Hook Form
   const {
     handleSubmit,
@@ -26,6 +27,11 @@ export const FormRol = ({ setSnackbarOpen }) => {
   const dispatch = useDispatch();
   // Hook para navegar
   const navigate = useNavigate();
+
+  // Estado para controlar la apertura del modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const { creandoRol, seleccionNivel, rolEnCreacion } = useSelector(
     (state) => state.rol
@@ -63,10 +69,10 @@ export const FormRol = ({ setSnackbarOpen }) => {
     const success = await dispatch(startCreatingRoles(rolEnCreacion));
     if (success) {
       dispatch(reiniciarRol());
-      setSnackbarOpen(true);
+      handleOpen(); // Abrir el modal al crear el rol exitosamente
       setTimeout(() => {
-        navigate('/admin/roles/lista');
-      }, 1000); 
+        navigate("/admin/roles/lista");
+      }, 2000);
     }
   };
 
@@ -97,6 +103,11 @@ export const FormRol = ({ setSnackbarOpen }) => {
                 value: 30,
                 message:
                   "El nombre del rol no puede exceder los 30 caracteres.",
+              },
+              validate: {
+                noLeadingTrailingSpaces: (value) =>
+                  value.trim() === value ||
+                  "El nombre del rol no debe comenzar o terminar con espacios.",
               },
             }}
             render={({ field }) => (
@@ -223,6 +234,7 @@ export const FormRol = ({ setSnackbarOpen }) => {
       >
         CREAR ROL
       </Button>
+      <PopUpCrear open={open} handleClose={handleClose} />
     </form>
   );
 };

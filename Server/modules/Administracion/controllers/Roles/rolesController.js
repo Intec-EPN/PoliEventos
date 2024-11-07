@@ -165,9 +165,11 @@ const crearRol = async (req, res) => {
 };
 
 const eliminarRolPorNombre = async (req, res) => {
-    const { nombre } = req.params; 
+    const nombre = req.params.nombre.trim(); // Trimear el nombre del rol
     // TODO VALIDAR QUE NO EXISTAN EVENTOS CON RELACIÓN A ALGUNA CATEGORÍA DE LOS USUARIOS
     try {
+        console.log(nombre);
+        
         // Verificamos si el rol existe antes de intentar eliminar
         const rolExistente = await RolesModel.findOne({ where: { nombre } });
         

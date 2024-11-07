@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { reiniciarRol } from "../../../store/Administracion/Roles/rolSlice";
 import { opcionActual } from "../../../store/Administracion/administracionSlice";
-import { SnackBarSuccess } from "./components/Crear/SnackBarSuccess";
 
 export const CrearRol = () => {
   const dispatch = useDispatch();
@@ -13,13 +12,6 @@ export const CrearRol = () => {
     dispatch(reiniciarRol());
     dispatch(opcionActual('Crea un Rol'));
   }, [dispatch]);
-
-  // Estado para el Snackbar
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
 
   return (
     <Box
@@ -29,17 +21,12 @@ export const CrearRol = () => {
       sx={{ height: "100vh" }}
     >
       <Box flex={4}>
-        <FormRol setSnackbarOpen={setSnackbarOpen} />
+        <FormRol/>
       </Box>
       <hr />
       <Box flex={2}>
         <VistaPrevia />
       </Box>
-      <SnackBarSuccess
-        open={snackbarOpen}
-        message="Rol creado exitosamente!"
-        onClose={handleCloseSnackbar}
-      />
     </Box>
   );
 };
