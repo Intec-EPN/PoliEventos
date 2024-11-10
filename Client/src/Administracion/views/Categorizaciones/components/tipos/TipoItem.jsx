@@ -27,7 +27,6 @@ export const TipoItem = ({
     (state) => state.categorizacion
   );
 
-  console.log(esquemaCategorizacionActual);
   
 
   if (

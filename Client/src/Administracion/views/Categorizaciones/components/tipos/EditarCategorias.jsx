@@ -1,16 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  Grid2,
-  List,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Grid2, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { AlertCorrecto } from "./AlertCorrecto";
 import { TipoItem } from "./TipoItem";
 import { CatTituloDescrip } from "./CatTituloDescrip";
@@ -38,11 +30,20 @@ export const EditarCategorias = () => {
     handleSubmit,
     control,
     reset,
-    formState: { errors },
+    getValues,
+    setError,
+    clearErrors,
+    formState: { errors, isDirty, dirtyFields },
   } = useForm({
     defaultValues: {
-      nuevasCategorias: [""], // Inicializa con un valor vacío
+      nuevasCategorias: [{ value: "" }], // Inicializa con un valor vacío
+      fields: [{ value: "" }], // Inicializa con un valor vacío
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "nuevasCategorias", // Nombre del array en los valores del formulario
   });
 
   // Verificar si esquemas está vacío y cargarlo si es necesario
@@ -53,8 +54,9 @@ export const EditarCategorias = () => {
 
   // Obtener las categorías del estado de Redux
   const { esquemas, cancelar } = useSelector((state) => state.categorizacion);
-  
+
   const [handleAgregarCategoria, setHandleAgregarCategoria] = useState(false);
+  const [nuevasCategorias, setNuevasCategorias] = useState([]);
 
   useEffect(() => {
     if (cancelar) {
@@ -106,19 +108,42 @@ export const EditarCategorias = () => {
 
   // SUBMIT FORMULARIO
   const onSubmit = (data) => {
-    const { nombre, descripcion } = data;
+    const { nombre, descripcion, nuevasCategorias } = data;
     if (!nombre || !descripcion) {
       console.log("Hay errores en los campos del hijo");
       return;
     }
+
+    // Validar que no haya campos vacíos en nuevasCategorias solo si handleAgregarCategoria es true
+    if (handleAgregarCategoria && nuevasCategorias) {
+      for (const categoria of nuevasCategorias) {
+        if (!categoria.value) {
+          console.log("Hay categorías nuevas vacías");
+          return;
+        }
+      }
+    }
+
     const categoriasExistentesEditadas = categorias.map((cat) => ({
       id: cat.id,
       nombre: data.tipos[cat.id] || cat.tipo,
       visible: cat.visible,
       esquemas_id: id,
     }));
+
+    const categoriasNuevas = nuevasCategorias
+      ? nuevasCategorias.map((cat) => ({
+          nombre: cat.value,
+          visible: true,
+          esquemas_id: id,
+        }))
+      : [];
+
     // Genero el objeto a enviar
-    const categoriaEditadas = [...categoriasExistentesEditadas];
+    const categoriaEditadas = [
+      ...categoriasExistentesEditadas,
+      ...categoriasNuevas,
+    ];
     // Alerta
     setAlertOpen(true);
     setEditCategoria(false);
@@ -134,7 +159,34 @@ export const EditarCategorias = () => {
 
   // Cancelar agregar categoria
   const onCancelAgregar = () => {
+    // Eliminar cualquier campo vacío en nuevasCategorias
+    const nuevasCategoriasValues = getValues("nuevasCategorias");
+    nuevasCategoriasValues.forEach((categoria, index) => {
+      if (!categoria.value) {
+        remove(index);
+      }
+    });
     setHandleAgregarCategoria(!handleAgregarCategoria);
+  };
+
+  // Validación de existencia de campos y errores.
+  const handleAddField = () => {
+    const lastFieldValue = getValues(`nuevasCategorias.${fields.length - 1}.value`);
+
+    // Validar el último campo antes de agregar uno nuevo
+    const validationResult = validarCategoria(lastFieldValue);
+    if (validationResult !== true) {
+      // Si hay un error, configurar el error en el formulario
+      setError(`nuevasCategorias.${fields.length - 1}.value`, {
+        type: "manual",
+        message: validationResult,
+      });
+      return; // No agregar un nuevo campo si la validación falla
+    }
+
+    // Limpiar el error si la validación es exitosa
+    clearErrors(`nuevasCategorias.${fields.length - 1}.value`);
+    append({ value: "" }); // Agregar un nuevo campo
   };
 
   return (
@@ -147,13 +199,12 @@ export const EditarCategorias = () => {
         <ArrowBackIosIcon sx={{ width: "15px" }} />
         Retroceder
       </Button>
-      <Divider sx={{mb: 2}}>o</Divider>
+      <Divider sx={{ mb: 2 }}>o</Divider>
       <CatTituloDescrip
         control={control}
         errors={errors}
         editTipo={editCategoria}
       />
-
       <Typography variant="h6" color="#2c4175" mb={1}>
         Editar categorías actuales
       </Typography>
@@ -176,12 +227,42 @@ export const EditarCategorias = () => {
             ))}
           </Grid2>
         </List>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="end"
+          sx={{ width: "98%" }}
+        >
+          {!handleAgregarCategoria && (
+            <Button
+              variant="contained"
+              onClick={() => setHandleAgregarCategoria(true)}
+            >
+              Agregar Categoría
+            </Button>
+          )}
+        </Box>
+        {handleAgregarCategoria && (
+          <AgregarCategorias
+            fields={fields}
+            remove={remove}
+            control={control}
+            errors={errors}
+            handleAddField={handleAddField}
+            onCancelAgregar={onCancelAgregar}
+            editCategoria={false} // Asegúrate de que los campos no estén deshabilitados
+            getValues={getValues}
+            setError={setError}
+            clearErrors={clearErrors}
+            disableFields={!editCategoria} // Deshabilitar campos cuando se guarda
+          />
+        )}
 
         {alertOpen ? <AlertCorrecto openT={alertOpen} /> : null}
 
         <Box display="flex">
           <Button
-            disabled={!editCategoria}
+            disabled={!isDirty && !handleAgregarCategoria && Object.keys(dirtyFields).length === 0}
             variant="contained"
             sx={{
               backgroundColor: "#2c4175",
@@ -205,24 +286,6 @@ export const EditarCategorias = () => {
           </Button>
         </Box>
       </form>
-      <Divider sx={{mt:2, mb: 2}}>o</Divider>
-      <Box display="flex" alignItems="center">
-        <Checkbox
-          checked={handleAgregarCategoria}
-          onChange={() => setHandleAgregarCategoria(!handleAgregarCategoria)}
-        />
-        <Typography variant="h6" color="#2c4175">
-          Agregar categorías
-        </Typography>
-      </Box>
-      {handleAgregarCategoria && (
-        <AgregarCategorias
-          validarCategoria={validarCategoria}
-          idEsquemaActual={id}
-          onCancelAgregar={onCancelAgregar}
-        />
-      )}
-      <Divider sx={{mt:2, mb: 2}}>o</Divider>
     </Box>
   );
 };
