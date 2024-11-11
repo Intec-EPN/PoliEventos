@@ -84,7 +84,7 @@ DELIMITER ;
 
 -- Colores de chips
 -- Propio
-CALL ActualizarBgColorPorId('#23a5d9', 1);
+CALL ActualizarBgColorPorId('#43b0db', 1);
 -- Departamento
 CALL ActualizarBgColorPorId('#f09b3c', 2);
 CALL ActualizarBgColorPorId('#f09229', 3);

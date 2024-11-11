@@ -5,7 +5,7 @@ import { EditarCategorias } from "../Administracion/views/Categorizaciones/compo
 import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
-import { LoginMain } from "../Login/LoginMain";
+import { LoginMain } from "../Auth/LoginMain";
 
 export const routes = [
   {

@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
 // Interceptores
 axiosInstance.interceptors.request.use(
   (config) => {
+    //TODO
     // Configurar headers.
     // config.headers['Authorization'] = `Bearer ${token}`;
     return config;

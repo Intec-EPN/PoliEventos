@@ -5,7 +5,7 @@ import { LoginTema } from "./theme/LoginTema";
 export const LoginMain = () => {
   return (
     <LoginTema>
-        <LoginPage />
+      <LoginPage />
     </LoginTema>
   );
 };

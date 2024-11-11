@@ -7,15 +7,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Node modules
-*/node_modules
-/Server/node_modules
-
-# Environment variables
-.env
-
-# Specific API path
-/Client/src/api/api.js
+node_modules
+*.local
 
 # Editor directories and files
 .vscode/*
@@ -28,6 +21,10 @@ lerna-debug.log*
 *.sln
 *.sw?
 
-# History
-.history/
 *.history
+
+.env
+
+# Specific API path
+src/api/api.js
+
