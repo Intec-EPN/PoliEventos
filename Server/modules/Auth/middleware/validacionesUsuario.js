@@ -6,7 +6,11 @@ const SanitizarValidar = [
     // Sanitización
     body('nombre').trim().escape().matches(/^[a-zA-ZÀ-ÿ\s]+$/).withMessage('El nombre ingresado no es válido.'),
     body('email').normalizeEmail().trim().isEmail().withMessage('El correo electrónico no es válido.'),
-    body('password').trim().escape().matches(/^[a-zA-Z0-9!@#$%^&*]+$/).withMessage('La contraseña contiene caracteres no permitidos.'),
+    body('password')
+        .trim()
+        .escape()
+        .matches(/^[a-zA-Z0-9!@#$%^&*áéíóúÁÉÍÓÚñÑ\_]+$/)
+        .withMessage('La contraseña contiene caracteres no permitidos.'),
 
     async (req, res, next) => {
         const errors = validationResult(req);

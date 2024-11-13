@@ -1,15 +1,31 @@
 import { Box, Button, Checkbox, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { startLogin } from "../../store/auth/thunks";
 
 export const Ingresar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const [error, setError] = useState(null);
+  const [exito, setExito] = useState(false);
+
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(startLogin(data));
+      navigate('/admin');
+      setExito(true);
+    } catch (err) {
+      setError(err.message || "Error al iniciar sesión");
+    }
   };
 
   return (
@@ -45,7 +61,7 @@ export const Ingresar = () => {
           <TextField
             label="Correo"
             variant="filled"
-            {...register("correo", { required: "El correo es obligatorio" })}
+            {...register("correo", { required: "Correo es requerido" })}
             error={!!errors.correo}
             helperText={errors.correo?.message}
           />
@@ -53,9 +69,7 @@ export const Ingresar = () => {
             label="Contraseña"
             variant="filled"
             type="password"
-            {...register("contraseña", {
-              required: "La contraseña es obligatoria",
-            })}
+            {...register("contraseña", { required: "Contraseña es requerida" })}
             error={!!errors.contraseña}
             helperText={errors.contraseña?.message}
           />
@@ -64,6 +78,8 @@ export const Ingresar = () => {
           <Checkbox {...register("recordar")} />
           <Typography variant="p">Recordar sesión</Typography>
         </Box>
+        {error && <span>{error}</span>}
+        {exito && <span>Inicio de sesión exitoso</span>}
         <Button variant="contained" type="submit">
           Ingresar
         </Button>

@@ -1,9 +1,9 @@
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { useState } from 'react';
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { useState } from "react";
 
 export default function BotonSeleccionar({ onSeleccionChange }) {
-  const [alignment, setAlignment] = useState('ingresar');
+  const [alignment, setAlignment] = useState("ingresar");
 
   const handleChange = (event, newAlignment) => {
     if (newAlignment !== null) {
@@ -24,20 +24,24 @@ export default function BotonSeleccionar({ onSeleccionChange }) {
       sx={{
         background: "#fff",
         borderRadius: "12px 12px 0 0",
-        '& .MuiToggleButton-root': {
+        "& .MuiToggleButton-root": {
           color: "#000",
-          '&.Mui-selected': {
+          "&.Mui-selected": {
             backgroundColor: "#dc8626",
             color: "#fff",
+            "&:hover": {
+              backgroundColor: "#db8524",
+              color: "#fff",
+            },
           },
-          '&:hover': {
+          "&:hover": {
             backgroundColor: "#db8524",
             color: "#fff",
           },
-          '&:first-of-type': {
+          "&:first-of-type": {
             borderRadius: "12px 0 0 0",
           },
-          '&:last-of-type': {
+          "&:last-of-type": {
             borderRadius: "0 12px 0 0",
           },
         },

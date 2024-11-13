@@ -6,14 +6,13 @@ import { api } from './api';
 const axiosInstance = axios.create({
   baseURL: api,
   timeout: 10000, // Tiempo de espera
+  withCredentials: true, // Asegúrate de enviar credenciales (cookies)
 });
 
 // Interceptores
 axiosInstance.interceptors.request.use(
   (config) => {
     //TODO
-    // Configurar headers.
-    // config.headers['Authorization'] = `Bearer ${token}`;
     return config;
   },
   (error) => {
