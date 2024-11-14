@@ -16,8 +16,20 @@ export const startRolesUsuarios = (usuarioId, rolesIds) => {
     return async (dispatch) => {
         try {
             const response = await axiosInstance.post('/admin/usuarios/asignar', { usuarioId, rolesIds });
+            dispatch(startLoadingUsuarios());
         } catch (error) {
             throw new Error("Error al asignar roles a usuario.", error);
+        }
+    };
+}
+
+export const startDeletingUsuario = (usuarioId) => {
+    return async (dispatch) => {
+        try {
+            const response = await axiosInstance.delete(`/admin/usuarios/${usuarioId}`);
+            dispatch(startLoadingUsuarios());
+        } catch (error) {
+            throw new Error("Error al eliminar usuario.", error);
         }
     };
 }

@@ -20,6 +20,11 @@ const UsuariosModel = sequelize.define('Usuarios', {
     password_hash: {
         type: DataTypes.STRING(255),
         allowNull: false, // Guardará el hash de la contraseña
+    },
+    creado_en: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false,
     }
 }, {
     tableName: 'usuarios',

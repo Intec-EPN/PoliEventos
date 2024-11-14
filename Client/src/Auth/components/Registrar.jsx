@@ -4,7 +4,7 @@ import axiosInstance from "../../api/axiosConfig"; // Importar axiosInstance
 import { useState } from "react"; // Importar useState
 import PopUpRegistro from "./PopUpRegistro";
 
-export const Registrar = () => {
+export const Registrar = ({ onRegistroExitoso }) => {
   const {
     register,
     handleSubmit,
@@ -21,6 +21,7 @@ export const Registrar = () => {
         password: data.contraseña.trim(),
       });
       setExito(true);
+      onRegistroExitoso();
     } catch (err) {
       setError(err.response?.data?.error || "Error al registrar usuario");
     }

@@ -6,7 +6,7 @@ const RolesModel = require("../../models/Roles/rolesModel");
 const obtenerUsuarios = async (req, res) => {
     try {
         const usuariosBruto = await UsuariosModel.findAll({
-            attributes: ['id', 'nombre', 'correo']
+            attributes: ['id', 'nombre', 'correo', 'creado_en']
         });
         const usuariosFiltadros = usuariosBruto.filter(user => user.nombre !== 'admn');
 
@@ -16,6 +16,7 @@ const obtenerUsuarios = async (req, res) => {
                 id: usuario.id,
                 nombre: usuario.nombre,
                 correo: usuario.correo,
+                fecha: usuario.creado_en,
                 roles: roles,
             };
         }));
@@ -74,5 +75,36 @@ const asignarRolesUsuario = async (req, res) => {
     }
 };
 
+const eliminarUsuario = async (req, res) => {
+    const { usuarioId } = req.params;
 
-module.exports = { obtenerUsuarios, asignarRolesUsuario };
+    if (!usuarioId) {
+        return res.status(400).json({ error: 'Datos inválidos' });
+    }
+
+    try {
+        // Verificar si el usuario existe
+        const usuario = await UsuariosModel.findByPk(usuarioId);
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Eliminar las asignaciones existentes del usuario
+        await UsuarioRolModel.destroy({
+            where: { usuario_id: usuarioId }
+        });
+
+        // Eliminar el usuario
+        await UsuariosModel.destroy({
+            where: { id: usuarioId }
+        });
+
+        res.status(200).json({ message: 'Usuario eliminado correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al eliminar usuario' });
+    }
+}
+
+
+module.exports = { obtenerUsuarios, asignarRolesUsuario, eliminarUsuario };
