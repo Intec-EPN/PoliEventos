@@ -10,7 +10,6 @@ const authMiddleware = (req, res, next) => {
         const decoded = jwt.verify(token, jwtSecret);
         // Almacenar la información del usuario decodificada en la solicitud
         req.user = decoded;
-        console.log(decoded);
         // Continuar con la siguiente función de middleware o ruta
         next();
     } catch (error) {

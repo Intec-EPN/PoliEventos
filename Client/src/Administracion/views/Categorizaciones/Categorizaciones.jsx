@@ -4,23 +4,18 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { startLoadingEsquemas } from "../../../store/Administracion/Categorizacion/thunks";
 import { opcionActual } from "../../../store/Administracion/administracionSlice";
+import { Indicadores } from "./components/tipos/Indicadores";
 
 export const Categorizaciones = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(opcionActual('Categorizaciones'));
-    dispatch(startLoadingEsquemas())  ;
+    dispatch(opcionActual("Categorizaciones"));
+    dispatch(startLoadingEsquemas());
   }, [dispatch]);
 
   return (
     <Box ml={3} mr={3}>
-      <Typography
-        variant="h6"
-        color="primary"
-        sx={{ fontWeight: 700, mb: 1, mt: 1.5 }}
-      >
-        Categorizaciones
-      </Typography>
+      <Indicadores value={"una categorización"} editar={true} />
       <ListaCategorias />
     </Box>
   );

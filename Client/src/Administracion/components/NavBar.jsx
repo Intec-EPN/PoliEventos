@@ -10,7 +10,6 @@ export const NavBar = ({ drawerWidth, setChangeMediaQuery }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector( state => state.adminAuth.user );
-  console.log(user);
   
   const onLogout = async () => {
     try {

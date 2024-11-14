@@ -5,6 +5,10 @@ import { EditarCategorias } from "../Administracion/views/Categorizaciones/compo
 import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
+import { AsignarUsuarios } from "../Administracion/views/Usuarios/Asignar/AsignarUsuarios";
+import { CrearUsuarios } from "../Administracion/views/Usuarios/Crear/CrearUsuarios";
+import { ListaUsuarios } from "../Administracion/views/Usuarios/Lista/ListaUsuarios";
+import { Usuarios } from "../Administracion/views/Usuarios/Usuarios";
 import { LoginMain } from "../Auth/LoginMain";
 import { AdminAuth } from "../components/AdminAuth";
 
@@ -40,6 +44,24 @@ export const routes = [
           {
             path: "crear",
             element: <AdminAuth component={CrearRol} />,
+          },
+        ]
+      },
+      {
+        path: "usuarios",
+        element: <AdminAuth component={Usuarios} />,
+        children:[
+          {
+            path: "lista",
+            element: <AdminAuth component={ListaUsuarios} />,
+          },
+          {
+            path: "asignar",
+            element: <AdminAuth component={AsignarUsuarios} />,
+          },
+          {
+            path: "crear",
+            element: <AdminAuth component={CrearUsuarios} />,
           },
         ]
       },

@@ -101,6 +101,7 @@ const obtenerRoles = async (req, res) => {
                 });
 
                 return {
+                    id: rol.id,
                     rol: rol.nombre,
                     descripcion: rol.descripcion,
                     departamentos: departamentos.map(dep => dep.departamento), // Solo me traigo el nombre

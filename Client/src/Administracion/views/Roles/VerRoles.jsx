@@ -2,7 +2,7 @@ import { Box, Button, Grid2, Typography, useMediaQuery } from "@mui/material";
 import { TarjetaRol } from "./components/TarjetaRol";
 import { Filtro } from "./components/Lista/Filtro";
 import { useDispatch, useSelector } from "react-redux";
-import { FiltroTag } from "./components/Lista/FiltroTag";
+// import { FiltroTag } from "./components/Lista/FiltroTag";
 import { useEffect, useState } from "react";
 import {
   startLoadingFacultades,
@@ -84,10 +84,12 @@ export const VerRoles = () => {
         <Box container display="flex" gap={2} alignItems="center">
           <Filtro opciones={nombresFacultades} filtro="Facultad" size={360} />
           <Filtro opciones={departamentos} filtro="Departamento" size={360} />
-          <Box sx={{flex:2, mr:"1rem", display:"flex", justifyContent:"end"}}>
+          <Box
+            sx={{ flex: 2, mr: "1rem", display: "flex", justifyContent: "end" }}
+          >
             <Button
               variant="contained"
-              sx={{ backgroundColor: "#2c4175", display: "flex", height:55 }}
+              sx={{ backgroundColor: "#2c4175", display: "flex", height: 55 }}
               onClick={handleCrearRol}
             >
               Crear Rol
@@ -102,7 +104,6 @@ export const VerRoles = () => {
         margin={2}
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 12, sm: 12, md: 12 }}
-        // columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {!isMobileOrTablet &&
           rolesFiltrados.map((rol, index) => (

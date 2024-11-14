@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { opcionActual } from "../../store/Administracion/administracionSlice";
 
-export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
+export const UsuariosSubItem = ({ toggleDrawer, isOpen }) => {
   // Para manejar el valor de la opción
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
   const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen(!open);
-    dispatch(opcionActual("Roles"));
+    dispatch(opcionActual("Usuarios"));
   };
 
   // Creo el hook para navegar en el sidebar
@@ -37,7 +37,7 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
   return (
     <ListItem disablePadding sx={{ display: "block" }}>
       <ListItemButton onClick={handleClick}>
-        <ListItemText primary="Roles" sx={{ color: "white", ml: 1 }} />
+        <ListItemText primary="Usuarios" sx={{ color: "white", ml: 1 }} />
         {open ? (
           <ExpandLess sx={{ color: "white" }} />
         ) : (
@@ -81,9 +81,9 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
                 },
               },
             }}
-            onClick={() => handleSubNavigation("roles/lista", "Lista de roles")}
+            onClick={() => handleSubNavigation("usuarios/lista", "Lista de usuarios")}
           >
-            <ListItemText primary="Lista de roles" />
+            <ListItemText primary="Lista de usuarios" />
           </ListItemButton>
           <ListItemButton
             selected={false} // No se usa estado
@@ -109,9 +109,37 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
                 },
               },
             }}
-            onClick={() => handleSubNavigation("roles/crear", "Crea un rol")}
+            onClick={() => handleSubNavigation("usuarios/asignar", "Asignar roles")}
           >
-            <ListItemText primary="Crea un rol" />
+            <ListItemText primary="Asignar roles" />
+          </ListItemButton>
+          <ListItemButton
+            selected={false} // No se usa estado
+            sx={{
+              pl: 4,
+              width: "100%",
+              "&.Mui-selected": {
+                backgroundColor: "#004aad",
+                "& .MuiListItemText-root": {
+                  color: "white", // Cambia a blanco el texto
+                },
+              },
+              "&:hover": {
+                backgroundColor: "#004aad",
+                "& .MuiListItemText-root": {
+                  color: "white",
+                },
+              },
+              "&:focus": {
+                backgroundColor: "#004aad",
+                "& .MuiListItemText-root": {
+                  color: "white",
+                },
+              },
+            }}
+            onClick={() => handleSubNavigation("usuarios/crear", "Crea un usuario")}
+          >
+            <ListItemText primary="Crea un usuario" />
           </ListItemButton>
         </List>
       </Collapse>

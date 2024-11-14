@@ -13,6 +13,7 @@ export const Indicadores = ({ value, editar = false }) => {
         width: "100%",
         justifyContent: { xs: "center", md: "left" },
         padding: { xs: 1, md: 0 },
+        mt: 2.5,
       }}
       mb={1}
     >
@@ -60,7 +61,18 @@ export const Indicadores = ({ value, editar = false }) => {
       ) : null}
       {value === "una categorización" ? (
         <>
-          |
+          <Typography
+            variant="p"
+            sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+          >
+            |
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{ display: { xs: "block", sm: "none", md: "none" } }}
+          >
+            <hr></hr>
+          </Typography>
           <Typography>
             <span
               style={{

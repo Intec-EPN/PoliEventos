@@ -61,4 +61,4 @@ const obtenerRolesPorUsuario = async (usuario_id) => {
     return rolesArray || [];
 };
 
-module.exports = { loginUsuario };
+module.exports = { loginUsuario, obtenerRolesPorUsuario };

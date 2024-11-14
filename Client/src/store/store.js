@@ -9,6 +9,7 @@ import { adminAuthSlice } from './auth/adminAuthSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux'; // Asegúrate de importar combineReducers
+import { usuariosSlice } from './Administracion/Usuarios/usuariosSlice';
 
 // Configuración del persist
 const persistConfig = {
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   rol: rolSlice.reducer,
   permiso: permisoSlice.reducer,
   departamento: departamentoSlice.reducer,
+  usuarios: usuariosSlice.reducer,
   // Autenticación.
   adminAuth: adminAuthSlice.reducer,
 });

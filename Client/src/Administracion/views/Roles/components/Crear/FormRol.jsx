@@ -88,7 +88,7 @@ export const FormRol = () => {
         color="primary"
         sx={{ fontWeight: 700, mb: 1 }}
       >
-        CREAR UN ROL
+        Completa los campos para crear un nuevo rol:
       </Typography>
       <Grid2 container gap={3}>
         <RadioButton reset={reset} />

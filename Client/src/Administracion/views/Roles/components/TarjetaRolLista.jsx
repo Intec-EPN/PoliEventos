@@ -18,6 +18,7 @@ export const TarjetaRolLista = ({
   permisos = [],
   departamentos = [],
   horizontal = false,
+  lista = false,
 }) => {
   const dispatch = useDispatch();
   const onBorrarRol = (rol) => {
@@ -65,7 +66,13 @@ export const TarjetaRolLista = ({
 
       {/* Sección de permisos */}
       <CardContent
-        sx={{ width: "100%", flex: 2, display: "flex", alignItems: "center", ml:2 }}
+        sx={{
+          width: "100%",
+          flex: 2,
+          display: "flex",
+          alignItems: "center",
+          ml: 2,
+        }}
       >
         <SeccionPermisos
           niveles={permisos}
@@ -75,17 +82,19 @@ export const TarjetaRolLista = ({
       </CardContent>
 
       {/* Icono de eliminar */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: 2,
-        }}
-      >
-        <IconButton onClick={() => onBorrarRol(rol)}>
-          <DeleteIcon sx={{ color: "red" }} />
-        </IconButton>
-      </Box>
+      {lista && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            padding: 2,
+          }}
+        >
+          <IconButton onClick={() => onBorrarRol(rol)}>
+            <DeleteIcon sx={{ color: "red" }} />
+          </IconButton>
+        </Box>
+      )}
     </Card>
   );
 };

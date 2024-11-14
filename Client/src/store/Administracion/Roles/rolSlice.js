@@ -79,7 +79,8 @@ export const rolSlice = createSlice({
       state.creandoRol = false;
     },
     setRoles: (state, action) => {
-      state.roles = action.payload;
+      const roles = action.payload.filter(rol => rol.rol !== 'Administrador');
+      state.roles = roles;
     },
     setCreandoRol: (state, action) => {
       state.creandoRol = action.payload;

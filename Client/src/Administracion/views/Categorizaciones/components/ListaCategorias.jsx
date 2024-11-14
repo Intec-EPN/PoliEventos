@@ -27,7 +27,6 @@ import {
   startCreatingEsquema,
   startDeletingEsquema,
 } from "../../../../store/Administracion/Categorizacion/thunks";
-import { Indicadores } from "./tipos/Indicadores";
 
 export const ListaCategorias = () => {
   const navigate = useNavigate();
@@ -139,7 +138,6 @@ useEffect(() => {
 
   return (
     <Box>
-      <Indicadores value={"una categorización"} editar={true} />
       <List sx={{ width: "100%", bgcolor: "white" }}>
         {esquemas &&
           esquemas.map((esquema) =>

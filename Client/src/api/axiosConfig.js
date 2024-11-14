@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { api } from './api';
-
+import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 
 // Crear una instancia de Axios
 const axiosInstance = axios.create({
@@ -20,13 +20,14 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+
 axiosInstance.interceptors.response.use(
-  (response) => {
-    // Procesar la respuesta aquí si es necesario
-    return response;
-  },
-  (error) => {
-    // Manejo de errores de respuesta
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+        // Redirigir al usuario a la página de inicio de sesión
+        window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );
