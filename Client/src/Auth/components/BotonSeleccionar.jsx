@@ -2,12 +2,14 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useState } from "react";
 
-export default function BotonSeleccionar({ onSeleccionChange }) {
-  const [alignment, setAlignment] = useState("ingresar");
+export default function BotonSeleccionar({ alignment, onSeleccionChange }) {
+  // Elimina el estado interno alignment
+  // const [alignment, setAlignment] = useState("ingresar");
 
   const handleChange = (event, newAlignment) => {
     if (newAlignment !== null) {
-      setAlignment(newAlignment);
+      // Elimina la actualización del estado interno
+      // setAlignment(newAlignment);
       if (onSeleccionChange) {
         onSeleccionChange(newAlignment);
       }

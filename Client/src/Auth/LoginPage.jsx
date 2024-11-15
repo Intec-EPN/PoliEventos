@@ -17,6 +17,7 @@ export const LoginPage = () => {
     if (registroExitoso) {
       setTimeout(() => {
         setSeleccion("ingresar");
+        handleSeleccionChange("ingresar");
         setRegistroExitoso(false);
       }, 2000);
     }
@@ -34,7 +35,7 @@ export const LoginPage = () => {
           justifyContent: "center",
         }}
       >
-        <BotonSeleccionar onSeleccionChange={handleSeleccionChange} />
+        <BotonSeleccionar alignment={seleccion} onSeleccionChange={handleSeleccionChange} />
         {/* SEPARACIÓN DE LOS BOTONES */}
         {seleccion === "ingresar" ? (
           <Ingresar />

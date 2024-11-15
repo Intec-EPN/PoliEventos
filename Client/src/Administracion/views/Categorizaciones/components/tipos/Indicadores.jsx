@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
+import SquareIcon from "@mui/icons-material/Square";
 
 export const Indicadores = ({ value, editar = false }) => {
   return (
@@ -73,19 +74,10 @@ export const Indicadores = ({ value, editar = false }) => {
           >
             <hr></hr>
           </Typography>
-          <Typography>
-            <span
-              style={{
-                display: "inline-block",
-                width: "10px",
-                height: "10px",
-                backgroundColor: "#dc8626",
-                borderRadius: "50%",
-                marginRight: "8px",
-              }}
-            ></span>
-            Categorización Vacía
-          </Typography>
+          <Box display="flex" gap={1}>
+            <SquareIcon sx={{ color: "#dc8626",width:"1.3rem" }} />
+            <Typography variant="p" color="#dc8626">Categorización vacía</Typography>
+          </Box>
         </>
       ) : null}
     </Box>

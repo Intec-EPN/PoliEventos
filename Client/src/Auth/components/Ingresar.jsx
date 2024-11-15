@@ -1,13 +1,27 @@
 import { Box, Button, Checkbox, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { startLogin } from "../../store/auth/thunks";
 
 export const Ingresar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.adminAuth);
+
+  useEffect(() => {
+    if (user) {
+      if (user.nombre === "admn") {
+        navigate("/admin/permisos");
+      } else if (user.roles.length > 0) {
+        navigate("/eventos");
+      } else {
+        setError("Usuario no encontrado");
+      }
+      setExito(true);
+    }
+  }, [user, navigate]);
 
   const {
     register,
@@ -21,7 +35,6 @@ export const Ingresar = () => {
   const onSubmit = async (data) => {
     try {
       await dispatch(startLogin(data));
-      navigate('/admin');
       setExito(true);
     } catch (err) {
       setError(err.message || "Error al iniciar sesión");
@@ -73,10 +86,6 @@ export const Ingresar = () => {
             error={!!errors.contraseña}
             helperText={errors.contraseña?.message}
           />
-        </Box>
-        <Box display="flex" alignItems="center" pr={3}>
-          <Checkbox {...register("recordar")} />
-          <Typography variant="p">Recordar sesión</Typography>
         </Box>
         {error && <span>{error}</span>}
         {exito && <span>Inicio de sesión exitoso</span>}

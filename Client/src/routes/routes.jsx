@@ -7,15 +7,18 @@ import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
 import { AsignarUsuarios } from "../Administracion/views/Usuarios/Asignar/AsignarUsuarios";
 import { CrearUsuarios } from "../Administracion/views/Usuarios/Crear/CrearUsuarios";
+import { EditarUsuario } from "../Administracion/views/Usuarios/Lista/components/EditarUsuario";
 import { ListaUsuarios } from "../Administracion/views/Usuarios/Lista/ListaUsuarios";
 import { Usuarios } from "../Administracion/views/Usuarios/Usuarios";
 import { LoginMain } from "../Auth/LoginMain";
 import { AdminAuth } from "../components/AdminAuth";
+import { RolesAuth } from "../components/RolesAuth";
+import { DePrueba } from "../GestionEventos/components/DePrueba";
 
 export const routes = [
   {
     path: "/login",
-    element: <LoginMain />, 
+    element: <LoginMain />,
   },
   {
     path: "/admin",
@@ -26,17 +29,17 @@ export const routes = [
         element: <AdminAuth component={Categorizaciones} />,
       },
       {
-        path: "categorizaciones/:esquemaActual/editar",  
-        element: <AdminAuth component={EditarCategorias} />, 
+        path: "categorizaciones/:esquemaActual/editar",
+        element: <AdminAuth component={EditarCategorias} />,
       },
       {
-        path: "categorizaciones/:esquemaActual/crear",  
+        path: "categorizaciones/:esquemaActual/crear",
         element: <AdminAuth component={CrearEsquema} />,
       },
       {
         path: "roles",
         element: <AdminAuth component={Roles} />,
-        children:[
+        children: [
           {
             path: "lista",
             element: <AdminAuth component={VerRoles} />,
@@ -45,12 +48,12 @@ export const routes = [
             path: "crear",
             element: <AdminAuth component={CrearRol} />,
           },
-        ]
+        ],
       },
       {
         path: "usuarios",
         element: <AdminAuth component={Usuarios} />,
-        children:[
+        children: [
           {
             path: "lista",
             element: <AdminAuth component={ListaUsuarios} />,
@@ -63,7 +66,11 @@ export const routes = [
             path: "crear",
             element: <AdminAuth component={CrearUsuarios} />,
           },
-        ]
+        ],
+      },
+      {
+        path: "usuarios/:usuarioId/editar",
+        element: <AdminAuth component={EditarUsuario} />,
       },
       {
         path: "permisos",
@@ -74,5 +81,9 @@ export const routes = [
         element: <AdminAuth component={Loges} />,
       },
     ],
+  },
+  {
+    path: "/eventos",
+    element: <RolesAuth component={DePrueba} />,
   },
 ];

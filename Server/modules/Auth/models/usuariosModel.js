@@ -6,7 +6,7 @@ const UsuariosModel = sequelize.define('Usuarios', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4, 
+        defaultValue: DataTypes.UUIDV4,
     },
     nombre: {
         type: DataTypes.STRING(100),
@@ -25,7 +25,11 @@ const UsuariosModel = sequelize.define('Usuarios', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
         allowNull: false,
-    }
+    },
+    habilitado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+    },
 }, {
     tableName: 'usuarios',
     timestamps: false, // El timestamp ya lo hace la base  

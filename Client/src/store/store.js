@@ -15,6 +15,8 @@ import { usuariosSlice } from './Administracion/Usuarios/usuariosSlice';
 const persistConfig = {
   key: 'root',
   storage,
+  // Lista de reducers que no se persistirán
+  blacklist: ['usuarios'], 
 };
 
 // Configuración de reducers utilizando combineReducers
@@ -40,8 +42,8 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [
-          'persist/PERSIST', // Ignora acciones de persistencia
-          'persist/REHYDRATE' // También puedes ignorar otras acciones de persistencia
+          'persist/PERSIST', 
+          'persist/REHYDRATE'
         ],
       },
     }),
@@ -49,14 +51,3 @@ export const store = configureStore({
 
 // Configuro el persistor
 export const persistor = persistStore(store);
-
-
-// export const store = configureStore({
-//   reducer: {
-//     administracion: administracionSlice.reducer,
-//     categorizacion: categorizacionSlice.reducer,
-//     rol: rolSlice.reducer,
-//     permiso: permisoSlice.reducer,
-//     departamento: departamentoSlice.reducer
-//   },
-// });

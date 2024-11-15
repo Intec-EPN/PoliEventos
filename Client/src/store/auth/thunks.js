@@ -10,7 +10,7 @@ export const startLogin = (data) => {
             }, {
                 withCredentials: true // Envío Cookies
             });
-            dispatch(loginSuccess({user: response.data}));
+            await dispatch(loginSuccess({user: response.data}));
         } catch (error) {
             throw new Error("Credenciales incorrectas", error);
         }

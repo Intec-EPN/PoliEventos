@@ -6,6 +6,7 @@ export const usuariosSlice = createSlice({
         usuarios: [],
         usuarioAsignar: "",
         rolesAsignar: [],
+        usuarioActual: ""
     },
     reducers: {
         setUsuarios: (state, action) => {
@@ -20,7 +21,10 @@ export const usuariosSlice = createSlice({
         limpiarAsignacion: (state) => {
             state.usuarioAsignar = "";
             state.rolesAsignar = [];
-        }
+        },
+        setUsuarioActual: (state, action) => {
+            state.usuarioActual = action.payload;
+        },
     }
 });
 
@@ -29,5 +33,6 @@ export const {
     setUsuarios,
     setUsuarioAsignar,
     setRolesAsignar,
-    limpiarAsignacion
+    limpiarAsignacion,
+    setUsuarioActual
 } = usuariosSlice.actions;

@@ -6,7 +6,7 @@ const RolesModel = require("../../models/Roles/rolesModel");
 const obtenerUsuarios = async (req, res) => {
     try {
         const usuariosBruto = await UsuariosModel.findAll({
-            attributes: ['id', 'nombre', 'correo', 'creado_en']
+            attributes: ['id', 'nombre', 'correo', 'creado_en', 'habilitado']
         });
         const usuariosFiltadros = usuariosBruto.filter(user => user.nombre !== 'admn');
 
@@ -17,6 +17,7 @@ const obtenerUsuarios = async (req, res) => {
                 nombre: usuario.nombre,
                 correo: usuario.correo,
                 fecha: usuario.creado_en,
+                habilitado: usuario.habilitado,
                 roles: roles,
             };
         }));
