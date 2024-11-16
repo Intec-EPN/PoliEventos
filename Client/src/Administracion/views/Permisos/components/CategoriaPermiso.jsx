@@ -23,8 +23,8 @@ export const CategoriaPermiso = ({
   align = false,
   separacion = 0,
   onPermisoClick,
-  departamentos = [],
   horizontal = true,
+  nivelSeleccionado, // Añadir esta nueva prop
 }) => {
   const { acciones } = useSelector((state) => state.permiso);
 
@@ -69,6 +69,7 @@ export const CategoriaPermiso = ({
                             color={color}
                             nombre={nombre}
                             onPermisoClick={onPermisoClick}
+                            nivelSeleccionado={nivelSeleccionado} // Pasar la nueva prop
                           />
                         )
                       );
@@ -121,6 +122,7 @@ export const CategoriaPermiso = ({
                     color={color}
                     nombre={nombre}
                     onPermisoClick={onPermisoClick}
+                    nivelSeleccionado={nivelSeleccionado} // Pasar la nueva prop
                   />
                 )
               );

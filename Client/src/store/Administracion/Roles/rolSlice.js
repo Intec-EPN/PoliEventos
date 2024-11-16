@@ -87,7 +87,10 @@ export const rolSlice = createSlice({
     handleSeleccion: (state, action) => {
       state.seleccionNivel = action.payload;
       // Reiniciar permisos
-      state.rolEnCreacion.permisos = state.estructuraPermisos;
+      state.rolEnCreacion.permisos = state.estructuraPermisos.map(permiso => ({
+        ...permiso,
+        acciones: []
+      }));
     },
     setPermisos: (state, action) => {
       state.rolEnCreacion.permisos = action.payload;

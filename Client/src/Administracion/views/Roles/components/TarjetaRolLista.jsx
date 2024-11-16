@@ -20,7 +20,6 @@ export const TarjetaRolLista = ({
   permisos = [],
   departamentos = [],
   horizontal = false,
-  lista = false,
 }) => {
   const dispatch = useDispatch();
   const onBorrarRol = (rol) => {
@@ -34,6 +33,14 @@ export const TarjetaRolLista = ({
   const { usuarios } = useSelector((state) => state.usuarios);
 
   const [usado, setUsado] = useState(false);
+
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
 
   useEffect(() => {
     setUsado(
@@ -102,7 +109,7 @@ export const TarjetaRolLista = ({
       </CardContent>
 
       {/* Icono de eliminar */}
-      {lista && !usado && (
+      {isMounted && !usado && (
         <Box
           sx={{
             display: "flex",

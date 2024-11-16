@@ -31,7 +31,7 @@ export const RadioButton = ({ reset }) => {
     dispatch(handleSeleccion(selectedValue));
     if (selectedValue === "Facultad") {
       dispatch(startLoadingDepartamentosFacultades());
-    }else{
+    } else {
       dispatch(resetDepartamentos());
     }
   };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge, Chip, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check"; // Importa el ícono de verificación
@@ -24,8 +24,14 @@ export const ChipPermiso = ({
   color,
   nombre,
   onPermisoClick,
+  nivelSeleccionado, // Añadir esta nueva prop
 }) => {
   const [showBadge, setShowBadge] = useState(false);
+
+  useEffect(() => {
+    setShowBadge(false);
+  }, [nivelSeleccionado]);
+
   const handleChipClick = () => {
     if (clickable) {
       setShowBadge((prevShowBadge) => !prevShowBadge);
