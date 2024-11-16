@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { TextField } from "@mui/material";
 import { IndicadoresUsuario } from "./IndicadoresUsuario";
 import { Row } from "./Row";
+import { useMediaQuery } from "@mui/material";
 
 function createData(nombre, correo, fecha, id, habilitado) {
   return {
@@ -27,6 +28,7 @@ export const TablaUsuarios = () => {
   const { usuarios } = useSelector((state) => state.usuarios);
   const [rows, setRows] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const isMobile = useMediaQuery("(max-width: 960px)");
 
   React.useEffect(() => {
     const newRows = usuarios.map((usuario) => {
@@ -78,23 +80,31 @@ export const TablaUsuarios = () => {
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontSize: "1.2rem" }}/>
-              <TableCell sx={{ color: "white", fontSize: "1.1rem" }}>Usuario</TableCell>
+              <TableCell sx={{ fontSize: "1.2rem" }} />
+              <TableCell sx={{ color: "white", fontSize: "1.1rem" }}>
+                Usuario
+              </TableCell>
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem"  }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem" }}
               >
                 Correo
               </TableCell>
+              {!isMobile && (
+                <TableCell
+                  align="center"
+                  sx={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  Fecha de registro
+                </TableCell>
+              )}
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem"  }}
-              >
-                Fecha de registro
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem"  }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem" }}
               >
                 Acciones
               </TableCell>

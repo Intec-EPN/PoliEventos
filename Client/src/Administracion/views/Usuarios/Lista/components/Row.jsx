@@ -45,7 +45,6 @@ export const Row = (props) => {
     );
   }, [usuarios]);
 
-
   // Editar usuario.
   const onEditUsuario = (usuarioId) => {
     dispatch(setUsuarioActual(usuarioId));
@@ -90,16 +89,18 @@ export const Row = (props) => {
         <TableCell
           component="th"
           scope="row"
-          sx={{ color: "white", fontSize: "1rem"  }}
+          sx={{ color: "white", fontSize: "1rem" }}
         >
           {row.nombre}
         </TableCell>
         <TableCell align="center" sx={{ color: "white", fontSize: "1rem" }}>
           {row.correo}
         </TableCell>
-        <TableCell align="center" sx={{ color: "white", fontSize: "1rem" }}>
-          {row.fecha}
-        </TableCell>
+        {!isMobileOrTablet && (
+          <TableCell align="center" sx={{ color: "white", fontSize: "1rem" }}>
+            {row.fecha}
+          </TableCell>
+        )}
         <TableCell align="center">
           <IconButton onClick={() => onEditUsuario(row.id)}>
             <EditIcon sx={{ color: "white" }} />
@@ -151,7 +152,9 @@ export const Row = (props) => {
                 {isMobileOrTablet &&
                   rolesFiltrados.map((rol, index) => (
                     <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
-                      <TarjetaRol {...rol} id={index} lista={false} />
+                      <Box mb={2}>
+                        <TarjetaRol {...rol} id={index} lista={false} />
+                      </Box>
                     </Grid2>
                   ))}
               </Box>
