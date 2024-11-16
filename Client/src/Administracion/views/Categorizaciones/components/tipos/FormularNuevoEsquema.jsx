@@ -43,6 +43,10 @@ export const FormularNuevoEsquema = ({
             value: 50,
             message: "El nombre no puede tener más de 50 caracteres",
           },
+          validate: {
+            noLeadingOrTrailingSpaces: (value) =>
+              value.trim() === value || "El nombre no puede comenzar o terminar con un espacio",
+          },
          }}
         render={({ field }) => (
           <TextField

@@ -5,8 +5,6 @@ import { startLoadingAcciones, startLoadingPermisosAcciones } from "../../store/
 import { useDispatch } from "react-redux";
 import { startLoadingPermisosEstructura } from "../../store/Administracion/Roles/thunks";
 
-// TODO NO PERMITIR CATEGORIAS CON NOMBRE IGUAL, LO MISMO CON ROLES
-
 export const AdminPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {

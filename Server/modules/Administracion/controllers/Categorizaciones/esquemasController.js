@@ -104,9 +104,8 @@ const atualizarEsquemasCategorias = async (req, res) => {
 };
 
 
-
 const crearEsquemasCategorias = async (req, res) => {
-    const { nombre, descripcion, visible, categorias } = req.body;
+    const { nombre, descripcion, visible } = req.body;
 
     try {
         // Verificar si el esquema ya existe:
@@ -117,35 +116,66 @@ const crearEsquemasCategorias = async (req, res) => {
 
         // Iniciar transacción que asegure la operación (create)
         await sequelize.transaction(async (t) => {
-            // Primero, creo el esquema principal
+            // Creo el esquema principal con categorías vacías
             const nuevoEsquema = await EsquemasCategorizacionModel.create(
                 {
                     nombre,
                     descripcion,
-                    visible
+                    visible,
+                    categorias: [] // Inicializar categorías como un arreglo vacío
                 },
                 { transaction: t } // Transacción para asegurar la atomicidad
             );
-
-            // Luego, creo las categorías asociadas
-            for (const categoria of categorias) {
-                await CategoriasModel.create(
-                    {
-                        nombre: categoria.nombre,
-                        visible: categoria.visible,
-                        esquema_id: nuevoEsquema.id // Relaciono la categoría con el nuevo esquema creado
-                    },
-                    { transaction: t } // Transacción para asegurar la atomicidad
-                );
-            }
         });
 
-        res.status(201).json({ message: "Esquema y categorías creadas correctamente." });
+        res.status(201).json({ message: "Esquema creado correctamente." });
     } catch (error) {
-        console.error(`Error al crear el esquema y categorías: ${error}`);
-        res.status(500).json({ error: "Error al crear el esquema y categorías." });
+        console.error(`Error al crear el esquema: ${error}`);
+        res.status(500).json({ error: "Error al crear el esquema." });
     }
 };
+// DEPRECADO: Usado para obligar a añadir categorías al usuario.
+// const crearEsquemasCategorias = async (req, res) => {
+//     const { nombre, descripcion, visible, categorias } = req.body;
+
+//     try {
+//         // Verificar si el esquema ya existe:
+//         const esquemaExistente = await EsquemasCategorizacionModel.findOne({ where: { nombre } });
+//         if (esquemaExistente) {
+//             return res.status(400).json({ message: 'El esquema de categorización ya existe.' });
+//         }
+
+//         // Iniciar transacción que asegure la operación (create)
+//         await sequelize.transaction(async (t) => {
+//             // Primero, creo el esquema principal
+//             const nuevoEsquema = await EsquemasCategorizacionModel.create(
+//                 {
+//                     nombre,
+//                     descripcion,
+//                     visible
+//                 },
+//                 { transaction: t } // Transacción para asegurar la atomicidad
+//             );
+
+//             // Luego, creo las categorías asociadas
+//             for (const categoria of categorias) {
+//                 await CategoriasModel.create(
+//                     {
+//                         nombre: categoria.nombre,
+//                         visible: categoria.visible,
+//                         esquema_id: nuevoEsquema.id // Relaciono la categoría con el nuevo esquema creado
+//                     },
+//                     { transaction: t } // Transacción para asegurar la atomicidad
+//                 );
+//             }
+//         });
+
+//         res.status(201).json({ message: "Esquema y categorías creadas correctamente." });
+//     } catch (error) {
+//         console.error(`Error al crear el esquema y categorías: ${error}`);
+//         res.status(500).json({ error: "Error al crear el esquema y categorías." });
+//     }
+// };
 
 const cambiarVisibilidadEsquema = async (req, res) => {
     const { id } = req.params;

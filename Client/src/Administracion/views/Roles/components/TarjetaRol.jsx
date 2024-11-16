@@ -2,13 +2,17 @@ import {
   Box,
   Card,
   CardContent,
+  Chip,
+  Grid2,
   IconButton,
   Typography,
 } from "@mui/material";
 import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
 
 export const TarjetaRol = ({
   rol = "",
@@ -19,9 +23,24 @@ export const TarjetaRol = ({
 }) => {
   const dispatch = useDispatch();
   const onBorrarRol = (rol) => {
-    dispatch(startDeletingRol(rol));
+    dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
   };
   
+  const { usuarios } = useSelector((state) => state.usuarios);
+
+  const [usado, setUsado] = useState(false);
+
+  useEffect(() => {
+    setUsado(
+      usuarios.some((usuario) =>
+        usuario.roles.some((role) => {
+          return role.rol_nombre === rol;
+        })
+      ) || false
+    );
+  }, [rol]);
+
+
   return (
     <>
       <Card
@@ -33,10 +52,10 @@ export const TarjetaRol = ({
         }}
       >
         <CardContent sx={{ backgroundColor: "#004aad", color: "white" }}>
-          {lista && (
+          {lista && !usado && (
             <Box display="flex" justifyContent="end">
               <IconButton onClick={() => onBorrarRol(rol)}>
-                <HighlightOffIcon sx={{ color: "red" }} />
+                <DeleteIcon sx={{ color: "red" }} />
               </IconButton>
             </Box>
           )}
@@ -44,6 +63,16 @@ export const TarjetaRol = ({
             {rol}
           </Typography>
           <Typography textAlign="justify">{descripcion}</Typography>
+          <Grid2 container justifyContent="center" alignItems="center" mt={2}>
+          {departamentos.map((dep, index) => (
+            <Chip
+              key={index}
+              label={dep}
+              variant="outlined"
+              sx={{ backgroundColor: "#004aad", color: "white" }}
+            />
+          ))}
+        </Grid2>
         </CardContent>
         <CardContent sx={{ width: "100%", padding: 2 }}>
           <SeccionPermisos niveles={permisos} departamentos={departamentos} />

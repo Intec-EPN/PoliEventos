@@ -15,8 +15,6 @@ export const PermisosInfo = () => {
     AccountBalanceIcon: <AccountBalanceIcon />,
   };
 
-  const aux = acciones.filter((acc) => acc.nivel_id == 2);
-
   return (
     <>
       {permisosAcciones.map((nivelPermiso, id) => (

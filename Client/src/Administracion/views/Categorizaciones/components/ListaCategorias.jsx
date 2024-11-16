@@ -17,36 +17,32 @@ import {
   cambiarVisibilidadEsquema,
   setCancelar,
   setEsquemaActual,
+  setEsquemaCategorizacionActual,
   setNuevoEsquemaCategorizacionActual,
 } from "../../../../store/Administracion/Categorizacion/categorizacionSlice";
 import { useEffect, useState } from "react";
 import { FormularNuevoEsquema } from "./tipos/FormularNuevoEsquema";
 import {
   startChangingVisible,
+  startCreatingEsquema,
   startDeletingEsquema,
 } from "../../../../store/Administracion/Categorizacion/thunks";
-import { Indicadores } from "./tipos/Indicadores";
 
 export const ListaCategorias = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { esquemas, cancelar } = useSelector(
+  const { esquemas, cancelar, esquemaCategorizacionActual } = useSelector(
     (state) => state.categorizacion
   ) || {
     esquemas: [],
   };
+
   useEffect(() => {
     if (cancelar) {
       dispatch(setCancelar(false));
     }
   }, [cancelar]);
-
-  // Lógica para editar un esquema.
-  const onEdit = (value) => {
-    navigate(`/admin/categorizaciones/${value}/editar`);
-    dispatch(setEsquemaActual(value));
-  };
 
   // Lógica para cambiar la visibilidad de un esquema (al usuario).
   const onChangeVisibility = (value) => {
@@ -59,6 +55,12 @@ export const ListaCategorias = () => {
     nombre: "",
     descripcion: "",
   });
+
+useEffect(() => {
+  dispatch(setNuevoEsquemaCategorizacionActual(nuevoEsquema))
+}, [nuevoEsquema]);
+
+
   const [agregando, setAgregando] = useState(false);
 
   const handleAgregarClick = () => {
@@ -79,7 +81,8 @@ export const ListaCategorias = () => {
     }
     if (nuevoEsquema.nombre.trim() && nuevoEsquema.descripcion) {
       const nombre = nuevoEsquema.nombre;
-      navigate(`/admin/categorizaciones/${nombre}/crear`);
+      // navigate(`/admin/categorizaciones/${nombre}/crear`);
+      dispatch(startCreatingEsquema());
       dispatch(setEsquemaActual(nombre));
 
       const esquemaCategorizacionActual = {
@@ -120,19 +123,31 @@ export const ListaCategorias = () => {
     }
   };
 
+    // Lógica para editar un esquema.
+    const onEdit = (nombre, descripcion) => {
+      navigate(`/admin/categorizaciones/${nombre}/editar`);
+      const esquemaActual = {
+        nombre: nombre,
+        descripcion: descripcion,
+      };
+      console.log('Debug', esquemaActual);
+      
+      dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
+      dispatch(setEsquemaActual(nombre));
+    };
+
   return (
     <Box>
-      <Indicadores value={"una categorización"} editar={true}/>
       <List sx={{ width: "100%", bgcolor: "white" }}>
         {esquemas &&
           esquemas.map((esquema) =>
             esquema ? (
               <ListItem
-                sx={{ bgcolor: "#2c4175", mb: 2 }}
+                sx={{ bgcolor: esquema.categorias.length === 0 ? "#dc8626" : "#2c4175", mb: 2 }}
                 key={esquema.id}
                 secondaryAction={
                   <>
-                    <IconButton onClick={() => onEdit(esquema.nombre)}>
+                    <IconButton onClick={() => onEdit(esquema.nombre, esquema.descripcion)}>
                       <EditIcon sx={{ color: "white" }} />
                     </IconButton>
 

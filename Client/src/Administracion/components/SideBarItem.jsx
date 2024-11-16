@@ -8,6 +8,7 @@ import {
 import { RolesSubItem } from "./RolesSubItem";
 import { useDispatch } from "react-redux";
 import { opcionActual } from "../../store/Administracion/administracionSlice";
+import { UsuariosSubItem } from "./UsuariosSubItem";
 
 export const SideBarItem = ({
   opcion = " ",
@@ -24,7 +25,7 @@ export const SideBarItem = ({
 
   return (
     <>
-      {opcion !== "Roles" ? (
+      {opcion !== "Roles" && opcion !== "Usuarios" ? (
         <ListItem disablePadding>
           <ListItemButton
             selected={false}
@@ -54,13 +55,19 @@ export const SideBarItem = ({
             </Grid2>
           </ListItemButton>
         </ListItem>
-      ) : (
+      ) : opcion === "Roles" ? (
         <RolesSubItem
           isOpen={isOpen}
           toggleDrawer={toggleDrawer}
           onClick={onClickNavigation}
         />
-      )}
+      ) : opcion === "Usuarios" ? (
+        <UsuariosSubItem
+          isOpen={isOpen}
+          toggleDrawer={toggleDrawer}
+          onClick={onClickNavigation}
+        />
+      ) : null}
     </>
   );
 };

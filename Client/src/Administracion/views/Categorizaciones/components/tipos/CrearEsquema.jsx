@@ -7,7 +7,6 @@ import {
   actualizarEsquemaCategoriaActual,
   limpiarEsquemaCategorizacionActual,
 } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
-import { AlertCorrecto } from "./AlertCorrecto";
 import { CrearCatTituloDescrip } from "./CrearCatTituloDescrip";
 import { startCreatingEsquema } from "../../../../../store/Administracion/Categorizacion/thunks";
 import { AgregarCategorias } from "./AgregarCategorias";
@@ -33,6 +32,10 @@ export const CrearEsquema = () => {
       // Mensaje de error si no coincide con el regex
       return "Solo se permiten letras, números y puntuación";
     }
+    if (value.trim() !== value) {
+      // Mensaje de error si comienza o termina con un espacio
+      return "La categoría no puede comenzar o terminar con un espacio";
+    }
     // Pasa la validación.
     return true;
   };
@@ -43,6 +46,7 @@ export const CrearEsquema = () => {
     navigate(-1);
   };
 
+  // TODO COMPONENTE NO UTILIZADO (?)
   return (
     <Box ml={3} mr={3}>
       <CrearCatTituloDescrip nombre={nombre} descripcion={descripcion} />

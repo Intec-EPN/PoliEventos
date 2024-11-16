@@ -1,5 +1,5 @@
 import axiosInstance from "../../../api/axiosConfig";
-import { eliminarCategoria, eliminarEsquema, setCancelar, setEsquemas } from "./categorizacionSlice";
+import { agregarEsquema, eliminarCategoria, eliminarEsquema, setCancelar, setEsquemas } from "./categorizacionSlice";
 
 export const startLoadingEsquemas = () => {
     return async (dispatch) => {
@@ -30,7 +30,6 @@ export const startEditingEsquema = (id) => {
                 visible: esquemaCategorizacionActual.visible,
                 categorias: esquemaCategorizacionActual.categorias
             };
-
             await axiosInstance.put(`/admin/esquemas/${id}`, data);
         } catch (error) {
             if (error.response && error.response.status === 400) {
@@ -54,12 +53,11 @@ export const startCreatingEsquema = () => {
             const data = {
                 nombre: esquemaCategorizacionActual.nombre,
                 descripcion: esquemaCategorizacionActual.descripcion,
-                visible: esquemaCategorizacionActual.visible,
-                categorias: esquemaCategorizacionActual.categorias
+                visible: true,
             };
-
             // Realiza la petición POST para crear el nuevo esquema
             await axiosInstance.post('/admin/esquemas', data);
+            dispatch(startLoadingEsquemas());
 
         } catch (error) {
             if (error.response && error.response.status === 400) {

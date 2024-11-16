@@ -55,7 +55,6 @@ export const startCreatingRoles = (rolData) => {
     return async (dispatch) => {
         dispatch(setCreandoRolEnBase(true));
         try {
-            // TODO si no funciona es pq aqui quité const response =
             await axiosInstance.post('admin/roles/create', rolData);
             dispatch(startLoadingRoles());
             dispatch(setCreandoRolEnBase(false));
@@ -73,7 +72,7 @@ export const startCreatingRoles = (rolData) => {
 export const startDeletingRol = (nombre) => {
     return async (dispatch) => {
         try {
-            await axiosInstance.delete(`admin/roles/${nombre}`);
+            await axiosInstance.delete(`admin/roles/${nombre.trim()}`); // Trimear el nombre del rol
             // TODO debug
             dispatch(startLoadingRoles());
         } catch (error) {

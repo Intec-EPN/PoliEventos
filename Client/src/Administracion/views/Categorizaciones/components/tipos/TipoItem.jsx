@@ -23,9 +23,11 @@ export const TipoItem = ({
   validateTipo,
 }) => {
   const dispatch = useDispatch();
-  const { esquemaCategorizacionActual } = useSelector(
+  const { esquemaCategorizacionActual, esquemas } = useSelector(
     (state) => state.categorizacion
   );
+
+  
 
   if (
     !esquemaCategorizacionActual ||
@@ -34,7 +36,10 @@ export const TipoItem = ({
     return <div>Cargando...</div>;
   }
 
-  const categoriaActual = esquemaCategorizacionActual.categorias.find(
+
+  const esquemaActual = esquemas.find( esq => esq.nombre === esquemaCategorizacionActual.nombre);
+
+  const categoriaActual = esquemaActual.categorias.find(
     (cat) => cat.id === index
   );
 
@@ -68,7 +73,7 @@ export const TipoItem = ({
             validate: validateTipo,
             maxLength: {
               value: 150,
-              message: "La descripción no puede tener más de 150 caracteres",
+              message: "La categoría no puede tener más de 150 caracteres",
             },
            }}
           render={({ field }) => (

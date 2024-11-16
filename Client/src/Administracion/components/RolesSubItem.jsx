@@ -81,9 +81,9 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
                 },
               },
             }}
-            onClick={() => handleSubNavigation("roles/lista", "Lista de Roles")}
+            onClick={() => handleSubNavigation("roles/lista", "Lista de roles")}
           >
-            <ListItemText primary="Lista de Roles" />
+            <ListItemText primary="Lista de roles" />
           </ListItemButton>
           <ListItemButton
             selected={false} // No se usa estado
@@ -109,9 +109,9 @@ export const RolesSubItem = ({ toggleDrawer, isOpen }) => {
                 },
               },
             }}
-            onClick={() => handleSubNavigation("roles/crear", "Crea un Rol")}
+            onClick={() => handleSubNavigation("roles/crear", "Crea un rol")}
           >
-            <ListItemText primary="Crear un Rol" />
+            <ListItemText primary="Crea un rol" />
           </ListItemButton>
         </List>
       </Collapse>

@@ -15,9 +15,10 @@ const facultadesRoutes = require('./routes/Roles/facultadesRoutes');
 // Rutas de esquemas
 const esquemasRoutes = require('./routes/Categorizaciones/esquemasRoutes');
 
+// Rutas de usuarios
+const usuariosRoutes = require('./routes/Usuarios/usuariosRoutes');
 
-
-// ROLES Y PERMISOS:
+// ROLES Y PERMISOS
 // Usar las rutas de roles
 router.use('/roles', rolesRoutes);
 // Usar las rutas de niveles
@@ -31,5 +32,8 @@ router.use('/facultades', facultadesRoutes);
 
 // ESQUEMAS CATEGORIZACION Y CATEGORIAS
 router.use('/esquemas', esquemasRoutes);
+
+// USUARIOS
+router.use('/usuarios', usuariosRoutes);
 
 module.exports = router;

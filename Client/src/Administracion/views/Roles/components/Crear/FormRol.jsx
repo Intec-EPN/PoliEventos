@@ -11,7 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import { RadioButton } from "./RadioButton";
 import { startCreatingRoles } from "../../../../../store/Administracion/Roles/thunks";
-import { SnackBarSuccess } from "./SnackBarSuccess";
+import { useNavigate } from "react-router-dom";
+import PopUpCrear from "./PopUpCrear";
 
 export const FormRol = () => {
   // Hook Form
@@ -24,6 +25,13 @@ export const FormRol = () => {
 
   // Hook para guardar en el creando rol actual la información:
   const dispatch = useDispatch();
+  // Hook para navegar
+  const navigate = useNavigate();
+
+  // Estado para controlar la apertura del modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const { creandoRol, seleccionNivel, rolEnCreacion } = useSelector(
     (state) => state.rol
@@ -47,9 +55,6 @@ export const FormRol = () => {
     }
   }, [creandoRol, reset]);
 
-  // Estado para el Snackbar
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
   const onSubmit = async () => {
     if (rolEnCreacion.departamentos.length < 1) {
       alert("Debes seleccionar un departamento antes de crear el rol.");
@@ -63,14 +68,12 @@ export const FormRol = () => {
     }
     const success = await dispatch(startCreatingRoles(rolEnCreacion));
     if (success) {
-      // Solo muestra el Snackbar si la creación fue exitosa
-      setSnackbarOpen(true);
+      dispatch(reiniciarRol());
+      handleOpen(); // Abrir el modal al crear el rol exitosamente
+      setTimeout(() => {
+        navigate("/admin/roles/lista");
+      }, 2000);
     }
-
-    dispatch(reiniciarRol());
-  };
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
   };
 
   const manejarPermisoClick = (nivel, permisoId) => {
@@ -85,7 +88,7 @@ export const FormRol = () => {
         color="primary"
         sx={{ fontWeight: 700, mb: 1 }}
       >
-        CREAR UN ROL
+        Completa los campos para crear un nuevo rol:
       </Typography>
       <Grid2 container gap={3}>
         <RadioButton reset={reset} />
@@ -100,6 +103,14 @@ export const FormRol = () => {
                 value: 30,
                 message:
                   "El nombre del rol no puede exceder los 30 caracteres.",
+              },
+              validate: {
+                noLeadingTrailingSpaces: (value) =>
+                  value.trim() === value ||
+                  "El nombre del rol no debe comenzar o terminar con espacios.",
+                  notAdmn: (value) =>
+                    value.toLowerCase() !== "admn" ||
+                    'Nombre de rol no permitido, ingrese otro.',
               },
             }}
             render={({ field }) => (
@@ -187,6 +198,7 @@ export const FormRol = () => {
                 clickable={true}
                 align={true}
                 onPermisoClick={manejarPermisoClick}
+                nivelSeleccionado={seleccionNivel} // Pasar la nueva prop
               />
             </Grid2>
             {seleccionNivel === "Departamento" && niveles.Departamento ? (
@@ -198,6 +210,7 @@ export const FormRol = () => {
                   dept={true}
                   align={true}
                   onPermisoClick={manejarPermisoClick}
+                  nivelSeleccionado={seleccionNivel} // Pasar la nueva prop
                 />
               </Grid2>
             ) : niveles.Facultad ? (
@@ -208,6 +221,7 @@ export const FormRol = () => {
                   clickable={true}
                   align={true}
                   onPermisoClick={manejarPermisoClick}
+                  nivelSeleccionado={seleccionNivel} // Pasar la nueva prop
                 />
               </Grid2>
             ) : (
@@ -226,11 +240,7 @@ export const FormRol = () => {
       >
         CREAR ROL
       </Button>
-      <SnackBarSuccess
-        open={snackbarOpen}
-        message="Rol creado exitosamente!"
-        onClose={handleCloseSnackbar}
-      />
+      <PopUpCrear open={open} handleClose={handleClose} />
     </form>
   );
 };

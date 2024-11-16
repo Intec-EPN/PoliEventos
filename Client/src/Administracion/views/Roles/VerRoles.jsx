@@ -1,16 +1,22 @@
-import { Grid2, Typography } from "@mui/material";
+import { Box, Button, Grid2, Typography, useMediaQuery } from "@mui/material";
 import { TarjetaRol } from "./components/TarjetaRol";
 import { Filtro } from "./components/Lista/Filtro";
 import { useDispatch, useSelector } from "react-redux";
-import { FiltroTag } from "./components/Lista/FiltroTag";
+// import { FiltroTag } from "./components/Lista/FiltroTag";
 import { useEffect, useState } from "react";
-import { startLoadingFacultades, startLoadingRoles } from "../../../store/Administracion/Roles/thunks";
+import {
+  startLoadingFacultades,
+  startLoadingRoles,
+} from "../../../store/Administracion/Roles/thunks";
 import { opcionActual } from "../../../store/Administracion/administracionSlice";
+import { TarjetaRolLista } from "./components/TarjetaRolLista";
+import { useNavigate } from "react-router-dom";
 
 export const VerRoles = () => {
+  const navigate = useNavigate();
   // Obtengo los departamentos.
   const { departamentos } = useSelector((state) => state.departamento);
-
+  const isMobileOrTablet = useMediaQuery("(max-width: 960px)");
   // Para usar en caso de tener filtro por permisos.
   // Obtengo los permisos.
   // const { permisosAcciones, acciones } = useSelector((state) => state.permiso);
@@ -22,11 +28,10 @@ export const VerRoles = () => {
   useEffect(() => {
     dispatch(startLoadingRoles());
     dispatch(startLoadingFacultades());
-    dispatch(opcionActual('Lista de Roles'));
+    dispatch(opcionActual("Lista de Roles"));
   }, [dispatch]);
-  
-  const nombresFacultades = facultades.map(facultad => facultad.nombre);
-  
+
+  const nombresFacultades = facultades.map((facultad) => facultad.nombre);
 
   // Estado para roles filtrados
   const [rolesFiltrados, setRolesFiltrados] = useState([]);
@@ -38,8 +43,7 @@ export const VerRoles = () => {
       return roles;
     }
     return roles.filter((rol) => {
-
-      if(rol.esFacultad) {
+      if (rol.esFacultad) {
         const tieneFacultad = filtros.some((filtro) => rol.facultad === filtro);
         return tieneFacultad;
       }
@@ -64,6 +68,9 @@ export const VerRoles = () => {
     setRolesFiltrados(rolesFiltrados);
   }, [filtros, roles]);
 
+  const handleCrearRol = () => {
+    navigate("/admin/roles/crear");
+  };
   return (
     <>
       <Grid2 container ml={2} mt={2} display="flex" flexDirection="column">
@@ -74,24 +81,47 @@ export const VerRoles = () => {
         >
           Filtro
         </Typography>
-        <Grid2 container display="flex" gap={2} alignItems="center">
-          <Filtro opciones={departamentos} filtro="Departamento" size={360} />
+        <Box container display="flex" gap={2} alignItems="center">
           <Filtro opciones={nombresFacultades} filtro="Facultad" size={360} />
+          <Filtro opciones={departamentos} filtro="Departamento" size={360} />
+          <Box
+            sx={{ flex: 2, mr: "1rem", display: "flex", justifyContent: "end" }}
+          >
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "#2c4175", display: "flex", height: 55 }}
+              onClick={handleCrearRol}
+            >
+              Crear Rol
+            </Button>
+          </Box>
           {/* Filtro para permisos y acciones (en funcionamiento pero fuera de requerimientos). */}
           {/* <FiltroTag permisosAcciones={permisosAcciones} acciones={acciones} /> */}
-        </Grid2>
+        </Box>
       </Grid2>
       <Grid2
         container
         margin={2}
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
+        columns={{ xs: 12, sm: 12, md: 12 }}
       >
-        {rolesFiltrados.map((rol, index) => (
-          <Grid2 key={index} size={{ xs: 4, sm: 4 }}>
-            <TarjetaRol {...rol} id={index} lista={true}/>
-          </Grid2>
-        ))}
+        {!isMobileOrTablet &&
+          rolesFiltrados.map((rol, index) => (
+            <Grid2 key={index} size={{ xs: 4, sm: 12 }}>
+              <TarjetaRolLista
+                {...rol}
+                id={index}
+                lista={true}
+                horizontal={true}
+              />
+            </Grid2>
+          ))}
+        {isMobileOrTablet &&
+          rolesFiltrados.map((rol, index) => (
+            <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
+              <TarjetaRol {...rol} id={index} lista={true} />
+            </Grid2>
+          ))}
       </Grid2>
     </>
   );

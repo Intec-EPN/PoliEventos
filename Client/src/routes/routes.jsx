@@ -5,46 +5,85 @@ import { EditarCategorias } from "../Administracion/views/Categorizaciones/compo
 import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
+import { AsignarRoles } from "../Administracion/views/Usuarios/Asignar/AsignarRoles";
+import { CrearUsuarios } from "../Administracion/views/Usuarios/Crear/CrearUsuarios";
+import { EditarUsuario } from "../Administracion/views/Usuarios/Lista/components/EditarUsuario";
+import { ListaUsuarios } from "../Administracion/views/Usuarios/Lista/ListaUsuarios";
+import { Usuarios } from "../Administracion/views/Usuarios/Usuarios";
+import { LoginMain } from "../Auth/LoginMain";
+import { AdminAuth } from "../components/AdminAuth";
+import { RolesAuth } from "../components/RolesAuth";
+import { DePrueba } from "../GestionEventos/components/DePrueba";
 
 export const routes = [
   {
+    path: "/login",
+    element: <LoginMain />,
+  },
+  {
     path: "/admin",
-    element: <AdministracionMain />,
+    element: <AdminAuth component={AdministracionMain} />,
     children: [
       {
         path: "categorizaciones",
-        element: <Categorizaciones />,
+        element: <AdminAuth component={Categorizaciones} />,
       },
       {
-        path: "categorizaciones/:esquemaActual/editar",  
-        element: <EditarCategorias />, 
+        path: "categorizaciones/:esquemaActual/editar",
+        element: <AdminAuth component={EditarCategorias} />,
       },
       {
-        path: "categorizaciones/:esquemaActual/crear",  
-        element: <CrearEsquema />, 
+        path: "categorizaciones/:esquemaActual/crear",
+        element: <AdminAuth component={CrearEsquema} />,
       },
       {
         path: "roles",
-        element: <Roles />,
-        children:[
+        element: <AdminAuth component={Roles} />,
+        children: [
           {
             path: "lista",
-            element: <VerRoles />,
+            element: <AdminAuth component={VerRoles} />,
           },
           {
             path: "crear",
-            element: <CrearRol />,
+            element: <AdminAuth component={CrearRol} />,
           },
-        ]
+        ],
+      },
+      {
+        path: "usuarios",
+        element: <AdminAuth component={Usuarios} />,
+        children: [
+          {
+            path: "lista",
+            element: <AdminAuth component={ListaUsuarios} />,
+          },
+          {
+            path: "asignar",
+            element: <AdminAuth component={AsignarRoles} />,
+          },
+          {
+            path: "crear",
+            element: <AdminAuth component={CrearUsuarios} />,
+          },
+        ],
+      },
+      {
+        path: "usuarios/:usuarioId/editar",
+        element: <AdminAuth component={EditarUsuario} />,
       },
       {
         path: "permisos",
-        element: <Permisos />,
+        element: <AdminAuth component={Permisos} />,
       },
       {
         path: "logs",
-        element: <Loges />,
+        element: <AdminAuth component={Loges} />,
       },
     ],
+  },
+  {
+    path: "/eventos",
+    element: <RolesAuth component={DePrueba} />,
   },
 ];

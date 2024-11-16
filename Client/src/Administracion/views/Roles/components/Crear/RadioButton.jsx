@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { handleSeleccion, resetDepartamentos } from "../../../../../store/Administracion/Roles/rolSlice";
+import { handleSeleccion, reiniciarRol, resetDepartamentos } from "../../../../../store/Administracion/Roles/rolSlice";
 import { startLoadingDepartamentosFacultades } from "../../../../../store/Administracion/Roles/thunks";
 import { SeleccionarDept } from "./SeleccionarDept";
 import { useState } from "react";
@@ -23,13 +23,15 @@ export const RadioButton = ({ reset }) => {
       descripcionRol: "",
     });
     setDepartamentoSeleccionado(!departamentoSeleccionado);
+
+    dispatch(reiniciarRol());
     
     // Analisis de dispatch y demás.
     const selectedValue = e.target.value;
     dispatch(handleSeleccion(selectedValue));
     if (selectedValue === "Facultad") {
       dispatch(startLoadingDepartamentosFacultades());
-    }else{
+    } else {
       dispatch(resetDepartamentos());
     }
   };

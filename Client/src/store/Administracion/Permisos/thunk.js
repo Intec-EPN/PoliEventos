@@ -17,6 +17,7 @@ export const startLoadingAcciones = () => {
         try {
             const response = await axiosInstance.get('/admin/permisos/getbase');
             dispatch(setAcciones(response.data));
+            dispatch(startLoadingPermisosAcciones());
         } catch (error) {
             throw new Error("Error al cargar", error);
         }

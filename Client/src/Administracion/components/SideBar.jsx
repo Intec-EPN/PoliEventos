@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 const opciones = [
   { label: "Categorizaciones", path: "categorizaciones" },
   { label: "Roles", path: "roles" },
+  { label: "Usuarios", path: "usuarios" },
   { label: "Permisos", path: "permisos" },
   { label: "Logs", path: "logs" },
 ];

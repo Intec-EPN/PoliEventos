@@ -68,7 +68,6 @@ export const rolSlice = createSlice({
       state.creandoRol = true;
       // Reiniciar el rol en creación después de agregar
       state.rolEnCreacion = {
-        id: '',
         rol: '',
         descripcion: '',
         facultad_id: 1,
@@ -79,7 +78,8 @@ export const rolSlice = createSlice({
       state.creandoRol = false;
     },
     setRoles: (state, action) => {
-      state.roles = action.payload;
+      const roles = action.payload.filter(rol => rol.rol !== 'Administrador');
+      state.roles = roles;
     },
     setCreandoRol: (state, action) => {
       state.creandoRol = action.payload;
@@ -87,7 +87,10 @@ export const rolSlice = createSlice({
     handleSeleccion: (state, action) => {
       state.seleccionNivel = action.payload;
       // Reiniciar permisos
-      state.rolEnCreacion.permisos = state.estructuraPermisos;
+      state.rolEnCreacion.permisos = state.estructuraPermisos.map(permiso => ({
+        ...permiso,
+        acciones: []
+      }));
     },
     setPermisos: (state, action) => {
       state.rolEnCreacion.permisos = action.payload;

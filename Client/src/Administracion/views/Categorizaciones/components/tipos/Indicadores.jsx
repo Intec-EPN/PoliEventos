@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
+import SquareIcon from "@mui/icons-material/Square";
 
 export const Indicadores = ({ value, editar = false }) => {
   return (
@@ -13,6 +14,7 @@ export const Indicadores = ({ value, editar = false }) => {
         width: "100%",
         justifyContent: { xs: "center", md: "left" },
         padding: { xs: 1, md: 0 },
+        mt: 2.5,
       }}
       mb={1}
     >
@@ -55,6 +57,26 @@ export const Indicadores = ({ value, editar = false }) => {
           <Box display="flex" gap={1}>
             <EditIcon sx={{ color: "#2c4175" }} />
             <Typography variant="p">Edita {value}.</Typography>
+          </Box>
+        </>
+      ) : null}
+      {value === "una categorización" ? (
+        <>
+          <Typography
+            variant="p"
+            sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+          >
+            |
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{ display: { xs: "block", sm: "none", md: "none" } }}
+          >
+            <hr></hr>
+          </Typography>
+          <Box display="flex" gap={1}>
+            <SquareIcon sx={{ color: "#dc8626",width:"1.3rem" }} />
+            <Typography variant="p" color="#dc8626">Categorización vacía</Typography>
           </Box>
         </>
       ) : null}
