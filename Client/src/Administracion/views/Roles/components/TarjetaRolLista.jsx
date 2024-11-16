@@ -8,9 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import { puedeBorrarse } from "../../../../store/Administracion/Usuarios/usuariosSlice";
 
 export const TarjetaRolLista = ({
   rol = "",
@@ -22,8 +24,26 @@ export const TarjetaRolLista = ({
 }) => {
   const dispatch = useDispatch();
   const onBorrarRol = (rol) => {
-    dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
+    if (
+      window.confirm(`¿Estás seguro de que deseas eliminar el rol "${rol}"?`)
+    ) {
+      dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
+    }
   };
+
+  const { usuarios } = useSelector((state) => state.usuarios);
+
+  const [usado, setUsado] = useState(false);
+
+  useEffect(() => {
+    setUsado(
+      usuarios.some((usuario) =>
+        usuario.roles.some((role) => {
+          return role.rol_nombre === rol;
+        })
+      ) || false
+    );
+  }, [rol]);
 
   return (
     <Card
@@ -82,7 +102,7 @@ export const TarjetaRolLista = ({
       </CardContent>
 
       {/* Icono de eliminar */}
-      {lista && (
+      {lista && !usado && (
         <Box
           sx={{
             display: "flex",

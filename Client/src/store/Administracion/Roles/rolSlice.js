@@ -68,7 +68,6 @@ export const rolSlice = createSlice({
       state.creandoRol = true;
       // Reiniciar el rol en creación después de agregar
       state.rolEnCreacion = {
-        id: '',
         rol: '',
         descripcion: '',
         facultad_id: 1,

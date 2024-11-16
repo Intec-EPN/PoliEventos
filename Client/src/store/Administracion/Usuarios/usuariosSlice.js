@@ -6,7 +6,7 @@ export const usuariosSlice = createSlice({
         usuarios: [],
         usuarioAsignar: "",
         rolesAsignar: [],
-        usuarioActual: ""
+        usuarioActual: "",
     },
     reducers: {
         setUsuarios: (state, action) => {
@@ -34,5 +34,6 @@ export const {
     setUsuarioAsignar,
     setRolesAsignar,
     limpiarAsignacion,
-    setUsuarioActual
+    setUsuarioActual,
+    puedeBorrarse
 } = usuariosSlice.actions;

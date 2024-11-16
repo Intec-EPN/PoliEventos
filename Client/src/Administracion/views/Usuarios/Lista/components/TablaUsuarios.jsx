@@ -78,23 +78,23 @@ export const TablaUsuarios = () => {
         >
           <TableHead>
             <TableRow>
-              <TableCell />
-              <TableCell sx={{ color: "white" }}>Usuario</TableCell>
+              <TableCell sx={{ fontSize: "1.2rem" }}/>
+              <TableCell sx={{ color: "white", fontSize: "1.1rem" }}>Usuario</TableCell>
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem"  }}
               >
                 Correo
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem"  }}
               >
                 Fecha de registro
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem"  }}
               >
                 Acciones
               </TableCell>

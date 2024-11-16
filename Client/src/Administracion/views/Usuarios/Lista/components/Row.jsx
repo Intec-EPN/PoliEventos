@@ -90,14 +90,14 @@ export const Row = (props) => {
         <TableCell
           component="th"
           scope="row"
-          sx={{ color: "white", fontWeight: "bold" }}
+          sx={{ color: "white", fontSize: "1rem"  }}
         >
           {row.nombre}
         </TableCell>
-        <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
+        <TableCell align="center" sx={{ color: "white", fontSize: "1rem" }}>
           {row.correo}
         </TableCell>
-        <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
+        <TableCell align="center" sx={{ color: "white", fontSize: "1rem" }}>
           {row.fecha}
         </TableCell>
         <TableCell align="center">
@@ -127,7 +127,7 @@ export const Row = (props) => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                Roles
+                {roles.length === 0 ? "Asigna roles por favor." : "Roles"}
               </Typography>
               <Box sx={{ width: "100%" }}>
                 {!isMobileOrTablet &&

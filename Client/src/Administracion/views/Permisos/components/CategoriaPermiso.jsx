@@ -104,13 +104,6 @@ export const CategoriaPermiso = ({
             </Grid2>
           )}
 
-          {departamentos.length > 0 && nombre === "Departamento" ? (
-            <Grid2 container display="flex" justifyContent="center" mb={1}>
-              {departamentos.map((dep, index) => (
-                <Chip key={index} label={dep} variant="outlined" />
-              ))}
-            </Grid2>
-          ) : null}
           <Grid2
             container
             display="flex"
