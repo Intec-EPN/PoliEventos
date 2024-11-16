@@ -59,11 +59,11 @@ export const AsignarRoles = () => {
             <LooksTwoIcon /> Selecciona los roles que deseas asignar.
           </Typography>
         </Box>
-        <Box sx={{ width: "100%" }} display={"flex"} flexDirection={"column"}>
+        <Box sx={{ width: "100%" }} display={"flex"} flexDirection={"column"} gap={0.5}>
           <Box sx={{ width: "100%" }} display={"inline-flex"}>
             <HelpCenterIcon /> <strong>Roles</strong>
           </Box>
-          <Box>
+          <Box display={"flex"} gap={1} flexWrap={"wrap"}>
             <Chip
               label="Propio"
               sx={{ backgroundColor: COLORES.Propio, color: "#fff" }}
