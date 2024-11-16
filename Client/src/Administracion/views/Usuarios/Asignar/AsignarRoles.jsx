@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { startRolesUsuarios } from "../../../../store/Administracion/Usuarios/thunks";
 import { limpiarAsignacion } from "../../../../store/Administracion/Usuarios/usuariosSlice";
-import PopUpAsignar from "./components/PopUpAsignar";
+import { PopUpAsignar } from "./components/PopUpAsignar";
 import { useNavigate } from "react-router-dom";
 
-export const AsignarUsuarios = () => {
+export const AsignarRoles = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [asignacionCompleta, setAsignacionCompleta] = useState(false);
@@ -25,9 +25,6 @@ export const AsignarUsuarios = () => {
     const rolesIds = rolesAsignar;
     dispatch(startRolesUsuarios(usuarioId, rolesIds));
     setAsignacionCompleta(true);
-    setTimeout(() => {
-      navigate("/admin/usuarios/lista");
-    }, 2000);
   };
 
   return (
@@ -51,7 +48,7 @@ export const AsignarUsuarios = () => {
           onClick={handleButtonAsignar}
           disabled={!usuarioAsignar || rolesAsignar.length === 0}
         >
-          Asignar
+          Guardar
         </Button>
       </Box>
       <PopUpAsignar open={asignacionCompleta} handleClose={handleClose} />

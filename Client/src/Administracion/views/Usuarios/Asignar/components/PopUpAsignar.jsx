@@ -2,6 +2,8 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -16,7 +18,11 @@ const style = {
   borderRadius: 3,
 };
 
-export default function PopUpAsignar({ open, handleClose }) {
+export const PopUpAsignar = ({ open, handleClose }) => {
+  const navigate = useNavigate();
+  const handleUsuarios = () => {
+    navigate("/admin/usuarios/lista");
+  };
   return (
     <Modal
       open={open}
@@ -33,7 +39,23 @@ export default function PopUpAsignar({ open, handleClose }) {
         >
           ¡Asignación completa!
         </Typography>
+        <Box display={"flex"} justifyContent={"center"} gap={2} mt={1}>
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            sx={{ backgroundColor: "#1d5318" }}
+          >
+            Seguir asignando
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleUsuarios}
+            sx={{ backgroundColor: "#1d5318" }}
+          >
+            Ver usuarios
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );
-}
+};

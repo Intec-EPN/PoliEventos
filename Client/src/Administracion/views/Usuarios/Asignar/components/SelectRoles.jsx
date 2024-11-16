@@ -15,6 +15,7 @@ export default function SelectRoles() {
   }, [dispatch]);
 
   const [roles, setRoles] = React.useState([]);
+  const [selectedRoles, setSelectedRoles] = React.useState([]);
   const { roles: rolesRecuperados } = useSelector((state) => state.rol);
   const { acciones } = useSelector((state) => state.permiso);
   const [colores, setColores] = React.useState({
@@ -22,6 +23,64 @@ export default function SelectRoles() {
     Departamento: acciones[3].bgColor || "#FFF",
     Facultad: acciones[6].bgColor || "#FFF",
   });
+  const { usuarios, usuarioAsignar } = useSelector((state) => state.usuarios);
+  React.useEffect(() => {
+    if (usuarioAsignar) {
+      setSelectedRoles(
+        usuarios
+          .find((usuario) => usuario.id === usuarioAsignar)
+          .roles.map((rol) => {
+            console.log(rol);
+            return {
+              id: rol.rol_id,
+              nombre: rol.rol_nombre,
+            };
+          })
+      );
+      console.log("roles", selectedRoles);
+    }
+  }, [usuarios, usuarioAsignar]);
+
+  React.useEffect(() => {
+    if (selectedRoles.length > 0 && rolesRecuperados.length > 0) {
+      const selectedRolesMapeados = selectedRoles.map((selectedRol) => {
+        const rolRecuperado = rolesRecuperados.find(
+          (rol) => rol.id === selectedRol.id
+        );
+        let colorNivel = "#FFF";
+        if (rolRecuperado) {
+          const permisos = rolRecuperado.permisos;
+          if (
+            permisos.some(
+              (permiso) =>
+                permiso.nombre === "Facultad" && permiso.acciones.length > 0
+            )
+          ) {
+            colorNivel = colores.Facultad;
+          } else if (
+            permisos.some(
+              (permiso) =>
+                permiso.nombre === "Departamento" && permiso.acciones.length > 0
+            )
+          ) {
+            colorNivel = colores.Departamento;
+          } else if (
+            permisos.some(
+              (permiso) =>
+                permiso.nombre === "Propio" && permiso.acciones.length > 0
+            )
+          ) {
+            colorNivel = colores.Propio;
+          }
+        }
+        return {
+          ...selectedRol,
+          colorNivel,
+        };
+      });
+      setSelectedRoles(selectedRolesMapeados);
+    }
+  }, [selectedRoles, rolesRecuperados]);
 
   React.useEffect(() => {
     if (rolesRecuperados.length > 0) {
@@ -60,10 +119,23 @@ export default function SelectRoles() {
     }
   }, [rolesRecuperados]);
 
-  const handleRolesSelect = (event, values) => {
-    const selectedIds = values.map((value) => value.id);
-    dispatch(setRolesAsignar(selectedIds));
+  React.useEffect(() => {
+    setSelectedRoles([]); // Inicializar el estado cuando el componente se monte
+    return () => {
+      setSelectedRoles([]); // Limpiar el estado cuando el componente se desmonte
+    };
+  }, []);
+
+  const handleRolesSelect = (event, newValue) => {
+    const uniqueValues = newValue.filter(
+      (value, index, self) => index === self.findIndex((v) => v.id === value.id)
+    );
+    setSelectedRoles(uniqueValues);
+    dispatch(setRolesAsignar(uniqueValues.map((rol) => rol.id)));
   };
+  const filteredRoles = roles.filter(
+    (role) => !selectedRoles.some((selectedRole) => selectedRole.id === role.id)
+  );
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -74,10 +146,11 @@ export default function SelectRoles() {
         <Autocomplete
           multiple
           id="tags-standard"
-          options={roles}
+          options={filteredRoles}
           getOptionLabel={(option) => option.nombre}
           onChange={handleRolesSelect}
-          filterSelectedOptions
+          filterSelectedOptions={true}
+          value={selectedRoles}
           noOptionsText="No hay más roles."
           renderTags={(value, getTagProps) =>
             value.map((option, index) => {

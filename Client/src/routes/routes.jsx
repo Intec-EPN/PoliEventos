@@ -5,7 +5,7 @@ import { EditarCategorias } from "../Administracion/views/Categorizaciones/compo
 import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
-import { AsignarUsuarios } from "../Administracion/views/Usuarios/Asignar/AsignarUsuarios";
+import { AsignarRoles } from "../Administracion/views/Usuarios/Asignar/AsignarRoles";
 import { CrearUsuarios } from "../Administracion/views/Usuarios/Crear/CrearUsuarios";
 import { EditarUsuario } from "../Administracion/views/Usuarios/Lista/components/EditarUsuario";
 import { ListaUsuarios } from "../Administracion/views/Usuarios/Lista/ListaUsuarios";
@@ -60,7 +60,7 @@ export const routes = [
           },
           {
             path: "asignar",
-            element: <AdminAuth component={AsignarUsuarios} />,
+            element: <AdminAuth component={AsignarRoles} />,
           },
           {
             path: "crear",

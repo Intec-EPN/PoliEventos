@@ -16,7 +16,7 @@ const persistConfig = {
   key: 'root',
   storage,
   // Lista de reducers que no se persistirán
-  blacklist: ['usuarios'], 
+  blacklist: ['adminAuth'], 
 };
 
 // Configuración de reducers utilizando combineReducers

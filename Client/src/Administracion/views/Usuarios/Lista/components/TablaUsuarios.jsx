@@ -60,7 +60,7 @@ export const TablaUsuarios = () => {
   return (
     <Box>
       <IndicadoresUsuario />
-      <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mt: 1 }}>
+      <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mt: 2 }}>
         Filtro
       </Typography>
       <TextField
@@ -69,7 +69,7 @@ export const TablaUsuarios = () => {
         value={searchTerm}
         onChange={handleSearchChange}
         fullWidth
-        margin="normal"
+        sx={{ mb: 2 }}
       />
       <TableContainer component={Paper} elevation={0}>
         <Table
