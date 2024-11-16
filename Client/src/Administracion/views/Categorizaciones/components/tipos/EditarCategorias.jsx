@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Divider, Grid2, List, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { AlertCorrecto } from "./AlertCorrecto";
 import { TipoItem } from "./TipoItem";
 import { CatTituloDescrip } from "./CatTituloDescrip";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -18,6 +17,7 @@ import {
 } from "../../../../../store/Administracion/Categorizacion/thunks";
 import { Indicadores } from "./Indicadores";
 import { AgregarCategorias } from "./AgregarCategorias";
+import PopUpEditarEsquema from "../PopUpEditarEsquema";
 
 export const EditarCategorias = () => {
   const dispatch = useDispatch();
@@ -132,11 +132,13 @@ export const EditarCategorias = () => {
     }));
 
     const categoriasNuevas = nuevasCategorias
-      ? nuevasCategorias.map((cat) => ({
-          nombre: cat.value,
-          visible: true,
-          esquemas_id: id,
-        }))
+      ? nuevasCategorias
+          .filter((cat) => cat.value.trim() !== "")
+          .map((cat) => ({
+            nombre: cat.value,
+            visible: true,
+            esquemas_id: id,
+          }))
       : [];
 
     // Genero el objeto a enviar
@@ -149,6 +151,9 @@ export const EditarCategorias = () => {
     setEditCategoria(false);
     dispatch(actualizarEsquemaCategoriaActual(categoriaEditadas));
     dispatch(startEditingEsquema(id));
+    setTimeout(() => {
+      navigate(-1);
+    }, 2000);
   };
 
   // Cancelar (volver)
@@ -159,19 +164,22 @@ export const EditarCategorias = () => {
 
   // Cancelar agregar categoria
   const onCancelAgregar = () => {
-    // Eliminar cualquier campo vacío en nuevasCategorias
     const nuevasCategoriasValues = getValues("nuevasCategorias");
     nuevasCategoriasValues.forEach((categoria, index) => {
-      if (!categoria.value) {
-        remove(index);
-      }
+      remove(index);
     });
-    setHandleAgregarCategoria(!handleAgregarCategoria);
+    setHandleAgregarCategoria(false);
+    reset((formValues) => ({
+      ...formValues,
+      nuevasCategorias: [{ value: "" }], // Reiniciar nuevasCategorias
+    }));
   };
 
   // Validación de existencia de campos y errores.
   const handleAddField = () => {
-    const lastFieldValue = getValues(`nuevasCategorias.${fields.length - 1}.value`);
+    const lastFieldValue = getValues(
+      `nuevasCategorias.${fields.length - 1}.value`
+    );
 
     // Validar el último campo antes de agregar uno nuevo
     const validationResult = validarCategoria(lastFieldValue);
@@ -189,6 +197,9 @@ export const EditarCategorias = () => {
     append({ value: "" }); // Agregar un nuevo campo
   };
 
+  // Cerrar PopUp
+  const handleClose = () => setAlertOpen(false);
+
   return (
     <Box ml={3} mr={3}>
       <Button
@@ -205,10 +216,18 @@ export const EditarCategorias = () => {
         errors={errors}
         editTipo={editCategoria}
       />
-      <Typography variant="h6" color="#2c4175" mb={1}>
-        Editar categorías actuales
-      </Typography>
-      <Indicadores value={"una categoría"} />
+      {categorias.length == 0 ? (
+        <Typography variant="h6" color="#2c4175">
+          Presiona el botón para agregar categorías
+        </Typography>
+      ) : (
+        <>
+          <Typography variant="h6" color="#2c4175" mb={1}>
+            Editar categorías actuales
+          </Typography>
+          <Indicadores value={"una categoría"} />
+        </>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <List sx={{ width: "100%" }}>
           <Grid2 container>
@@ -230,13 +249,16 @@ export const EditarCategorias = () => {
         <Box
           display="flex"
           alignItems="center"
-          justifyContent="end"
-          sx={{ width: "98%" }}
+          justifyContent={categorias.length == 0 ? "start" : "end"}
+          mt={categorias.length == 0 ? -1 : 0}
+          mb={2}
+          sx={{ width: "100%" }}
         >
           {!handleAgregarCategoria && (
             <Button
               variant="contained"
               onClick={() => setHandleAgregarCategoria(true)}
+              sx={{ width: { xs: "100%", md: "15%" }}}
             >
               Agregar Categoría
             </Button>
@@ -258,11 +280,13 @@ export const EditarCategorias = () => {
           />
         )}
 
-        {alertOpen ? <AlertCorrecto openT={alertOpen} /> : null}
-
         <Box display="flex">
           <Button
-            disabled={!isDirty && !handleAgregarCategoria && Object.keys(dirtyFields).length === 0}
+            disabled={
+              !isDirty &&
+              !handleAgregarCategoria &&
+              Object.keys(dirtyFields).length === 0
+            }
             variant="contained"
             sx={{
               backgroundColor: "#2c4175",
@@ -286,6 +310,7 @@ export const EditarCategorias = () => {
           </Button>
         </Box>
       </form>
+      <PopUpEditarEsquema open={alertOpen} handleClose={handleClose} />
     </Box>
   );
 };

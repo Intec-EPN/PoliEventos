@@ -7,7 +7,6 @@ import {
   actualizarEsquemaCategoriaActual,
   limpiarEsquemaCategorizacionActual,
 } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
-import { AlertCorrecto } from "./AlertCorrecto";
 import { CrearCatTituloDescrip } from "./CrearCatTituloDescrip";
 import { startCreatingEsquema } from "../../../../../store/Administracion/Categorizacion/thunks";
 import { AgregarCategorias } from "./AgregarCategorias";

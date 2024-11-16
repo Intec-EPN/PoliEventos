@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 import SelectRoles from "./components/SelectRoles";
 import SelectUsuarios from "./components/SelectUsuarios";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,9 @@ import { startRolesUsuarios } from "../../../../store/Administracion/Usuarios/th
 import { limpiarAsignacion } from "../../../../store/Administracion/Usuarios/usuariosSlice";
 import { PopUpAsignar } from "./components/PopUpAsignar";
 import { useNavigate } from "react-router-dom";
+import LooksOneIcon from "@mui/icons-material/LooksOne";
+import LooksTwoIcon from "@mui/icons-material/LooksTwo";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 
 export const AsignarRoles = () => {
   const dispatch = useDispatch();
@@ -16,6 +19,13 @@ export const AsignarRoles = () => {
   const { usuarioAsignar, rolesAsignar } = useSelector(
     (state) => state.usuarios
   );
+  const { acciones } = useSelector((state) => state.permiso);
+  const COLORES = {
+    Propio: acciones[0].bgColor || "#FFF",
+    Departamento: acciones[3].bgColor || "#FFF",
+    Facultad: acciones[6].bgColor || "#FFF",
+  };
+
   useEffect(() => {
     dispatch(limpiarAsignacion());
   }, [dispatch]);
@@ -32,15 +42,52 @@ export const AsignarRoles = () => {
       <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mb: 1 }}>
         Instrucciones
       </Typography>
-      <Typography variant="p6" color="primary" sx={{ mb: 1 }}>
-        Selecciona un usuario para asignarle uno o más roles. Cuando selecciones
-        los roles se mostrarán con el color según el mayor nivel que tenga de
-        permisos que tenga el rol. Para más información sobre los permisos haz
-        click <a href="/admin/permisos">aquí.</a>
-      </Typography>
+      <Box display={"flex"}>
+        <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
+          <Typography
+            variant="p6"
+            color="primary"
+            sx={{ mb: 1, display: "inline-flex" }}
+          >
+            <LooksOneIcon /> Selecciona un usuario.
+          </Typography>
+          <Typography
+            variant="p6"
+            color="primary"
+            sx={{ mb: 1, display: "inline-flex" }}
+          >
+            <LooksTwoIcon /> Selecciona los roles que deseas asignar.
+          </Typography>
+        </Box>
+        <Box sx={{ width: "100%" }} display={"flex"} flexDirection={"column"}>
+          <Box sx={{ width: "100%" }} display={"inline-flex"}>
+            <HelpCenterIcon /> <strong>Roles</strong>
+          </Box>
+          <Box>
+            <Chip
+              label="Propio"
+              sx={{ backgroundColor: COLORES.Propio, color: "#fff" }}
+            />
+            <Chip
+              label="Departamento"
+              sx={{ backgroundColor: COLORES.Departamento, color: "#fff" }}
+            />
+            <Chip
+              label="Facultad"
+              sx={{ backgroundColor: COLORES.Facultad, color: "#fff" }}
+            />
+          </Box>
+        </Box>
+      </Box>
       <Box sx={{ display: "flex", gap: 2, alignItems: "end", mt: 4 }}>
-        <SelectUsuarios />
-        <SelectRoles />
+        <Box sx={{ width: "100%" }}>
+          <LooksOneIcon />
+          <SelectUsuarios />
+        </Box>
+        <Box sx={{ width: "100%" }}>
+          <LooksTwoIcon />
+          <SelectRoles />
+        </Box>
         <Button
           variant="contained"
           color="primary"

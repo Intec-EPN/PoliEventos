@@ -79,6 +79,7 @@ export const AgregarCategorias = ({
       </List>
       <Box
         display={"flex"}
+        mb={2}
         sx={{
           width: { xs: "100%", md: "98%" },
           justifyContent: { xs: "center", md: "end" },
@@ -88,6 +89,7 @@ export const AgregarCategorias = ({
           variant="contained"
           onClick={handleAddField}
           disabled={editCategoria}
+          sx={{width: { xs: "100%", md: "15%" },}}
         >
           Agregar categoría
         </Button>
@@ -100,7 +102,7 @@ export const AgregarCategorias = ({
           }}
           onClick={onCancelAgregar}
         >
-          {editCategoria ? "Cerrar" : "Cancelar"}
+          Quitar todas
         </Button>
       </Box>
     </>
