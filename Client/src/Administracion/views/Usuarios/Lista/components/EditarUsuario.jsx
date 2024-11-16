@@ -86,13 +86,14 @@ export const EditarUsuario = () => {
       >
         <TextField label="Nombre" {...register("nombre", { required: true })} />
         <TextField label="Correo" {...register("correo", { required: true })} />
+        <Typography variant="body1" color="red"> Cambie la contraseña sólo si es <strong>estrictamente</strong> necesario.</Typography>
         <TextField
-          label="Contraseña"
+          label="Contraseña nueva (opcional)"
           type="password"
           {...register("password")}
         />
         {error && (
-          <Typography variant="body2" color="error" align="center">
+          <Typography variant="body2" color="error" align="center" mb={2}>
             {error}
           </Typography>
         )}

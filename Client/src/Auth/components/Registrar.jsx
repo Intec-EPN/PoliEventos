@@ -99,7 +99,7 @@ export const Registrar = ({ onRegistroExitoso }) => {
             />
           </Box>
           {error && (
-            <Typography variant="body2" color="error">
+            <Typography variant="body2" color="error" mb={2}>
               {error}
             </Typography>
           )}
