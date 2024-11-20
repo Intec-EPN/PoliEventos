@@ -13,6 +13,7 @@ import { Usuarios } from "../Administracion/views/Usuarios/Usuarios";
 import { LoginMain } from "../Auth/LoginMain";
 import { AdminAuth } from "../components/AdminAuth";
 import { RolesAuth } from "../components/RolesAuth";
+import { Calendario } from "../GestionEventos/Calendario/Calendario";
 import { DePrueba } from "../GestionEventos/components/DePrueba";
 
 export const routes = [
@@ -85,5 +86,9 @@ export const routes = [
   {
     path: "/eventos",
     element: <RolesAuth component={DePrueba} />,
+  },
+  {
+    path: "/calendario",
+    element: <Calendario />,
   },
 ];

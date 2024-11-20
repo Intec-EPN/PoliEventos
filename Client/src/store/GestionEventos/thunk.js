@@ -1,0 +1,53 @@
+import axiosInstance from "../../api/axiosConfig";
+import { setDepartamentos, setEsquemasCategorias } from "./gestionEventosSlice";
+
+export const startCreateEvento = () => {
+    return async (dispatch, getState) => {
+        try {
+            const state = getState();
+            const eventoCreacion = state.eventoCreacion;
+            await axiosInstance.post("/gestion", eventoCreacion
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+
+        } catch (error) {
+            console.error("Error al crear evento", error);
+            throw new Error("Error al crear evento");
+        }
+    };
+};
+
+export const startLoadingDepartamentos = () => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosInstance.get("/gestion/departamentos/"
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            console.log(data);
+
+            dispatch(setDepartamentos(data));
+        } catch (error) {
+            console.error("Error al cargar departamentos", error);
+            throw new Error("Error al cargar departamentos");
+        }
+    };
+}
+export const startLoadingEsquemasCategorias = () => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosInstance.get("/gestion//esquemas_categorias/"
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(setEsquemasCategorias(data));
+        } catch (error) {
+            console.error("Error al cargar departamentos", error);
+            throw new Error("Error al cargar departamentos");
+        }
+    };
+}

@@ -10,6 +10,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux'; // Asegúrate de importar combineReducers
 import { usuariosSlice } from './Administracion/Usuarios/usuariosSlice';
+import { gestionEventosSlice } from './GestionEventos/gestionEventosSlice';
 
 // Configuración del persist
 const persistConfig = {
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   usuarios: usuariosSlice.reducer,
   // Autenticación.
   adminAuth: adminAuthSlice.reducer,
+  gestionEvento: gestionEventosSlice.reducer,
 });
 
 // Persistencia en reducers
