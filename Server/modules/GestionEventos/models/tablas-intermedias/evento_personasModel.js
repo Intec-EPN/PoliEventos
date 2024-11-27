@@ -6,6 +6,7 @@ const EventosPersonasCargoModel = sequelize.define('eventos_personas_cargo', {
     evento_id: {
         type: DataTypes.CHAR(36),
         allowNull: false,
+        primaryKey: true,
         references: {
             model: 'eventos',
             key: 'id',
@@ -15,6 +16,7 @@ const EventosPersonasCargoModel = sequelize.define('eventos_personas_cargo', {
     persona_cargo_id: {
         type: DataTypes.CHAR(36),
         allowNull: false,
+        primaryKey: true,
         references: {
             model: 'personas_cargo',
             key: 'id',

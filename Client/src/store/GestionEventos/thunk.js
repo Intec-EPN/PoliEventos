@@ -5,8 +5,14 @@ export const startCreateEvento = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
-            const eventoCreacion = state.eventoCreacion;
-            await axiosInstance.post("/gestion", eventoCreacion
+            const eventoCreacion = state.gestionEvento.eventoCreacion;
+            console.log(eventoCreacion);
+
+            await axiosInstance.post("/gestion",
+                {
+                    usuarioId: 'b2d581cb-6be0-4598-891a-68a4edbfb4a8',
+                    eventoCreacion: eventoCreacion
+                }
                 //     , {
                 //     withCredentials: true,
                 // }
@@ -27,8 +33,6 @@ export const startLoadingDepartamentos = () => {
                 //     withCredentials: true,
                 // }
             );
-            console.log(data);
-
             dispatch(setDepartamentos(data));
         } catch (error) {
             console.error("Error al cargar departamentos", error);

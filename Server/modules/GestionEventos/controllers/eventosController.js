@@ -9,6 +9,8 @@ const EventosPersonasCargoModel = require("../models/tablas-intermedias/evento_p
 
 const crearEvento = async (req, res) => {
     const { usuarioId, eventoCreacion } = req.body;
+    console.log(eventoCreacion.esquemaCategoria);
+    console.log(eventoCreacion.personasACargo);
 
     try {
         // Crear el evento
@@ -23,9 +25,9 @@ const crearEvento = async (req, res) => {
 
         // Manejar personas a cargo
         for (const persona of eventoCreacion.data.personasACargo) {
-            const personaCargo = await PersonaCargo.create({
-                nombre: persona.nombre,
-                correo: persona.correo,
+            const personaCargo = await PersonasCargoModel.create({
+                nombre: persona.encargado,
+                correo: persona.encargadoMail,
                 expositor: persona.expositor,
             });
 

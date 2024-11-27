@@ -77,7 +77,7 @@ export const Calendario = () => {
         end,
       })
     );
-    // dispatch(startCreateEvento());
+    dispatch(startCreateEvento());
     setModalIsOpen(false);
   };
 

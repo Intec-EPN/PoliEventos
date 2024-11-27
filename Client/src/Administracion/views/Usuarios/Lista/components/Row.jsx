@@ -8,8 +8,12 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { LuPower } from "react-icons/lu";
+import { LuPowerOff } from "react-icons/lu";
+
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid2, useMediaQuery } from "@mui/material";
@@ -107,15 +111,19 @@ export const Row = (props) => {
           </IconButton>
           {row.habilitado ? (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <VisibilityIcon sx={{ color: "white" }} />
+              <Box sx={{ color: "white", display:"inline-flex" }}>
+                <LuPower />
+              </Box>
             </IconButton>
           ) : (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <VisibilityOffIcon sx={{ color: "white" }} />
+              <Box sx={{ color: "white", display:"inline-flex" }}>
+                <LuPowerOff />
+              </Box>
             </IconButton>
           )}
           <IconButton onClick={() => onBorrarUsuario(row.id)}>
-            <DeleteIcon sx={{ color: "white" }} />
+            <DeleteIcon sx={{ color: "white", display:"inline-flex" }} />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -128,7 +136,7 @@ export const Row = (props) => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                {roles.length === 0 ? "Asigna roles por favor." : "Roles"}
+                {roles.length === 0 ? "Asigna un rol por favor." : "Rol"}
               </Typography>
               <Box sx={{ width: "100%" }}>
                 {!isMobileOrTablet &&
@@ -165,7 +173,7 @@ export const Row = (props) => {
 
       <TableRow>
         <TableCell colSpan={5} sx={{ padding: 0, backgroundColor: "#fff" }}>
-          <Box sx={{ height: "1.5rem" }} />
+          <Box sx={{ height: "1rem" }} />
         </TableCell>
       </TableRow>
     </React.Fragment>

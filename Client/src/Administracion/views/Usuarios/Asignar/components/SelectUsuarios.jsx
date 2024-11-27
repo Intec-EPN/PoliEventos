@@ -5,13 +5,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import { setUsuarioAsignar } from "../../../../../store/Administracion/Usuarios/usuariosSlice";
 
-export default function SelectUsuarios() {
+export function resetSelectUsuarios(ref) {
+  if (ref.current) {
+    ref.current.value = null;
+  }
+}
+
+export default function SelectUsuarios({ reset }) {
   const dispatch = useDispatch();
   const { usuarios: usuariosRecuperados } = useSelector(
     (state) => state.usuarios
   );
 
   const [usuarios, setUsuarios] = React.useState([]);
+  const [selectedUsuario, setSelectedUsuario] = React.useState(null);
 
   React.useEffect(() => {
     const usuariosMapeados = usuariosRecuperados.map((usuario) => ({
@@ -21,8 +28,15 @@ export default function SelectUsuarios() {
     setUsuarios(usuariosMapeados);
   }, [usuariosRecuperados]);
 
+  React.useEffect(() => {
+    if (reset) {
+      setSelectedUsuario(null);
+    }
+  }, [reset]);
+
   const handleUsuarioSelect = (event, value) => {
-    dispatch(setUsuarioAsignar(value.id));
+    setSelectedUsuario(value);
+    dispatch(setUsuarioAsignar(value ? value.id : null));
   };
 
   return (
@@ -35,6 +49,7 @@ export default function SelectUsuarios() {
         options={usuarios}
         getOptionLabel={(option) => option.nombre}
         onChange={handleUsuarioSelect}
+        value={selectedUsuario}
         renderInput={(params) => (
           <TextField {...params} variant="standard" label="Usuario" />
         )}

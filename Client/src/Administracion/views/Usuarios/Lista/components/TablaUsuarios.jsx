@@ -76,17 +76,15 @@ export const TablaUsuarios = () => {
       <TableContainer component={Paper} elevation={0}>
         <Table
           aria-label="collapsible table"
-          sx={{ backgroundColor: "#2c4175", color: "white" }}
+          sx={{ backgroundColor: "#2c4175" }}
         >
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "white"}}>
             <TableRow>
               <TableCell sx={{ fontSize: "1.2rem" }} />
-              <TableCell sx={{ color: "white", fontSize: "1.1rem" }}>
-                Usuario
-              </TableCell>
+              <TableCell sx={{ fontSize: "1.1rem", color: "#2c4175"  }}>Usuario</TableCell>
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem" }}
+                sx={{ color: "#2c4175",  fontWeight: "bold", fontSize: "1.1rem" }}
               >
                 Correo
               </TableCell>
@@ -94,7 +92,7 @@ export const TablaUsuarios = () => {
                 <TableCell
                   align="center"
                   sx={{
-                    color: "white",
+                    color: "#2c4175",
                     fontWeight: "bold",
                     fontSize: "1.1rem",
                   }}
@@ -104,7 +102,7 @@ export const TablaUsuarios = () => {
               )}
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem" }}
+                sx={{ color: "#2c4175", fontWeight: "bold", fontSize: "1.1rem" }}
               >
                 Acciones
               </TableCell>

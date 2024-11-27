@@ -19,7 +19,7 @@ const EventosModel = sequelize.define('Eventos', {
         type: DataTypes.DATE,
         allowNull: false,
     },
-    Lugar: {
+    lugar: {
         type: DataTypes.STRING(255),
         allowNull: false,
     },

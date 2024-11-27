@@ -17,10 +17,10 @@ export const Departamento = () => {
   const departamento = watch("departamento");
 
   useEffect(() => {
-    if (departamentos.length > 0) {
+    if (departamentos.length > 0 && !departamento) {
       setValue("departamento", departamentos[0].id);
     }
-  }, [departamento, setValue]);
+  }, [departamentos, departamento, setValue]);
 
   const handleChange = (event) => {
     setValue("departamento", event.target.value);
@@ -30,7 +30,7 @@ export const Departamento = () => {
     <Box sx={{ width: "100%" }} mt={0.5}>
       <DialogContentText>Departamento</DialogContentText>
       <Select
-        value={departamento}
+        value={departamento || ""}
         onChange={handleChange}
         inputProps={{
           name: "departamento",

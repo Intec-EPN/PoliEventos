@@ -7,15 +7,26 @@ import { startRolesUsuarios } from "../../../../store/Administracion/Usuarios/th
 import { limpiarAsignacion } from "../../../../store/Administracion/Usuarios/usuariosSlice";
 import { PopUpAsignar } from "./components/PopUpAsignar";
 import { useNavigate } from "react-router-dom";
+import Divider from "@mui/material/Divider";
 import LooksOneIcon from "@mui/icons-material/LooksOne";
 import LooksTwoIcon from "@mui/icons-material/LooksTwo";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import { resetSelectUsuarios } from "./components/SelectUsuarios";
+import { resetSelectRoles } from "./components/SelectRoles";
+import React from "react";
 
 export const AsignarRoles = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [asignacionCompleta, setAsignacionCompleta] = useState(false);
-  const handleClose = () => setAsignacionCompleta(false);
+  const [resetSelect, setResetSelect] = useState(false);
+
+  const handleClose = () => {
+    setAsignacionCompleta(false);
+    setResetSelect(true);
+    setTimeout(() => setResetSelect(false), 0); // Resetear el estado después de un ciclo de renderizado
+  };
+
   const { usuarioAsignar, rolesAsignar } = useSelector(
     (state) => state.usuarios
   );
@@ -28,6 +39,9 @@ export const AsignarRoles = () => {
 
   useEffect(() => {
     dispatch(limpiarAsignacion());
+    return () => {
+      dispatch(limpiarAsignacion());
+    };
   }, [dispatch]);
 
   const handleButtonAsignar = () => {
@@ -42,8 +56,13 @@ export const AsignarRoles = () => {
       <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mb: 1 }}>
         Instrucciones
       </Typography>
-      <Box display={"flex"}>
-        <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
+      <Box display={"flex"} mb={5}>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          sx={{ width: "100%" }}
+          flex={3}
+        >
           <Typography
             variant="p6"
             color="primary"
@@ -59,34 +78,100 @@ export const AsignarRoles = () => {
             <LooksTwoIcon /> Selecciona los roles que deseas asignar.
           </Typography>
         </Box>
-        <Box sx={{ width: "100%" }} display={"flex"} flexDirection={"column"} gap={0.5}>
-          <Box sx={{ width: "100%" }} display={"inline-flex"}>
+        <Box
+          sx={{ width: "100%" }}
+          display={"flex"}
+          flexDirection={"column"}
+          gap={0.5}
+          flex={4}
+          ml={3}
+        >
+          <Box display={"inline-flex"}>
             <HelpCenterIcon /> <strong>Roles</strong>
           </Box>
-          <Box display={"flex"} gap={1} flexWrap={"wrap"}>
-            <Chip
-              label="Propio"
-              sx={{ backgroundColor: COLORES.Propio, color: "#fff" }}
-            />
-            <Chip
-              label="Departamento"
-              sx={{ backgroundColor: COLORES.Departamento, color: "#fff" }}
-            />
-            <Chip
-              label="Facultad"
-              sx={{ backgroundColor: COLORES.Facultad, color: "#fff" }}
-            />
+          {/* TODO ALINACION */}
+          <Box display="flex" gap="2rem">
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={1}
+              flexWrap={"wrap"}
+            >
+              <div>
+                <Chip
+                  label="Propio"
+                  sx={{
+                    backgroundColor: COLORES.Propio,
+                    color: "#fff",
+                    width: "auto",
+                  }}
+                />
+              </div>
+              <div>
+                <Chip
+                  label="Departamento"
+                  sx={{
+                    backgroundColor: COLORES.Departamento,
+                    color: "#fff",
+                    width: "auto",
+                  }}
+                />
+              </div>
+              <div>
+                <Chip
+                  label="Facultad"
+                  sx={{
+                    backgroundColor: COLORES.Facultad,
+                    color: "#fff",
+                    width: "auto",
+                  }}
+                />
+              </div>
+            </Box>
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={1}
+              flexWrap={"wrap"}
+            >
+              <Typography
+                variant="p6"
+                color="primary"
+                sx={{ mb: 1, display: "inline-flex" }}
+              >
+                Roles a nivel propio de gestión de eventos.
+              </Typography>
+              <Typography
+                variant="p6"
+                color="primary"
+                sx={{ mb: 1, display: "inline-flex" }}
+              >
+                Roles a nivel de departamento de gestión de eventos (uno o más
+                por departamento).
+              </Typography>
+              <Typography
+                variant="p6"
+                color="primary"
+                sx={{ mb: 1, display: "inline-flex" }}
+              >
+                Roles a nivel de facultad de gestión de eventos (uno o más por
+                facultad).
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Box>
+      <Divider sx={{ width: "90%" }}>
+        <Chip label="Asigna" size="small" />
+      </Divider>
       <Box sx={{ display: "flex", gap: 2, alignItems: "end", mt: 4 }}>
         <Box sx={{ width: "100%" }}>
           <LooksOneIcon />
-          <SelectUsuarios />
+          <SelectUsuarios reset={resetSelect} />
         </Box>
         <Box sx={{ width: "100%" }}>
           <LooksTwoIcon />
-          <SelectRoles />
+          <SelectRoles reset={resetSelect} />
         </Box>
         <Button
           variant="contained"

@@ -8,7 +8,13 @@ import { startLoadingRoles } from "../../../../../store/Administracion/Roles/thu
 import { Box, Typography } from "@mui/material";
 import { setRolesAsignar } from "../../../../../store/Administracion/Usuarios/usuariosSlice";
 
-export default function SelectRoles() {
+export function resetSelectRoles(ref) {
+  if (ref.current) {
+    ref.current.value = null;
+  }
+}
+
+export default function SelectRoles({ reset }) {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(startLoadingRoles());
@@ -26,18 +32,14 @@ export default function SelectRoles() {
   const { usuarios, usuarioAsignar } = useSelector((state) => state.usuarios);
   React.useEffect(() => {
     if (usuarioAsignar) {
-      setSelectedRoles(
-        usuarios
-          .find((usuario) => usuario.id === usuarioAsignar)
-          .roles.map((rol) => {
-            console.log(rol);
-            return {
-              id: rol.rol_id,
-              nombre: rol.rol_nombre,
-            };
-          })
-      );
-      console.log("roles", selectedRoles);
+      const usuario = usuarios.find((usuario) => usuario.id === usuarioAsignar);
+      if (usuario) {
+        const rolesUsuario = usuario.roles.map((rol) => ({
+          id: rol.rol_id,
+          nombre: rol.rol_nombre,
+        }));
+        setSelectedRoles(rolesUsuario);
+      }
     }
   }, [usuarios, usuarioAsignar]);
 
@@ -80,7 +82,7 @@ export default function SelectRoles() {
       });
       setSelectedRoles(selectedRolesMapeados);
     }
-  }, [selectedRoles, rolesRecuperados]);
+  }, [rolesRecuperados, selectedRoles]);
 
   React.useEffect(() => {
     if (rolesRecuperados.length > 0) {
@@ -120,22 +122,15 @@ export default function SelectRoles() {
   }, [rolesRecuperados]);
 
   React.useEffect(() => {
-    setSelectedRoles([]); // Inicializar el estado cuando el componente se monte
-    return () => {
-      setSelectedRoles([]); // Limpiar el estado cuando el componente se desmonte
-    };
-  }, []);
+    if (reset) {
+      setSelectedRoles([]);
+    }
+  }, [reset]);
 
   const handleRolesSelect = (event, newValue) => {
-    const uniqueValues = newValue.filter(
-      (value, index, self) => index === self.findIndex((v) => v.id === value.id)
-    );
-    setSelectedRoles(uniqueValues);
-    dispatch(setRolesAsignar(uniqueValues.map((rol) => rol.id)));
+    setSelectedRoles(newValue ? [newValue] : []);
+    dispatch(setRolesAsignar(newValue ? [newValue.id] : []));
   };
-  const filteredRoles = roles.filter(
-    (role) => !selectedRoles.some((selectedRole) => selectedRole.id === role.id)
-  );
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -144,14 +139,12 @@ export default function SelectRoles() {
       </Typography>
       <Stack spacing={3} sx={{ width: "100%" }}>
         <Autocomplete
-          multiple
+          multiple={false}
           id="tags-standard"
-          options={filteredRoles}
-          getOptionLabel={(option) => option.nombre}
+          options={roles}
+          getOptionLabel={(option) => option.nombre || ""}
           onChange={handleRolesSelect}
-          filterSelectedOptions={true}
-          value={selectedRoles}
-          noOptionsText="No hay más roles."
+          value={selectedRoles[0] || null}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => {
               const { key, ...tagProps } = getTagProps({ index });
@@ -170,10 +163,25 @@ export default function SelectRoles() {
               {...params}
               variant="standard"
               label="Rol/Roles"
-              // placeholder="Agrega otro."
+              InputLabelProps={{ shrink: true }}
               sx={{
                 input: { color: "black" }, // Cambia el color del texto aquí
                 label: { color: "#676767" }, // Cambia el color del label aquí
+              }}
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: selectedRoles.map((option) => (
+                  <Chip
+                    key={option.id}
+                    label={option.nombre}
+                    style={{ backgroundColor: option.colorNivel, color: "white" }}
+                  />
+                )),
+                // Eliminar el texto adicional
+                inputProps: {
+                  ...params.inputProps,
+                  value: '',
+                },
               }}
             />
           )}

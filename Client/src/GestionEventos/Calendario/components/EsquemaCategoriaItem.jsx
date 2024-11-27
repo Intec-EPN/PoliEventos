@@ -32,10 +32,19 @@ export const EsquemaCategoriaItem = ({
     );
   }, [esquemaSeleccionado, esquemas]);
 
+  useEffect(() => {
+    if (categoriasEsquemaSeleccionado.length > 0) {
+      setValue(
+        `esquemasCategorias[${index}].categoriaId`,
+        categoriasEsquemaSeleccionado[0].categoriaId
+      );
+    }
+  }, [categoriasEsquemaSeleccionado, index, setValue]);
+
   return (
     <Box display={"flex"} sx={{ width: "100%" }} gap={1}>
       <Select
-        defaultValue={esquemas[0].esquemaId}
+        value={esquemaSeleccionado}
         inputProps={{
           name: `esquemasCategorias[${index}].esquemaId`,
           id: `esquema-${index}`,
@@ -54,14 +63,16 @@ export const EsquemaCategoriaItem = ({
         ))}
       </Select>
       <Select
-        defaultValue={categoriasEsquemaSeleccionado[0].categoriaId}
+        value={watch(`esquemasCategorias[${index}].categoriaId`) || ""}
         inputProps={{
           name: `esquemasCategorias[${index}].categoriaId`,
           id: `categoria-${index}`,
         }}
         sx={{ width: "50%", mt: 0.5 }}
         {...register(`esquemasCategorias[${index}].categoriaId`)}
-        onChange={(e) => setValue(`esquemasCategorias[${index}].categoriaId`, e.target.value)}
+        onChange={(e) =>
+          setValue(`esquemasCategorias[${index}].categoriaId`, e.target.value)
+        }
       >
         {categoriasEsquemaSeleccionado?.map(
           ({ categoriaId, categoriaNombre }) => (

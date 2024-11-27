@@ -20,9 +20,15 @@ const style = {
 
 export const PopUpAsignar = ({ open, handleClose }) => {
   const navigate = useNavigate();
+  
   const handleUsuarios = () => {
     navigate("/admin/usuarios/lista");
   };
+
+  const handleSeguirAsignando = () => {
+    handleClose();
+  };
+
   return (
     <Modal
       open={open}
@@ -42,7 +48,7 @@ export const PopUpAsignar = ({ open, handleClose }) => {
         <Box display={"flex"} justifyContent={"center"} gap={2} mt={1}>
           <Button
             variant="contained"
-            onClick={handleClose}
+            onClick={handleSeguirAsignando}
             sx={{ backgroundColor: "#1d5318" }}
           >
             Seguir asignando

@@ -17,11 +17,21 @@ const RolPermisosModel = sequelize.define('Rol_Permisos', {
     rol_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
+        references: {
+            model: RolesModel,
+            key: 'id'
+        },
+        onDelete: 'CASCADE', 
     },
     permiso_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
-    } 
+        references: {
+            model: PermisosModel,
+            key: 'id'
+        },
+        onDelete: 'CASCADE', 
+    }
 }, {
     tableName: 'rol_permisos',
     timestamps: false,
@@ -29,8 +39,8 @@ const RolPermisosModel = sequelize.define('Rol_Permisos', {
 
 // Relaciones:
 // Relación de rol_id con Roles
-RolPermisosModel.belongsTo(RolesModel, {foreignKey: 'rol_id'});
+RolPermisosModel.belongsTo(RolesModel, { foreignKey: 'rol_id' });
 // Relación de rol_id con Permisos
-RolPermisosModel.belongsTo(PermisosModel, {foreignKey: 'permiso_id'});
+RolPermisosModel.belongsTo(PermisosModel, { foreignKey: 'permiso_id' });
 
 module.exports = RolPermisosModel;

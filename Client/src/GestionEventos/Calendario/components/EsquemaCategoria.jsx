@@ -60,7 +60,14 @@ export const EsquemaCategoria = () => {
           setValue={setValue}
         />
       ))}
-      <Button onClick={() => append({ esquemaId: "", categoriaId: "" })}>
+      <Button
+        onClick={() =>
+          append({
+            esquemaId: esquemas[0]?.esquemaId || "",
+            categoriaId: esquemas[0]?.categorias[0]?.categoriaId || "",
+          })
+        }
+      >
         Agregar
       </Button>
     </>
