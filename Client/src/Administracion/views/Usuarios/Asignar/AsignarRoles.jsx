@@ -56,48 +56,21 @@ export const AsignarRoles = () => {
       <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mb: 1 }}>
         Instrucciones
       </Typography>
-      <Box display={"flex"} mb={5}>
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          sx={{ width: "100%" }}
-          flex={3}
-        >
-          <Typography
-            variant="p6"
-            color="primary"
-            sx={{ mb: 1, display: "inline-flex" }}
-          >
-            <LooksOneIcon /> Selecciona un usuario.
-          </Typography>
-          <Typography
-            variant="p6"
-            color="primary"
-            sx={{ mb: 1, display: "inline-flex" }}
-          >
-            <LooksTwoIcon /> Selecciona los roles que deseas asignar.
-          </Typography>
-        </Box>
+      <Box display={"flex"} mb={2} >
         <Box
           sx={{ width: "100%" }}
           display={"flex"}
           flexDirection={"column"}
           gap={0.5}
           flex={4}
-          ml={3}
         >
           <Box display={"inline-flex"}>
             <HelpCenterIcon /> <strong>Roles</strong>
           </Box>
           {/* TODO ALINACION */}
-          <Box display="flex" gap="2rem">
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              gap={1}
-              flexWrap={"wrap"}
-            >
-              <div>
+          <Box display="flex" gap="2rem" mt={1}>
+            <Box display={"flex"} gap={2} flexWrap={"wrap"}>
+              <Box sx={{display:"flex", gap:1, alignItems:"center"}}>
                 <Chip
                   label="Propio"
                   sx={{
@@ -106,8 +79,15 @@ export const AsignarRoles = () => {
                     width: "auto",
                   }}
                 />
-              </div>
-              <div>
+                <Typography
+                  variant="p6"
+                  color="primary"
+                  sx={{ display: "inline-flex" }}
+                >
+                  Crear/editar/eliminar/descargar de eventos a nivel propio.
+                </Typography>
+              </Box>
+              <Box sx={{display:"flex", gap:1, alignItems:"center"}}>
                 <Chip
                   label="Departamento"
                   sx={{
@@ -116,8 +96,15 @@ export const AsignarRoles = () => {
                     width: "auto",
                   }}
                 />
-              </div>
-              <div>
+                <Typography
+                  variant="p6"
+                  color="primary"
+                  sx={{ display: "inline-flex" }}
+                >
+                  Crear/editar/eliminar/descargar de eventos de un departamento.
+                </Typography>
+              </Box>
+              <Box sx={{display:"flex", gap:1, alignItems:"center"}}>
                 <Chip
                   label="Facultad"
                   sx={{
@@ -126,37 +113,14 @@ export const AsignarRoles = () => {
                     width: "auto",
                   }}
                 />
-              </div>
-            </Box>
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              gap={1}
-              flexWrap={"wrap"}
-            >
-              <Typography
-                variant="p6"
-                color="primary"
-                sx={{ mb: 1, display: "inline-flex" }}
-              >
-                Roles a nivel propio de gestión de eventos.
-              </Typography>
-              <Typography
-                variant="p6"
-                color="primary"
-                sx={{ mb: 1, display: "inline-flex" }}
-              >
-                Roles a nivel de departamento de gestión de eventos (uno o más
-                por departamento).
-              </Typography>
-              <Typography
-                variant="p6"
-                color="primary"
-                sx={{ mb: 1, display: "inline-flex" }}
-              >
-                Roles a nivel de facultad de gestión de eventos (uno o más por
-                facultad).
-              </Typography>
+                <Typography
+                  variant="p6"
+                  color="primary"
+                  sx={{ display: "inline-flex" }}
+                >
+                  Crear/editar/eliminar/descargar de eventos de los departamentos de una facultad.
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>

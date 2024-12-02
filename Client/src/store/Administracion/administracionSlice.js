@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const administracionSlice = createSlice({
     name: 'administracion',
     initialState: {
-        opcion: 'Selecciona una opción.'
+        opcion: 'Selecciona una opción.',
     },
     reducers: {
         opcionActual: (state, action) => {
             state.opcion = action.payload;
-        }
+        },
     }
 });
 

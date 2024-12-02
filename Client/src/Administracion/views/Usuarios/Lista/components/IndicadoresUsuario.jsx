@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SquareIcon from "@mui/icons-material/Square";
+import EditIcon from "@mui/icons-material/Edit";
+import { LuPower } from "react-icons/lu";
 
 export const IndicadoresUsuario = () => {
   return (
@@ -19,8 +21,7 @@ export const IndicadoresUsuario = () => {
       <Box display="flex" gap={1}>
         <DeleteIcon sx={{ color: "#2c4175" }} />
         <Typography variant="p">
-          Elimina un usuario. Ten en cuenta que esta acción no se puede
-          deshacer.
+          Elimina un usuario. Esta acción no se puede deshacer.
         </Typography>
       </Box>
       <Typography
@@ -35,6 +36,47 @@ export const IndicadoresUsuario = () => {
       >
         <hr></hr>
       </Typography>
+
+      {/* Separacion */}
+      <Box display="flex" gap={1}>
+        <EditIcon sx={{ color: "#2c4175" }} />
+        <Typography variant="p">
+          Editar usuario.
+        </Typography>
+      </Box>
+      <Typography
+        variant="p"
+        sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+      >
+        |
+      </Typography>
+      <Typography
+        variant="p"
+        sx={{ display: { xs: "block", sm: "none", md: "none" } }}
+      >
+        <hr></hr>
+      </Typography>
+
+      {/* Separacion */}
+      <Box display="flex" gap={1} alignItems="center">
+        <LuPower sx={{ color: "#2c4175"}} />
+        <Typography variant="p">
+          Habilitar/inhabilitar usuario.
+        </Typography>
+      </Box>
+      <Typography
+        variant="p"
+        sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+      >
+        |
+      </Typography>
+      <Typography
+        variant="p"
+        sx={{ display: { xs: "block", sm: "none", md: "none" } }}
+      >
+        <hr></hr>
+      </Typography>
+
 
       <Box display="flex" gap={1}>
         <SquareIcon sx={{ color: "#dc8626", width: "1.3rem" }} />

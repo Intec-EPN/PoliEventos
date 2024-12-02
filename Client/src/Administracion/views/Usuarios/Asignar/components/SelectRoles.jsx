@@ -135,7 +135,7 @@ export default function SelectRoles({ reset }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Typography variant="h7" color="primary" sx={{ fontWeight: 700, mb: 1 }}>
-        Selecciona uno o más roles
+        Selecciona un rol
       </Typography>
       <Stack spacing={3} sx={{ width: "100%" }}>
         <Autocomplete
@@ -162,11 +162,11 @@ export default function SelectRoles({ reset }) {
             <TextField
               {...params}
               variant="standard"
-              label="Rol/Roles"
+              label="Rol"
               InputLabelProps={{ shrink: true }}
               sx={{
-                input: { color: "black" }, // Cambia el color del texto aquí
-                label: { color: "#676767" }, // Cambia el color del label aquí
+                input: { color: "black" }, 
+                label: { color: "#676767" }, 
               }}
               InputProps={{
                 ...params.InputProps,
