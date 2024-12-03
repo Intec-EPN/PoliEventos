@@ -4,6 +4,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { sequelize, authenticateDB } = require('./config/db');
 const routes = require('./modules/routes');
+const ExpositoresModel = require('./modules/GestionEventos/models/expositoresModel');
+const EventosExpositoresModel = require('./modules/GestionEventos/models/tablas-intermedias/evento_expositoresModel');
 
 const app = express();
 

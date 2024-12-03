@@ -1,8 +1,8 @@
-import { Box, DialogContentText, MenuItem, Select } from "@mui/material";
-import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadingDepartamentos } from "../../../store/GestionEventos/thunk";
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { Box, DialogContentText, Autocomplete, TextField } from "@mui/material";
 
 export const Departamento = () => {
   const dispatch = useDispatch();
@@ -14,37 +14,43 @@ export const Departamento = () => {
   const { departamentos } = useSelector((state) => state.gestionEvento);
 
   const { register, setValue, watch } = useFormContext();
-  const departamento = watch("departamento");
+  const departamento = watch("departamento") || [];
 
   useEffect(() => {
-    if (departamentos.length > 0 && !departamento) {
-      setValue("departamento", departamentos[0].id);
+    if (departamentos.length > 0 && departamento.length === 0) {
+      setValue("departamento", [departamentos[0].id]);
     }
   }, [departamentos, departamento, setValue]);
 
-  const handleChange = (event) => {
-    setValue("departamento", event.target.value);
+  const handleChange = (event, value) => {
+    setValue("departamento", value.map(dep => dep.id));
   };
 
   return (
     <Box sx={{ width: "100%" }} mt={0.5}>
       <DialogContentText>Departamento</DialogContentText>
-      <Select
-        value={departamento || ""}
+      <Autocomplete
+        multiple
+        options={departamentos}
+        getOptionLabel={(option) => option.departamento}
+        value={departamentos.filter(dep => departamento.includes(dep.id))}
         onChange={handleChange}
-        inputProps={{
-          name: "departamento",
-          id: "uncontrolled-native",
-        }}
-        sx={{ width: "100%", mt: 0.5 }}
-        {...register("departamento")}
-      >
-        {departamentos.map(({ id, departamento }) => (
-          <MenuItem key={id} value={id}>
-            {departamento}
-          </MenuItem>
+        renderTags={(value, getTagProps) => value.map((option, index) => (
+          <span key={index} {...getTagProps({ index })}>
+            {option.departamento}
+            {index < value.length - 1 && ', '}
+          </span>
         ))}
-      </Select>
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Departamento"
+            variant="outlined"
+            {...register("departamento")}
+          />
+        )}
+        sx={{ width: "100%", mt: 0.5 }}
+      />
     </Box>
   );
 };

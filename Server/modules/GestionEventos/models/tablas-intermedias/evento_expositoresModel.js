@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../../config/db');
 
-const EventosPersonasCargoModel = sequelize.define('eventos_personas_cargo', {
+const EventosExpositoresModel = sequelize.define('eventos_expositores', {
     evento_id: {
         type: DataTypes.CHAR(36),
         allowNull: false,
@@ -12,19 +12,19 @@ const EventosPersonasCargoModel = sequelize.define('eventos_personas_cargo', {
         },
         onDelete: 'CASCADE',
     },
-    persona_cargo_id: {
+    expositor_id: {
         type: DataTypes.CHAR(36),
         allowNull: false,
         primaryKey: true,
         references: {
-            model: 'personas_cargo',
+            model: 'expositores',
             key: 'id',
         },
         onDelete: 'CASCADE',
     },
 }, {
-    tableName: 'eventos_personas_cargo',
+    tableName: 'eventos_expositores',
     timestamps: false,
 });
 
-module.exports = EventosPersonasCargoModel;
+module.exports = EventosExpositoresModel;

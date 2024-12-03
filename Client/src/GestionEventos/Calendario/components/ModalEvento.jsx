@@ -15,6 +15,7 @@ import { Descripcion } from "./Descripcion";
 import { Lugar } from "./Lugar";
 import { PersonaCargo } from "./PersonaCargo";
 import dayjs from "../../../dayjsConfig";
+import { Expositores } from "./Expositores";
 
 export const ModalEvento = ({
   modalIsOpen,
@@ -26,6 +27,7 @@ export const ModalEvento = ({
     defaultValues: {
       esquemasCategorias: [],
       personasCargo: [],
+      expositores: [], 
     },
   });
   const onSubmit = (data) => {
@@ -78,6 +80,7 @@ export const ModalEvento = ({
           </Box>
           <FechaHora />
           <PersonaCargo />
+          <Expositores />
           <Descripcion />
           <EsquemaCategoria />
           <Departamento />

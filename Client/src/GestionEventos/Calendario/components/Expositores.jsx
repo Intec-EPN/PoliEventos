@@ -9,18 +9,18 @@ import {
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useEffect } from "react";
 
-export const PersonaCargo = () => {
+export const Expositores = () => {
   const { register, control, setValue, watch, reset } = useFormContext();
   const { fields, append } = useFieldArray({
     control,
-    name: "personasCargo",
+    name: "expositores",
   });
 
   useEffect(() => {
     fields.forEach((field, index) => {
-      const nombre = watch(`personasCargo[${index}].nombre`);
-      const mail = watch(`personasCargo[${index}].mail`);
-      setValue(`personasCargo[${index}]`, {
+      const nombre = watch(`expositores[${index}].nombre`);
+      const mail = watch(`expositores[${index}].mail`);
+      setValue(`expositores[${index}]`, {
         nombre,
         mail,
       });
@@ -29,36 +29,36 @@ export const PersonaCargo = () => {
 
   useEffect(() => {
     reset({
-      personasCargo: [],
+      expositores: [],
     });
   }, [reset]);
 
   return (
     <>
-      <DialogContentText>Persona a cargo</DialogContentText>
+      <DialogContentText>Expositores</DialogContentText>
       {fields.map((field, index) => (
         <Box key={field.id} display={"flex"} sx={{ width: "100%" }} gap={1}>
           <TextField
             required
             margin="dense"
-            id={`encargado-${index}`}
-            name={`personasCargo[${index}].nombre`}
-            label="Nombre del encargado"
+            id={`expositor-${index}`}
+            name={`expositores[${index}].nombre`}
+            label="Nombre del expositor"
             type="text"
             fullWidth
             variant="outlined"
-            {...register(`personasCargo[${index}].nombre`)}
+            {...register(`expositores[${index}].nombre`)}
           />
           <TextField
             required
             margin="dense"
-            id={`encargadoMail-${index}`}
-            name={`personasCargo[${index}].mail`}
-            label="Correo del encargado"
+            id={`expositorMail-${index}`}
+            name={`expositores[${index}].mail`}
+            label="Correo del expositor"
             type="email"
             fullWidth
             variant="outlined"
-            {...register(`personasCargo[${index}].mail`)}
+            {...register(`expositores[${index}].mail`)}
           />
         </Box>
       ))}

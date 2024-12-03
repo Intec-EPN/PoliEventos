@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../config/db');
 
-const PersonasCargoModel = sequelize.define('personas_cargo', {
+
+const ExpositoresModel = sequelize.define('expositores', {
     id: {
         type: DataTypes.CHAR(36),
         primaryKey: true,
@@ -15,9 +16,8 @@ const PersonasCargoModel = sequelize.define('personas_cargo', {
         type: DataTypes.STRING(255),
     },
 }, {
-    tableName: 'personas_cargo',
+    tableName: 'expositores',
     timestamps: false,
 });
 
-
-module.exports = PersonasCargoModel;
+module.exports = ExpositoresModel;

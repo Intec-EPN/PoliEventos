@@ -1,16 +1,15 @@
-
 const CategoriasModel = require("../../Administracion/models/Categorizaciones/categoriasModel");
 const DepartamentosModel = require("../../Administracion/models/Roles/departamentosModel");
 const EventosModel = require("../models/eventoModel");
 const PersonasCargoModel = require("../models/personasCargoModel");
+const ExpositoresModel = require("../models/expositoresModel");
 const EventosCategoriasModel = require("../models/tablas-intermedias/evento_categoriasModel");
 const EventosDepartamentosModel = require("../models/tablas-intermedias/evento_departamentosModel");
 const EventosPersonasCargoModel = require("../models/tablas-intermedias/evento_personasModel");
+const EventosExpositoresModel = require("../models/tablas-intermedias/evento_expositoresModel");
 
 const crearEvento = async (req, res) => {
     const { usuarioId, eventoCreacion } = req.body;
-    console.log(eventoCreacion.esquemaCategoria);
-    console.log(eventoCreacion.personasACargo);
 
     try {
         // Crear el evento
@@ -26,14 +25,26 @@ const crearEvento = async (req, res) => {
         // Manejar personas a cargo
         for (const persona of eventoCreacion.data.personasACargo) {
             const personaCargo = await PersonasCargoModel.create({
-                nombre: persona.encargado,
-                correo: persona.encargadoMail,
-                expositor: persona.expositor,
+                nombre: persona.nombre,
+                correo: persona.mail,
             });
 
             await EventosPersonasCargoModel.create({
                 evento_id: evento.id,
                 persona_cargo_id: personaCargo.id,
+            });
+        }
+
+        // Manejar expositores
+        for (const expositor of eventoCreacion.data.expositores) {
+            const expositorCargo = await ExpositoresModel.create({
+                nombre: expositor.nombre,
+                correo: expositor.mail,
+            });
+
+            await EventosExpositoresModel.create({
+                evento_id: evento.id,
+                expositor_id: expositorCargo.id,
             });
         }
 

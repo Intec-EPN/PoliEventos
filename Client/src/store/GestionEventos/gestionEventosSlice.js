@@ -11,6 +11,7 @@ export const gestionEventosSlice = createSlice({
                 lugar: "",
                 descripcion: "",
                 personasACargo: [],
+                expositores: [],
                 esquemaCategoria: [],
                 departamento: []
             }
@@ -35,6 +36,7 @@ export const gestionEventosSlice = createSlice({
                 departamento,
                 esquemasCategorias,
                 personasCargo,
+                expositores
             } = action.payload;
             console.log(action.payload);
 
@@ -45,9 +47,10 @@ export const gestionEventosSlice = createSlice({
                 data: {
                     lugar,
                     descripcion,
-                    departamento,
+                    departamento: departamento || [],
                     esquemaCategoria: esquemasCategorias || [],
                     personasACargo: personasCargo || [],
+                    expositores: expositores || []
                 },
             };
         },

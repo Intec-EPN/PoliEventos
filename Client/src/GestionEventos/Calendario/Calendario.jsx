@@ -55,6 +55,7 @@ export const Calendario = () => {
       departamento,
       esquemasCategorias,
       personasCargo,
+      expositores,
     } = data;
 
     const start = dayjs(
@@ -73,6 +74,7 @@ export const Calendario = () => {
         departamento,
         esquemasCategorias,
         personasCargo,
+        expositores,
         start,
         end,
       })
@@ -86,7 +88,7 @@ export const Calendario = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", height: "95vh", fontFamily:"Helvetica, Arial,sans-serif", display:"flex", justifyContent:"center", alignItems:"center" }}>
       <Calendar
         style={{ height: "90vh", width: "90vw" }}
         localizer={localizer}
