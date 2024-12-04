@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { startLoadingDepartamentos } from "../../../store/GestionEventos/thunk";
+import { startLoadingDepartamentos } from "../../../../store/GestionEventos/thunk";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { Box, DialogContentText, Autocomplete, TextField } from "@mui/material";
@@ -36,7 +36,7 @@ export const Departamento = () => {
         value={departamentos.filter(dep => departamento.includes(dep.id))}
         onChange={handleChange}
         renderTags={(value, getTagProps) => value.map((option, index) => (
-          <span key={index} {...getTagProps({ index })}>
+          <span key={option.id} {...getTagProps({ index })}>
             {option.departamento}
             {index < value.length - 1 && ', '}
           </span>

@@ -10,7 +10,6 @@ const EventosExpositoresModel = require("../models/tablas-intermedias/evento_exp
 
 const crearEvento = async (req, res) => {
     const { usuarioId, eventoCreacion } = req.body;
-
     try {
         // Crear el evento
         const evento = await EventosModel.create({
@@ -88,4 +87,61 @@ const crearEvento = async (req, res) => {
     }
 };
 
-module.exports = { crearEvento };
+const obtenerEventos = async (req, res) => {
+    try {
+        const eventos = await EventosModel.findAll();
+
+        const eventosFormatted = await Promise.all(eventos.map(async evento => {
+            const personasCargo = await EventosPersonasCargoModel.findAll({
+                where: { evento_id: evento.id },
+                include: [{ model: PersonasCargoModel }]
+            });
+
+            const expositores = await EventosExpositoresModel.findAll({
+                where: { evento_id: evento.id },
+                include: [{ model: ExpositoresModel, as: 'expositore' }]
+            });
+
+            const categorias = await EventosCategoriasModel.findAll({
+                where: { evento_id: evento.id },
+                include: [{ model: CategoriasModel }]
+            });
+
+            const departamentos = await EventosDepartamentosModel.findAll({
+                where: { evento_id: evento.id },
+                include: [{ model: DepartamentosModel }]
+            });
+
+            return {
+                start: evento.start,
+                end: evento.end,
+                title: evento.title,
+                data: {
+                    lugar: evento.lugar,
+                    descripcion: evento.descripcion,
+                    departamento: departamentos.map(dep => dep.departamento_id) || [],
+                    esquemaCategoria: categorias.map(cat => ({
+                        categoriaId: cat.categoria_id,
+                        esquemaId: cat.Categoria ? cat.Categoria.esquema_id : null,
+                    })) || [],
+                    personasACargo: personasCargo.map(persona => ({
+                        nombre: persona.personas_cargo ? persona.personas_cargo.nombre : null,
+                        mail: persona.personas_cargo ? persona.personas_cargo.correo : null,
+                    })) || [],
+                    expositores: expositores.map(expositor => ({
+                        nombre: expositor.expositore ? expositor.expositore.nombre : null,
+                        mail: expositor.expositore ? expositor.expositore.correo : null,
+                    })) || [],
+                    asistentes: evento.asistentes
+                },
+            };
+        }));
+
+        res.status(200).json(eventosFormatted);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener los eventos', error });
+    }
+};
+
+module.exports = { crearEvento, obtenerEventos };

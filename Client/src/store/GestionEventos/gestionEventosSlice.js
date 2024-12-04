@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const gestionEventosSlice = createSlice({
     name: 'gestionEventos',
     initialState: {
+        eventos: [],
         eventoCreacion: {
             title: "",
             start: null,
@@ -59,6 +60,9 @@ export const gestionEventosSlice = createSlice({
         },
         setEsquemasCategorias: (state, action) => {
             state.esquemasCategorias = action.payload;
+        },
+        setEventos: (state, action) => {
+            state.eventos = action.payload;
         }
     }
 });
@@ -70,5 +74,6 @@ export const {
     setEnd,
     setEventoCreacion,
     setDepartamentos,
-    setEsquemasCategorias
+    setEsquemasCategorias,
+    setEventos
 } = gestionEventosSlice.actions;

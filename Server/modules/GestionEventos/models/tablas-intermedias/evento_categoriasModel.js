@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../../config/db');
+const EventosModel = require('../eventoModel');
+const CategoriasModel = require('../../../Administracion/models/Categorizaciones/categoriasModel');
 
 const EventosCategoriasModel = sequelize.define('eventos_categorias', {
     evento_id: {
@@ -26,5 +28,9 @@ const EventosCategoriasModel = sequelize.define('eventos_categorias', {
     tableName: 'eventos_categorias',
     timestamps: false,
 });
+
+// Definir asociaciones
+EventosCategoriasModel.belongsTo(EventosModel, { foreignKey: 'evento_id' });
+EventosCategoriasModel.belongsTo(CategoriasModel, { foreignKey: 'categoria_id' });
 
 module.exports = EventosCategoriasModel;

@@ -7,15 +7,15 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
-import { FechaHora } from "./FechaHora";
-import { EsquemaCategoria } from "./EsquemaCategoria";
-import { Departamento } from "./Departamento";
-import { Titulo } from "./Titulo";
-import { Descripcion } from "./Descripcion";
-import { Lugar } from "./Lugar";
-import { PersonaCargo } from "./PersonaCargo";
+import { FechaHora } from "./Creacion/FechaHora";
+import { EsquemaCategoria } from "./Creacion/EsquemaCategoria";
+import { Departamento } from "./Creacion/Departamento";
+import { Titulo } from "./Creacion/Titulo";
+import { Descripcion } from "./Creacion/Descripcion";
+import { Lugar } from "./Creacion/Lugar";
+import { PersonaCargo } from "./Creacion/PersonaCargo";
+import { Expositores } from "./Creacion/Expositores";
 import dayjs from "../../../dayjsConfig";
-import { Expositores } from "./Expositores";
 
 export const ModalEvento = ({
   modalIsOpen,

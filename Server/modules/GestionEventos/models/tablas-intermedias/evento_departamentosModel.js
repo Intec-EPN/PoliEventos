@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../../config/db');
+const EventosModel = require('../eventoModel');
+const DepartamentosModel = require('../../../Administracion/models/Roles/departamentosModel');
 
 const EventosDepartamentosModel = sequelize.define('eventos_departamentos', {
     evento_id: {
@@ -26,5 +28,9 @@ const EventosDepartamentosModel = sequelize.define('eventos_departamentos', {
     tableName: 'eventos_departamentos',
     timestamps: false,
 });
+
+// Definir asociaciones
+EventosDepartamentosModel.belongsTo(EventosModel, { foreignKey: 'evento_id' });
+EventosDepartamentosModel.belongsTo(DepartamentosModel, { foreignKey: 'departamento_id' });
 
 module.exports = EventosDepartamentosModel;

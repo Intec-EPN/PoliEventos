@@ -1,5 +1,23 @@
 import axiosInstance from "../../api/axiosConfig";
-import { setDepartamentos, setEsquemasCategorias } from "./gestionEventosSlice";
+import { setDepartamentos, setEsquemasCategorias, setEventos } from "./gestionEventosSlice";
+
+
+export const startLoadingEventos = () => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosInstance.get("/gestion"
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(setEventos(data));
+        } catch (error) {
+            console.error("Error al cargar eventos", error);
+            throw new Error("Error al cargar eventos");
+        }
+    };
+};
+
 
 export const startCreateEvento = () => {
     return async (dispatch, getState) => {
@@ -55,3 +73,5 @@ export const startLoadingEsquemasCategorias = () => {
         }
     };
 }
+
+

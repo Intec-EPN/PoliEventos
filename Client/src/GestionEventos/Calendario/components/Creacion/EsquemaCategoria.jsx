@@ -8,7 +8,7 @@ import {
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startLoadingEsquemasCategorias } from "../../../store/GestionEventos/thunk";
+import { startLoadingEsquemasCategorias } from "../../../../store/GestionEventos/thunk";
 import { EsquemaCategoriaItem } from "./EsquemaCategoriaItem";
 
 export const EsquemaCategoria = () => {
