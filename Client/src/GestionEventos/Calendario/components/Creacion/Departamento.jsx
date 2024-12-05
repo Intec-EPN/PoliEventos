@@ -54,15 +54,28 @@ export const Departamento = ({ defaultValues }) => {
     <Box sx={{ width: "100%" }} mt={0.5}>
       {tipoSeleccion === "departamento" && (
         <>
-          <DialogContentText>Departamento</DialogContentText>
+          <DialogContentText sx={{ color:"#333333" }}>Departamento</DialogContentText>
           <FormControl sx={{ width: "100%" }}>
             <Select
               labelId="departamento-label"
+              placeholder="Departamento/s*"
+              displayEmpty
               id="departamento-select"
               multiple
               value={departamento}
               onChange={handleChange}
               input={<OutlinedInput placeholder="Departamento" />}
+              renderValue={(selected) => {
+                if (selected.length === 0) {
+                  return <em>Departamento/s*</em>;
+                }
+                return selected
+                  .map((value) => {
+                    const dep = departamentos.find((dep) => dep.id === value);
+                    return dep ? dep.departamento : value;
+                  })
+                  .join(", ");
+              }}
               {...register("departamento")}
             >
               {departamentos.map((dep) => (

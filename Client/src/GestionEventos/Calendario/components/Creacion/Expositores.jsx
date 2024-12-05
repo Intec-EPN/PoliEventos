@@ -8,6 +8,7 @@ import {
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useEffect } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 export const Expositores = ({ defaultValues }) => {
   const { register, control, setValue, watch, reset } = useFormContext();
@@ -32,8 +33,8 @@ export const Expositores = ({ defaultValues }) => {
   }, [fields, setValue]);
 
   return (
-    <>
-      <DialogContentText>Expositores</DialogContentText>
+    <Box sx={{my:1}}>
+      <DialogContentText sx={{ color:"#333333" }}>Expositores</DialogContentText>
       {fields.map((field, index) => (
         <Box key={field.id} display={"flex"} sx={{ width: "100%" }} gap={1}>
           <TextField
@@ -62,9 +63,9 @@ export const Expositores = ({ defaultValues }) => {
           </IconButton>
         </Box>
       ))}
-      <Button onClick={() => append({ nombre: "", mail: "" })}>
-        Agregar
+      <Button onClick={() => append({ nombre: "", mail: "" })} sx={{width:"100%", display:"flex", justifyContent:"start", m:0, p:0}}>
+        <AddCircleOutlineOutlinedIcon sx={{color:"#0a3b91"}} />
       </Button>
-    </>
+    </Box>
   );
 };

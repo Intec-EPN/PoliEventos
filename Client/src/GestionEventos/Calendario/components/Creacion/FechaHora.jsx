@@ -33,8 +33,8 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
   }, [defaultStart, defaultEnd, setValue]);
 
   return (
-    <Box my={1} mb={1.5}>
-      <DialogContentText>Ingrese las fechas y horas</DialogContentText>
+    <Box mb={1.5}>
+      <DialogContentText sx={{ color:"#333333" }}>Ingrese las fechas y horas</DialogContentText>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box
           mt={0.7}

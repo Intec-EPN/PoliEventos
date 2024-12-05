@@ -1,15 +1,16 @@
 import {
   Box,
-  Select,
-  MenuItem,
   DialogContentText,
   Button,
+  IconButton,
 } from "@mui/material";
 import { useFormContext, useFieldArray } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadingEsquemasCategorias } from "../../../../store/GestionEventos/thunk";
 import { EsquemaCategoriaItem } from "./EsquemaCategoriaItem";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 export const EsquemaCategoria = ({ defaultValues }) => {
   const dispatch = useDispatch();
@@ -17,15 +18,15 @@ export const EsquemaCategoria = ({ defaultValues }) => {
     dispatch(startLoadingEsquemasCategorias());
   }, [dispatch]);
   const { esquemasCategorias } = useSelector((state) => state.gestionEvento);
-  const esquemas = esquemasCategorias.map((esquemaCategoria) => ({
+  const esquemas = esquemasCategorias ? esquemasCategorias.map((esquemaCategoria) => ({
     esquemaId: esquemaCategoria.esquemaId,
     esquemaNombre: esquemaCategoria.esquemaNombre,
     categorias: esquemaCategoria.categorias,
-  }));
+  })) : [];
 
   // Control de los campos
   const { register, control, setValue, watch, reset } = useFormContext();
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "esquemasCategorias",
   });
@@ -54,28 +55,33 @@ export const EsquemaCategoria = ({ defaultValues }) => {
   }, [defaultValues, reset]);
 
   return (
-    <>
-      <DialogContentText>Esquema y Categoría</DialogContentText>
+    <Box sx={{my:1}}>
+      <DialogContentText sx={{ color:"#333333" }}>Categorías del evento</DialogContentText>
       {fields.map((field, index) => (
-        <EsquemaCategoriaItem
-          key={field.id}
-          index={index}
-          esquemas={esquemas}
-          register={register}
-          watch={watch}
-          setValue={setValue}
-        />
+        <Box key={field.id} display={"flex"} sx={{ width: "100%" }} gap={1}>
+          <EsquemaCategoriaItem
+            index={index}
+            esquemas={esquemas}
+            register={register}
+            watch={watch}
+            setValue={setValue}
+          />
+          <IconButton onClick={() => remove(index)}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
       ))}
       <Button
         onClick={() =>
           append({
-            esquemaId: esquemas[0]?.esquemaId || "",
-            categoriaId: esquemas[0]?.categorias[0]?.categoriaId || "",
+            esquemaId: "",
+            categoriaId: "",
           })
         }
+        sx={{width:"100%", display:"flex", justifyContent:"start", m:0, p:0}}
       >
-        Agregar
+        <AddCircleOutlineOutlinedIcon sx={{mt:0.4, color:"#0a3b91"}}/>
       </Button>
-    </>
+    </Box>
   );
 };

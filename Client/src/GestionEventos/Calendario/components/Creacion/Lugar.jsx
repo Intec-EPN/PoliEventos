@@ -13,7 +13,7 @@ export const Lugar = ({ defaultValue }) => {
 
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
-      <DialogContentText>¿Dónde será el evento?</DialogContentText>
+      <DialogContentText sx={{ color:"#333333" }}>¿Dónde será el evento?</DialogContentText>
       <TextField
         required
         margin="dense"

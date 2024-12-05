@@ -1,4 +1,4 @@
-import { DialogContentText, TextField } from "@mui/material";
+import { Box, DialogContentText, TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 
@@ -6,15 +6,14 @@ export const Descripcion = ({ defaultValue }) => {
   const { register, setValue } = useFormContext();
 
   useEffect(() => {
-    console.log("defaultValue:", defaultValue);
     if (defaultValue) {
       setValue("descripcion", defaultValue);
     }
   }, [defaultValue, setValue]);
 
   return (
-    <>
-      <DialogContentText>¿De qué trata el evento?</DialogContentText>
+    <Box sx={{mt:1}}>
+      <DialogContentText sx={{ color:"#333333" }}>¿De qué trata el evento?</DialogContentText>
       <TextField
         autoFocus
         required
@@ -31,6 +30,6 @@ export const Descripcion = ({ defaultValue }) => {
         rows={3}
         {...register("descripcion")}
       />
-    </>
+    </Box>
   );
 };

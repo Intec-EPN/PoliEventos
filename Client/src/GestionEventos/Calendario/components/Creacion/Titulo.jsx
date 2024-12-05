@@ -13,7 +13,7 @@ export const Titulo = ({ defaultValue }) => {
 
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
-      <DialogContentText>¿Cuál es el nombre del evento?</DialogContentText>
+      <DialogContentText sx={{ color:"#333333" }}>¿Cuál es el nombre del evento?</DialogContentText>
       <TextField
         autoFocus
         required

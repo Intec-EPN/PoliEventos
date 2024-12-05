@@ -30,8 +30,6 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     personasACargo,
   } = data || {};
 
-  console.log("event", event);
-
   const handleClose = () => {
     setModalIsOpen(false);
   };
@@ -85,9 +83,9 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
       </DialogContent>
       <DialogActions>
         {/* Editar dependiendo del rol */}
-        <Button onClick={() => setEditModalIsOpen(true)}>Editar</Button>
+        <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cerrar</Button>
         <ModalEditar modalIsOpen={editModalIsOpen} setModalIsOpen={setEditModalIsOpen} event={event} />
-        <Button onClick={handleClose}>Cerrar</Button>
+        <Button onClick={() => setEditModalIsOpen(true)} variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar</Button>
       </DialogActions>
     </Dialog>
   );

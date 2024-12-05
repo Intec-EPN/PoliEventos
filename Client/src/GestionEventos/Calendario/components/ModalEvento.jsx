@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
@@ -47,8 +48,14 @@ export const ModalEvento = ({
   }, [modalIsOpen, methods]);
 
   const onSubmit = (data) => {
-    const startDate = dayjs(`${data.startDate} ${data.startTime}`, "DD/MM/YYYY HH:mm");
-    const endDate = dayjs(`${data.endDate} ${data.endTime}`, "DD/MM/YYYY HH:mm");
+    const startDate = dayjs(
+      `${data.startDate} ${data.startTime}`,
+      "DD/MM/YYYY HH:mm"
+    );
+    const endDate = dayjs(
+      `${data.endDate} ${data.endTime}`,
+      "DD/MM/YYYY HH:mm"
+    );
 
     if (startDate.isBefore(hoy) || endDate.isBefore(hoy)) {
       alert("El evento debe ser en el futuro.");
@@ -93,25 +100,34 @@ export const ModalEvento = ({
         onSubmit: methods.handleSubmit(onSubmit),
       }}
     >
-      <DialogTitle>Agregar nuevo evento</DialogTitle>
+      <DialogTitle sx={{ textAlign: "center" }}>
+        Agregar nuevo evento
+      </DialogTitle>
       <DialogContent sx={{ p: 2 }}>
         <FormProvider {...methods}>
-          <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm:"top" }}>
+          <FechaHora />
+          <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
             <Titulo />
             <Lugar />
           </Box>
-          <FechaHora />
-          <Expositores />
-          <PersonaCargo />
           <Descripcion />
+          <Expositores />
           <EsquemaCategoria />
+          <DialogContentText sx={{ color: "#333333" }}>
+            Organizadores del evento
+          </DialogContentText>
           <TipoSeleccion />
           <Departamento />
+          <PersonaCargo />
         </FormProvider>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
-        <Button type="submit">Crear evento</Button>
+        <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>
+          Cancelar
+        </Button>
+        <Button type="submit" variant="contained" sx={{backgroundColor:"#2c4175"}}>
+          Crear evento
+        </Button>
       </DialogActions>
     </Dialog>
   );

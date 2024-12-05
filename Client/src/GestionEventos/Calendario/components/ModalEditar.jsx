@@ -110,8 +110,8 @@ export const ModalEditar = ({
         </FormProvider>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
-        <Button type="submit">Crear evento</Button>
+        <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cancelar</Button>
+        <Button type="submit" variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar evento</Button>
       </DialogActions>
     </Dialog>
   );

@@ -1,35 +1,28 @@
+import React, { useEffect, useState } from "react";
 import { Box, Select, MenuItem } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useFormContext, useWatch, useFieldArray } from "react-hook-form";
 
-export const EsquemaCategoriaItem = ({
-  index,
-  esquemas,
-  register,
-  watch,
-  setValue,
-}) => {
+export const EsquemaCategoriaItem = ({ esquemas, index }) => {
+  const { register, setValue, watch, control } = useFormContext();
+  const { fields, remove } = useFieldArray({
+    control,
+    name: "esquemasCategorias",
+  });
+  const esquemasCategorias = watch(`esquemasCategorias`);
+  const esquemasSeleccionados = esquemasCategorias ? esquemasCategorias.map((e) => e.esquemaId) : [];
+  const esquemaInicial = ""; // Eliminar valor por defecto
+
   const [esquemaSeleccionado, setEsquemaSeleccionado] = useState(
-    esquemas[0].esquemaId
+    esquemaInicial
   );
   const [categoriasEsquemaSeleccionado, setCategoriasEsquemaSeleccionado] =
-    useState(
-      esquemas
-        .find((esquema) => esquema.esquemaId == esquemaSeleccionado)
-        .categorias?.map((cat) => ({
-          categoriaId: cat.categoriaId,
-          categoriaNombre: cat.categoriaNombre,
-        }))
-    );
+    useState([]);
 
   useEffect(() => {
-    setCategoriasEsquemaSeleccionado(
-      esquemas
-        .find((esquema) => esquema.esquemaId == esquemaSeleccionado)
-        .categorias?.map((cat) => ({
-          categoriaId: cat.categoriaId,
-          categoriaNombre: cat.categoriaNombre,
-        }))
+    const esquema = esquemas.find(
+      (esquema) => esquema.esquemaId == esquemaSeleccionado
     );
+    setCategoriasEsquemaSeleccionado(esquema ? esquema.categorias : []);
   }, [esquemaSeleccionado, esquemas]);
 
   useEffect(() => {
@@ -38,13 +31,23 @@ export const EsquemaCategoriaItem = ({
         `esquemasCategorias[${index}].categoriaId`,
         categoriasEsquemaSeleccionado[0].categoriaId
       );
+    } else {
+      setValue(`esquemasCategorias[${index}].categoriaId`, "");
     }
   }, [categoriasEsquemaSeleccionado, index, setValue]);
+
+  useEffect(() => {
+    if (!esquemasSeleccionados.includes(esquemaSeleccionado)) {
+      setEsquemaSeleccionado("");
+      setValue(`esquemasCategorias[${index}].esquemaId`, "");
+    }
+  }, [esquemasSeleccionados, esquemaSeleccionado, esquemas, setValue, index]);
 
   return (
     <Box display={"flex"} sx={{ width: "100%" }} gap={1}>
       <Select
-        value={esquemaSeleccionado}
+        value={esquemaSeleccionado || ""}
+        displayEmpty
         inputProps={{
           name: `esquemasCategorias[${index}].esquemaId`,
           id: `esquema-${index}`,
@@ -52,12 +55,20 @@ export const EsquemaCategoriaItem = ({
         sx={{ width: "50%", mt: 0.5 }}
         {...register(`esquemasCategorias[${index}].esquemaId`)}
         onChange={(e) => {
-          setEsquemaSeleccionado(e.target.value);
-          setValue(`esquemasCategorias[${index}].esquemaId`, e.target.value);
+          const selectedValue = e.target.value;
+          setEsquemaSeleccionado(selectedValue);
+          setValue(`esquemasCategorias[${index}].esquemaId`, selectedValue);
         }}
       >
+        <MenuItem value="" disabled>
+          Selecciona un esquema
+        </MenuItem>
         {esquemas.map(({ esquemaId, esquemaNombre }) => (
-          <MenuItem key={esquemaId} value={esquemaId}>
+          <MenuItem
+            key={esquemaId}
+            value={esquemaId}
+            disabled={esquemasSeleccionados.includes(esquemaId)}
+          >
             {esquemaNombre}
           </MenuItem>
         ))}
@@ -70,9 +81,10 @@ export const EsquemaCategoriaItem = ({
         }}
         sx={{ width: "50%", mt: 0.5 }}
         {...register(`esquemasCategorias[${index}].categoriaId`)}
-        onChange={(e) =>
-          setValue(`esquemasCategorias[${index}].categoriaId`, e.target.value)
-        }
+        onChange={(e) => {
+          const selectedValue = e.target.value;
+          setValue(`esquemasCategorias[${index}].categoriaId`, selectedValue);
+        }}
       >
         {categoriasEsquemaSeleccionado?.map(
           ({ categoriaId, categoriaNombre }) => (
