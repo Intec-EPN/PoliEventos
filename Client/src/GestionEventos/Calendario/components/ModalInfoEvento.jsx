@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { useState } from "react";
 import { FechaVer } from "./Visualizar/FechaVer";
 import dayjs from "../../../dayjsConfig";
 import { LugarVer } from "./Visualizar/LugarVer";
@@ -14,6 +15,7 @@ import { ExpositoresVer } from "./Visualizar/ExpositoresVer";
 import { PersonasVer } from "./Visualizar/PersonasVer";
 import { DepartamentoVer } from "./Visualizar/DepartamentoVer";
 import { HoraVer } from "./Visualizar/HoraVer";
+import { ModalEditar } from "./ModalEditar";
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
@@ -33,6 +35,8 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const handleClose = () => {
     setModalIsOpen(false);
   };
+
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
 
   return (
     <Dialog
@@ -62,6 +66,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
           gap={3}
           justifyContent={"space-between"}
           width={"98%"}
+        mb={2}
         >
           <FechaVer start={start} end={end} />
           <HoraVer start={start} end={end} />
@@ -69,16 +74,19 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
         </Box>
         <DescripcionVer descripcion={descripcion} />
         {expositores?.length > 0 && (
-          <ExpositoresVer expositores={expositores} />
+          <ExpositoresVer expositores={expositores} defaultValues={expositores} />
         )}
         {personasACargo?.length > 0 && (
-          <PersonasVer personas={personasACargo} />
+          <PersonasVer personas={personasACargo} defaultValues={personasACargo} />
         )}
         {departamento?.length > 0 && (
           <DepartamentoVer departamentos={departamento} />
         )}
       </DialogContent>
       <DialogActions>
+        {/* Editar dependiendo del rol */}
+        <Button onClick={() => setEditModalIsOpen(true)}>Editar</Button>
+        <ModalEditar modalIsOpen={editModalIsOpen} setModalIsOpen={setEditModalIsOpen} event={event} />
         <Button onClick={handleClose}>Cerrar</Button>
       </DialogActions>
     </Dialog>

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startLoadingEsquemasCategorias } from "../../../../store/GestionEventos/thunk";
 import { EsquemaCategoriaItem } from "./EsquemaCategoriaItem";
 
-export const EsquemaCategoria = () => {
+export const EsquemaCategoria = ({ defaultValues }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(startLoadingEsquemasCategorias());
@@ -46,6 +46,12 @@ export const EsquemaCategoria = () => {
       esquemasCategorias: [],
     });
   }, [reset]);
+
+  useEffect(() => {
+    if (defaultValues) {
+      reset({ esquemasCategorias: defaultValues });
+    }
+  }, [defaultValues, reset]);
 
   return (
     <>

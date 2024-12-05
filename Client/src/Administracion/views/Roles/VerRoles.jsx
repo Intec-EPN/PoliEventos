@@ -89,7 +89,7 @@ export const VerRoles = () => {
           >
             <Button
               variant="contained"
-              sx={{ backgroundColor: "#2c4175", display: "flex", height: 55 }}
+              sx={{ backgroundColor: "green", display: "flex", height: 55 }}
               onClick={handleCrearRol}
             >
               Crear Rol

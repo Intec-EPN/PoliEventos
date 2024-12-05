@@ -1,37 +1,35 @@
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
   TextField,
   DialogContentText,
   Button,
+  IconButton,
 } from "@mui/material";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useEffect } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-export const PersonaCargo = () => {
+export const PersonaCargo = ({ defaultValues }) => {
   const { register, control, setValue, watch, reset } = useFormContext();
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "personasCargo",
   });
 
   useEffect(() => {
-    fields.forEach((field, index) => {
-      const nombre = watch(`personasCargo[${index}].nombre`);
-      const mail = watch(`personasCargo[${index}].mail`);
-      setValue(`personasCargo[${index}]`, {
-        nombre,
-        mail,
-      });
-    });
-  }, [fields, watch, setValue]);
+    if (defaultValues) {
+      reset({ personasCargo: defaultValues });
+    } else {
+      reset({ personasCargo: [] });
+    }
+  }, [defaultValues, reset]);
 
   useEffect(() => {
-    reset({
-      personasCargo: [],
+    fields.forEach((field, index) => {
+      setValue(`personasCargo[${index}].nombre`, field.nombre);
+      setValue(`personasCargo[${index}].mail`, field.mail);
     });
-  }, [reset]);
+  }, [fields, setValue]);
 
   return (
     <>
@@ -43,23 +41,25 @@ export const PersonaCargo = () => {
             margin="dense"
             id={`encargado-${index}`}
             name={`personasCargo[${index}].nombre`}
-            label="Nombre del encargado"
+            placeholder="Nombre del encargado"
             type="text"
             fullWidth
             variant="outlined"
             {...register(`personasCargo[${index}].nombre`)}
           />
           <TextField
-            required
             margin="dense"
             id={`encargadoMail-${index}`}
             name={`personasCargo[${index}].mail`}
-            label="Correo del encargado"
+            placeholder="Correo del encargado"
             type="email"
             fullWidth
             variant="outlined"
             {...register(`personasCargo[${index}].mail`)}
           />
+          <IconButton onClick={() => remove(index)}>
+            <DeleteIcon />
+          </IconButton>
         </Box>
       ))}
       <Button onClick={() => append({ nombre: "", mail: "" })}>

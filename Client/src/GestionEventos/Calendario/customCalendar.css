@@ -6,7 +6,7 @@
 }
 /* Filas de celdas fueras de rango del mes */
 .rbc-off-range-bg {
-  background-color: #002463b6;
+  background-color: #ced8eb64;
   border-radius: 5px;
   color: white;
 }
@@ -17,14 +17,23 @@
 }
 /* Celda de hoy */
 .rbc-today {
-  background-color: #0a3b91;
+  background-color: #f9f9f9;
   border-radius: 5px;
   color: white;
 }
 
+.rbc-date-cell.rbc-now.rbc-current > .rbc-button-link {
+font-size: 1rem;
+padding: 2px;
+}
+.rbc-date-cell.rbc-now.rbc-current  {
+  background-color: green;
+  border-radius: 50;
+}
+
 /* Colores de numeros pequeños arriba dependiendo el padre */
 .rbc-off-range > .rbc-button-link {
-  color: white;
+  color: rgb(144, 144, 144);
 }
 .rbc-row > .rbc-button-link {
   color: #122950;
@@ -47,12 +56,12 @@
   padding: 5px;
   padding-left: 7px;
 }
-
 .rbc-event > .rbc-event-content {
   border-left: 3px solid #fff;
   padding-left: 4px;
 }
 
+/* Flecha de evento largo. */
 .rbc-event-allday {
   position: relative;
   overflow: hidden;
@@ -69,4 +78,51 @@
   border-bottom: 15px solid #f9f9f9;
   border-left: 14px solid transparent;
   pointer-events: none;
+}
+
+/* Evento seleccionado. */
+.rbc-selected {
+  background-color: #0a3b91 !important;
+  color: white;
+}
+
+/* Vista semana */
+.rbc-today > .rbc-timeslot-group {
+  background-color: rgba(46, 64, 162, 0.403);
+}
+
+/* Botones de hoy, siguiente y previo */
+.rbc-toolbar > .rbc-btn-group {
+  height: 100%;
+}
+
+.rbc-toolbar > .rbc-btn-group:first-child > button:first-child {
+  height: 100%;
+  border-radius: 10px;
+  margin-right: 0.7rem;
+  background-color: green;
+  color:white;
+  border: green;
+  font-size: 0.9rem;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2) {
+  margin-right: 0.3rem;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2),
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3) {
+  border: none;
+  padding: 0;
+}
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2):hover,
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3):hover {
+  border: none;
+  background-color: white;
+}
+
+/* Para alinear al centro */
+.rbc-toolbar > .rbc-btn-group {
+  flex: 1;
+  width: 100;
 }

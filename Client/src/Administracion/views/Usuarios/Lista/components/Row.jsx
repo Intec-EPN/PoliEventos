@@ -22,6 +22,12 @@ import {
 import { setUsuarioActual } from "../../../../../store/Administracion/Usuarios/usuariosSlice";
 import { useNavigate } from "react-router-dom";
 
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
+import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
+
 export const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -107,19 +113,19 @@ export const Row = (props) => {
           </IconButton>
           {row.habilitado ? (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box sx={{ color: "white", display:"inline-flex" }}>
-                <LuPower />
+              <Box sx={{ color: "#36b257", display: "inline-flex" }}>
+                <ToggleOnIcon />
               </Box>
             </IconButton>
           ) : (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box sx={{ color: "white", display:"inline-flex" }}>
-                <LuPowerOff />
+              <Box sx={{ color: "red", display: "inline-flex" }}>
+                <ToggleOffIcon />
               </Box>
             </IconButton>
           )}
           <IconButton onClick={() => onBorrarUsuario(row.id)}>
-            <DeleteIcon sx={{ color: "white", display:"inline-flex" }} />
+            <DeleteIcon sx={{ color: "white", display: "inline-flex" }} />
           </IconButton>
         </TableCell>
       </TableRow>

@@ -1,37 +1,35 @@
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
   TextField,
   DialogContentText,
   Button,
+  IconButton,
 } from "@mui/material";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { useEffect } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-export const Expositores = () => {
+export const Expositores = ({ defaultValues }) => {
   const { register, control, setValue, watch, reset } = useFormContext();
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "expositores",
   });
 
   useEffect(() => {
-    fields.forEach((field, index) => {
-      const nombre = watch(`expositores[${index}].nombre`);
-      const mail = watch(`expositores[${index}].mail`);
-      setValue(`expositores[${index}]`, {
-        nombre,
-        mail,
-      });
-    });
-  }, [fields, watch, setValue]);
+    if (defaultValues) {
+      reset({ expositores: defaultValues });
+    } else {
+      reset({ expositores: [] });
+    }
+  }, [defaultValues, reset]);
 
   useEffect(() => {
-    reset({
-      expositores: [],
+    fields.forEach((field, index) => {
+      setValue(`expositores[${index}].nombre`, field.nombre);
+      setValue(`expositores[${index}].mail`, field.mail);
     });
-  }, [reset]);
+  }, [fields, setValue]);
 
   return (
     <>
@@ -43,23 +41,25 @@ export const Expositores = () => {
             margin="dense"
             id={`expositor-${index}`}
             name={`expositores[${index}].nombre`}
-            label="Nombre del expositor"
+            placeholder="Nombre del expositor*"
             type="text"
             fullWidth
             variant="outlined"
             {...register(`expositores[${index}].nombre`)}
           />
           <TextField
-            required
             margin="dense"
             id={`expositorMail-${index}`}
             name={`expositores[${index}].mail`}
-            label="Correo del expositor"
+            placeholder="Correo del expositor"
             type="email"
             fullWidth
             variant="outlined"
             {...register(`expositores[${index}].mail`)}
           />
+          <IconButton onClick={() => remove(index)}>
+            <DeleteIcon />
+          </IconButton>
         </Box>
       ))}
       <Button onClick={() => append({ nombre: "", mail: "" })}>

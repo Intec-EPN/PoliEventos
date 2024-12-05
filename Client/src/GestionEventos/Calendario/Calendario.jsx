@@ -1,5 +1,5 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Calendar, dayjsLocalizer } from "react-big-calendar";
+import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import { ModalEvento } from "./components/ModalEvento";
 import { useEffect, useState } from "react";
 import dayjs from "../../dayjsConfig";
@@ -17,6 +17,9 @@ import {
 import { ModalInfoEvento } from "./components/ModalInfoEvento";
 import "./customCalendar.css";
 
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import TodayIcon from "@mui/icons-material/Today";
 
 const localizer = dayjsLocalizer(dayjs);
 
@@ -85,7 +88,7 @@ export const Calendario = () => {
         titulo,
         lugar,
         descripcion,
-        departamento,
+        departamento: departamento || [],
         esquemasCategorias,
         personasCargo,
         expositores,
@@ -131,9 +134,30 @@ export const Calendario = () => {
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleOpenEvent}
+        views={[Views.MONTH]}
         messages={{
-          next: "sig",
-          previous: "ant",
+          next: (
+            <NavigateNextIcon
+              sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                },
+              }}
+            />
+          ),
+          previous: (
+            <NavigateBeforeIcon
+              sx={{
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                },
+              }}
+            />
+          ),
           today: "Hoy",
           month: "Mes",
           week: "Semana",

@@ -145,42 +145,39 @@ export default function SelectRoles({ reset }) {
           getOptionLabel={(option) => option.nombre || ""}
           onChange={handleRolesSelect}
           value={selectedRoles[0] || null}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => {
-              const { key, ...tagProps } = getTagProps({ index });
-              return (
-                <Chip
-                  key={key}
-                  label={option.nombre}
-                  {...tagProps}
-                  style={{ backgroundColor: option.colorNivel, color: "white" }}
-                />
-              );
-            })
-          }
+          renderOption={(props, option) => (
+            <li {...props} key={option.id}>
+              <Chip
+                label={option.nombre}
+                style={{ backgroundColor: option.colorNivel, color: "white" }}
+              />
+            </li>
+          )}
           renderInput={(params) => (
             <TextField
               {...params}
               variant="standard"
-              label="Rol"
-              InputLabelProps={{ shrink: true }}
+              label={selectedRoles.length === 0 ? "Rol" : ""}
+              placeholder={selectedRoles.length === 0 ? "Rol" : ""}
               sx={{
-                input: { color: "black" }, 
-                label: { color: "#676767" }, 
+                input: { color: "black" },
+                label: { color: "#676767" },
               }}
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: selectedRoles.map((option) => (
-                  <Chip
-                    key={option.id}
-                    label={option.nombre}
-                    style={{ backgroundColor: option.colorNivel, color: "white" }}
-                  />
-                )),
-                // Eliminar el texto adicional
-                inputProps: {
-                  ...params.inputProps,
-                  value: '',
+              slotProps={{
+                inputLabel: { shrink: true },
+                input: {
+                  ...params.InputProps,
+                  startAdornment: selectedRoles.map((option) => (
+                    <Chip
+                      key={option.id}
+                      label={option.nombre}
+                      style={{ backgroundColor: option.colorNivel, color: "white" }}
+                    />
+                  )),
+                  inputProps: {
+                    ...params.inputProps,
+                    value: '', 
+                  },
                 },
               }}
             />

@@ -6,10 +6,11 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Box, DialogContentText, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const hoy = dayjs();
 
-export const FechaHora = () => {
+export const FechaHora = ({ defaultStart, defaultEnd }) => {
   const { register, setValue } = useFormContext();
   const { start, end } = useSelector(
     (state) => state.gestionEvento.eventoCreacion
@@ -19,6 +20,17 @@ export const FechaHora = () => {
   const startTime = dayjs(start).format("HH:mm");
   const endDate = dayjs(end).format("DD/MM/YYYY");
   const endTime = dayjs(end).format("HH:mm");
+
+  useEffect(() => {
+    if (defaultStart) {
+      setValue("startDate", dayjs(defaultStart).format("DD/MM/YYYY"));
+      setValue("startTime", dayjs(defaultStart).format("HH:mm"));
+    }
+    if (defaultEnd) {
+      setValue("endDate", dayjs(defaultEnd).format("DD/MM/YYYY"));
+      setValue("endTime", dayjs(defaultEnd).format("HH:mm"));
+    }
+  }, [defaultStart, defaultEnd, setValue]);
 
   return (
     <Box my={1} mb={1.5}>

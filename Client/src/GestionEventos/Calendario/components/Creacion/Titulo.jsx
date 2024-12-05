@@ -1,8 +1,16 @@
 import { Box, DialogContentText, TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
-export const Titulo = () => {
-  const { register } = useFormContext();
+export const Titulo = ({ defaultValue }) => {
+  const { register, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue("titulo", defaultValue);
+    }
+  }, [defaultValue, setValue]);
+
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
       <DialogContentText>¿Cuál es el nombre del evento?</DialogContentText>
@@ -12,7 +20,8 @@ export const Titulo = () => {
         margin="dense"
         id="titulo"
         name="titulo"
-        label="Título"
+        placeholder="Título*"
+        // label="Título"
         type="text"
         fullWidth
         variant="outlined"

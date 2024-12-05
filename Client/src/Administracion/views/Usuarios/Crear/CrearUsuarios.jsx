@@ -104,7 +104,7 @@ export const CrearUsuarios = () => {
           )}
           <Box display="flex" width="98%"  gap={2}>
             <Button fullWidth variant="contained" type="submit">
-              Crear Usuario
+              Guardar Usuario
             </Button>
             <Button
               fullWidth

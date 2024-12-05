@@ -1,8 +1,16 @@
 import { Box, DialogContentText, TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
-export const Lugar = () => {
-  const { register } = useFormContext();
+export const Lugar = ({ defaultValue }) => {
+  const { register, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue("lugar", defaultValue);
+    }
+  }, [defaultValue, setValue]);
+
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
       <DialogContentText>¿Dónde será el evento?</DialogContentText>
@@ -11,7 +19,8 @@ export const Lugar = () => {
         margin="dense"
         id="lugar"
         name="lugar"
-        label="Lugar"
+        placeholder="Lugar*"
+        // label="Lugar"
         type="text"
         fullWidth
         variant="outlined"

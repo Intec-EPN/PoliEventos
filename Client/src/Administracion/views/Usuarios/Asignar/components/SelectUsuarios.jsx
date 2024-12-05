@@ -51,7 +51,7 @@ export default function SelectUsuarios({ reset }) {
         onChange={handleUsuarioSelect}
         value={selectedUsuario}
         renderInput={(params) => (
-          <TextField {...params} variant="standard" label="Usuario" />
+          <TextField {...params} variant="standard" placeholder="Usuario" />
         )}
       />
     </Box>

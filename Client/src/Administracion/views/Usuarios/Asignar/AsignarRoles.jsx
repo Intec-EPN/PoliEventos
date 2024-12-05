@@ -53,10 +53,7 @@ export const AsignarRoles = () => {
 
   return (
     <Box ml={2} mt={2} width="97%">
-      <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mb: 1 }}>
-        Instrucciones
-      </Typography>
-      <Box display={"flex"} mb={2} >
+      <Box display={"flex"} mb={2}>
         <Box
           sx={{ width: "100%" }}
           display={"flex"}
@@ -65,12 +62,12 @@ export const AsignarRoles = () => {
           flex={4}
         >
           <Box display={"inline-flex"}>
-            <HelpCenterIcon /> <strong>Roles</strong>
+            <strong>Roles</strong>
           </Box>
           {/* TODO ALINACION */}
           <Box display="flex" gap="2rem" mt={1}>
             <Box display={"flex"} gap={2} flexWrap={"wrap"}>
-              <Box sx={{display:"flex", gap:1, alignItems:"center"}}>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 <Chip
                   label="Propio"
                   sx={{
@@ -84,10 +81,10 @@ export const AsignarRoles = () => {
                   color="primary"
                   sx={{ display: "inline-flex" }}
                 >
-                  Crear/editar/eliminar/descargar de eventos a nivel propio.
+                  Gestionar mis permisos.
                 </Typography>
               </Box>
-              <Box sx={{display:"flex", gap:1, alignItems:"center"}}>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 <Chip
                   label="Departamento"
                   sx={{
@@ -101,10 +98,10 @@ export const AsignarRoles = () => {
                   color="primary"
                   sx={{ display: "inline-flex" }}
                 >
-                  Crear/editar/eliminar/descargar de eventos de un departamento.
+                  Gestionar permisos de un departamento.
                 </Typography>
               </Box>
-              <Box sx={{display:"flex", gap:1, alignItems:"center"}}>
+              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                 <Chip
                   label="Facultad"
                   sx={{
@@ -118,7 +115,7 @@ export const AsignarRoles = () => {
                   color="primary"
                   sx={{ display: "inline-flex" }}
                 >
-                  Crear/editar/eliminar/descargar de eventos de los departamentos de una facultad.
+                  Gestionar permisos de la facultad.
                 </Typography>
               </Box>
             </Box>

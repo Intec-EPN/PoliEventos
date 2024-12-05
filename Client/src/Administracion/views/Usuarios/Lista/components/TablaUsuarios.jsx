@@ -88,7 +88,7 @@ export const TablaUsuarios = () => {
         >
           <Button
             variant="contained"
-            sx={{ backgroundColor: "#2c4175", height: 55 }}
+            sx={{ backgroundColor: "green", height: 55 }}
             onClick={handleCrearUsuario}
           >
             Crear Usuario

@@ -15,47 +15,48 @@ import { Descripcion } from "./Creacion/Descripcion";
 import { Lugar } from "./Creacion/Lugar";
 import { PersonaCargo } from "./Creacion/PersonaCargo";
 import { Expositores } from "./Creacion/Expositores";
-import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect } from "react";
 
-const hoy = dayjs();
-
-export const ModalEvento = ({
+export const ModalEditar = ({
   modalIsOpen,
   setModalIsOpen,
   handleAddEvent,
+  event,
 }) => {
+  const hoy = dayjs();
   const methods = useForm({
     defaultValues: {
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
-      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
     },
   });
 
   useEffect(() => {
-    if (modalIsOpen) {
+    if (modalIsOpen && event) {
       methods.reset({
-        esquemasCategorias: [],
-        personasCargo: [],
-        expositores: [],
-        tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+        esquemasCategorias: event.data?.esquemaCategoria || [],
+        personasCargo: event.data?.personasACargo || [],
+        expositores: event.data?.expositores || [],
       });
     }
-  }, [modalIsOpen, methods]);
+  }, [modalIsOpen, event, methods]);
 
   const onSubmit = (data) => {
-    const startDate = dayjs(`${data.startDate} ${data.startTime}`, "DD/MM/YYYY HH:mm");
-    const endDate = dayjs(`${data.endDate} ${data.endTime}`, "DD/MM/YYYY HH:mm");
+    const startDate = dayjs(
+      `${data.startDate} ${data.startTime}`,
+      "DD/MM/YYYY HH:mm"
+    );
+    const endDate = dayjs(
+      `${data.endDate} ${data.endTime}`,
+      "DD/MM/YYYY HH:mm"
+    );
 
     if (startDate.isBefore(hoy) || endDate.isBefore(hoy)) {
       alert("El evento debe ser en el futuro.");
       return;
     }
-    // Asegúrate de que los departamentos se envíen correctamente
-    data.departamento = data.departamento || [];
     handleAddEvent(data);
     setModalIsOpen(false);
     methods.reset();
@@ -93,20 +94,19 @@ export const ModalEvento = ({
         onSubmit: methods.handleSubmit(onSubmit),
       }}
     >
-      <DialogTitle>Agregar nuevo evento</DialogTitle>
+      <DialogTitle>Editar evento</DialogTitle>
       <DialogContent sx={{ p: 2 }}>
         <FormProvider {...methods}>
-          <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm:"top" }}>
-            <Titulo />
-            <Lugar />
+          <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
+            <Titulo defaultValue={event?.title} />
+            <Lugar defaultValue={event?.data?.lugar} />
           </Box>
-          <FechaHora />
-          <Expositores />
-          <PersonaCargo />
-          <Descripcion />
-          <EsquemaCategoria />
-          <TipoSeleccion />
-          <Departamento />
+          <FechaHora defaultStart={event?.start} defaultEnd={event?.end} />
+          <PersonaCargo defaultValues={event?.data?.personasACargo} />
+          <Expositores defaultValues={event?.data?.expositores} />
+          <Descripcion defaultValue={event?.data?.descripcion} />
+          <EsquemaCategoria defaultValues={event?.data?.esquemaCategoria} />
+          <Departamento defaultValues={event?.data?.departamento} />
         </FormProvider>
       </DialogContent>
       <DialogActions>
