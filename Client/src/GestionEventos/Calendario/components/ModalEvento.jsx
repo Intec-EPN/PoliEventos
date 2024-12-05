@@ -31,8 +31,8 @@ export const ModalEvento = ({
     },
   });
   const onSubmit = (data) => {
-    const startDate = dayjs(data.startDate);
-    const endDate = dayjs(data.endDate);
+    const startDate = dayjs(`${data.startDate} ${data.startTime}`, "DD/MM/YYYY HH:mm");
+    const endDate = dayjs(`${data.endDate} ${data.endTime}`, "DD/MM/YYYY HH:mm");
 
     if (startDate.isBefore(hoy) || endDate.isBefore(hoy)) {
       alert("El evento debe ser en el futuro.");

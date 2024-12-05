@@ -1,4 +1,4 @@
-import { Box, DialogContentText, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import dayjs from "../../../../dayjsConfig";
 
@@ -19,7 +19,7 @@ export const FechaVer = ({ start, end }) => {
   const endDate = dayjs(end);
 
   return (
-    <Box display={"flex"} sx={{ width: "100%" }} alignItems={"center"}>
+    <Box display={"flex"} sx={{ width: "auto" }} alignItems={"center"} flexWrap="nowrap">
       <Typography
         variant="h3"
         sx={{
@@ -29,7 +29,7 @@ export const FechaVer = ({ start, end }) => {
           my: 0.5,
         }}
       >
-        Fecha:
+        {moreDays ? "Fechas:" : "Fecha:"}
       </Typography>
       {moreDays ? (
         <Box display={"flex"} sx={{ width: "100%" }}>

@@ -15,10 +15,10 @@ export const FechaHora = () => {
     (state) => state.gestionEvento.eventoCreacion
   );
 
-  const startDate = dayjs(start).startOf("day");
-  const startTime = dayjs(start);
-  const endDate = dayjs(end).startOf("day");
-  const endTime = dayjs(end);
+  const startDate = dayjs(start).format("DD/MM/YYYY");
+  const startTime = dayjs(start).format("HH:mm");
+  const endDate = dayjs(end).format("DD/MM/YYYY");
+  const endTime = dayjs(end).format("HH:mm");
 
   return (
     <Box my={1} mb={1.5}>
@@ -35,9 +35,10 @@ export const FechaHora = () => {
           <Box display={"flex"} gap={1}>
             <DatePicker
               minDate={hoy}
-              value={startDate}
+              value={start ? dayjs(start, "YYYY-MM-DDTHH:mm:ssZ") : null}
               views={["year", "month", "day"]}
-              onChange={(date) => setValue("startDate", date)}
+              format="DD/MM/YYYY"
+              onChange={(date) => setValue("startDate", date.format("DD/MM/YYYY"))}
               slotProps={{
                 textField: {
                   ...register("startDate"),
@@ -45,8 +46,8 @@ export const FechaHora = () => {
               }}
             />
             <TimePicker
-              value={startTime}
-              onChange={(time) => setValue("startTime", time)}
+              value={start ? dayjs(start, "YYYY-MM-DDTHH:mm:ssZ") : null}
+              onChange={(time) => setValue("startTime", time.format("HH:mm"))}
               slotProps={{
                 textField: {
                   ...register("startTime"),
@@ -57,10 +58,11 @@ export const FechaHora = () => {
           <Typography variant={"body1"}>a</Typography>
           <Box display={"flex"} gap={1}>
             <DatePicker
-              minDate={startDate}
-              value={endDate}
+              minDate={start ? dayjs(start, "YYYY-MM-DDTHH:mm:ssZ") : null}
+              value={end ? dayjs(end, "YYYY-MM-DDTHH:mm:ssZ") : null}
               views={["year", "month", "day"]}
-              onChange={(date) => setValue("endDate", date)}
+              format="DD/MM/YYYY"
+              onChange={(date) => setValue("endDate", date.format("DD/MM/YYYY"))}
               slotProps={{
                 textField: {
                   ...register("endDate"),
@@ -68,8 +70,8 @@ export const FechaHora = () => {
               }}
             />
             <TimePicker
-              value={endTime}
-              onChange={(time) => setValue("endTime", time)}
+              value={end ? dayjs(end, "YYYY-MM-DDTHH:mm:ssZ") : null}
+              onChange={(time) => setValue("endTime", time.format("HH:mm"))}
               slotProps={{
                 textField: {
                   ...register("endTime"),

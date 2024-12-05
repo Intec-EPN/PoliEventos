@@ -2,7 +2,7 @@ import { Box, DialogContentText, Typography } from "@mui/material";
 
 export const LugarVer = ({ lugar }) => {
   return (
-    <Box display="flex" sx={{ width: "100%" }} alignItems={"center"}>
+    <Box display="flex" sx={{ width: "auto" }} alignItems={"center"}>
       <Typography
         variant="h3"
         sx={{

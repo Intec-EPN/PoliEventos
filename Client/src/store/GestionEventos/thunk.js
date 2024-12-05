@@ -35,7 +35,7 @@ export const startCreateEvento = () => {
                 //     withCredentials: true,
                 // }
             );
-
+            dispatch(startLoadingEventos());
         } catch (error) {
             console.error("Error al crear evento", error);
             throw new Error("Error al crear evento");

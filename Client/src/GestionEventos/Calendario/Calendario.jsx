@@ -15,6 +15,8 @@ import {
   startLoadingEventos,
 } from "../../store/GestionEventos/thunk";
 import { ModalInfoEvento } from "./components/ModalInfoEvento";
+import "./customCalendar.css";
+
 
 const localizer = dayjsLocalizer(dayjs);
 
@@ -72,11 +74,11 @@ export const Calendario = () => {
 
     const start = dayjs(
       `${startDate} ${startTime}`,
-      "MM/DD/YYYY hh:mm A"
+      "DD/MM/YYYY HH:mm"
     ).toISOString();
     const end = dayjs(
       `${endDate} ${endTime}`,
-      "MM/DD/YYYY hh:mm A"
+      "DD/MM/YYYY HH:mm"
     ).toISOString();
     dispatch(
       setEventoCreacion({

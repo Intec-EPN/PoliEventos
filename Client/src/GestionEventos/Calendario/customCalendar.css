@@ -1,0 +1,72 @@
+/* Filas de celdas habiles de mes. */
+.rbc-row-bg {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  color: white;
+}
+/* Filas de celdas fueras de rango del mes */
+.rbc-off-range-bg {
+  background-color: #002463b6;
+  border-radius: 5px;
+  color: white;
+}
+/* Celdas habiles de mes */
+.rbc-day-bg {
+  border-radius: 5px;
+  color: white;
+}
+/* Celda de hoy */
+.rbc-today {
+  background-color: #0a3b91;
+  border-radius: 5px;
+  color: white;
+}
+
+/* Colores de numeros pequeños arriba dependiendo el padre */
+.rbc-off-range > .rbc-button-link {
+  color: white;
+}
+.rbc-row > .rbc-button-link {
+  color: #122950;
+}
+/* rbc-date-cell rbc-now rbc-current */
+.rbc-current > .rbc-button-link {
+  color: white;
+}
+
+/* Cabecera de las columnas. */
+.rbc-header {
+  padding: 5px 0;
+  display: flex;
+  justify-content: end;
+}
+
+/* Eventos cortos. */
+.rbc-event {
+  background-color: #0a3b91;
+  padding: 5px;
+  padding-left: 7px;
+}
+
+.rbc-event > .rbc-event-content {
+  border-left: 3px solid #fff;
+  padding-left: 4px;
+}
+
+.rbc-event-allday {
+  position: relative;
+  overflow: hidden;
+}
+.rbc-event-allday::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 15px solid #f9f9f9;
+  border-bottom: 15px solid #f9f9f9;
+  border-left: 14px solid transparent;
+  pointer-events: none;
+}

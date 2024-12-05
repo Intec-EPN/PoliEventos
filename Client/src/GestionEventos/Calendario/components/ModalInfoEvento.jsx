@@ -13,12 +13,9 @@ import { DescripcionVer } from "./Visualizar/DescripcionVer";
 import { ExpositoresVer } from "./Visualizar/ExpositoresVer";
 import { PersonasVer } from "./Visualizar/PersonasVer";
 import { DepartamentoVer } from "./Visualizar/DepartamentoVer";
+import { HoraVer } from "./Visualizar/HoraVer";
 
-export const ModalInfoEvento = ({
-  modalIsOpen,
-  setModalIsOpen,
-  event,
-}) => {
+export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
   const { start, end, title, data } = event || {};
   const {
@@ -58,10 +55,16 @@ export const ModalInfoEvento = ({
         },
       }}
     >
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle sx={{ textAlign: "center" }}>{title}</DialogTitle>
       <DialogContent>
-        <Box display="flex">
+        <Box
+          display={{ xs: "block", lg: "flex" }}
+          gap={3}
+          justifyContent={"space-between"}
+          width={"98%"}
+        >
           <FechaVer start={start} end={end} />
+          <HoraVer start={start} end={end} />
           <LugarVer lugar={lugar} />
         </Box>
         <DescripcionVer descripcion={descripcion} />
