@@ -16,8 +16,10 @@ import { Descripcion } from "./Creacion/Descripcion";
 import { Lugar } from "./Creacion/Lugar";
 import { PersonaCargo } from "./Creacion/PersonaCargo";
 import { Expositores } from "./Creacion/Expositores";
+import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { DepartamentoItemInicial } from "./Visualizar/DepartamentoItemInicial";
 
 export const ModalEditar = ({
   modalIsOpen,
@@ -31,8 +33,15 @@ export const ModalEditar = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
+      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
     },
   });
+
+  const [showDepartamento, setShowDepartamento] = useState(false);
+
+  const handleReset = (editMode) => {
+    setShowDepartamento(editMode);
+  };
 
   useEffect(() => {
     if (modalIsOpen && event) {
@@ -49,6 +58,22 @@ export const ModalEditar = ({
         endTime: dayjs(event?.end).format("HH:mm"),
         descripcion: event?.data?.descripcion || "",
         departamento: event?.data?.departamento || [],
+        tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+      });
+    } else if (modalIsOpen && !event) {
+      methods.reset({
+        esquemasCategorias: [],
+        personasCargo: [],
+        expositores: [],
+        title: "",
+        lugar: "",
+        startDate: "",
+        startTime: "",
+        endDate: "",
+        endTime: "",
+        descripcion: "",
+        departamento: [],
+        tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
     }
   }, [modalIsOpen, event, methods]);
@@ -78,6 +103,8 @@ export const ModalEditar = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
+      departamento: [],
+      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
     });
   };
 
@@ -122,7 +149,17 @@ export const ModalEditar = ({
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>
-          <Departamento defaultValues={event?.data?.departamento} />
+          {showDepartamento ? (
+            <>
+              <TipoSeleccion />
+              <Departamento />
+            </>
+          ) : (
+            <DepartamentoItemInicial
+              departamentos={event?.data?.departamento}
+              onReset={handleReset}
+            />
+          )}
           <PersonaCargo defaultValues={event?.data?.personasACargo} />
         </FormProvider>
       </DialogContent>

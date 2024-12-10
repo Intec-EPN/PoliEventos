@@ -32,7 +32,7 @@ export const EsquemaCategoriaItem = ({ esquemas, index }) => {
           name: `esquemasCategorias[${index}].esquemaId`,
           id: `esquema-${index}`,
         }}
-        sx={{ width: "50%", mt: 0.5 }}
+        sx={{ flex: "1", maxWidth: "49%", width: "100%", mt: 0.5 }}
         {...register(`esquemasCategorias[${index}].esquemaId`)}
         onChange={(e) => {
           const selectedValue = e.target.value;
@@ -62,7 +62,7 @@ export const EsquemaCategoriaItem = ({ esquemas, index }) => {
           name: `esquemasCategorias[${index}].categoriaId`,
           id: `categoria-${index}`,
         }}
-        sx={{ width: "50%", mt: 0.5 }}
+        sx={{ flex: "1", maxWidth: "49%",width: "100%", mt: 0.5 }}
         {...register(`esquemasCategorias[${index}].categoriaId`)}
         onChange={(e) => {
           const selectedValue = e.target.value;

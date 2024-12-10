@@ -26,13 +26,13 @@ export const EsquemaCategoriaItemInicial = ({ esquemas, index }) => {
   console.log("Categoría seleccionada:", categoriaSeleccionada, "Nombre:", categoriaNombre);
 
   return (
-    <Box display={"flex"} sx={{ width: "98%" }} gap={1}>
-      <Paper sx={{ width: "50%", mt: 0.5, p: 1, backgroundColor: "#fff", display:"flex", alignItems:"center" }}>
+    <Box display={"flex"} sx={{ width: "98%" }} gap={1} mb={1}>
+      <Paper sx={{ width: "50%", mt: 0.5, p: 1, backgroundColor: "#fff", display:"flex", alignItems:"center", border:"1.5px solid #dfdfdf", boxShadow:"none"   }}>
         <Typography>
           {esquemaNombre}
         </Typography>
       </Paper>
-      <Paper sx={{ width: "50%", mt: 0.5, p: 1, backgroundColor: "#fff", display:"flex", alignItems:"center"  }}>
+      <Paper sx={{ width: "50%", mt: 0.5, p: 1, backgroundColor: "#fff", display:"flex", alignItems:"center", border:"1.5px solid #dfdfdf", boxShadow:"none"   }}>
         <Typography>
           {categoriaNombre}
         </Typography>

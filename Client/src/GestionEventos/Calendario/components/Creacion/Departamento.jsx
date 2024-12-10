@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { startLoadingDepartamentos } from "../../../../store/GestionEventos/thunk";
 
-export const Departamento = ({ defaultValues }) => {
+export const Departamento = () => {
   const dispatch = useDispatch();
   const { register, setValue, watch } = useFormContext();
   const tipoSeleccion = watch("tipoSeleccion");
@@ -20,12 +20,6 @@ export const Departamento = ({ defaultValues }) => {
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (defaultValues) {
-      setValue("departamento", defaultValues);
-    }
-  }, [defaultValues, setValue]);
 
   const { departamentos } = useSelector((state) => state.gestionEvento);
   const departamento = watch("departamento") || [];
