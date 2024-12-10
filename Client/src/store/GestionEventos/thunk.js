@@ -43,6 +43,22 @@ export const startCreateEvento = () => {
     };
 };
 
+export const startDeletingEvento = (eventoId) => {
+    return async (dispatch) => {
+        try {
+            const url = `/gestion/${eventoId}`;
+            await axiosInstance.delete(url
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            throw new Error("Error al eliminar evento");
+        }
+    };
+}
+
 export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
         try {

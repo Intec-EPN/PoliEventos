@@ -113,6 +113,7 @@ const obtenerEventos = async (req, res) => {
             });
 
             return {
+                id: evento.id, // Agregar el id del evento
                 start: evento.start,
                 end: evento.end,
                 title: evento.title,
@@ -144,4 +145,21 @@ const obtenerEventos = async (req, res) => {
     }
 };
 
-module.exports = { crearEvento, obtenerEventos };
+const eliminarEvento = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const evento = await EventosModel.findByPk(id);
+        if (!evento) {
+            return res.status(404).json({ message: 'Evento no encontrado' });
+        }
+
+        await evento.destroy();
+
+        res.status(200).json({ message: 'Evento eliminado exitosamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al eliminar el evento', error });
+    }
+};
+
+module.exports = { crearEvento, obtenerEventos, eliminarEvento };

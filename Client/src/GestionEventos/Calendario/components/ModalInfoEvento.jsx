@@ -16,6 +16,9 @@ import { PersonasVer } from "./Visualizar/PersonasVer";
 import { DepartamentoVer } from "./Visualizar/DepartamentoVer";
 import { HoraVer } from "./Visualizar/HoraVer";
 import { ModalEditar } from "./ModalEditar";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch } from 'react-redux';
+import { startDeletingEvento } from '../../../store/GestionEventos/thunk';
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
@@ -35,6 +38,12 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   };
 
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(startDeletingEvento(event.id));
+    handleClose();
+  };
 
   if (!event) {
     return null;
@@ -87,9 +96,12 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
       </DialogContent>
       <DialogActions>
         {/* Editar dependiendo del rol */}
-        <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cerrar</Button>
         <ModalEditar modalIsOpen={editModalIsOpen} setModalIsOpen={setEditModalIsOpen} event={event} isFromModalEvento={false} />
-        <Button onClick={() => setEditModalIsOpen(true)} variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar</Button>
+        <Box sx={{display:"flex", gap:1}}>
+          <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cerrar</Button>
+          <Button onClick={handleDelete} variant="contained" color="error" startIcon={<DeleteIcon />}>Eliminar</Button>
+          <Button onClick={() => setEditModalIsOpen(true)} variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar</Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );
