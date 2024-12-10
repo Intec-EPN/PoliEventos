@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  DialogContentText,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { FechaHora } from "./Creacion/FechaHora";
@@ -35,10 +36,19 @@ export const ModalEditar = ({
 
   useEffect(() => {
     if (modalIsOpen && event) {
+      console.log("Valores del evento para editar:", event.data);
       methods.reset({
         esquemasCategorias: event.data?.esquemaCategoria || [],
         personasCargo: event.data?.personasACargo || [],
         expositores: event.data?.expositores || [],
+        title: event?.title || "",
+        lugar: event?.data?.lugar || "",
+        startDate: dayjs(event?.start).format("DD/MM/YYYY"),
+        startTime: dayjs(event?.start).format("HH:mm"),
+        endDate: dayjs(event?.end).format("DD/MM/YYYY"),
+        endTime: dayjs(event?.end).format("HH:mm"),
+        descripcion: event?.data?.descripcion || "",
+        departamento: event?.data?.departamento || [],
       });
     }
   }, [modalIsOpen, event, methods]);
@@ -71,6 +81,10 @@ export const ModalEditar = ({
     });
   };
 
+  if (!event) {
+    return null;
+  }
+
   return (
     <Dialog
       fullWidth
@@ -97,16 +111,19 @@ export const ModalEditar = ({
       <DialogTitle>Editar evento</DialogTitle>
       <DialogContent sx={{ p: 2 }}>
         <FormProvider {...methods}>
+          <FechaHora defaultStart={event?.start} defaultEnd={event?.end} />
           <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
             <Titulo defaultValue={event?.title} />
             <Lugar defaultValue={event?.data?.lugar} />
           </Box>
-          <FechaHora defaultStart={event?.start} defaultEnd={event?.end} />
-          <PersonaCargo defaultValues={event?.data?.personasACargo} />
-          <Expositores defaultValues={event?.data?.expositores} />
           <Descripcion defaultValue={event?.data?.descripcion} />
-          <EsquemaCategoria defaultValues={event?.data?.esquemaCategoria} />
+          <Expositores defaultValues={event?.data?.expositores} />
+          <EsquemaCategoria defaultValues={event.data?.esquemaCategoria} />
+          <DialogContentText sx={{ color: "#333333" }}>
+            Organizadores del evento
+          </DialogContentText>
           <Departamento defaultValues={event?.data?.departamento} />
+          <PersonaCargo defaultValues={event?.data?.personasACargo} />
         </FormProvider>
       </DialogContent>
       <DialogActions>

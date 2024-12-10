@@ -61,7 +61,6 @@ export const ModalEvento = ({
       alert("El evento debe ser en el futuro.");
       return;
     }
-    // Asegúrate de que los departamentos se envíen correctamente
     data.departamento = data.departamento || [];
     handleAddEvent(data);
     setModalIsOpen(false);
@@ -112,7 +111,7 @@ export const ModalEvento = ({
           </Box>
           <Descripcion />
           <Expositores />
-          <EsquemaCategoria />
+          <EsquemaCategoria isFromModalEvento={true} />
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>

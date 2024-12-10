@@ -36,6 +36,10 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
 
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
 
+  if (!event) {
+    return null;
+  }
+
   return (
     <Dialog
       fullWidth
@@ -84,7 +88,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
       <DialogActions>
         {/* Editar dependiendo del rol */}
         <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cerrar</Button>
-        <ModalEditar modalIsOpen={editModalIsOpen} setModalIsOpen={setEditModalIsOpen} event={event} />
+        <ModalEditar modalIsOpen={editModalIsOpen} setModalIsOpen={setEditModalIsOpen} event={event} isFromModalEvento={false} />
         <Button onClick={() => setEditModalIsOpen(true)} variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar</Button>
       </DialogActions>
     </Dialog>

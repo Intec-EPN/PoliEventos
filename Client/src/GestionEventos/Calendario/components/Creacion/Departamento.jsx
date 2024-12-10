@@ -43,7 +43,6 @@ export const Departamento = ({ defaultValues }) => {
   useEffect(() => {
     if (tipoSeleccion === "facultad") {
       const allDepartamentos = departamentos.map((dep) => dep.id);
-      console.log('debug');
       setValue("departamento", allDepartamentos);
     } else if (tipoSeleccion === "departamento") {
       setValue("departamento", []);

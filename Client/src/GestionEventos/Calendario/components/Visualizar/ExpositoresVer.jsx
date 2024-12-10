@@ -7,7 +7,7 @@ export const ExpositoresVer = ({ expositores }) => {
     <Box mt={2}>
       <Typography
         variant="h3"
-        sx={{ fontWeight: "normal", color: "#164dc9", fontSize: "1.2rem", fontWeight:"500",}}
+        sx={{ color: "#164dc9", fontSize: "1.2rem", fontWeight:"500" }}
       >
         {expositores.length > 1 ? "Expositores:" : "Expositor:"}
       </Typography>

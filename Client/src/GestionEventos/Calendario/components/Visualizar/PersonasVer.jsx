@@ -8,7 +8,6 @@ export const PersonasVer = ({ personas }) => {
       <Typography
         variant="h3"
         sx={{
-          fontWeight: "normal",
           color: "#164dc9",
           fontSize: "1.2rem",
           fontWeight: "500",

@@ -1,52 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Select, MenuItem } from "@mui/material";
-import { useFormContext, useWatch, useFieldArray } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 export const EsquemaCategoriaItem = ({ esquemas, index }) => {
-  const { register, setValue, watch, control } = useFormContext();
-  const { fields, remove } = useFieldArray({
-    control,
-    name: "esquemasCategorias",
-  });
+  const { register, setValue, watch } = useFormContext();
   const esquemasCategorias = watch(`esquemasCategorias`);
   const esquemasSeleccionados = esquemasCategorias ? esquemasCategorias.map((e) => e.esquemaId) : [];
-  const esquemaInicial = ""; // Eliminar valor por defecto
 
-  const [esquemaSeleccionado, setEsquemaSeleccionado] = useState(
-    esquemaInicial
-  );
-  const [categoriasEsquemaSeleccionado, setCategoriasEsquemaSeleccionado] =
-    useState([]);
+  const [esquemaSeleccionado, setEsquemaSeleccionado] = useState("");
+  const [categoriasEsquemaSeleccionado, setCategoriasEsquemaSeleccionado] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
 
   useEffect(() => {
-    const esquema = esquemas.find(
-      (esquema) => esquema.esquemaId == esquemaSeleccionado
-    );
+    const esquema = esquemas.find((esquema) => esquema.esquemaId == esquemaSeleccionado);
     setCategoriasEsquemaSeleccionado(esquema ? esquema.categorias : []);
   }, [esquemaSeleccionado, esquemas]);
 
   useEffect(() => {
-    if (categoriasEsquemaSeleccionado.length > 0) {
-      setValue(
-        `esquemasCategorias[${index}].categoriaId`,
-        categoriasEsquemaSeleccionado[0].categoriaId
-      );
-    } else {
-      setValue(`esquemasCategorias[${index}].categoriaId`, "");
-    }
-  }, [categoriasEsquemaSeleccionado, index, setValue]);
-
-  useEffect(() => {
-    if (!esquemasSeleccionados.includes(esquemaSeleccionado)) {
-      setEsquemaSeleccionado("");
-      setValue(`esquemasCategorias[${index}].esquemaId`, "");
-    }
-  }, [esquemasSeleccionados, esquemaSeleccionado, esquemas, setValue, index]);
+    const esquemaInicial = watch(`esquemasCategorias[${index}].esquemaId`) || "";
+    const categoriaInicial = watch(`esquemasCategorias[${index}].categoriaId`) || "";
+    setEsquemaSeleccionado(esquemaInicial);
+    setCategoriaSeleccionada(categoriaInicial);
+  }, [index, watch]);
 
   return (
     <Box display={"flex"} sx={{ width: "100%" }} gap={1}>
       <Select
-        value={esquemaSeleccionado || ""}
+        value={esquemaSeleccionado}
         displayEmpty
         inputProps={{
           name: `esquemasCategorias[${index}].esquemaId`,
@@ -58,6 +38,9 @@ export const EsquemaCategoriaItem = ({ esquemas, index }) => {
           const selectedValue = e.target.value;
           setEsquemaSeleccionado(selectedValue);
           setValue(`esquemasCategorias[${index}].esquemaId`, selectedValue);
+          setCategoriasEsquemaSeleccionado(esquemas.find((esquema) => esquema.esquemaId == selectedValue)?.categorias || []);
+          setCategoriaSeleccionada("");
+          setValue(`esquemasCategorias[${index}].categoriaId`, "");
         }}
       >
         <MenuItem value="" disabled>
@@ -74,7 +57,7 @@ export const EsquemaCategoriaItem = ({ esquemas, index }) => {
         ))}
       </Select>
       <Select
-        value={watch(`esquemasCategorias[${index}].categoriaId`) || ""}
+        value={categoriaSeleccionada}
         inputProps={{
           name: `esquemasCategorias[${index}].categoriaId`,
           id: `categoria-${index}`,
@@ -83,16 +66,18 @@ export const EsquemaCategoriaItem = ({ esquemas, index }) => {
         {...register(`esquemasCategorias[${index}].categoriaId`)}
         onChange={(e) => {
           const selectedValue = e.target.value;
+          setCategoriaSeleccionada(selectedValue);
           setValue(`esquemasCategorias[${index}].categoriaId`, selectedValue);
         }}
       >
-        {categoriasEsquemaSeleccionado?.map(
-          ({ categoriaId, categoriaNombre }) => (
-            <MenuItem key={categoriaId} value={categoriaId}>
-              {categoriaNombre}
-            </MenuItem>
-          )
-        )}
+        <MenuItem value="" disabled>
+          Selecciona una categoría
+        </MenuItem>
+        {categoriasEsquemaSeleccionado.map(({ categoriaId, categoriaNombre }) => (
+          <MenuItem key={categoriaId} value={categoriaId}>
+            {categoriaNombre}
+          </MenuItem>
+        ))}
       </Select>
     </Box>
   );
