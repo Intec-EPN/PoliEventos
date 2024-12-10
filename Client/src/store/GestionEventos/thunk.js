@@ -59,6 +59,32 @@ export const startDeletingEvento = (eventoId) => {
     };
 }
 
+export const startEditingEvento = (eventoId) => {
+    return async (dispatch, getState) => {
+        try {
+            const state = getState();
+            const eventoEdicion = state.gestionEvento.eventoEdicion;
+            
+            console.log(eventoEdicion, eventoId);
+
+            const url = `/gestion/${eventoId}`;
+            await axiosInstance.put(url,
+                {
+                    usuarioId: 'b2d581cb-6be0-4598-891a-68a4edbfb4a8',
+                    eventoEdicion: eventoEdicion
+                }
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            console.error("Error al editar evento", error);
+            throw new Error("Error al editar evento");
+        }
+    };
+};
+
 export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
         try {

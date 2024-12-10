@@ -84,11 +84,7 @@ export const routes = [
     ],
   },
   {
-    path: "/eventos",
-    element: <RolesAuth component={DePrueba} />,
-  },
-  {
     path: "/calendario",
-    element: <Calendario />,
+    element: <RolesAuth component={Calendario} />,
   },
 ];

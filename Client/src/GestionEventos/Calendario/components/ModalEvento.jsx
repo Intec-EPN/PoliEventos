@@ -48,6 +48,8 @@ export const ModalEvento = ({
   }, [modalIsOpen, methods]);
 
   const onSubmit = (data) => {
+    console.log("CREAR", data);
+
     const startDate = dayjs(
       `${data.startDate} ${data.startTime}`,
       "DD/MM/YYYY HH:mm"
@@ -61,8 +63,16 @@ export const ModalEvento = ({
       alert("El evento debe ser en el futuro.");
       return;
     }
+
+    const startDateISO = startDate.format("YYYY-MM-DDTHH:mm:ss");
+    const endDateISO = endDate.format("YYYY-MM-DDTHH:mm:ss");
+
     data.departamento = data.departamento || [];
-    handleAddEvent(data);
+    handleAddEvent({
+      ...data,
+      start: startDateISO,
+      end: endDateISO,
+    });
     setModalIsOpen(false);
     methods.reset();
   };
@@ -73,6 +83,11 @@ export const ModalEvento = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
+      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
     });
   };
 

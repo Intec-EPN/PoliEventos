@@ -162,4 +162,97 @@ const eliminarEvento = async (req, res) => {
     }
 };
 
-module.exports = { crearEvento, obtenerEventos, eliminarEvento };
+const editarEvento = async (req, res) => {
+    const { usuarioId, eventoEdicion } = req.body;
+    const { id } = req.params;
+
+    try {
+        // Buscar el evento
+        const evento = await EventosModel.findByPk(id);
+        if (!evento) {
+            return res.status(404).json({ message: 'Evento no encontrado' });
+        }
+
+        // Actualizar el evento
+        await evento.update({
+            title: eventoEdicion.title,
+            start: eventoEdicion.start,
+            end: eventoEdicion.end,
+            lugar: eventoEdicion.data.lugar,
+            descripcion: eventoEdicion.data.descripcion,
+            usuario_id: usuarioId,
+        });
+
+        // Eliminar relaciones existentes
+        await EventosPersonasCargoModel.destroy({ where: { evento_id: id } });
+        await EventosExpositoresModel.destroy({ where: { evento_id: id } });
+        await EventosCategoriasModel.destroy({ where: { evento_id: id } });
+        await EventosDepartamentosModel.destroy({ where: { evento_id: id } });
+
+        // Manejar personas a cargo
+        for (const persona of eventoEdicion.data.personasACargo) {
+            const personaCargo = await PersonasCargoModel.create({
+                nombre: persona.nombre,
+                correo: persona.mail,
+            });
+
+            await EventosPersonasCargoModel.create({
+                evento_id: evento.id,
+                persona_cargo_id: personaCargo.id,
+            });
+        }
+
+        // Manejar expositores
+        for (const expositor of eventoEdicion.data.expositores) {
+            const expositorCargo = await ExpositoresModel.create({
+                nombre: expositor.nombre,
+                correo: expositor.mail,
+            });
+
+            await EventosExpositoresModel.create({
+                evento_id: evento.id,
+                expositor_id: expositorCargo.id,
+            });
+        }
+
+        // Manejar esquema de categorías
+        for (const esquemaCategoria of eventoEdicion.data.esquemaCategoria) {
+            const categoria = await CategoriasModel.findOne({
+                where: {
+                    id: esquemaCategoria.categoriaId,
+                    esquema_id: esquemaCategoria.esquemaId,
+                },
+            });
+
+            if (categoria) {
+                await EventosCategoriasModel.create({
+                    evento_id: evento.id,
+                    categoria_id: categoria.id,
+                });
+            }
+        }
+
+        // Manejar departamentos
+        for (const departamentoId of eventoEdicion.data.departamento) {
+            const departamento = await DepartamentosModel.findOne({
+                where: {
+                    id: departamentoId,
+                },
+            });
+
+            if (departamento) {
+                await EventosDepartamentosModel.create({
+                    evento_id: evento.id,
+                    departamento_id: departamento.id,
+                });
+            }
+        }
+
+        res.status(200).json({ message: 'Evento editado exitosamente', evento });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al editar el evento', error });
+    }
+};
+
+module.exports = { crearEvento, obtenerEventos, eliminarEvento, editarEvento };

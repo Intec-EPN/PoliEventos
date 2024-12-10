@@ -19,7 +19,6 @@ export const EsquemaCategoria = ({ isFromModalEvento }) => {
   const [editMode, setEditMode] = useState(isFromModalEvento ? true : false);
 
   useEffect(() => {
-    console.log("Loading esquemas categorias");
     dispatch(startLoadingEsquemasCategorias());
   }, [dispatch]);
 
@@ -38,14 +37,11 @@ export const EsquemaCategoria = ({ isFromModalEvento }) => {
   });
 
   const handleReset = () => {
-    console.log("Resetting categories");
     setEditMode(true);
     reset({
       esquemasCategorias: [],
     });
   };
-
-  console.log("Rendering EsquemaCategoria with editMode:", editMode);
 
   return (
     <Box sx={{ my: 1 }}>

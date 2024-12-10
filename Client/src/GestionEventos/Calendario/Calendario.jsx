@@ -6,6 +6,7 @@ import dayjs from "../../dayjsConfig";
 import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  limpiarEventoCreacion,
   setEnd,
   setEventoCreacion,
   setStart,
@@ -97,6 +98,7 @@ export const Calendario = () => {
       })
     );
     dispatch(startCreateEvento());
+    dispatch(limpiarEventoCreacion());
     setModalIsOpen(false);
   };
   const handleModalClose = () => {

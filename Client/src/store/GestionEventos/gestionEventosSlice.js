@@ -17,6 +17,19 @@ export const gestionEventosSlice = createSlice({
                 departamento: []
             }
         },
+        eventoEdicion: {
+            title: "",
+            start: null,
+            end: null,
+            data: {
+                lugar: "",
+                descripcion: "",
+                personasACargo: [],
+                expositores: [],
+                esquemaCategoria: [],
+                departamento: []
+            }
+        },
         departamentos: [],
         esquemasCategorias: [],
     },
@@ -55,6 +68,33 @@ export const gestionEventosSlice = createSlice({
                 },
             };
         },
+        setEventoEdicion: (state, action) => {
+            const {
+                titulo,
+                start,
+                end,
+                lugar,
+                descripcion,
+                departamento,
+                esquemasCategorias,
+                personasCargo,
+                expositores
+            } = action.payload;
+
+            state.eventoEdicion = {
+                start: start,
+                end: end,
+                title: titulo,
+                data: {
+                    lugar,
+                    descripcion,
+                    departamento: departamento || [],
+                    esquemaCategoria: esquemasCategorias || [],
+                    personasACargo: personasCargo || [],
+                    expositores: expositores || []
+                },
+            };
+        },
         setDepartamentos: (state, action) => {
             state.departamentos = action.payload;
         },
@@ -63,6 +103,21 @@ export const gestionEventosSlice = createSlice({
         },
         setEventos: (state, action) => {
             state.eventos = action.payload;
+        },
+        limpiarEventoCreacion: (state) => {
+            state.eventoCreacion = {
+                title: "",
+                start: null,
+                end: null,
+                data: {
+                    lugar: "",
+                    descripcion: "",
+                    personasACargo: [],
+                    expositores: [],
+                    esquemaCategoria: [],
+                    departamento: []
+                }
+            }
         }
     }
 });
@@ -75,5 +130,7 @@ export const {
     setEventoCreacion,
     setDepartamentos,
     setEsquemasCategorias,
-    setEventos
+    setEventos,
+    setEventoEdicion,
+    limpiarEventoCreacion
 } = gestionEventosSlice.actions;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { crearEvento, obtenerEventos, eliminarEvento } = require('./controllers/eventosController');
+const { crearEvento, obtenerEventos, eliminarEvento, editarEvento } = require('./controllers/eventosController');
 const { obtenerDepartamentosId } = require('../Administracion/controllers/Roles/departamentosController');
 const { obtenerEsquemasCategoriasCalendario } = require('../Administracion/controllers/Categorizaciones/esquemasController');
 
@@ -9,6 +9,7 @@ const { obtenerEsquemasCategoriasCalendario } = require('../Administracion/contr
 router.post('/', crearEvento);
 router.get('/', obtenerEventos);
 router.delete('/:id', eliminarEvento);
+router.put('/:id', editarEvento);
 
 // Obtener departamentos
 router.get('/departamentos', obtenerDepartamentosId);

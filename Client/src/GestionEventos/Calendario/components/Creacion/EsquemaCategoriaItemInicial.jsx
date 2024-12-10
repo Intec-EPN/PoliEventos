@@ -22,9 +22,6 @@ export const EsquemaCategoriaItemInicial = ({ esquemas, index }) => {
   const categoria = esquema ? esquema.categorias.find((categoria) => categoria.categoriaId === categoriaSeleccionada) : null;
   const categoriaNombre = categoria ? categoria.categoriaNombre : "N/A";
 
-  console.log("Esquema seleccionado:", esquemaSeleccionado, "Nombre:", esquemaNombre);
-  console.log("Categoría seleccionada:", categoriaSeleccionada, "Nombre:", categoriaNombre);
-
   return (
     <Box display={"flex"} sx={{ width: "98%" }} gap={1} mb={1}>
       <Paper sx={{ width: "50%", mt: 0.5, p: 1, backgroundColor: "#fff", display:"flex", alignItems:"center", border:"1.5px solid #dfdfdf", boxShadow:"none"   }}>

@@ -19,13 +19,17 @@ import { Expositores } from "./Creacion/Expositores";
 import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect, useState } from "react";
-import { DepartamentoItemInicial } from "./Visualizar/DepartamentoItemInicial";
+import { useDispatch } from "react-redux";
+import { startEditingEvento } from "../../../store/GestionEventos/thunk";
+import { setEventoEdicion } from "../../../store/GestionEventos/gestionEventosSlice";
+import { DepartamentoItemInicial } from "./Creacion/DepartamentoItemInicial";
 
 export const ModalEditar = ({
   modalIsOpen,
   setModalIsOpen,
   handleAddEvent,
   event,
+  handleEditClose,
 }) => {
   const hoy = dayjs();
   const methods = useForm({
@@ -38,6 +42,7 @@ export const ModalEditar = ({
   });
 
   const [showDepartamento, setShowDepartamento] = useState(false);
+  const dispatch = useDispatch();
 
   const handleReset = (editMode) => {
     setShowDepartamento(editMode);
@@ -45,19 +50,18 @@ export const ModalEditar = ({
 
   useEffect(() => {
     if (modalIsOpen && event) {
-      console.log("Valores del evento para editar:", event.data);
       methods.reset({
         esquemasCategorias: event.data?.esquemaCategoria || [],
         personasCargo: event.data?.personasACargo || [],
         expositores: event.data?.expositores || [],
         title: event?.title || "",
         lugar: event?.data?.lugar || "",
-        startDate: dayjs(event?.start).format("DD/MM/YYYY"),
-        startTime: dayjs(event?.start).format("HH:mm"),
-        endDate: dayjs(event?.end).format("DD/MM/YYYY"),
-        endTime: dayjs(event?.end).format("HH:mm"),
+        startDate: event?.start ? dayjs(event.start).format("DD/MM/YYYY") : "",
+        startTime: event?.start ? dayjs(event.start).format("HH:mm") : "",
+        endDate: event?.end ? dayjs(event.end).format("DD/MM/YYYY") : "",
+        endTime: event?.end ? dayjs(event.end).format("HH:mm") : "",
         descripcion: event?.data?.descripcion || "",
-        departamento: event?.data?.departamento || [],
+        departamento: event.data?.departamento || [],
         tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
     } else if (modalIsOpen && !event) {
@@ -76,9 +80,16 @@ export const ModalEditar = ({
         tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
     }
-  }, [modalIsOpen, event, methods]);
+    // Agregar lógica para enviar valores al formulario
+    if (!showDepartamento && event) {
+      methods.setValue("departamento", event.data?.departamento || []);
+      methods.setValue("esquemasCategorias", event.data?.esquemaCategoria || []);
+    }
+  }, [modalIsOpen, event, methods, showDepartamento]);
 
   const onSubmit = (data) => {
+    console.log("Datos del formulario:", data);
+
     const startDate = dayjs(
       `${data.startDate} ${data.startTime}`,
       "DD/MM/YYYY HH:mm"
@@ -87,13 +98,33 @@ export const ModalEditar = ({
       `${data.endDate} ${data.endTime}`,
       "DD/MM/YYYY HH:mm"
     );
+    if (!startDate.isValid() || !endDate.isValid()) {
+      alert("Fecha u hora inválida.");
+      return;
+    }
 
-    if (startDate.isBefore(hoy) || endDate.isBefore(hoy)) {
+    const startDateISO = startDate.format("YYYY-MM-DDTHH:mm:ss");
+    const endDateISO = endDate.format("YYYY-MM-DDTHH:mm:ss");
+
+    if (dayjs(startDateISO).isBefore(hoy) || dayjs(endDateISO).isBefore(hoy)) {
       alert("El evento debe ser en el futuro.");
       return;
     }
-    handleAddEvent(data);
-    setModalIsOpen(false);
+    dispatch(
+      setEventoEdicion({
+        titulo: data.titulo,
+        start: startDateISO,
+        end: endDateISO,
+        lugar: data.lugar,
+        descripcion: data.descripcion,
+        departamento: data.departamento || [],
+        esquemasCategorias: data.esquemasCategorias || [],
+        personasCargo: data.personasCargo || [],
+        expositores: data.expositores || [],
+      })
+    );
+    dispatch(startEditingEvento(event.id));
+    handleEditClose();
     methods.reset();
   };
 
@@ -105,6 +136,10 @@ export const ModalEditar = ({
       expositores: [],
       departamento: [],
       tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
     });
   };
 
@@ -164,8 +199,20 @@ export const ModalEditar = ({
         </FormProvider>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cancelar</Button>
-        <Button type="submit" variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar evento</Button>
+        <Button
+          onClick={handleClose}
+          variant="outlined"
+          sx={{ color: "red", border: "2px solid red" }}
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ backgroundColor: "#2c4175" }}
+        >
+          Editar evento
+        </Button>
       </DialogActions>
     </Dialog>
   );
