@@ -52,7 +52,23 @@ export const ModalEvento = ({
   }, [modalIsOpen, methods]);
 
   const onSubmit = (data) => {
-    console.log("CREAR", data);
+    // Validaciones de campos obligatorios
+    if (!data.titulo || !data.lugar || !data.descripcion) {
+      alert("Debe completar los campos de título, lugar y descripción.");
+      return;
+    }
+    if (data.personasCargo.length === 0) {
+      alert("Debe agregar al menos una persona a cargo.");
+      return;
+    }
+    if (data.departamento.length === 0) {
+      alert("Debe seleccionar al menos un departamento.");
+      return;
+    }
+    if (data.esquemasCategorias.length === 0) {
+      alert("Debe seleccionar al menos una categoría.");
+      return;
+    }
 
     const startDate = dayjs(
       `${data.startDate} ${data.startTime}`,
@@ -63,13 +79,18 @@ export const ModalEvento = ({
       "DD/MM/YYYY HH:mm"
     );
 
+    if (!startDate.isValid() || !endDate.isValid()) {
+      alert("Fecha u hora inválida.");
+      return;
+    }
+
     if (startDate.isBefore(hoy) || endDate.isBefore(hoy)) {
       alert("El evento debe ser en el futuro.");
       return;
     }
 
-    const startDateISO = startDate.format("YYYY-MM-DDTHH:mm:ss");
-    const endDateISO = endDate.format("YYYY-MM-DDTHH:mm:ss");
+    const startDateISO = startDate.toISOString();
+    const endDateISO = endDate.toISOString();
 
     data.departamento = data.departamento || [];
     handleAddEvent({

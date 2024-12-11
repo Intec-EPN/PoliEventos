@@ -32,9 +32,10 @@ export const ModalEditar = ({
   handleEditClose,
 }) => {
   const hoy = dayjs();
+  const [isReset, setIsReset] = useState(false);
   const methods = useForm({
     defaultValues: {
-      esquemasCategorias: [],
+      esquemasCategorias: event?.data?.esquemaCategoria || [],
       personasCargo: [],
       expositores: [],
       tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
@@ -46,6 +47,7 @@ export const ModalEditar = ({
 
   const handleReset = (editMode) => {
     setShowDepartamento(editMode);
+    setIsReset(true);
   };
 
   useEffect(() => {
@@ -80,15 +82,35 @@ export const ModalEditar = ({
         tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
     }
-    // Agregar lógica para enviar valores al formulario
-    if (!showDepartamento && event) {
-      methods.setValue("departamento", event.data?.departamento || []);
-      methods.setValue("esquemasCategorias", event.data?.esquemaCategoria || []);
-    }
-  }, [modalIsOpen, event, methods, showDepartamento]);
+  }, [modalIsOpen, event, methods]);
 
   const onSubmit = (data) => {
-    console.log("Datos del formulario:", data);
+    console.log(data);
+
+    if (!isReset && event) {
+      data.esquemasCategorias = event.data?.esquemaCategoria || [];
+    }
+
+    // Validaciones de campos obligatorios
+    if (!data.titulo || !data.lugar || !data.descripcion) {
+      alert("Debe completar los campos de título, lugar y descripción.");
+      return;
+    }
+    if (data.personasCargo.length === 0) {
+      alert("Debe agregar al menos una persona a cargo.");
+      return;
+    }
+    if (!showDepartamento && (!data.departamento || data.departamento.length === 0)) {
+      data.departamento = event.data?.departamento || [];
+    }
+    if (data.departamento.length === 0) {
+      alert("Debe seleccionar al menos un departamento.");
+      return;
+    }
+    if (data.esquemasCategorias.length === 0) {
+      alert("Debe seleccionar al menos una categoría.");
+      return;
+    }
 
     const startDate = dayjs(
       `${data.startDate} ${data.startTime}`,
@@ -103,13 +125,14 @@ export const ModalEditar = ({
       return;
     }
 
-    const startDateISO = startDate.format("YYYY-MM-DDTHH:mm:ss");
-    const endDateISO = endDate.format("YYYY-MM-DDTHH:mm:ss");
+    const startDateISO = startDate.toISOString();
+    const endDateISO = endDate.toISOString();
 
     if (dayjs(startDateISO).isBefore(hoy) || dayjs(endDateISO).isBefore(hoy)) {
       alert("El evento debe ser en el futuro.");
       return;
     }
+
     dispatch(
       setEventoEdicion({
         titulo: data.titulo,
@@ -131,7 +154,7 @@ export const ModalEditar = ({
   const handleClose = () => {
     setModalIsOpen(false);
     methods.reset({
-      esquemasCategorias: [],
+      esquemasCategorias: event?.data?.esquemaCategoria || [],
       personasCargo: [],
       expositores: [],
       departamento: [],
@@ -180,7 +203,7 @@ export const ModalEditar = ({
           </Box>
           <Descripcion defaultValue={event?.data?.descripcion} />
           <Expositores defaultValues={event?.data?.expositores} />
-          <EsquemaCategoria defaultValues={event.data?.esquemaCategoria} />
+          <EsquemaCategoria defaultValues={event.data?.esquemaCategoria} isFromModalEvento={false} isReset={isReset} />
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>

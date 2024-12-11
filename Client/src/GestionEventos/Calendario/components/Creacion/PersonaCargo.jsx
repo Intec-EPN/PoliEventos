@@ -64,7 +64,7 @@ export const PersonaCargo = ({ defaultValues }) => {
           </IconButton>
         </Box>
       ))}
-      <Button onClick={() => append({ nombre: "", mail: "" })} sx={{width:"100%", display:"flex", justifyContent:"start", m:0, p:0}}>
+      <Button onClick={() => append({ nombre: "", mail: "" })} sx={{display:"flex", justifyContent:"start", m:0, p:0}}>
         <AddCircleOutlineOutlinedIcon sx={{color:"#0a3b91"}}/>
       </Button>
     </Box>

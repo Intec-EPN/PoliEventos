@@ -78,11 +78,17 @@ export const Calendario = () => {
     const start = dayjs(
       `${startDate} ${startTime}`,
       "DD/MM/YYYY HH:mm"
-    ).toISOString();
+    );
     const end = dayjs(
       `${endDate} ${endTime}`,
       "DD/MM/YYYY HH:mm"
-    ).toISOString();
+    );
+
+    if (!start.isValid() || !end.isValid()) {
+      alert("Fecha u hora inválida.");
+      return;
+    }
+
     dispatch(
       setEventoCreacion({
         titulo,
@@ -92,8 +98,8 @@ export const Calendario = () => {
         esquemasCategorias,
         personasCargo,
         expositores,
-        start,
-        end,
+        start: start.toISOString(),
+        end: end.toISOString(),
       })
     );
     dispatch(startCreateEvento());

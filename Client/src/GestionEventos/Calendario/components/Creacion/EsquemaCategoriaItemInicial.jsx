@@ -3,7 +3,7 @@ import { Box, Typography, Paper } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 
 export const EsquemaCategoriaItemInicial = ({ esquemas, index }) => {
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const esquemaInicial = watch(`esquemasCategorias[${index}].esquemaId`) || "";
   const categoriaInicial = watch(`esquemasCategorias[${index}].categoriaId`) || "";
 
@@ -16,6 +16,11 @@ export const EsquemaCategoriaItemInicial = ({ esquemas, index }) => {
       setCategoriaSeleccionada(categoriaInicial);
     }
   }, [esquemaInicial, categoriaInicial]);
+
+  useEffect(() => {
+    setValue(`esquemasCategorias[${index}].esquemaId`, esquemaSeleccionado);
+    setValue(`esquemasCategorias[${index}].categoriaId`, categoriaSeleccionada);
+  }, [esquemaSeleccionado, categoriaSeleccionada, index, setValue]);
 
   const esquema = esquemas.find((esquema) => esquema.esquemaId === esquemaSeleccionado);
   const esquemaNombre = esquema ? esquema.esquemaNombre : "N/A";
