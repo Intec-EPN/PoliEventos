@@ -23,10 +23,10 @@
 }
 
 .rbc-date-cell.rbc-now.rbc-current > .rbc-button-link {
-font-size: 1rem;
-padding: 2px;
+  font-size: 1rem;
+  padding: 2px;
 }
-.rbc-date-cell.rbc-now.rbc-current  {
+.rbc-date-cell.rbc-now.rbc-current {
   background-color: green;
   border-radius: 50;
 }
@@ -101,7 +101,7 @@ padding: 2px;
   border-radius: 10px;
   margin-right: 0.7rem;
   background-color: green;
-  color:white;
+  color: white;
   border: green;
   font-size: 0.9rem;
 }
@@ -112,11 +112,28 @@ padding: 2px;
 
 .rbc-toolbar > .rbc-btn-group > button:nth-child(2),
 .rbc-toolbar > .rbc-btn-group > button:nth-child(3) {
+  background-color: transparent;
   border: none;
   padding: 0;
+  box-shadow: none;
+  outline: none;
 }
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2) svg:hover,
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3) svg:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .rbc-toolbar > .rbc-btn-group > button:nth-child(2):hover,
 .rbc-toolbar > .rbc-btn-group > button:nth-child(3):hover {
+  border: none;
+  background-color: white;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2):active,
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3):active {
   border: none;
   background-color: white;
 }
@@ -125,4 +142,42 @@ padding: 2px;
 .rbc-toolbar > .rbc-btn-group {
   flex: 1;
   width: 100;
+}
+
+.transition-box {
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.calendar-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.list-view {
+  opacity: 1;
+  transform: scale(0.95);
+}
+
+.rbc-month-view {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.rbc-month-view-enter {
+  opacity: 0;
+  transform: translateY(-10%);
+}
+
+.rbc-month-view-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rbc-month-view-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rbc-month-view-exit-active {
+  opacity: 0;
+  transform: translateY(10%);
 }

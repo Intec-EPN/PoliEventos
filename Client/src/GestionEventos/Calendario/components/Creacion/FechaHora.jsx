@@ -8,24 +8,23 @@ import { useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-const hoy = dayjs().startOf('day');
+const hoy = dayjs().startOf("day");
 
-export const FechaHora = ({ defaultStart, defaultEnd }) => { 
+export const FechaHora = ({ defaultStart, defaultEnd }) => {
   const { register, setValue } = useFormContext();
   const { start, end } = useSelector(
     (state) => state.gestionEvento.eventoCreacion
   );
 
-  console.log("start", start);
-  console.log("end", end);
-
-  //   start 2024-12-21 T 13:00:00.000Z
-  //   end 2024-12-21 T 14:00:00.000Z
-  
-
-  const [startDate, setStartDate] = useState(start ? dayjs(start).format("DD/MM/YYYY") : "");
-  const [startTime, setStartTime] = useState(start ? dayjs(start).format("HH:mm") : "");
-  const [endDate, setEndDate] = useState(end ? dayjs(end).format("DD/MM/YYYY") : "");
+  const [startDate, setStartDate] = useState(
+    start ? dayjs(start).format("DD/MM/YYYY") : ""
+  );
+  const [startTime, setStartTime] = useState(
+    start ? dayjs(start).format("HH:mm") : ""
+  );
+  const [endDate, setEndDate] = useState(
+    end ? dayjs(end).format("DD/MM/YYYY") : ""
+  );
   const [endTime, setEndTime] = useState(end ? dayjs(end).format("HH:mm") : "");
 
   useEffect(() => {
@@ -96,14 +95,11 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
     return dayjs(time, "HH:mm").format("HH:mm");
   };
 
-  console.log("startDate", startDate);
-  console.log("startTime", startTime);
-  console.log("endDate", endDate);
-  console.log("endTime", endTime);
-
   return (
     <Box mb={1.5}>
-      <DialogContentText sx={{ color:"#333333" }}>Ingrese las fechas y horas</DialogContentText>
+      <DialogContentText sx={{ color: "#333333" }}>
+        Ingrese las fechas y horas
+      </DialogContentText>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box
           mt={0.7}
@@ -133,7 +129,9 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
             <TimePicker
               value={startTime ? dayjs(startTime, "HH:mm") : null}
               onChange={(time) => {
-                const formattedTime = time ? formatTime(time.format("HH:mm")) : "";
+                const formattedTime = time
+                  ? formatTime(time.format("HH:mm"))
+                  : "";
                 setStartTime(formattedTime);
                 setValue("startTime", formattedTime);
               }}
@@ -166,7 +164,9 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
             <TimePicker
               value={endTime ? dayjs(endTime, "HH:mm") : null}
               onChange={(time) => {
-                const formattedTime = time ? formatTime(time.format("HH:mm")) : "";
+                const formattedTime = time
+                  ? formatTime(time.format("HH:mm"))
+                  : "";
                 setEndTime(formattedTime);
                 setValue("endTime", formattedTime);
               }}

@@ -32,7 +32,7 @@ export const ModalEvento = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
-      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+      tipoSeleccion: "departamento", 
     },
   });
 
@@ -42,7 +42,11 @@ export const ModalEvento = ({
         esquemasCategorias: [],
         personasCargo: [],
         expositores: [],
-        tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+        tipoSeleccion: "departamento", 
+        startDate: dayjs().format("DD/MM/YYYY"),
+        startTime: dayjs().hour(8).minute(0).format("HH:mm"),
+        endDate: dayjs().format("DD/MM/YYYY"),
+        endTime: dayjs().hour(9).minute(0).format("HH:mm"),
       });
     }
   }, [modalIsOpen, methods]);

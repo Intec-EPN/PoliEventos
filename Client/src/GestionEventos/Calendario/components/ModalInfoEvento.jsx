@@ -16,13 +16,15 @@ import { PersonasVer } from "./Visualizar/PersonasVer";
 import { DepartamentoVer } from "./Visualizar/DepartamentoVer";
 import { HoraVer } from "./Visualizar/HoraVer";
 import { ModalEditar } from "./ModalEditar";
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useDispatch } from 'react-redux';
-import { startDeletingEvento } from '../../../store/GestionEventos/thunk';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch, useSelector } from "react-redux";
+import { startDeletingEvento } from "../../../store/GestionEventos/thunk";
+
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
-  const { start, end, title, data } = event || {};
+  
+  const { start, end, title, data, usuarioId } = event || {};
   const {
     asistentes,
     departamento,
@@ -49,6 +51,21 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     setEditModalIsOpen(false);
     setModalIsOpen(false);
   };
+
+  const { user, permisos, departamento: userDepartamento } = useSelector(
+    (state) => state.adminAuth
+  );
+
+ 
+  const permisoEditPropio = usuarioId === user.id && (permisos || []).some(permiso => permiso.permisoId === 1);
+  const permisoDeletePropio = usuarioId === user.id && (permisos || []).some(permiso => permiso.permisoId === 1);
+  const permisoEditDepartamento = (permisos || []).some(permiso => permiso.permisoId === 2);
+  const permisoDeleteDepartamento = (permisos || []).some(permiso => permiso.permisoId === 3);
+  const permisoEditFacultad = (permisos || []).some(permiso => permiso.permisoId === 6);
+  const permisoDeleteFacultad = (permisos || []).some(permiso => permiso.permisoId === 7);
+
+  const permisoEditEvento = permisoEditPropio || permisoEditFacultad || (permisoEditDepartamento && departamento ? departamento.includes(userDepartamento) : false);
+  const permisoDeleteEvento = permisoDeletePropio || permisoDeleteFacultad || (permisoDeleteDepartamento && departamento ? departamento.includes(userDepartamento) : false);  
 
   if (!event) {
     return null;
@@ -82,7 +99,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
           gap={3}
           justifyContent={"space-between"}
           width={"98%"}
-        mb={2}
+          mb={2}
         >
           <FechaVer start={start} end={end} />
           <HoraVer start={start} end={end} />
@@ -90,10 +107,16 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
         </Box>
         <DescripcionVer descripcion={descripcion} />
         {expositores?.length > 0 && (
-          <ExpositoresVer expositores={expositores} defaultValues={expositores} />
+          <ExpositoresVer
+            expositores={expositores}
+            defaultValues={expositores}
+          />
         )}
         {personasACargo?.length > 0 && (
-          <PersonasVer personas={personasACargo} defaultValues={personasACargo} />
+          <PersonasVer
+            personas={personasACargo}
+            defaultValues={personasACargo}
+          />
         )}
         {departamento?.length > 0 && (
           <DepartamentoVer departamentos={departamento} />
@@ -101,13 +124,45 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
       </DialogContent>
       <DialogActions>
         {/* Editar dependiendo del rol */}
-        <ModalEditar modalIsOpen={editModalIsOpen} setModalIsOpen={setEditModalIsOpen} event={event} handleAddEvent={() => {}} handleEditClose={handleEditClose} />
-        <Box sx={{display:"flex", gap:1}}>
-          <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>Cerrar</Button>
-          <Button onClick={handleDelete} variant="contained" color="error" startIcon={<DeleteIcon />}>Eliminar</Button>
-          <Button onClick={() => setEditModalIsOpen(true)} variant="contained" sx={{backgroundColor:"#2c4175"}}>Editar</Button>
+        {permisoEditEvento && (
+          <ModalEditar
+            modalIsOpen={editModalIsOpen}
+            setModalIsOpen={setEditModalIsOpen}
+            event={event}
+            handleAddEvent={() => {}}
+            handleEditClose={handleEditClose}
+          />
+        )}
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            sx={{ color: "red", border: "2px solid red" }}
+          >
+            Cerrar
+          </Button>
+          {permisoDeleteEvento && (
+            <Button
+              onClick={handleDelete}
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+            >
+              Eliminar
+            </Button>
+          )}
+          {permisoEditEvento && (
+            <Button
+              onClick={() => setEditModalIsOpen(true)}
+              variant="contained"
+              sx={{ backgroundColor: "#2c4175" }}
+            >
+              Editar
+            </Button>
+          )}
         </Box>
       </DialogActions>
     </Dialog>
   );
 };
+

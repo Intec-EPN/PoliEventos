@@ -1,13 +1,20 @@
 import { Box, Icon, Typography } from "@mui/material";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { startLoadingDepartamentos } from "../../../../store/GestionEventos/thunk";
 
 export const DepartamentoVer = ({ departamentos = [] }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(startLoadingDepartamentos());
+  }, [dispatch]);
   const color = "black";
   const { departamentos: deptsCargados } = useSelector(
     (state) => state.gestionEvento
   );
+ 
+
   const [depts, setDepts] = useState([]);
 
   useEffect(() => {

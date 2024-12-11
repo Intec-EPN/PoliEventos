@@ -18,17 +18,17 @@ export const startLoadingEventos = () => {
     };
 };
 
-
 export const startCreateEvento = () => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
             const eventoCreacion = state.gestionEvento.eventoCreacion;
-            console.log(eventoCreacion);
+            const usuarioId = state.adminAuth.user.id;
+            console.log(usuarioId);
 
             await axiosInstance.post("/gestion",
                 {
-                    usuarioId: 'b2d581cb-6be0-4598-891a-68a4edbfb4a8',
+                    usuarioId: usuarioId,
                     eventoCreacion: eventoCreacion
                 }
                 //     , {
@@ -64,8 +64,6 @@ export const startEditingEvento = (eventoId) => {
         try {
             const state = getState();
             const eventoEdicion = state.gestionEvento.eventoEdicion;
-            
-            console.log(eventoEdicion, eventoId);
 
             const url = `/gestion/${eventoId}`;
             await axiosInstance.put(url,
@@ -92,7 +90,7 @@ export const startLoadingDepartamentos = () => {
                 //     , {
                 //     withCredentials: true,
                 // }
-            );
+            );            
             dispatch(setDepartamentos(data));
         } catch (error) {
             console.error("Error al cargar departamentos", error);
@@ -100,6 +98,7 @@ export const startLoadingDepartamentos = () => {
         }
     };
 }
+
 export const startLoadingEsquemasCategorias = () => {
     return async (dispatch) => {
         try {

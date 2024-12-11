@@ -113,10 +113,11 @@ const obtenerEventos = async (req, res) => {
             });
 
             return {
-                id: evento.id, // Agregar el id del evento
+                id: evento.id, 
                 start: evento.start,
                 end: evento.end,
                 title: evento.title,
+                usuarioId: evento.usuario_id, 
                 data: {
                     lugar: evento.lugar,
                     descripcion: evento.descripcion,

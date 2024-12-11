@@ -3,7 +3,7 @@ import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import { ModalEvento } from "./components/ModalEvento";
 import { useEffect, useState } from "react";
 import dayjs from "../../dayjsConfig";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   limpiarEventoCreacion,
@@ -17,10 +17,8 @@ import {
 } from "../../store/GestionEventos/thunk";
 import { ModalInfoEvento } from "./components/ModalInfoEvento";
 import "./customCalendar.css";
-
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import TodayIcon from "@mui/icons-material/Today";
 
 const localizer = dayjsLocalizer(dayjs);
 
@@ -31,6 +29,7 @@ export const Calendario = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalEvent, setModalEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -117,71 +116,108 @@ export const Calendario = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "95vh",
-        fontFamily: "Helvetica, Arial,sans-serif",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Calendar
-        style={{ height: "90vh", width: "90vw" }}
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        selectable
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleOpenEvent}
-        views={[Views.MONTH]}
-        messages={{
-          next: (
-            <NavigateNextIcon
-              sx={{
-                "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.1)",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                },
-              }}
-            />
-          ),
-          previous: (
-            <NavigateBeforeIcon
-              sx={{
-                "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.1)",
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                },
-              }}
-            />
-          ),
-          today: "Hoy",
-          month: "Mes",
-          week: "Semana",
-          day: "Día",
-          agenda: "Agenda",
-          date: "Fecha",
-          time: "Hora",
-          event: "Evento",
-          noEventsInRange: "No hay eventos en este rango",
-          showMore: (total) => `+ Ver más (${total})`,
+    <>
+      <Box
+        sx={{
+          mt: "1rem",
+          mb: "0.5rem",
+          width: "100%",
+          fontFamily: "Helvetica, Arial,sans-serif",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
-      <ModalEvento
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={handleModalClose}
-        handleAddEvent={handleAddEvent}
-      />
-      <ModalInfoEvento
-        modalIsOpen={modalEvent}
-        setModalIsOpen={handleCloseEvent}
-        event={selectedEvent}
-      />
+      >
+        <>
+          <Calendar
+            style={{ height: "87vh", width: "90vw" }}
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            selectable
+            onSelectSlot={handleSelectSlot}
+            onSelectEvent={handleOpenEvent}
+            views={[Views.MONTH]}
+            components={{
+              event: CustomEvent, // Aquí especificas el componente personalizado
+            }}
+            messages={{
+              next: (
+                <NavigateNextIcon
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                    },
+                  }}
+                />
+              ),
+              previous: (
+                <NavigateBeforeIcon
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.1)",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                    },
+                  }}
+                />
+              ),
+              today: "Hoy",
+              month: "Mes",
+              week: "Semana",
+              day: "Día",
+              agenda: "Agenda",
+              date: "Fecha",
+              time: "Hora",
+              event: "Evento",
+              noEventsInRange: "No hay eventos en este rango",
+              showMore: (total) => `+ Ver más (${total})`,
+            }}
+          />
+          <ModalEvento
+            modalIsOpen={modalIsOpen}
+            setModalIsOpen={handleModalClose}
+            handleAddEvent={handleAddEvent}
+          />
+          <ModalInfoEvento
+            modalIsOpen={modalEvent}
+            setModalIsOpen={handleCloseEvent}
+            event={selectedEvent}
+          />
+        </>
+      </Box>
+    </>
+  );
+};
+
+const CustomEvent = ({ event }) => {
+  return (
+    <Box sx={{ display: "flex", gap: 1 }}>
+      <Box
+        sx={{
+          width: "auto",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          fontWeight: "bold",
+        }}
+      >
+        {event.title}
+      </Box>
+      <Box
+        sx={{
+          width: "auto",
+          maxWidth: "50%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {event.data.descripcion}
+      </Box>
     </Box>
   );
 };

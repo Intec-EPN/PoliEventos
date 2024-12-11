@@ -14,7 +14,7 @@ export const Ingresar = () => {
     if (user) {
       if (user.nombre === "admn") {
         navigate("/admin/permisos");
-      } else if (user.roles.length > 0) {
+      } else if (user.roles && user.roles.length > 0) {
         navigate("/calendario");
       } else {
         setError("Usuario no encontrado");
