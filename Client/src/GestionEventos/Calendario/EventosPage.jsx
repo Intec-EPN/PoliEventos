@@ -10,13 +10,18 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import EventIcon from "@mui/icons-material/Event";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { LogoutOutlined } from "@mui/icons-material";
+import { ModalReporte } from "./components/ModalReporte";
 
 export const EventosPage = () => {
   const [formato, setFormato] = useState(true);
+  const [modalReporteIsOpen, setModalReporteIsOpen] = useState(false);
 
   const [events, setEvents] = useState([]);
 
   const { eventos } = useSelector((state) => state.gestionEvento);
+  const { user, nivelDepartamento, nivelFacultad, departamento, facultad } = useSelector((state) => state.adminAuth);
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,6 +48,11 @@ export const EventosPage = () => {
       console.error("Error al cerrar sesión", error);
     }
   };
+
+  const handleOpenReporte = () => {
+    setModalReporteIsOpen(true);
+  };
+
   return (
     <Box
       sx={{
@@ -52,14 +62,50 @@ export const EventosPage = () => {
         gap: 4,
         justifyContent: "center",
         alignItems: "center",
-        position: "relative", // Añadir posición relativa
+        position: "relative",
       }}
     >
       <Box
         sx={{
+          backgroundColor: "white",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          px: "0.5rem",
+          borderBottom: "2px solid green",
+          height: "50px",
+          color: "green",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+          boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+          zIndex: 1000,
+        }}
+      >
+        {formato ? (
+          <IconButton onClick={() => setFormato(false)} sx={{ p: { xs: 0.5, sm: 1 } }}>
+            <FormatListBulletedIcon sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+          </IconButton>
+        ) : (
+          <IconButton onClick={() => setFormato(true)} sx={{ p: { xs: 0.5, sm: 1 } }}>
+            <EventIcon sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+          </IconButton>
+        )}
+        <IconButton onClick={handleOpenReporte} sx={{ p: { xs: 0.5, sm: 1 } }}>
+          <AssessmentOutlinedIcon sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+        </IconButton>
+        <IconButton onClick={onLogout} sx={{ p: { xs: 0.5, sm: 1 } }}>
+          <LogoutOutlined sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+        </IconButton>
+      </Box>
+      <Box
+        sx={{
           position: "absolute",
           width: "100%",
-          height: "100%",
+          height: "calc(100% - 50px)", // Ajustar la altura para el header
+          top: "50px", // Ajustar la posición para el header
           transition: "opacity 0.5s ease-in-out, visibility 0.5s ease-in-out",
           opacity: formato ? 1 : 0,
           visibility: formato ? "visible" : "hidden",
@@ -71,55 +117,24 @@ export const EventosPage = () => {
         sx={{
           position: "absolute",
           width: "100%",
-          height: "100%",
+          height: "calc(100% - 50px)", // Ajustar la altura para el header
+          top: "50px", // Ajustar la posición para el header
           transition: "opacity 0.5s ease-in-out, visibility 0.5s ease-in-out",
           opacity: formato ? 0 : 1,
           visibility: formato ? "hidden" : "visible",
           overflowY: "auto",
         }}
       >
-        <Box sx={{ width: "100%", mt: 7, maxHeight: "90vh" }}>
+        <Box sx={{ width: "100%", mt: 4, maxHeight: "90vh" }}>
           {events.map((event, index) => (
             <EventoSimple key={index} event={event} />
           ))}
         </Box>
       </Box>
-      <Box
-        sx={{
-          backgroundColor: "green",
-          position: "fixed",
-          right: 10,
-          top: "50%",
-          transform: "translateY(-50%)",
-          px: "0.5rem",
-          borderRadius: "1rem",
-          width: "1%",
-          height: "25%",
-          color: "white",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
-          boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
-          zIndex: 1000,
-          mr:"1.4rem" 
-        }}
-      >
-        {formato ? (
-          <IconButton onClick={() => setFormato(false)}>
-            <FormatListBulletedIcon sx={{ color: "white" }} />
-          </IconButton>
-        ) : (
-          <IconButton onClick={() => setFormato(true)}>
-            <EventIcon sx={{ color: "white" }} />
-          </IconButton>
-        )}
-        <IconButton onClick={onLogout}>
-          <AssessmentOutlinedIcon sx={{ color: "white" }} />
-        </IconButton>
-        <IconButton onClick={onLogout}>
-          <LogoutOutlined sx={{ color: "white" }} />
-        </IconButton>
-      </Box>
+      <ModalReporte
+        modalIsOpen={modalReporteIsOpen}
+        setModalIsOpen={setModalReporteIsOpen}
+      />
     </Box>
   );
 };

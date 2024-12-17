@@ -42,7 +42,7 @@ export const EventoSimple = ({ event }) => {
   }, [deptsCargados, departamento]);
 
   return (
-    <Box sx={{ width: "60%", margin:"0 auto" }}>
+    <Box sx={{ width:{xs: "90%", md:"60%"}, margin: "0 auto" }}>
       <Typography
         variant="body1"
         sx={{
@@ -80,20 +80,21 @@ export const EventoSimple = ({ event }) => {
         </Typography>
         <Box
           display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
           gap={2}
           sx={{
             color: "#0a3b91",
-            p: 3,
-            backgroundColor: "white",
-            width: "80%%",
-            m: 0,
             p: 2,
+            backgroundColor: "white",
+            width: "80%",
+            m: 0,
+            ml:{xs:1, sm:4 ,md:5},
             pr: 3,
           }}
-          justifyContent={"space-evenly"}
+          justifyContent={{ xs: "flex-start", sm: "space-evenly" }}
         >
           {expositores?.map((expositor, index) => (
-            <Box key={index} display="flex" alignItems="center">
+            <Box key={index} display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 0 } }}>
               <Icon
                 sx={{
                   fontSize: "1.2rem",
@@ -111,7 +112,7 @@ export const EventoSimple = ({ event }) => {
             </Box>
           ))}
           {personasACargo?.map((persona, index) => (
-            <Box key={index} display="flex" alignItems="center">
+            <Box key={index} display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 0 } }}>
               <Icon
                 sx={{
                   fontSize: "1.2rem",
@@ -129,7 +130,7 @@ export const EventoSimple = ({ event }) => {
             </Box>
           ))}
           {depts.map((dept, index) => (
-            <Box key={index} display="flex" alignItems="center">
+            <Box key={index} display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 0 } }}>
               <Icon
                 sx={{
                   fontSize: "1.2rem",

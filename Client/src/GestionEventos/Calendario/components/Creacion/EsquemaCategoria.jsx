@@ -4,14 +4,17 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadingEsquemasCategorias } from "../../../../store/GestionEventos/thunk";
 import { EsquemaCategoriaItem } from "./EsquemaCategoriaItem";
-import { EsquemaCategoriaItemInicial } from "./EsquemaCategoriaItemInicial";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-export const EsquemaCategoria = ({ defaultValues, isFromModalEvento, isReset }) => {
+export const EsquemaCategoria = ({
+  defaultValues,
+  isFromModalEvento,
+  isReset,
+}) => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(isFromModalEvento ? true : false);
+  const [availableEsquemas, setAvailableEsquemas] = useState([]);
 
   useEffect(() => {
     dispatch(startLoadingEsquemasCategorias());
@@ -33,12 +36,18 @@ export const EsquemaCategoria = ({ defaultValues, isFromModalEvento, isReset }) 
     name: "esquemasCategorias",
   });
 
-  const handleReset = () => {
-    setEditMode(true);
-    reset({
-      esquemasCategorias: [],
-    });
+  const handleRemove = (index) => {
+    remove(index);
   };
+
+  useEffect(() => {
+    const selectedEsquemas = fields.map((field) => field.esquemaId);
+    setAvailableEsquemas(
+      esquemas.filter(
+        (esquema) => !selectedEsquemas.includes(esquema.esquemaId)
+      )
+    );
+  }, [fields, esquemas]);
 
   useEffect(() => {
     if (!editMode && !isReset) {
@@ -48,28 +57,18 @@ export const EsquemaCategoria = ({ defaultValues, isFromModalEvento, isReset }) 
 
   return (
     <Box sx={{ my: 1 }}>
-      <Box display="flex" alignItems="center">
-        <DialogContentText sx={{ color: "#333333" }}>
-          Categorías del evento
-        </DialogContentText>
-        {!isFromModalEvento && (
-          <IconButton onClick={handleReset} sx={{ m: 0, p: 0.4 }}>
-            <RestartAltIcon sx={{ color: "#0a3b91", width: "1.3rem" }} />
-          </IconButton>
-        )}
-      </Box>
+      <DialogContentText sx={{ color: "#333333" }}>
+        Categorías del evento
+      </DialogContentText>
       {fields.map((field, index) => (
         <Box key={field.id} display={"flex"} sx={{ width: "100%" }} gap={1}>
-          {editMode ? (
-            <EsquemaCategoriaItem index={index} esquemas={esquemas} />
-          ) : (
-            <EsquemaCategoriaItemInicial index={index} esquemas={esquemas} />
-          )}
-          {editMode && (
-            <IconButton onClick={() => remove(index)}>
-              <DeleteIcon />
-            </IconButton>
-          )}
+          <EsquemaCategoriaItem
+            index={index}
+            esquemas={[...availableEsquemas, ...esquemas.filter(e => e.esquemaId === field.esquemaId)]}
+          />
+          <IconButton onClick={() => handleRemove(index)}>
+            <DeleteIcon />
+          </IconButton>
         </Box>
       ))}
       {editMode && (

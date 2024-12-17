@@ -6,9 +6,11 @@ export const adminAuthSlice = createSlice({
         user: null,
         rol: null,
         permisos: [],
+        nivelPropio: false,
         nivelDepartamento: false,
         nivelFacultad: false,
         departamento: null,
+        departamentoNivelId: null, // Para cuando hay nivel departamento y se necesita el id del departamento
         facultad: null,
     },
     reducers: {
@@ -17,13 +19,27 @@ export const adminAuthSlice = createSlice({
             const rol = action.payload.user.roles[0];
             state.rol = rol;
             state.facultad = rol.facultad_id;
-            if (rol.departamento_id) {
+            const nivelAcceso = action.payload.user.nivelAcceso;
+            if (nivelAcceso === 'propio') {
+                state.nivelPropio = true;
+                state.nivelDepartamento = false;
+                state.nivelFacultad = false;
+                state.departamento = rol.departamento_id;
+            } else if (nivelAcceso === 'departamento') {
+                state.nivelPropio = false;
                 state.nivelDepartamento = true;
                 state.nivelFacultad = false;
                 state.departamento = rol.departamento_id;
-            } else {
+                state.departamentoNivelId = rol.departamento_id;
+            } else if (nivelAcceso === 'facultad') {
+                state.nivelPropio = false;
                 state.nivelDepartamento = false;
                 state.nivelFacultad = true;
+                state.departamento = null;
+            } else {
+                state.nivelPropio = false;
+                state.nivelDepartamento = false;
+                state.nivelFacultad = false;
                 state.departamento = null;
             }
         },
@@ -31,6 +47,7 @@ export const adminAuthSlice = createSlice({
             state.user = null;
             state.rol = null;
             state.permisos = null;
+            state.nivelPropio = false;
             state.nivelDepartamento = false;
             state.nivelFacultad = false;
             state.departamento = null;

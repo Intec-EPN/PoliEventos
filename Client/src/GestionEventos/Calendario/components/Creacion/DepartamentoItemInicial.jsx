@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Paper, IconButton } from "@mui/material";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { Box, Typography, Paper, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
@@ -25,12 +24,7 @@ export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
 
   return (
     <Box sx={{ my: 1 }}>
-      <Box display="flex" alignItems="center">
-        <Typography sx={{ color: "#333333" }}>Departamentos</Typography>
-        <IconButton onClick={handleReset} sx={{ m: 0, p: 0.4 }}>
-          <RestartAltIcon sx={{ color: "#0a3b91", width: "1.3rem" }} />
-        </IconButton>
-      </Box>
+      <Typography sx={{ color: "#333333" }}>Departamentos</Typography>
       <Box display="flex" gap={1} >
         {departamentos.map((departamento, index) => (
           <Box
@@ -58,6 +52,9 @@ export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
           </Box>
         ))}
       </Box>
+      <Button onClick={handleReset} variant="outlined" sx={{ mt: 1 }}>
+        Reiniciar organizadores
+      </Button>
     </Box>
   );
 };

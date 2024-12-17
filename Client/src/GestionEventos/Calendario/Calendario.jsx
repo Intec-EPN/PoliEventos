@@ -222,7 +222,7 @@ const CustomEvent = ({ event }) => {
           whiteSpace: "nowrap",
         }}
       >
-        {event.data.descripcion}
+        {dayjs(event.start).format("HH:mm")} - {dayjs(event.end).format("HH:mm")}
       </Box>
     </Box>
   );

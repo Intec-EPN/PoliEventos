@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { startEditingEvento } from "../../../store/GestionEventos/thunk";
 import { setEventoEdicion } from "../../../store/GestionEventos/gestionEventosSlice";
 import { DepartamentoItemInicial } from "./Creacion/DepartamentoItemInicial";
+import { EsquemaCategoriaItemInicial } from "./Creacion/EsquemaCategoriaItemInicial";
 
 export const ModalEditar = ({
   modalIsOpen,
@@ -100,7 +101,10 @@ export const ModalEditar = ({
       alert("Debe agregar al menos una persona a cargo.");
       return;
     }
-    if (!showDepartamento && (!data.departamento || data.departamento.length === 0)) {
+    if (
+      !showDepartamento &&
+      (!data.departamento || data.departamento.length === 0)
+    ) {
       data.departamento = event.data?.departamento || [];
     }
     if (data.departamento.length === 0) {
@@ -153,6 +157,8 @@ export const ModalEditar = ({
 
   const handleClose = () => {
     setModalIsOpen(false);
+    setShowDepartamento(false); // Restablecer el estado de showDepartamento
+    setIsReset(false); // Restablecer el estado de isReset
     methods.reset({
       esquemasCategorias: event?.data?.esquemaCategoria || [],
       personasCargo: [],
@@ -203,7 +209,24 @@ export const ModalEditar = ({
           </Box>
           <Descripcion defaultValue={event?.data?.descripcion} />
           <Expositores defaultValues={event?.data?.expositores} />
-          <EsquemaCategoria defaultValues={event.data?.esquemaCategoria} isFromModalEvento={false} isReset={isReset} />
+          <Box sx={{display:"none"}}>
+            {event.data?.esquemaCategoria.map((esquemaCategoria, index) => (
+              <EsquemaCategoriaItemInicial
+                key={index}
+                esquemas={event.data?.esquemaCategoria}
+                index={index}
+                onRemove={(index) => {
+                  const updatedEsquemas = [...event.data?.esquemaCategoria];
+                  updatedEsquemas.splice(index, 1);
+                  methods.setValue("esquemasCategorias", updatedEsquemas);
+                }}
+              />
+            ))}
+          </Box>
+          <EsquemaCategoria
+            defaultValues={event.data?.esquemaCategoria}
+            isFromModalEvento={true}
+          />
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>
