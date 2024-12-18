@@ -24,7 +24,7 @@ const EventosModel = sequelize.define('Eventos', {
         allowNull: false,
     },
     descripcion: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(500),
         allowNull: false,
     },
     asistentes: {
@@ -36,6 +36,10 @@ const EventosModel = sequelize.define('Eventos', {
             model: 'usuarios',
             key: 'id',
         },
+    },
+    enlaces: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
     },
 }, {
     tableName: 'eventos',

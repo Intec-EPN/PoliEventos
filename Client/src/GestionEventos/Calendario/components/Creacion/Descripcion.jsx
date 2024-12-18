@@ -28,6 +28,7 @@ export const Descripcion = ({ defaultValue }) => {
         variant="outlined"
         multiline
         rows={3}
+        slotProps={{ htmlInput: { maxLength: 499 } }}
         {...register("descripcion")}
       />
     </Box>

@@ -9,7 +9,7 @@ import { saveAs } from "file-saver";
 
 import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import ImageIcon from "@mui/icons-material/Image";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const groupEventsByTimeRange = (events, timeRange, selectedDepartments) => {
   const groupedData = {};

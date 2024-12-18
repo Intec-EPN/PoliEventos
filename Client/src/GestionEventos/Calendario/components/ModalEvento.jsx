@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  CircularProgress,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { FechaHora } from "./Creacion/FechaHora";
@@ -18,7 +19,9 @@ import { PersonaCargo } from "./Creacion/PersonaCargo";
 import { Expositores } from "./Creacion/Expositores";
 import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { TabArchivos } from "./Creacion/TabArchivos";
+import { useDispatch } from "react-redux";
 
 const hoy = dayjs();
 
@@ -36,8 +39,18 @@ export const ModalEvento = ({
     },
   });
 
+  const [isReset, setIsReset] = useState(false);
+  const [loading, setLoading] = useState(true); 
+  const [files, setFiles] = useState([]);
+  const [sendFiles, setSendFiles] = useState(false);
+
+  const handleFilesChange = (newFiles) => {
+    setFiles(newFiles);
+  };
+
   useEffect(() => {
     if (modalIsOpen) {
+      setLoading(true); // Iniciar carga
       methods.reset({
         esquemasCategorias: [],
         personasCargo: [],
@@ -48,10 +61,15 @@ export const ModalEvento = ({
         endDate: dayjs().format("DD/MM/YYYY"),
         endTime: dayjs().hour(9).minute(0).format("HH:mm"),
       });
+      setIsReset(true);
+      setTimeout(() => setLoading(false), 1500); 
     }
   }, [modalIsOpen, methods]);
 
   const onSubmit = (data) => {
+    setSendFiles(true);
+    console.log("Datos del formulario antes de la validación:", data);
+
     // Validaciones de campos obligatorios
     if (!data.titulo || !data.lugar || !data.descripcion) {
       alert("Debe completar los campos de título, lugar y descripción.");
@@ -71,11 +89,11 @@ export const ModalEvento = ({
     }
 
     const startDate = dayjs(
-      `${data.startDate} ${data.startTime}`,
+      `${data.startDate || dayjs().format("DD/MM/YYYY")} ${data.startTime || dayjs().hour(8).minute(0).format("HH:mm")}`,
       "DD/MM/YYYY HH:mm"
     );
     const endDate = dayjs(
-      `${data.endDate} ${data.endTime}`,
+      `${data.endDate || dayjs().format("DD/MM/YYYY")} ${data.endTime || dayjs().hour(9).minute(0).format("HH:mm")}`,
       "DD/MM/YYYY HH:mm"
     );
 
@@ -93,13 +111,18 @@ export const ModalEvento = ({
     const endDateISO = endDate.toISOString();
 
     data.departamento = data.departamento || [];
+
+    console.log("Archivos a enviar:", files);
+
     handleAddEvent({
       ...data,
       start: startDateISO,
       end: endDateISO,
+      files: files,
     });
     setModalIsOpen(false);
     methods.reset();
+    setIsReset(false);
   };
 
   const handleClose = () => {
@@ -108,12 +131,14 @@ export const ModalEvento = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
-      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+      tipoSeleccion: "departamento", 
       startDate: "",
       startTime: "",
       endDate: "",
       endTime: "",
+      enlaces: "",
     });
+    setIsReset(false);
   };
 
   return (
@@ -135,10 +160,29 @@ export const ModalEvento = ({
             md: "70vw",
             lg: "50vw",
           },
+          position: "relative", // Añadir posición relativa
         },
         onSubmit: methods.handleSubmit(onSubmit),
       }}
     >
+      {loading && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 3, 59, 0.2)", 
+            zIndex: 1,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
       <DialogTitle sx={{ textAlign: "center" }}>
         Agregar nuevo evento
       </DialogTitle>
@@ -151,13 +195,14 @@ export const ModalEvento = ({
           </Box>
           <Descripcion />
           <Expositores />
-          <EsquemaCategoria isFromModalEvento={true} />
+          <EsquemaCategoria isFromModalEvento={true} isReset={isReset} />
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>
           <TipoSeleccion />
           <Departamento />
           <PersonaCargo />
+          <TabArchivos sendFiles={sendFiles} onFilesChange={handleFilesChange} />
         </FormProvider>
       </DialogContent>
       <DialogActions>

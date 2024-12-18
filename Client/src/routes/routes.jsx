@@ -15,7 +15,6 @@ import { AdminAuth } from "../components/AdminAuth";
 import { RolesAuth } from "../components/RolesAuth";
 import { Calendario } from "../GestionEventos/Calendario/Calendario";
 import { EventosPage } from "../GestionEventos/Calendario/EventosPage";
-import { DePrueba } from "../GestionEventos/components/DePrueba";
 
 export const routes = [
   {

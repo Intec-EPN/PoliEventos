@@ -19,8 +19,7 @@ export const EventosPage = () => {
   const [events, setEvents] = useState([]);
 
   const { eventos } = useSelector((state) => state.gestionEvento);
-  const { user, nivelDepartamento, nivelFacultad, departamento, facultad } = useSelector((state) => state.adminAuth);
-
+  const { nivelPropio } = useSelector((state) => state.adminAuth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,19 +84,40 @@ export const EventosPage = () => {
         }}
       >
         {formato ? (
-          <IconButton onClick={() => setFormato(false)} sx={{ p: { xs: 0.5, sm: 1 } }}>
-            <FormatListBulletedIcon sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+          <IconButton
+            onClick={() => setFormato(false)}
+            sx={{ p: { xs: 0.5, sm: 1 } }}
+          >
+            <FormatListBulletedIcon
+              sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }}
+            />
           </IconButton>
         ) : (
-          <IconButton onClick={() => setFormato(true)} sx={{ p: { xs: 0.5, sm: 1 } }}>
-            <EventIcon sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+          <IconButton
+            onClick={() => setFormato(true)}
+            sx={{ p: { xs: 0.5, sm: 1 } }}
+          >
+            <EventIcon
+              sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }}
+            />
           </IconButton>
         )}
-        <IconButton onClick={handleOpenReporte} sx={{ p: { xs: 0.5, sm: 1 } }}>
-          <AssessmentOutlinedIcon sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
-        </IconButton>
+
+        {!nivelPropio && (
+          <IconButton
+            onClick={handleOpenReporte}
+            sx={{ p: { xs: 0.5, sm: 1 } }}
+          >
+            <AssessmentOutlinedIcon
+              sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }}
+            />
+          </IconButton>
+        )}
+
         <IconButton onClick={onLogout} sx={{ p: { xs: 0.5, sm: 1 } }}>
-          <LogoutOutlined sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }} />
+          <LogoutOutlined
+            sx={{ color: "green", fontSize: { xs: "1rem", sm: "1.5rem" } }}
+          />
         </IconButton>
       </Box>
       <Box

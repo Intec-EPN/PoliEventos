@@ -19,6 +19,7 @@ const crearEvento = async (req, res) => {
             lugar: eventoCreacion.data.lugar,
             descripcion: eventoCreacion.data.descripcion,
             usuario_id: usuarioId,
+            enlaces: eventoCreacion.data.enlaces
         });
 
         // Manejar personas a cargo

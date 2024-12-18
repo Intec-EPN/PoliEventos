@@ -47,10 +47,10 @@ export const EsquemaCategoria = ({
         (esquema) => !selectedEsquemas.includes(esquema.esquemaId)
       )
     );
-  }, [fields, esquemas]);
+  }, [fields]);
 
   useEffect(() => {
-    if (!editMode && !isReset) {
+    if (!editMode && isReset) {
       setValue("esquemasCategorias", defaultValues);
     }
   }, [editMode, fields, setValue, defaultValues, isReset]);

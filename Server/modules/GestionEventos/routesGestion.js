@@ -5,6 +5,8 @@ const { crearEvento, obtenerEventos, eliminarEvento, editarEvento } = require('.
 const { obtenerDepartamentosId } = require('../Administracion/controllers/Roles/departamentosController');
 const { obtenerEsquemasCategoriasCalendario } = require('../Administracion/controllers/Categorizaciones/esquemasController');
 const { obtenerPermisosPorRol } = require('../Administracion/controllers/Roles/permisosController');
+const { subirArchivos, eliminarArchivo, editarNombreArchivo, obtenerArchivosPorEvento } = require('./controllers/archivosController');
+
 
 // Rutas de eventos
 router.post('/', crearEvento);
@@ -18,5 +20,14 @@ router.get('/departamentos', obtenerDepartamentosId);
 router.get('/esquemas_categorias', obtenerEsquemasCategoriasCalendario);
 // Obtener permisos
 router.get('/permisos/:rolId', obtenerPermisosPorRol);
+
+// Subir archivos
+router.post('/subir', subirArchivos);
+// Editar nombre de archivo
+router.patch('/archivo/:nombreArchivo', editarNombreArchivo);
+// Eliminar archivo
+router.delete('/archivo/:nombreArchivo', eliminarArchivo);
+// Obtener archivos por evento
+router.get('/archivos/:idEvento', obtenerArchivosPorEvento);
 
 module.exports = router;

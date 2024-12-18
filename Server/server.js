@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { sequelize, authenticateDB } = require('./config/db');

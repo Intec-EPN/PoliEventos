@@ -25,6 +25,7 @@ export const Titulo = ({ defaultValue }) => {
         type="text"
         fullWidth
         variant="outlined"
+        slotProps={{ htmlInput: { maxLength: 60 } }}
         {...register("titulo")}
       />
     </Box>

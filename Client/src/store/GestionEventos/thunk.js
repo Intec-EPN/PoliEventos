@@ -18,15 +18,18 @@ export const startLoadingEventos = () => {
     };
 };
 
-export const startCreateEvento = () => {
+export const startCreateEvento = (files) => {
     return async (dispatch, getState) => {
         try {
             const state = getState();
             const eventoCreacion = state.gestionEvento.eventoCreacion;
-            const usuarioId = state.adminAuth.user.id;
-            console.log(usuarioId);
+            const departamentos = state.gestionEvento.eventoCreacion.data.departamento;
+           
+            console.log(eventoCreacion);
 
-            await axiosInstance.post("/gestion",
+            const usuarioId = state.adminAuth.user.id;
+
+            const { data } = await axiosInstance.post("/gestion",
                 {
                     usuarioId: usuarioId,
                     eventoCreacion: eventoCreacion
@@ -35,6 +38,13 @@ export const startCreateEvento = () => {
                 //     withCredentials: true,
                 // }
             );
+            console.log(data);
+
+            const eventoId = data.evento.id; // Obtener el ID del evento
+
+            if (files.length > 0) {
+                dispatch(startUpLoadingArchivos({ files, eventoId, departamentos }));
+            }
             dispatch(startLoadingEventos());
         } catch (error) {
             console.error("Error al crear evento", error);
@@ -42,6 +52,30 @@ export const startCreateEvento = () => {
         }
     };
 };
+
+
+export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
+    return async (dispatch) => {
+        const departamentosFormatted = departamentos.join("__");
+        const formData = new FormData();
+        files.forEach((file) => {
+            const newFileName = `${file.name}__${eventoId}__${departamentosFormatted}${file.name.substring(file.name.lastIndexOf('.'))}`;
+            formData.append("files", file, newFileName);
+        });
+        try {
+            await axiosInstance.post("/gestion/subir", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            alert("Archivos subidos exitosamente");
+        } catch (error) {
+            console.error("Error al subir archivos", error);
+            alert("Error al subir archivos");
+        }
+    }
+}
+
 
 export const startDeletingEvento = (eventoId) => {
     return async (dispatch) => {
@@ -64,11 +98,12 @@ export const startEditingEvento = (eventoId) => {
         try {
             const state = getState();
             const eventoEdicion = state.gestionEvento.eventoEdicion;
+            const usuarioId = state.adminAuth.user.id;
 
             const url = `/gestion/${eventoId}`;
             await axiosInstance.put(url,
                 {
-                    usuarioId: 'b2d581cb-6be0-4598-891a-68a4edbfb4a8',
+                    usuarioId: usuarioId,
                     eventoEdicion: eventoEdicion
                 }
                 //     , {
@@ -90,7 +125,7 @@ export const startLoadingDepartamentos = () => {
                 //     , {
                 //     withCredentials: true,
                 // }
-            );            
+            );
             dispatch(setDepartamentos(data));
         } catch (error) {
             console.error("Error al cargar departamentos", error);
@@ -102,7 +137,8 @@ export const startLoadingDepartamentos = () => {
 export const startLoadingEsquemasCategorias = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosInstance.get("/gestion//esquemas_categorias/"
+            //TODO estaba //esquemas_categorias
+            const { data } = await axiosInstance.get("/gestion/esquemas_categorias/"
                 //     , {
                 //     withCredentials: true,
                 // }
@@ -114,5 +150,6 @@ export const startLoadingEsquemasCategorias = () => {
         }
     };
 }
+
 
 

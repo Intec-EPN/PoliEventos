@@ -14,7 +14,8 @@ export const gestionEventosSlice = createSlice({
                 personasACargo: [],
                 expositores: [],
                 esquemaCategoria: [],
-                departamento: []
+                departamento: [],
+                enlaces: ""
             }
         },
         eventoEdicion: {
@@ -27,11 +28,13 @@ export const gestionEventosSlice = createSlice({
                 personasACargo: [],
                 expositores: [],
                 esquemaCategoria: [],
-                departamento: []
+                departamento: [],
+                enlaces: ""
             }
         },
         departamentos: [],
         esquemasCategorias: [],
+        files: []
     },
     reducers: {
         setStart: (state, action) => {
@@ -50,7 +53,8 @@ export const gestionEventosSlice = createSlice({
                 departamento,
                 esquemasCategorias,
                 personasCargo,
-                expositores
+                expositores,
+                enlaces
             } = action.payload;
             console.log(action.payload);
 
@@ -64,7 +68,8 @@ export const gestionEventosSlice = createSlice({
                     departamento: departamento || [],
                     esquemaCategoria: esquemasCategorias || [],
                     personasACargo: personasCargo || [],
-                    expositores: expositores || []
+                    expositores: expositores || [],
+                    enlaces
                 },
             };
         },
@@ -78,7 +83,8 @@ export const gestionEventosSlice = createSlice({
                 departamento,
                 esquemasCategorias,
                 personasCargo,
-                expositores
+                expositores,
+                enlaces 
             } = action.payload;
 
             state.eventoEdicion = {
@@ -91,7 +97,8 @@ export const gestionEventosSlice = createSlice({
                     departamento: departamento || [],
                     esquemaCategoria: esquemasCategorias || [],
                     personasACargo: personasCargo || [],
-                    expositores: expositores || []
+                    expositores: expositores || [],
+                    enlaces
                 },
             };
         },
@@ -115,9 +122,13 @@ export const gestionEventosSlice = createSlice({
                     personasACargo: [],
                     expositores: [],
                     esquemaCategoria: [],
-                    departamento: []
+                    departamento: [],
+                    enlaces:""
                 }
             }
+        },
+        setFilesSlice: (state, action) => {
+            state.files = action.payload;
         }
     }
 });
@@ -132,5 +143,6 @@ export const {
     setEsquemasCategorias,
     setEventos,
     setEventoEdicion,
-    limpiarEventoCreacion
+    limpiarEventoCreacion,
+    setFilesSlice
 } = gestionEventosSlice.actions;

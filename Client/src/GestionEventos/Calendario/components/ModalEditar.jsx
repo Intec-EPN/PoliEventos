@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogContentText,
+  CircularProgress,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { FechaHora } from "./Creacion/FechaHora";
@@ -34,6 +35,7 @@ export const ModalEditar = ({
 }) => {
   const hoy = dayjs();
   const [isReset, setIsReset] = useState(false);
+  const [loading, setLoading] = useState(true); // Estado de carga
   const methods = useForm({
     defaultValues: {
       esquemasCategorias: event?.data?.esquemaCategoria || [],
@@ -53,6 +55,8 @@ export const ModalEditar = ({
 
   useEffect(() => {
     if (modalIsOpen && event) {
+      setLoading(true); // Iniciar carga
+      console.log("Modal abierto con evento:", event);
       methods.reset({
         esquemasCategorias: event.data?.esquemaCategoria || [],
         personasCargo: event.data?.personasACargo || [],
@@ -67,7 +71,11 @@ export const ModalEditar = ({
         departamento: event.data?.departamento || [],
         tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
+      setIsReset(true);
+      setTimeout(() => setLoading(false), 1500); // Simular carga de 3 segundos
     } else if (modalIsOpen && !event) {
+      setLoading(true); // Iniciar carga
+      console.log("Modal abierto sin evento");
       methods.reset({
         esquemasCategorias: [],
         personasCargo: [],
@@ -82,11 +90,13 @@ export const ModalEditar = ({
         departamento: [],
         tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
+      setIsReset(true);
+      setTimeout(() => setLoading(false), 1500); 
     }
   }, [modalIsOpen, event, methods]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("Datos del formulario enviados:", data);
 
     if (!isReset && event) {
       data.esquemasCategorias = event.data?.esquemaCategoria || [];
@@ -137,6 +147,18 @@ export const ModalEditar = ({
       return;
     }
 
+    console.log("Datos preparados para enviar a la acción de edición:", {
+      titulo: data.titulo,
+      start: startDateISO,
+      end: endDateISO,
+      lugar: data.lugar,
+      descripcion: data.descripcion,
+      departamento: data.departamento || [],
+      esquemasCategorias: data.esquemasCategorias || [],
+      personasCargo: data.personasCargo || [],
+      expositores: data.expositores || [],
+    });
+
     dispatch(
       setEventoEdicion({
         titulo: data.titulo,
@@ -153,6 +175,7 @@ export const ModalEditar = ({
     dispatch(startEditingEvento(event.id));
     handleEditClose();
     methods.reset();
+    setIsReset(false);
   };
 
   const handleClose = () => {
@@ -195,10 +218,29 @@ export const ModalEditar = ({
             md: "70vw",
             lg: "50vw",
           },
+          position: "relative", 
         },
         onSubmit: methods.handleSubmit(onSubmit),
       }}
     >
+      {loading && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(3, 3, 59, 0.2)", 
+            zIndex: 1,
+          }}
+        >
+          <CircularProgress sx={{ color: "#0a3b91" }} />
+        </Box>
+      )}
       <DialogTitle>Editar evento</DialogTitle>
       <DialogContent sx={{ p: 2 }}>
         <FormProvider {...methods}>
@@ -209,7 +251,7 @@ export const ModalEditar = ({
           </Box>
           <Descripcion defaultValue={event?.data?.descripcion} />
           <Expositores defaultValues={event?.data?.expositores} />
-          <Box sx={{display:"none"}}>
+          <Box sx={{ display: "none" }}>
             {event.data?.esquemaCategoria.map((esquemaCategoria, index) => (
               <EsquemaCategoriaItemInicial
                 key={index}
@@ -226,6 +268,7 @@ export const ModalEditar = ({
           <EsquemaCategoria
             defaultValues={event.data?.esquemaCategoria}
             isFromModalEvento={true}
+            isReset={isReset}
           />
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento

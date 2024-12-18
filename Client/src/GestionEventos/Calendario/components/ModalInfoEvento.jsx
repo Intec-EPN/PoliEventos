@@ -20,16 +20,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { startDeletingEvento } from "../../../store/GestionEventos/thunk";
 
-
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
-  
+
   const { start, end, title, data, usuarioId } = event || {};
   const {
-    asistentes,
     departamento,
     descripcion,
-    esquemaCategoria,
     expositores,
     lugar,
     personasACargo,
@@ -52,20 +49,40 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     setModalIsOpen(false);
   };
 
-  const { user, permisos, departamento: userDepartamento } = useSelector(
-    (state) => state.adminAuth
-  );
+  const {
+    user,
+    permisos,
+    nivelPropio,
+    nivelDepartamento,
+    nivelFacultad,
+    departamentoNivelId,
+  } = useSelector((state) => state.adminAuth);
 
- 
-  const permisoEditPropio = usuarioId === user.id && (permisos || []).some(permiso => permiso.permisoId === 1);
-  const permisoDeletePropio = usuarioId === user.id && (permisos || []).some(permiso => permiso.permisoId === 1);
-  const permisoEditDepartamento = (permisos || []).some(permiso => permiso.permisoId === 2);
-  const permisoDeleteDepartamento = (permisos || []).some(permiso => permiso.permisoId === 3);
-  const permisoEditFacultad = (permisos || []).some(permiso => permiso.permisoId === 6);
-  const permisoDeleteFacultad = (permisos || []).some(permiso => permiso.permisoId === 7);
+  let permisoEditEvento = false;
+  let permisoDeleteEvento = false;
 
-  const permisoEditEvento = permisoEditPropio || permisoEditFacultad || (permisoEditDepartamento && departamento ? departamento.includes(userDepartamento) : false);
-  const permisoDeleteEvento = permisoDeletePropio || permisoDeleteFacultad || (permisoDeleteDepartamento && departamento ? departamento.includes(userDepartamento) : false);  
+  if (nivelPropio) {
+    permisoEditEvento =
+      usuarioId === user.id &&
+      (permisos || []).some((permiso) => permiso.permisoId === 1);
+    permisoDeleteEvento =
+      usuarioId === user.id &&
+      (permisos || []).some((permiso) => permiso.permisoId === 1);
+  } else if (nivelDepartamento) {
+    permisoEditEvento =
+      (permisos || []).some((permiso) => permiso.permisoId === 2) &&
+      (departamento || []).includes(departamentoNivelId);
+    permisoDeleteEvento =
+      (permisos || []).some((permiso) => permiso.permisoId === 3) &&
+      (departamento || []).includes(departamentoNivelId);
+  } else if (nivelFacultad) {
+    permisoEditEvento = (permisos || []).some(
+      (permiso) => permiso.permisoId === 6
+    );
+    permisoDeleteEvento = (permisos || []).some(
+      (permiso) => permiso.permisoId === 7
+    );
+  }
 
   if (!event) {
     return null;
@@ -165,4 +182,3 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     </Dialog>
   );
 };
-

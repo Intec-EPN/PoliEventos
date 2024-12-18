@@ -47,7 +47,9 @@ export const Departamento = () => {
     <Box sx={{ width: "100%" }} mt={0.5}>
       {tipoSeleccion === "departamento" && (
         <>
-          <DialogContentText sx={{ color:"#333333" }}>Departamento</DialogContentText>
+          <DialogContentText sx={{ color: "#333333" }}>
+            Departamento
+          </DialogContentText>
           <FormControl sx={{ width: "100%" }}>
             <Select
               labelId="departamento-label"
@@ -73,6 +75,23 @@ export const Departamento = () => {
             >
               {departamentos.map((dep) => (
                 <MenuItem key={dep.id} value={dep.id}>
+                  <span
+                    style={{
+                      border: "0.5px solid rgba(0, 0, 0, 0.15)",
+                      backgroundColor:
+                        dep.id === 1
+                          ? "#4b99d2"
+                          : dep.id === 2
+                          ? "#a479b1"
+                          : dep.id === 3
+                          ? "#fbbc04"
+                          : "transparent",
+                      display: "inline-flex",
+                      width: "4px",
+                      height: "13px",
+                      marginRight: "10px",
+                    }}
+                  ></span>
                   {dep.departamento}
                 </MenuItem>
               ))}
