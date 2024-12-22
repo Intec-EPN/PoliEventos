@@ -7,6 +7,7 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   limpiarEventoCreacion,
+  limpiarFiles,
   setEnd,
   setEventoCreacion,
   setStart,
@@ -171,7 +172,7 @@ export const Calendario = () => {
               selectable
               onSelectSlot={handleSelectSlot}
               onSelectEvent={handleOpenEvent}
-              views={[Views.MONTH]}
+              views={[Views.MONTH, Views.DAY]}
               components={{
                 event: CustomEvent, // Aquí especificas el componente personalizado
               }}

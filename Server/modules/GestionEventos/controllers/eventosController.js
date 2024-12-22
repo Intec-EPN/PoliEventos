@@ -135,6 +135,7 @@ const obtenerEventos = async (req, res) => {
                         nombre: expositor.expositore ? expositor.expositore.nombre : null,
                         mail: expositor.expositore ? expositor.expositore.correo : null,
                     })) || [],
+                    enlaces: evento.enlaces,
                     asistentes: evento.asistentes
                 },
             };
@@ -183,6 +184,7 @@ const editarEvento = async (req, res) => {
             lugar: eventoEdicion.data.lugar,
             descripcion: eventoEdicion.data.descripcion,
             usuario_id: usuarioId,
+            enlaces: eventoEdicion.data.enlaces
         });
 
         // Eliminar relaciones existentes

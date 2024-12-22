@@ -30,7 +30,7 @@ export const TabArchivos = ({ sendFiles, onFilesChange }) => {
         }
         label="Archivos"
       />
-      {showArchivos && <Archivos sendFiles={sendFiles} onFilesChange={onFilesChange} />}
+      {showArchivos && <Archivos onFilesChange={onFilesChange} />}
       <FormControlLabel
         control={
           <Checkbox

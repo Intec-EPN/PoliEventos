@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FechaVer } from "./Visualizar/FechaVer";
 import dayjs from "../../../dayjsConfig";
 import { LugarVer } from "./Visualizar/LugarVer";
@@ -22,8 +22,10 @@ import { startDeletingEvento } from "../../../store/GestionEventos/thunk";
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
+  const dispatch = useDispatch();
 
-  const { start, end, title, data, usuarioId } = event || {};
+  const { id, start, end, title, data, usuarioId } = event || {};
+  
   const {
     departamento,
     descripcion,
@@ -37,7 +39,6 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   };
 
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const dispatch = useDispatch();
 
   const handleDelete = () => {
     dispatch(startDeletingEvento(event.id));
@@ -146,7 +147,6 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             modalIsOpen={editModalIsOpen}
             setModalIsOpen={setEditModalIsOpen}
             event={event}
-            handleAddEvent={() => {}}
             handleEditClose={handleEditClose}
           />
         )}

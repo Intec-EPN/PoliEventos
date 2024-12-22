@@ -28,20 +28,33 @@ const subirArchivos = async (req, res) => {
   });
 }
 
-const eliminarArchivo = async (req, res) => {
-  const { nombreArchivo } = req.params;
-  const filePath = path.join(__dirname, "../../../archivosEventos", nombreArchivo);
 
-  if (fs.existsSync(filePath)) {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Error al eliminar el archivo" });
-      }
-      res.status(200).json({ message: "Archivo eliminado exitosamente" });
+const eliminarArchivo = async (req, res) => {
+  const { nombreArchivo, eventoId } = req.params;
+  const uploadPath = path.join(__dirname, "../../../archivosEventos");
+
+  fs.readdir(uploadPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: "Error al leer los archivos" });
+    }
+
+    const archivoAEliminar = files.find(file => {
+      const [nombre, resto] = file.split("__");
+      return nombre === nombreArchivo && resto.startsWith(eventoId);
     });
-  } else {
-    res.status(404).json({ error: "Archivo no encontrado" });
-  }
+
+    if (archivoAEliminar) {
+      const filePath = path.join(uploadPath, archivoAEliminar);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          return res.status(500).json({ error: "Error al eliminar el archivo" });
+        }
+        res.status(200).json({ message: "Archivo eliminado exitosamente" });
+      });
+    } else {
+      res.status(404).json({ error: "Archivo no encontrado" });
+    }
+  });
 }
 
 const editarNombreArchivo = async (req, res) => {
@@ -71,6 +84,8 @@ const editarNombreArchivo = async (req, res) => {
 
 const obtenerArchivosPorEvento = async (req, res) => {
   const { idEvento } = req.params;
+  console.log('idevento', idEvento);
+  
   const uploadPath = path.join(__dirname, "../../../archivosEventos");
 
   fs.readdir(uploadPath, (err, files) => {
@@ -79,6 +94,9 @@ const obtenerArchivosPorEvento = async (req, res) => {
     }
 
     const archivosEvento = files.filter(file => file.includes(`__${idEvento}__`));
+
+    console.log('encontrados', archivosEvento);
+    
     res.status(200).json({ archivos: archivosEvento });
   });
 }

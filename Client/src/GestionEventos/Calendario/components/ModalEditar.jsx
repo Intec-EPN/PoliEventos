@@ -21,21 +21,36 @@ import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { startEditingEvento } from "../../../store/GestionEventos/thunk";
+import {
+  startDeletingArchivo,
+  startEditingEvento,
+} from "../../../store/GestionEventos/thunk";
 import { setEventoEdicion } from "../../../store/GestionEventos/gestionEventosSlice";
 import { DepartamentoItemInicial } from "./Creacion/DepartamentoItemInicial";
 import { EsquemaCategoriaItemInicial } from "./Creacion/EsquemaCategoriaItemInicial";
+import { ArchivosInicial } from "./Creacion/ArchivosInicial";
+import { EnlaceInicial } from "./Creacion/EnlaceInicial";
 
 export const ModalEditar = ({
   modalIsOpen,
   setModalIsOpen,
-  handleAddEvent,
   event,
   handleEditClose,
 }) => {
   const hoy = dayjs();
   const [isReset, setIsReset] = useState(false);
   const [loading, setLoading] = useState(true); // Estado de carga
+  const [files, setFiles] = useState([]);
+  const [filesToDelete, setFilesToDelete] = useState([]);
+  const [sendFiles, setSendFiles] = useState(false);
+
+  const handleFilesChange = (newFiles) => {
+    setFiles(newFiles);
+  };
+  const handleFilesToDeleteChange = (newFiles) => {
+    setFilesToDelete(newFiles);
+  };
+
   const methods = useForm({
     defaultValues: {
       esquemasCategorias: event?.data?.esquemaCategoria || [],
@@ -86,16 +101,21 @@ export const ModalEditar = ({
         startTime: "",
         endDate: "",
         endTime: "",
+        enlaces:"",
         descripcion: "",
         departamento: [],
         tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
       });
       setIsReset(true);
-      setTimeout(() => setLoading(false), 1500); 
+      setTimeout(() => setLoading(false), 1500);
     }
   }, [modalIsOpen, event, methods]);
 
   const onSubmit = (data) => {
+    setSendFiles(true);
+    filesToDelete.forEach(({ fileName: nombreArchivo, eventId: eventoId }) => {
+      dispatch(startDeletingArchivo({ nombreArchivo, eventoId }));
+    });
     console.log("Datos del formulario enviados:", data);
 
     if (!isReset && event) {
@@ -146,18 +166,7 @@ export const ModalEditar = ({
       alert("El evento debe ser en el futuro.");
       return;
     }
-
-    console.log("Datos preparados para enviar a la acción de edición:", {
-      titulo: data.titulo,
-      start: startDateISO,
-      end: endDateISO,
-      lugar: data.lugar,
-      descripcion: data.descripcion,
-      departamento: data.departamento || [],
-      esquemasCategorias: data.esquemasCategorias || [],
-      personasCargo: data.personasCargo || [],
-      expositores: data.expositores || [],
-    });
+    
 
     dispatch(
       setEventoEdicion({
@@ -165,6 +174,7 @@ export const ModalEditar = ({
         start: startDateISO,
         end: endDateISO,
         lugar: data.lugar,
+        enlaces: data.enlaces,
         descripcion: data.descripcion,
         departamento: data.departamento || [],
         esquemasCategorias: data.esquemasCategorias || [],
@@ -172,7 +182,7 @@ export const ModalEditar = ({
         expositores: data.expositores || [],
       })
     );
-    dispatch(startEditingEvento(event.id));
+    dispatch(startEditingEvento(event.id, files));
     handleEditClose();
     methods.reset();
     setIsReset(false);
@@ -218,7 +228,7 @@ export const ModalEditar = ({
             md: "70vw",
             lg: "50vw",
           },
-          position: "relative", 
+          position: "relative",
         },
         onSubmit: methods.handleSubmit(onSubmit),
       }}
@@ -234,7 +244,7 @@ export const ModalEditar = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(3, 3, 59, 0.2)", 
+            backgroundColor: "rgba(3, 3, 59, 0.2)",
             zIndex: 1,
           }}
         >
@@ -285,6 +295,18 @@ export const ModalEditar = ({
             />
           )}
           <PersonaCargo defaultValues={event?.data?.personasACargo} />
+
+          <DialogContentText sx={{ color: "#333333" }}>
+            Archivos
+          </DialogContentText>
+          <Box display="flex" flexDirection="column" sx={{ gap: 1 }}>
+            <ArchivosInicial
+              eventId={event?.id}
+              onFilesChange={handleFilesChange}
+              onFilesToDeleteChange={handleFilesToDeleteChange}
+            />
+            <EnlaceInicial enlace={event?.data} />
+          </Box>
         </FormProvider>
       </DialogContent>
       <DialogActions>

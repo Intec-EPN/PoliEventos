@@ -34,7 +34,8 @@ export const gestionEventosSlice = createSlice({
         },
         departamentos: [],
         esquemasCategorias: [],
-        files: []
+        files: [],
+        filesObtenidos: []
     },
     reducers: {
         setStart: (state, action) => {
@@ -56,7 +57,6 @@ export const gestionEventosSlice = createSlice({
                 expositores,
                 enlaces
             } = action.payload;
-            console.log(action.payload);
 
             state.eventoCreacion = {
                 start: start,
@@ -71,7 +71,7 @@ export const gestionEventosSlice = createSlice({
                     expositores: expositores || [],
                     enlaces
                 },
-            };
+            };            
         },
         setEventoEdicion: (state, action) => {
             const {
@@ -101,6 +101,8 @@ export const gestionEventosSlice = createSlice({
                     enlaces
                 },
             };
+            console.log(state.eventoEdicion);
+            
         },
         setDepartamentos: (state, action) => {
             state.departamentos = action.payload;
@@ -129,6 +131,12 @@ export const gestionEventosSlice = createSlice({
         },
         setFilesSlice: (state, action) => {
             state.files = action.payload;
+        },
+        setFilesObtenidos: (state, action) => {
+            state.filesObtenidos = action.payload;
+        },
+        limpiarFiles: (state) => {
+            state.filesObtenidos = [];
         }
     }
 });
@@ -144,5 +152,7 @@ export const {
     setEventos,
     setEventoEdicion,
     limpiarEventoCreacion,
-    setFilesSlice
+    setFilesSlice,
+    setFilesObtenidos,
+    limpiarFiles
 } = gestionEventosSlice.actions;

@@ -5,12 +5,36 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export const Archivos = ({ sendFiles, onFilesChange }) => {
+const MAX_SIZE_MB = 5 * 1024 * 1024; // 5MB
+const ALLOWED_EXTENSIONS = [".png", ".jpeg", ".jpg", ".webp", ".pdf", ".docx", ".doc"];
+
+export const Archivos = ({ onFilesChange }) => {
   const [files, setFiles] = useState([]);
+  const [error, setError] = useState("");
 
   const handleFileChange = (newFiles) => {
-    setFiles(newFiles);
-    onFilesChange(newFiles);
+    let validFiles = [];
+    let totalSize = 0;
+
+    for (let file of newFiles) {
+      const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+      if (ALLOWED_EXTENSIONS.includes(extension)) {
+        totalSize += file.size;
+        if (totalSize <= MAX_SIZE_MB) {
+          validFiles.push(file);
+        } else {
+          setError("Límite de espacio sobrepasado");
+          break;
+        }
+      }
+    }
+
+    if (totalSize <= MAX_SIZE_MB) {
+      setError("");
+    }
+
+    setFiles(validFiles);
+    onFilesChange(validFiles);
   };
 
   const handleFileDelete = (index) => {
@@ -19,14 +43,8 @@ export const Archivos = ({ sendFiles, onFilesChange }) => {
     onFilesChange(newFiles);
   };
 
-  useEffect(() => {
-    if (sendFiles) {
-      console.log("me ejecuto", files);
-    }
-  }, [sendFiles]);
-
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box sx={{ mb: 2, width: "99%" }}>
       <Typography
         sx={{
           fontSize: "0.8rem",
@@ -34,7 +52,7 @@ export const Archivos = ({ sendFiles, onFilesChange }) => {
           textAlign: "end",
         }}
       >
-        Tamaño máximo total de 5MB.
+        Tamaño máximo total de 5MB. Formatos váldios: .png, .jpeg, .jpg, .webp, .pdf, .docx, .doc
       </Typography>
       <MuiFileInput
         value={files}
@@ -47,7 +65,7 @@ export const Archivos = ({ sendFiles, onFilesChange }) => {
           borderRadius: "7px",
           width: "100%",
         }}
-        inputProps={{ accept: ".png, .jpeg, audio/*, .pdf" }}
+        inputProps={{ accept: ALLOWED_EXTENSIONS.join(", ") }}
         InputProps={{
           startAdornment: <AttachFileIcon sx={{ color: "#0a3b91" }} />,
         }}
@@ -57,9 +75,14 @@ export const Archivos = ({ sendFiles, onFilesChange }) => {
         }}
         getInputText={(value) => (value ? `${files.length} archivos` : "")}
       />
+      {error && (
+        <Typography sx={{ color: "red", fontSize: "0.8rem", mt:1 }}>
+          {error}
+        </Typography>
+      )}
       <Box>
         {files.length > 0 && (
-          <Box display="flex" flexDirection="row" gap={1} ml={1} mt={1}>
+          <Box display="flex" flexDirection="row" gap={1} ml={1} mt={1} flexWrap={"wrap"}>
             {files.map((file, index) => (
               <Box key={index} display="flex" alignItems="center">
                 <Typography sx={{ color: "#0a3b91", fontWeight: "500" }}>

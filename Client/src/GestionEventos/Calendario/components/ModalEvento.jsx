@@ -112,8 +112,6 @@ export const ModalEvento = ({
 
     data.departamento = data.departamento || [];
 
-    console.log("Archivos a enviar:", files);
-
     handleAddEvent({
       ...data,
       start: startDateISO,

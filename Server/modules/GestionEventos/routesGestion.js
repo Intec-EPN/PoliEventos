@@ -26,7 +26,7 @@ router.post('/subir', subirArchivos);
 // Editar nombre de archivo
 router.patch('/archivo/:nombreArchivo', editarNombreArchivo);
 // Eliminar archivo
-router.delete('/archivo/:nombreArchivo', eliminarArchivo);
+router.delete('/archivo/:nombreArchivo/:eventoId', eliminarArchivo);
 // Obtener archivos por evento
 router.get('/archivos/:idEvento', obtenerArchivosPorEvento);
 

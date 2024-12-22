@@ -1,5 +1,5 @@
 import axiosInstance from "../../api/axiosConfig";
-import { setDepartamentos, setEsquemasCategorias, setEventos } from "./gestionEventosSlice";
+import { setDepartamentos, setEsquemasCategorias, setEventos, setFilesObtenidos } from "./gestionEventosSlice";
 
 
 export const startLoadingEventos = () => {
@@ -24,8 +24,6 @@ export const startCreateEvento = (files) => {
             const state = getState();
             const eventoCreacion = state.gestionEvento.eventoCreacion;
             const departamentos = state.gestionEvento.eventoCreacion.data.departamento;
-           
-            console.log(eventoCreacion);
 
             const usuarioId = state.adminAuth.user.id;
 
@@ -49,6 +47,39 @@ export const startCreateEvento = (files) => {
         } catch (error) {
             console.error("Error al crear evento", error);
             throw new Error("Error al crear evento");
+        }
+    };
+};
+
+export const startEditingEvento = (eventoId, files) => {
+    console.log("files", files);
+    return async (dispatch, getState) => {
+        try {
+            const state = getState();
+            const eventoEdicion = state.gestionEvento.eventoEdicion;
+            const departamentos = state.gestionEvento.eventoEdicion.data.departamento;
+            const usuarioId = state.adminAuth.user.id;
+
+            console.log("eventoEdicion", eventoEdicion);
+            
+
+            const url = `/gestion/${eventoId}`;
+            await axiosInstance.put(url,
+                {
+                    usuarioId: usuarioId,
+                    eventoEdicion: eventoEdicion
+                }
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            if (files.length > 0) {
+                dispatch(startUpLoadingArchivos({ files, eventoId, departamentos }));
+            }
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            console.error("Error al editar evento", error);
+            throw new Error("Error al editar evento");
         }
     };
 };
@@ -93,30 +124,7 @@ export const startDeletingEvento = (eventoId) => {
     };
 }
 
-export const startEditingEvento = (eventoId) => {
-    return async (dispatch, getState) => {
-        try {
-            const state = getState();
-            const eventoEdicion = state.gestionEvento.eventoEdicion;
-            const usuarioId = state.adminAuth.user.id;
 
-            const url = `/gestion/${eventoId}`;
-            await axiosInstance.put(url,
-                {
-                    usuarioId: usuarioId,
-                    eventoEdicion: eventoEdicion
-                }
-                //     , {
-                //     withCredentials: true,
-                // }
-            );
-            dispatch(startLoadingEventos());
-        } catch (error) {
-            console.error("Error al editar evento", error);
-            throw new Error("Error al editar evento");
-        }
-    };
-};
 
 export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
@@ -137,7 +145,6 @@ export const startLoadingDepartamentos = () => {
 export const startLoadingEsquemasCategorias = () => {
     return async (dispatch) => {
         try {
-            //TODO estaba //esquemas_categorias
             const { data } = await axiosInstance.get("/gestion/esquemas_categorias/"
                 //     , {
                 //     withCredentials: true,
@@ -152,4 +159,37 @@ export const startLoadingEsquemasCategorias = () => {
 }
 
 
+export const startLoadingArchivos = (eventoId) => {
+    return async (dispatch) => {
+        let { eventId } = eventoId;
+        try {
+            const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(setFilesObtenidos(data));
+        } catch (error) {
+            console.error("Error al cargar archivos", error);
+            throw new Error("Error al cargar archivos");
+        }
+    };
+}
 
+export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
+    return async (dispatch) => {
+        try {
+            const url = `/gestion/archivo/${nombreArchivo}/${eventoId.eventId}`;
+            console.log(url);
+
+            await axiosInstance.delete(url
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            throw new Error("Error al eliminar archivo");
+        }
+    };
+}

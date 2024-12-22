@@ -67,7 +67,6 @@
   overflow: hidden;
 }
 
-
 /* Evento seleccionado. */
 .rbc-selected {
   background-color: #0a3b91 !important;
@@ -168,4 +167,61 @@
 .rbc-month-view-exit-active {
   opacity: 0;
   transform: translateY(10%);
+}
+
+.rbc-events-container {
+  background-color: rgba(214, 242, 158, 0.764);
+}
+
+/* Mes/Día */
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) {
+  display: flex;
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) > button {
+  color: #0a3b91;
+  background-color: white;
+  border: 1px solid #0a3b91;
+  display: flex;
+  align-items: center;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) > button:hover {
+  border: none;
+  background-color: #0a3b91;
+  color: white;
+  border-radius: 5px;
+}
+
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) > .rbc-active {
+  border: none;
+  background-color: #0a3b91;
+  color: white;
+  transform: scale(1.05);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+
+/*Vista día*/
+.rbc-current-time-indicator {
+  background-color: transparent;
+}
+
+.rbc-event-label{
+  margin-bottom: 5px;
+}
+
+/* Ver más () */
+.rbc-row-segment > .rbc-show-more{
+  margin-left: 5px;
+  margin-top: 5px;
+  color: #0a3b91;
 }

@@ -12,12 +12,13 @@ export const LinkArchivo = ({ defaultValue }) => {
   }, [defaultValue, setValue]);
 
   return (
-    <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
+    <Box display={"flex"} flexDirection={"column"} sx={{ width: "99%"}}>
       <TextField
         id="enlaces"
         name="enlaces"
         placeholder="Copia un enlace: https://"
         type="text"
+        size="small"
         fullWidth
         variant="outlined"
         sx={{
