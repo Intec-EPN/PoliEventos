@@ -10,7 +10,7 @@ export const adminAuthSlice = createSlice({
         nivelDepartamento: false,
         nivelFacultad: false,
         departamento: null,
-        departamentoNivelId: null, // Para cuando hay nivel departamento y se necesita el id del departamento
+        departamentoNivelId: null, 
         facultad: null,
     },
     reducers: {

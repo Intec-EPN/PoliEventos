@@ -5,7 +5,6 @@ import {
   Box,
   DialogContentText,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   OutlinedInput,

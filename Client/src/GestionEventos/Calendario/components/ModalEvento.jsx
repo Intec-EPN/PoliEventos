@@ -7,6 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   CircularProgress,
+  Typography,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { FechaHora } from "./Creacion/FechaHora";
@@ -21,7 +22,8 @@ import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect, useState } from "react";
 import { TabArchivos } from "./Creacion/TabArchivos";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { startLoadingDepartamentos } from "../../../store/GestionEventos/thunk";
 
 const hoy = dayjs();
 
@@ -35,14 +37,24 @@ export const ModalEvento = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
-      tipoSeleccion: "departamento", 
+      tipoSeleccion: "departamento",
     },
   });
 
+  const dispatch = useDispatch();
   const [isReset, setIsReset] = useState(false);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState([]);
   const [sendFiles, setSendFiles] = useState(false);
+  
+  useEffect(() => {
+    dispatch(startLoadingDepartamentos());
+  }, [dispatch]);
+
+  const { departamentos } = useSelector((state) => state.gestionEvento);
+  const { nivelFacultad, nivelDepartamento, departamentoNivelId } = useSelector(
+    (state) => state.adminAuth
+  );
 
   const handleFilesChange = (newFiles) => {
     setFiles(newFiles);
@@ -55,20 +67,29 @@ export const ModalEvento = ({
         esquemasCategorias: [],
         personasCargo: [],
         expositores: [],
-        tipoSeleccion: "departamento", 
+        tipoSeleccion: "departamento",
         startDate: dayjs().format("DD/MM/YYYY"),
         startTime: dayjs().hour(8).minute(0).format("HH:mm"),
         endDate: dayjs().format("DD/MM/YYYY"),
         endTime: dayjs().hour(9).minute(0).format("HH:mm"),
       });
       setIsReset(true);
-      setTimeout(() => setLoading(false), 1500); 
+      setTimeout(() => setLoading(false), 1500);
     }
   }, [modalIsOpen, methods]);
+
+  useEffect(() => {
+    if (nivelDepartamento && departamentoNivelId) {
+      methods.setValue("departamento", [departamentoNivelId]);
+    }
+  }, [nivelDepartamento, departamentoNivelId, methods]);
 
   const onSubmit = (data) => {
     setSendFiles(true);
     console.log("Datos del formulario antes de la validación:", data);
+
+    // Asegurarse de que data.departamento sea un array
+    data.departamento = data.departamento || [departamentoNivelId];
 
     // Validaciones de campos obligatorios
     if (!data.titulo || !data.lugar || !data.descripcion) {
@@ -89,11 +110,15 @@ export const ModalEvento = ({
     }
 
     const startDate = dayjs(
-      `${data.startDate || dayjs().format("DD/MM/YYYY")} ${data.startTime || dayjs().hour(8).minute(0).format("HH:mm")}`,
+      `${data.startDate || dayjs().format("DD/MM/YYYY")} ${
+        data.startTime || dayjs().hour(8).minute(0).format("HH:mm")
+      }`,
       "DD/MM/YYYY HH:mm"
     );
     const endDate = dayjs(
-      `${data.endDate || dayjs().format("DD/MM/YYYY")} ${data.endTime || dayjs().hour(9).minute(0).format("HH:mm")}`,
+      `${data.endDate || dayjs().format("DD/MM/YYYY")} ${
+        data.endTime || dayjs().hour(9).minute(0).format("HH:mm")
+      }`,
       "DD/MM/YYYY HH:mm"
     );
 
@@ -109,8 +134,6 @@ export const ModalEvento = ({
 
     const startDateISO = startDate.toISOString();
     const endDateISO = endDate.toISOString();
-
-    data.departamento = data.departamento || [];
 
     handleAddEvent({
       ...data,
@@ -129,7 +152,7 @@ export const ModalEvento = ({
       esquemasCategorias: [],
       personasCargo: [],
       expositores: [],
-      tipoSeleccion: "departamento", 
+      tipoSeleccion: "departamento",
       startDate: "",
       startTime: "",
       endDate: "",
@@ -174,7 +197,7 @@ export const ModalEvento = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "rgba(3, 3, 59, 0.2)", 
+            backgroundColor: "rgba(3, 3, 59, 0.2)",
             zIndex: 1,
           }}
         >
@@ -197,17 +220,50 @@ export const ModalEvento = ({
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>
-          <TipoSeleccion />
-          <Departamento />
+          {nivelFacultad && (
+            <>
+              <TipoSeleccion />
+              <Departamento />
+            </>
+          )}
+          {nivelDepartamento && departamentoNivelId && (
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: "500",
+                color: "#164dc9",
+                fontSize: "1.1rem",
+                mt: 0.5,
+              }}
+            >
+              {departamentos
+                ? ` ${
+                    departamentos.find((dep) => dep.id === departamentoNivelId)
+                      ?.departamento
+                  }`
+                : "Departamento no encontrado"}
+            </Typography>
+          )}
           <PersonaCargo />
-          <TabArchivos sendFiles={sendFiles} onFilesChange={handleFilesChange} />
+          <TabArchivos
+            sendFiles={sendFiles}
+            onFilesChange={handleFilesChange}
+          />
         </FormProvider>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="outlined" sx={{color:"red", border:"2px solid red"}}>
+        <Button
+          onClick={handleClose}
+          variant="outlined"
+          sx={{ color: "red", border: "2px solid red" }}
+        >
           Cancelar
         </Button>
-        <Button type="submit" variant="contained" sx={{backgroundColor:"#2c4175"}}>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ backgroundColor: "#2c4175" }}
+        >
           Crear evento
         </Button>
       </DialogActions>

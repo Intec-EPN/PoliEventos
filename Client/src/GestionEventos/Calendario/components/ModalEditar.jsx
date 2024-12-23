@@ -20,7 +20,7 @@ import { Expositores } from "./Creacion/Expositores";
 import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   startDeletingArchivo,
   startEditingEvento,
@@ -62,7 +62,7 @@ export const ModalEditar = ({
 
   const [showDepartamento, setShowDepartamento] = useState(false);
   const dispatch = useDispatch();
-
+  
   const handleReset = (editMode) => {
     setShowDepartamento(editMode);
     setIsReset(true);
@@ -70,7 +70,7 @@ export const ModalEditar = ({
 
   useEffect(() => {
     if (modalIsOpen && event) {
-      setLoading(true); // Iniciar carga
+      setLoading(true);
       console.log("Modal abierto con evento:", event);
       methods.reset({
         esquemasCategorias: event.data?.esquemaCategoria || [],
@@ -84,12 +84,12 @@ export const ModalEditar = ({
         endTime: event?.end ? dayjs(event.end).format("HH:mm") : "",
         descripcion: event?.data?.descripcion || "",
         departamento: event.data?.departamento || [],
-        tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+        tipoSeleccion: "departamento",
       });
       setIsReset(true);
-      setTimeout(() => setLoading(false), 1500); // Simular carga de 3 segundos
+      setTimeout(() => setLoading(false), 1500);
     } else if (modalIsOpen && !event) {
-      setLoading(true); // Iniciar carga
+      setLoading(true);
       console.log("Modal abierto sin evento");
       methods.reset({
         esquemasCategorias: [],
@@ -101,10 +101,10 @@ export const ModalEditar = ({
         startTime: "",
         endDate: "",
         endTime: "",
-        enlaces:"",
+        enlaces: "",
         descripcion: "",
         departamento: [],
-        tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+        tipoSeleccion: "departamento",
       });
       setIsReset(true);
       setTimeout(() => setLoading(false), 1500);
@@ -166,7 +166,6 @@ export const ModalEditar = ({
       alert("El evento debe ser en el futuro.");
       return;
     }
-    
 
     dispatch(
       setEventoEdicion({
@@ -197,7 +196,7 @@ export const ModalEditar = ({
       personasCargo: [],
       expositores: [],
       departamento: [],
-      tipoSeleccion: "departamento", // Inicializa el valor de tipoSeleccion
+      tipoSeleccion: "departamento",
       startDate: "",
       startTime: "",
       endDate: "",

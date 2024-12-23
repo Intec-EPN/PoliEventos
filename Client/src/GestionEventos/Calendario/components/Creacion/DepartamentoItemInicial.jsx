@@ -8,6 +8,8 @@ export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
     (state) => state.gestionEvento
   );
 
+  const { nivelFacultad } = useSelector((state) => state.adminAuth);
+
   const handleReset = () => {
     setEditMode(!editMode);
     onReset(!editMode);
@@ -25,7 +27,7 @@ export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
   return (
     <Box sx={{ my: 1 }}>
       <Typography sx={{ color: "#333333" }}>Departamentos</Typography>
-      <Box display="flex" gap={1} >
+      <Box display="flex" gap={1}>
         {departamentos.map((departamento, index) => (
           <Box
             key={index}
@@ -39,7 +41,7 @@ export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
                 width: "100%",
                 mt: 0.5,
                 p: 1,
-                px:2,
+                px: 2,
                 backgroundColor: "#fff",
                 display: "flex",
                 alignItems: "center",
@@ -52,9 +54,11 @@ export const DepartamentoItemInicial = ({ departamentos, onReset }) => {
           </Box>
         ))}
       </Box>
-      <Button onClick={handleReset} variant="outlined" sx={{ mt: 1 }}>
-        Reiniciar organizadores
-      </Button>
+      {nivelFacultad && (
+        <Button onClick={handleReset} variant="outlined" sx={{ mt: 1, color:"#2c4175", border:"1px solid rgba(44, 65, 117, 0.5)" }}>
+          Reiniciar organizadores
+        </Button>
+      )}
     </Box>
   );
 };

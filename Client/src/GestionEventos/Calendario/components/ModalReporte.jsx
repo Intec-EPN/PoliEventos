@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 
 const groupEventsByTimeRange = (events, timeRange, selectedDepartments) => {
   const groupedData = {};
-
   events.forEach((event) => {
     if (
       selectedDepartments.length > 0 &&
@@ -70,9 +69,14 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   const [chartData, setChartData] = useState(null);
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [events, setEvents] = useState([]);
+  const [departamentosFijo, setDepartamentosFijo] = useState([]);
   const chartRef = useRef(null);
   const { eventos, departamentos } = useSelector(
     (state) => state.gestionEvento
+  );
+
+  const { nivelDepartamento, departamentoNivelId } = useSelector(
+    (state) => state.adminAuth
   );
 
   useEffect(() => {
@@ -91,11 +95,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   };
 
   const filterEvents = (startDate, endDate) => {
+    if (nivelDepartamento && departamentoNivelId != null) {
+      return departamentosFijo;
+    }
     return events.filter((event) => {
       const eventDate = dayjs(event.date);
       const start = startDate ? dayjs(startDate) : null;
       const end = endDate ? dayjs(endDate) : null;
-
       return (
         (!start || eventDate.isSameOrAfter(start)) &&
         (!end || eventDate.isSameOrBefore(end)) &&
@@ -104,6 +110,16 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       );
     });
   };
+
+  useEffect(() => {
+    if (departamentoNivelId != null) {
+      setDepartamentosFijo(
+        events.filter((event) =>
+          event.departamentos.includes(departamentoNivelId)
+        )
+      );
+    }
+  }, [events]);
 
   const handleGenerateChart = (timeRange, startDate, endDate) => {
     const filteredEvents = filterEvents(startDate, endDate);
@@ -190,7 +206,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         <FormReporte onGenerateChart={handleGenerateChart} />
         {chartData && (
           <>
-            <Box ref={chartRef} sx={{ width: '100%', overflowX: 'auto' }}>
+            <Box ref={chartRef} sx={{ width: "100%", overflowX: "auto" }}>
               <Box sx={{ width: { xs: 250, sm: 600, md: 700 } }}>
                 <BarChart
                   borderRadius={5}

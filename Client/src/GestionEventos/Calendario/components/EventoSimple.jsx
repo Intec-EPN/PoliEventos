@@ -34,6 +34,7 @@ export const EventoSimple = ({ event }) => {
         })
         .map((dept) => {
           return {
+            id: dept.id,
             nombre: dept.departamento,
           };
         });
@@ -42,7 +43,7 @@ export const EventoSimple = ({ event }) => {
   }, [deptsCargados, departamento]);
 
   return (
-    <Box sx={{ width:{xs: "90%", md:"60%"}, margin: "0 auto" }}>
+    <Box sx={{ width: { xs: "90%", md: "60%" }, margin: "0 auto", paddingBottom: 2 }}>
       <Typography
         variant="body1"
         sx={{
@@ -77,24 +78,52 @@ export const EventoSimple = ({ event }) => {
           }}
         >
           {title} | {lugar}
+          {depts?.map((dep) => (
+            <Box
+              sx={{ ml:"0.5rem", display: "inline-flex", gap: 0.5, alignItems: "center" }}
+              key={dep.id}
+            >
+              <span
+                style={{
+                  border: "0.5px solid rgba(0, 0, 0, 0.15)",
+                  backgroundColor:
+                    dep.id === 1
+                      ? "#4b99d2"
+                      : dep.id === 2
+                      ? "#a479b1"
+                      : dep.id === 3
+                      ? "#fbbc04"
+                      : "transparent",
+                  display: "inline-flex",
+                  width: "5px",
+                  height: "11px",
+                }}
+              ></span>
+            </Box>
+          ))}
         </Typography>
         <Box
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
+          flexWrap="wrap"
           gap={2}
           sx={{
             color: "#0a3b91",
-            p: 2,
+            p: 1,
             backgroundColor: "white",
             width: "80%",
-            m: 0,
-            ml:{xs:1, sm:4 ,md:5},
+            ml: { xs: 1, sm: 4, md: 5 },
             pr: 3,
           }}
           justifyContent={{ xs: "flex-start", sm: "space-evenly" }}
         >
           {expositores?.map((expositor, index) => (
-            <Box key={index} display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 0 } }}>
+            <Box
+              key={index}
+              display="flex"
+              alignItems="center"
+              sx={{ mb: { xs: 1, sm: 0 } }}
+            >
               <Icon
                 sx={{
                   fontSize: "1.2rem",
@@ -112,7 +141,12 @@ export const EventoSimple = ({ event }) => {
             </Box>
           ))}
           {personasACargo?.map((persona, index) => (
-            <Box key={index} display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 0 } }}>
+            <Box
+              key={index}
+              display="flex"
+              alignItems="center"
+              sx={{ mb: { xs: 1, sm: 0 } }}
+            >
               <Icon
                 sx={{
                   fontSize: "1.2rem",
@@ -130,7 +164,13 @@ export const EventoSimple = ({ event }) => {
             </Box>
           ))}
           {depts.map((dept, index) => (
-            <Box key={index} display="flex" alignItems="center" sx={{ mb: { xs: 1, sm: 0 } }}>
+            <Box
+              key={index}
+              display="flex"
+              alignItems="center"
+              flexWrap="wrap"
+              sx={{ mb: { xs: 1, sm: 0 } }}
+            >
               <Icon
                 sx={{
                   fontSize: "1.2rem",

@@ -55,7 +55,7 @@ export const Calendario = () => {
         end: new Date(evento.end),
       }));
       setEvents(eventosFormateados);
-      setTimeout(() => setLoading(false), 3000); // Simular carga de 3 segundos
+      setTimeout(() => setLoading(false), 2000);
     }
   }, [eventos]);
 
@@ -139,7 +139,8 @@ export const Calendario = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            height: "87vh",
+            paddingBottom: "10rem",
+            pt: "20rem",
           }}
         >
           <CircularProgress sx={{ color: "#0a3b91" }} />
