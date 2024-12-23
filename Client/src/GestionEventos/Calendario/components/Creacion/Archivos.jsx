@@ -1,12 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MuiFileInput } from "mui-file-input";
 import { Box, Typography, IconButton } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ImageIcon from "@mui/icons-material/Image";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const MAX_SIZE_MB = 5 * 1024 * 1024; // 5MB
-const ALLOWED_EXTENSIONS = [".png", ".jpeg", ".jpg", ".webp", ".pdf", ".docx", ".doc"];
+const ALLOWED_EXTENSIONS = [
+  ".png",
+  ".jpeg",
+  ".jpg",
+  ".webp",
+  ".pdf",
+  ".docx",
+  ".doc",
+];
 
 export const Archivos = ({ onFilesChange }) => {
   const [files, setFiles] = useState([]);
@@ -15,9 +25,12 @@ export const Archivos = ({ onFilesChange }) => {
   const handleFileChange = (newFiles) => {
     let validFiles = [];
     let totalSize = 0;
+    let formatError = false;
 
     for (let file of newFiles) {
-      const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+      const extension = file.name
+        .slice(file.name.lastIndexOf("."))
+        .toLowerCase();
       if (ALLOWED_EXTENSIONS.includes(extension)) {
         totalSize += file.size;
         if (totalSize <= MAX_SIZE_MB) {
@@ -26,11 +39,15 @@ export const Archivos = ({ onFilesChange }) => {
           setError("Límite de espacio sobrepasado");
           break;
         }
+      } else {
+        formatError = true;
       }
     }
 
-    if (totalSize <= MAX_SIZE_MB) {
+    if (totalSize <= MAX_SIZE_MB && !formatError) {
       setError("");
+    } else if (formatError) {
+      setError("Formato de archivo incorrecto.");
     }
 
     setFiles(validFiles);
@@ -52,7 +69,8 @@ export const Archivos = ({ onFilesChange }) => {
           textAlign: "end",
         }}
       >
-        Tamaño máximo total de 5MB. Formatos váldios: .png, .jpeg, .jpg, .webp, .pdf, .docx, .doc
+        Tamaño máximo total de 5MB. Formatos váldios: .png, .jpeg, .jpg, .webp,
+        .pdf, .docx, .doc
       </Typography>
       <MuiFileInput
         value={files}
@@ -76,23 +94,58 @@ export const Archivos = ({ onFilesChange }) => {
         getInputText={(value) => (value ? `${files.length} archivos` : "")}
       />
       {error && (
-        <Typography sx={{ color: "red", fontSize: "0.8rem", mt:1 }}>
+        <Typography sx={{ color: "red", fontSize: "0.8rem", mt: 1 }}>
           {error}
         </Typography>
       )}
       <Box>
         {files.length > 0 && (
-          <Box display="flex" flexDirection="row" gap={1} ml={1} mt={1} flexWrap={"wrap"}>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap={1}
+            mt={1}
+            flexWrap={"wrap"}
+          >
             {files.map((file, index) => (
-              <Box key={index} display="flex" alignItems="center">
-                <Typography sx={{ color: "#0a3b91", fontWeight: "500" }}>
+              <Box
+                key={index}
+                display="flex"
+                py={0}
+                my={0}
+                alignItems="center"
+                pl={1.5}
+                sx={{
+                  color: "white",
+                  backgroundColor: "#0a3b91",
+                  borderRadius: "5px",
+                }}
+              >
+                {["png", "jpg", "jpeg", "webp"].includes(
+                  file.name.split(".").pop().toLowerCase()
+                ) ? (
+                  <ImageIcon sx={{ fontSize: "1rem" }} />
+                ) : (
+                  <DescriptionIcon sx={{ fontSize: "1rem" }} />
+                )}
+
+                <Typography sx={{ color: "white", fontWeight: "500", pl: 0.5 }}>
                   {file.name}
                 </Typography>
                 <IconButton
                   size="small"
                   onClick={() => handleFileDelete(index)}
                 >
-                  <DeleteIcon fontSize="small" sx={{ color: "red" }} />
+                  <HighlightOffIcon
+                    sx={{
+                      fontSize: "1.1rem",
+                      height: "1.5rem",
+                      pt: 0.3,
+                      color: "#ff6500",
+                      pl: 1,
+                      pr: 1,
+                    }}
+                  />
                 </IconButton>
               </Box>
             ))}

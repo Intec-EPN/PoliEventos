@@ -12,14 +12,14 @@ import ImageIcon from "@mui/icons-material/Image";
 import DescriptionIcon from "@mui/icons-material/Description";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { limpiarFiles } from "../../../../store/GestionEventos/gestionEventosSlice";
-import { Archivos } from "./Archivos"; // Importar Archivos
+import { Archivos } from "./Archivos"; 
 
 export const ArchivosInicial = (eventId) => {
   const dispatch = useDispatch();
   const [files, setFiles] = useState({ archivos: [] });
   const [filesNames, setFilesNames] = useState([]);
   const [filesToDelete, setFilesToDelete] = useState([]);
-  const [showArchivos, setShowArchivos] = useState(false);
+  const [showArchivos, setShowArchivos] = useState(true);
   const { filesObtenidos } = useSelector((state) => state.gestionEvento);
 
   useEffect(() => {
@@ -89,16 +89,6 @@ export const ArchivosInicial = (eventId) => {
       ))}
       {filesNames?.length === 0 && (
         <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={showArchivos}
-                onChange={handleArchivosChange}
-                color="primary"
-              />
-            }
-            label="Archivos"
-          />
           {showArchivos && <Archivos onFilesChange={eventId.onFilesChange} />}
         </Box>
       )}

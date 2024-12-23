@@ -1,46 +1,25 @@
 import { useState } from "react";
-import { Box, FormControlLabel, Checkbox, DialogContentText } from "@mui/material";
+import {
+  Box,
+  FormControlLabel,
+  Checkbox,
+  DialogContentText,
+} from "@mui/material";
 import { Archivos } from "./Archivos";
 import { LinkArchivo } from "./LinkArchivo";
 
 export const TabArchivos = ({ sendFiles, onFilesChange }) => {
-  const [showArchivos, setShowArchivos] = useState(false);
-  const [showLinkArchivo, setShowLinkArchivo] = useState(false);
-
-  const handleArchivosChange = (event) => {
-    setShowArchivos(event.target.checked);
-  };
-
-  const handleLinkArchivoChange = (event) => {
-    setShowLinkArchivo(event.target.checked);
-  };
+  const [showArchivos, setShowArchivos] = useState(true);
+  const [showLinkArchivo, setShowLinkArchivo] = useState(true);
 
   return (
     <Box display={"flex"} flexDirection={"column"}>
-      <DialogContentText sx={{ color: "#333333" }}>
-        Agregar
-      </DialogContentText>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={showArchivos}
-            onChange={handleArchivosChange}
-            color="primary"
-          />
-        }
-        label="Archivos"
-      />
+      <DialogContentText sx={{ color: "#333333" }}>Agregar</DialogContentText>
+
+      <DialogContentText sx={{ color: "#333333" }}>Archivos:</DialogContentText>
       {showArchivos && <Archivos onFilesChange={onFilesChange} />}
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={showLinkArchivo}
-            onChange={handleLinkArchivoChange}
-            color="primary"
-          />
-        }
-        label="Enlace"
-      />
+
+      <DialogContentText sx={{ color: "#333333" }}>Enlace:</DialogContentText>
       {showLinkArchivo && <LinkArchivo />}
     </Box>
   );

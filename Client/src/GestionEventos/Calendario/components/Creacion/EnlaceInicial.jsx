@@ -1,4 +1,10 @@
-import { Box, IconButton, Typography, FormControlLabel, Checkbox } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Typography,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { useState } from "react";
@@ -7,14 +13,10 @@ import { LinkArchivo } from "./LinkArchivo"; // Importar LinkArchivo
 export const EnlaceInicial = ({ enlace }) => {
   const { enlaces } = enlace;
   const [eliminarEnlace, setEliminarEnlace] = useState(false);
-  const [showLinkArchivo, setShowLinkArchivo] = useState(false);
+  const [showLinkArchivo, setShowLinkArchivo] = useState(true);
 
   const handleDeleteClick = () => {
     setEliminarEnlace(true);
-  };
-
-  const handleLinkArchivoChange = (event) => {
-    setShowLinkArchivo(event.target.checked);
   };
 
   return (
@@ -34,7 +36,7 @@ export const EnlaceInicial = ({ enlace }) => {
               display: "flex",
               gap: 1,
               alignItems: "center",
-              backgroundColor: "#0a3b91",
+              backgroundColor: "#0f5add",
               borderRadius: 0,
               borderTopLeftRadius: "5px",
               borderBottomLeftRadius: "5px",
@@ -48,7 +50,7 @@ export const EnlaceInicial = ({ enlace }) => {
               sx={{
                 textDecoration: "none",
                 color: "white",
-                backgroundColor: "#0a3b91",
+                backgroundColor: "#0f5add",
                 ml: 0.5,
                 fontSize: "0.9rem",
               }}
@@ -60,18 +62,18 @@ export const EnlaceInicial = ({ enlace }) => {
             sx={{
               p: 0,
               borderRadius: 0,
-              backgroundColor: "#0a3b91",
+              backgroundColor: "#0f5add",
               borderTopRightRadius: "5px",
               borderBottomRightRadius: "5px",
               height: "100%",
               "&:hover": {
-                backgroundColor: "#0a3b91",
+                backgroundColor: "#0f5add",
               },
               "&:focus": {
-                backgroundColor: "#0a3b91",
+                backgroundColor: "#0f5add",
               },
               "&:active": {
-                backgroundColor: "#0a3b91",
+                backgroundColor: "#0f5add",
               },
             }}
             onClick={handleDeleteClick}
@@ -89,19 +91,7 @@ export const EnlaceInicial = ({ enlace }) => {
           </IconButton>
         </Box>
       ) : (
-        <Box>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={showLinkArchivo}
-                onChange={handleLinkArchivoChange}
-                color="primary"
-              />
-            }
-            label="Enlace"
-          />
-          {showLinkArchivo && <LinkArchivo />}
-        </Box>
+        <Box>{showLinkArchivo && <LinkArchivo />}</Box>
       )}
     </>
   );
