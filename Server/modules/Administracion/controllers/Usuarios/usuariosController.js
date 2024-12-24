@@ -2,6 +2,7 @@ const { obtenerRolesPorUsuario } = require("../../../Auth/controllers/loginContr
 const UsuarioRolModel = require("../../../Auth/models/tablas-intermedias/usuario_rolesModel");
 const UsuariosModel = require("../../../Auth/models/usuariosModel");
 const RolesModel = require("../../models/Roles/rolesModel");
+const EventosModel = require("../../../GestionEventos/models/eventoModel");
 
 const obtenerUsuarios = async (req, res) => {
     try {
@@ -12,6 +13,7 @@ const obtenerUsuarios = async (req, res) => {
 
         const usuarios = await Promise.all(usuariosFiltadros.map(async (usuario) => {
             const roles = await obtenerRolesPorUsuario(usuario.id);
+            const eventos = await EventosModel.findOne({ where: { usuario_id: usuario.id } });
             return {
                 id: usuario.id,
                 nombre: usuario.nombre,
@@ -19,6 +21,7 @@ const obtenerUsuarios = async (req, res) => {
                 fecha: usuario.creado_en,
                 habilitado: usuario.habilitado,
                 roles: roles,
+                conEventos: eventos ? true : false,
             };
         }));
 

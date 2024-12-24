@@ -8,8 +8,6 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { LuPower } from "react-icons/lu";
-import { LuPowerOff } from "react-icons/lu";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid2, useMediaQuery } from "@mui/material";
@@ -25,13 +23,10 @@ import { useNavigate } from "react-router-dom";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 
-import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
-import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
-
 export const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { row, roles } = props;
+  const { row, roles, conEventos } = props;
   const [open, setOpen] = React.useState(false);
   const isMobileOrTablet = useMediaQuery("(max-width: 960px)");
   const { roles: rolesRecuperados } = useSelector((state) => state.rol);
@@ -113,20 +108,36 @@ export const Row = (props) => {
           </IconButton>
           {row.habilitado ? (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box sx={{ color: roles.length === 0 ? "white" : "#36b257", display: "inline-flex" }}>
+              <Box
+                sx={{
+                  color: roles.length === 0 ? "white" : "#36b257",
+                  display: "inline-flex",
+                }}
+              >
                 <ToggleOnIcon />
               </Box>
             </IconButton>
           ) : (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box sx={{ color: roles.length === 0 ? "white" : "red", display: "inline-flex" }}>
+              <Box
+                sx={{
+                  color: roles.length === 0 ? "white" : "red",
+                  display: "inline-flex",
+                }}
+              >
                 <ToggleOffIcon />
               </Box>
             </IconButton>
           )}
-          <IconButton onClick={() => onBorrarUsuario(row.id)}>
-            <DeleteIcon sx={{ color: "white", display: "inline-flex" }} />
-          </IconButton>
+          {!conEventos ? (
+            <IconButton onClick={() => onBorrarUsuario(row.id)}>
+              <DeleteIcon sx={{ color: "white", display: "inline-flex" }} />
+            </IconButton>
+          ) : (
+            <IconButton disabled>
+              <DeleteIcon sx={{ color: "#2c4175", display: "inline-flex" }} />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
       <TableRow>

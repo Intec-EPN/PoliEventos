@@ -16,13 +16,14 @@ import { useMediaQuery } from "@mui/material";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-function createData(nombre, correo, fecha, id, habilitado) {
+function createData(nombre, correo, fecha, id, habilitado, conEventos) {
   return {
     nombre,
     correo,
     fecha,
     id,
     habilitado,
+    conEventos
   };
 }
 
@@ -43,7 +44,8 @@ export const TablaUsuarios = () => {
           usuario.correo,
           fecha,
           usuario.id,
-          usuario.habilitado
+          usuario.habilitado,
+          usuario.conEventos
         ),
         roles: usuario.roles,
       };
@@ -142,7 +144,7 @@ export const TablaUsuarios = () => {
           </TableHead>
           <TableBody>
             {filteredRows.map((row) => (
-              <Row key={row.data.nombre} row={row.data} roles={row.roles} />
+              <Row key={row.data.nombre} row={row.data} roles={row.roles} conEventos={row.data.conEventos}/>
             ))}
           </TableBody>
         </Table>
