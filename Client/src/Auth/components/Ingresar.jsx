@@ -56,6 +56,7 @@ export const Ingresar = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "0.3rem",
+          maxWidth:{xs:"18rem", sm:"100%"},
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: "600", color: "#0a2257" }}>

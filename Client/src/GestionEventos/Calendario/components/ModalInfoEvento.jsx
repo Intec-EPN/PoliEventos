@@ -19,6 +19,7 @@ import { ModalEditar } from "./ModalEditar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { startDeletingEvento } from "../../../store/GestionEventos/thunk";
+import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();

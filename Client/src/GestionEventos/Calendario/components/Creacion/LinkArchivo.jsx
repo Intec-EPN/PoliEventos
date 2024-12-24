@@ -1,9 +1,10 @@
 import { Box, TextField } from "@mui/material";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 import { useEffect } from "react";
 
 export const LinkArchivo = ({ defaultValue }) => {
   const { register, setValue } = useFormContext();
+  const { errors } = useFormState();
 
   useEffect(() => {
     if (defaultValue) {
@@ -27,7 +28,14 @@ export const LinkArchivo = ({ defaultValue }) => {
           borderRadius: "7px",
           width: "100%",
         }}
-        {...register("enlaces")}
+        {...register("enlaces", {
+          pattern: {
+            value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
+            message: "Por favor ingrese un enlace válido."
+          }
+        })}
+        error={!!errors.enlaces}
+        helperText={errors.enlaces ? errors.enlaces.message : ""}
       />
     </Box>
   );

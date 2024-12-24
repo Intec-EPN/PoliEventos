@@ -113,13 +113,13 @@ export const Row = (props) => {
           </IconButton>
           {row.habilitado ? (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box sx={{ color: "#36b257", display: "inline-flex" }}>
+              <Box sx={{ color: roles.length === 0 ? "white" : "#36b257", display: "inline-flex" }}>
                 <ToggleOnIcon />
               </Box>
             </IconButton>
           ) : (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box sx={{ color: "red", display: "inline-flex" }}>
+              <Box sx={{ color: roles.length === 0 ? "white" : "red", display: "inline-flex" }}>
                 <ToggleOffIcon />
               </Box>
             </IconButton>
