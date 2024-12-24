@@ -30,6 +30,7 @@ export default function SelectRoles({ reset }) {
     Facultad: acciones[6].bgColor || "#FFF",
   });
   const { usuarios, usuarioAsignar } = useSelector((state) => state.usuarios);
+
   React.useEffect(() => {
     if (usuarioAsignar) {
       const usuario = usuarios.find((usuario) => usuario.id === usuarioAsignar);
@@ -80,7 +81,17 @@ export default function SelectRoles({ reset }) {
           colorNivel,
         };
       });
-      setSelectedRoles(selectedRolesMapeados);
+
+      const hasChanged = selectedRolesMapeados.some((mappedRole, index) => {
+        return (
+          mappedRole.id !== selectedRoles[index].id ||
+          mappedRole.colorNivel !== selectedRoles[index].colorNivel
+        );
+      });
+
+      if (hasChanged) {
+        setSelectedRoles(selectedRolesMapeados);
+      }
     }
   }, [rolesRecuperados, selectedRoles]);
 

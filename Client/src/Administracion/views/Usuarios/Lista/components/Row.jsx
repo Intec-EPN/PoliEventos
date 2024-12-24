@@ -49,7 +49,7 @@ export const Row = (props) => {
         roles.some((rol) => rol.rol_nombre === rolRecuperado.rol)
       )
     );
-  }, [usuarios]);
+  }, [usuarios, dispatch]);
 
   // Editar usuario.
   const onEditUsuario = (usuarioId) => {
