@@ -1,6 +1,6 @@
 import axiosInstance from "../../api/axiosConfig";
 import { setDepartamentos, setEsquemasCategorias, setEventos, setFilesObtenidos } from "./gestionEventosSlice";
-
+import { saveAs } from "file-saver";
 
 export const startLoadingEventos = () => {
     return async (dispatch) => {
@@ -117,6 +117,7 @@ export const startDeletingEvento = (eventoId) => {
                 //     withCredentials: true,
                 // }
             );
+            dispatch(startDeletingArchivos({eventoId}))
             dispatch(startLoadingEventos());
         } catch (error) {
             throw new Error("Error al eliminar evento");
@@ -124,7 +125,43 @@ export const startDeletingEvento = (eventoId) => {
     };
 }
 
+export const startDeletingArchivos = ({ eventoId }) => {
+    console.log("eventoId", eventoId);
+    
+    return async (dispatch) => {
+        try {
+            const url = `/gestion/archivo/${eventoId}`;
+            console.log(url);
 
+            await axiosInstance.delete(url
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            throw new Error("Error al eliminar archivo");
+        }
+    };
+}
+
+export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
+    return async (dispatch) => {
+        try {
+            const url = `/gestion/archivo/${nombreArchivo}/${eventoId.eventId}`;
+            console.log(url);
+
+            await axiosInstance.delete(url
+                //     , {
+                //     withCredentials: true,
+                // }
+            );
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            throw new Error("Error al eliminar archivo");
+        }
+    };
+}
 
 export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
@@ -158,7 +195,6 @@ export const startLoadingEsquemasCategorias = () => {
     };
 }
 
-
 export const startLoadingArchivos = (eventoId) => {
     return async (dispatch) => {
         let { eventId } = eventoId;
@@ -176,20 +212,38 @@ export const startLoadingArchivos = (eventoId) => {
     };
 }
 
-export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
+export const startLoadingArchivosPorIds = (eventIds) => {
     return async (dispatch) => {
         try {
-            const url = `/gestion/archivo/${nombreArchivo}/${eventoId.eventId}`;
-            console.log(url);
-
-            await axiosInstance.delete(url
-                //     , {
-                //     withCredentials: true,
-                // }
-            );
-            dispatch(startLoadingEventos());
+            const archivos = [];
+            for (const eventId of eventIds) {
+                const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`);
+                archivos.push(...data.archivos);
+            }
+            if (archivos.length > 0) {
+                dispatch(startDescargarArchivosZip(archivos));
+            } else {
+                alert("No se encontraron archivos para los eventos seleccionados");
+            }
         } catch (error) {
-            throw new Error("Error al eliminar archivo");
+            console.error("Error al cargar archivos por IDs", error);
+            alert("Error al cargar archivos por IDs");
         }
     };
-}
+};
+
+export const startDescargarArchivosZip = (archivos) => {
+    return async () => {
+        try {
+            const { data } = await axiosInstance.post("/gestion/descargar-zip", { archivos }, {
+                responseType: 'blob',
+            });
+            const blob = new Blob([data], { type: 'application/zip' });
+            saveAs(blob, 'archivos.zip');
+        } catch (error) {
+            console.error("Error al descargar archivos ZIP", error);
+            alert("Error al descargar archivos ZIP");
+        }
+    };
+};
+

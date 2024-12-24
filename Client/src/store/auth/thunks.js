@@ -8,15 +8,17 @@ export const startLogin = (data) => {
                 email: data.correo.trim(),
                 password: data.contraseña.trim(),
             }, {
-                withCredentials: true // Envío Cookies
-            });
-            console.log(response.data);
-            
+                withCredentials: true 
+            });   
+                              
             await dispatch(loginSuccess({ user: response.data }));
             await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));
         } catch (error) {
-            console.error("Error al iniciar sesión", error);
-            throw new Error(error.response?.data?.message || "Credenciales incorrectas");
+            if (error.response && error.response.data && error.response.data.error) {
+                throw new Error(error.response.data.error);
+            } else {
+                throw new Error("Credenciales incorrectas");
+            }
         }
     };
 };

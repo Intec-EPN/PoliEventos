@@ -97,6 +97,19 @@ export const Calendario = () => {
       return;
     }
 
+    // Verificar si la fecha coincide con algún otro evento
+    const isOverlapping = events.some(event => 
+      (start.isBetween(event.start, event.end, null, '[)') || 
+      end.isBetween(event.start, event.end, null, '(]')) ||
+      (start.isSame(event.start) || end.isSame(event.end))
+    );
+
+    if (isOverlapping) {
+      if (!window.confirm("La fecha coincide con otro evento. ¿Está seguro de que desea continuar?")) {
+        return;
+      }
+    }
+
     const eventoCreacion = {
       titulo,
       lugar,
@@ -108,13 +121,14 @@ export const Calendario = () => {
       enlaces,
       start: start.toISOString(),
       end: end.toISOString(),
-
     };
+
     dispatch(setEventoCreacion(eventoCreacion));
     dispatch(startCreateEvento(files));
     dispatch(limpiarEventoCreacion());
     setModalIsOpen(false);
   };
+
   const handleModalClose = () => {
     setModalIsOpen(false);
   };

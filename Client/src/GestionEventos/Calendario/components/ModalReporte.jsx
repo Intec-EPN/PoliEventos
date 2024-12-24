@@ -9,7 +9,10 @@ import { saveAs } from "file-saver";
 
 import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import ImageIcon from "@mui/icons-material/Image";
-import { useSelector } from "react-redux";
+import PrintIcon from "@mui/icons-material/Print";
+
+import { useSelector, useDispatch } from "react-redux";
+import { startLoadingArchivosPorIds } from "../../../store/GestionEventos/thunk";
 
 const groupEventsByTimeRange = (events, timeRange, selectedDepartments) => {
   const groupedData = {};
@@ -79,9 +82,12 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     (state) => state.adminAuth
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (eventos) {
       const eventosFormateados = eventos.map((evento) => ({
+        id: evento.id, // Agregar el id del evento
         date: dayjs(evento.start).format("YYYY-MM-DD"),
         name: evento.title,
         departamentos: evento.data.departamento,
@@ -163,6 +169,12 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     const csv = convertToCSV(filteredEvents, departamentos);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     saveAs(blob, "events.csv");
+  };
+
+  const handlePrintEventIds = () => {
+    const filteredEvents = filterEvents();
+    const eventIds = filteredEvents.map(event => event.id);
+    dispatch(startLoadingArchivosPorIds(eventIds));
   };
 
   return (
@@ -251,6 +263,14 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
                 startIcon={<SimCardDownloadIcon />}
               >
                 CSV
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handlePrintEventIds}
+                sx={{ color: "#354776" }}
+                startIcon={<PrintIcon />}
+              >
+                Descargar archivos
               </Button>
             </Box>
           </>

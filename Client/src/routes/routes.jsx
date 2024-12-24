@@ -2,7 +2,6 @@ import { AdministracionMain } from "../Administracion/AdministracionMain";
 import { Categorizaciones } from "../Administracion/views/Categorizaciones/Categorizaciones";
 import { CrearEsquema } from "../Administracion/views/Categorizaciones/components/tipos/CrearEsquema";
 import { EditarCategorias } from "../Administracion/views/Categorizaciones/components/tipos/EditarCategorias";
-import { Loges } from "../Administracion/views/Loges/Loges";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
 import { AsignarRoles } from "../Administracion/views/Usuarios/Asignar/AsignarRoles";
@@ -76,10 +75,6 @@ export const routes = [
       {
         path: "permisos",
         element: <AdminAuth component={Permisos} />,
-      },
-      {
-        path: "logs",
-        element: <AdminAuth component={Loges} />,
       },
     ],
   },

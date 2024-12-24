@@ -15,10 +15,16 @@ const loginUsuario = [
         const { email, password } = req.body;
 
         try {
+
             // Buscar el usuario por correo electrónico
             const usuario = await UsuariosModel.findOne({ where: { correo: email } });
             if (!usuario) {
                 return res.status(401).json({ error: 'Credenciales inválidas.' });
+            }
+
+            // Verificar si el usuario está habilitado
+            if (!usuario.habilitado) {
+                return res.status(401).json({ error: 'Usuario no habilitado.' });
             }
 
             // Verificar la contraseña
@@ -44,23 +50,16 @@ const loginUsuario = [
                 include: [{ model: PermisosModel, as: 'Permiso' }]
             });
 
-            console.log(permisos);
-
             // Determinar el nivel de acceso más alto
             let nivelAcceso = 'propio';
             permisos.forEach(permiso => {
-                console.log('debug*************************************************************', nivelAcceso);
-                
                 if (permiso) {
                     const permisoId = permiso.permiso_id; // Cambiado a permiso_id
-                    console.log(`Permiso ID: ${permisoId}`);
                     if (permisoId >= 6) {
                         nivelAcceso = 'facultad';
                     } else if (permisoId >= 2 && permisoId <= 5) {
                         nivelAcceso = 'departamento';
                     }
-                } else {
-                    console.log('Permiso no encontrado');
                 }
             });
 
@@ -76,16 +75,14 @@ const loginUsuario = [
                 sameSite: 'lax', // Protección contra CSRF
                 maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
-            //TODO QUITAR CUANDO YA NO SE NECESITE
+            // TODO QUITAR LO NECESARIO
             // Responder con éxito
             res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
-            console.error(`Error al iniciar sesión: ${error}`);
             res.status(401).json({ error: 'Error del inicio de sesión.' });
         }
     }
 ];
-
 
 const obtenerRolesPorUsuario = async (usuario_id) => {
     const results = await sequelize.query('CALL ObtenerRolesPorUsuarioId(:usuario_id)', {

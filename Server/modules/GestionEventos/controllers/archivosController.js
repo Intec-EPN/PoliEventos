@@ -1,6 +1,7 @@
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const archiver = require("archiver"); 
 
 
 // Configuración de multer para guardar archivos
@@ -57,6 +58,33 @@ const eliminarArchivo = async (req, res) => {
   });
 }
 
+const eliminarArchivos = async (req, res) => {
+  const { eventoId } = req.params;
+  const uploadPath = path.join(__dirname, "../../../archivosEventos");
+
+  fs.readdir(uploadPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: "Error al leer los archivos" });
+    }
+
+    const archivosAEliminar = files.filter(file => file.includes(`__${eventoId}__`));
+
+    if (archivosAEliminar.length > 0) {
+      archivosAEliminar.forEach(archivo => {
+        const filePath = path.join(uploadPath, archivo);
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            return res.status(500).json({ error: "Error al eliminar el archivo" });
+          }
+        });
+      });
+      res.status(200).json({ message: "Archivos eliminados exitosamente" });
+    } else {
+      res.status(404).json({ error: "No se encontraron archivos para el evento" });
+    }
+  });
+}
+
 const editarNombreArchivo = async (req, res) => {
   const { nombreArchivo } = req.params;
   const { nuevoDepartamento } = req.body;
@@ -101,9 +129,64 @@ const obtenerArchivosPorEvento = async (req, res) => {
   });
 }
 
+const descargarArchivo = async (req, res) => {
+  const { nombreArchivo } = req.params;
+  const filePath = path.join(__dirname, "../../../archivosEventos", nombreArchivo);
+
+  if (fs.existsSync(filePath)) {
+    res.download(filePath, nombreArchivo, (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Error al descargar el archivo" });
+      }
+    });
+  } else {
+    res.status(404).json({ error: "Archivo no encontrado" });
+  }
+};
+
+const descargarArchivosZip = async (req, res) => {
+  const { archivos } = req.body;
+  const uploadPath = path.join(__dirname, "../../../archivosEventos");
+
+  const zipFileName = `archivos_${Date.now()}.zip`;
+  const zipFilePath = path.join(uploadPath, zipFileName);
+
+  const output = fs.createWriteStream(zipFilePath);
+  const archive = archiver("zip", {
+    zlib: { level: 9 },
+  });
+
+  output.on("close", () => {
+    res.download(zipFilePath, zipFileName, (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Error al descargar el archivo ZIP" });
+      }
+      fs.unlinkSync(zipFilePath); // Eliminar el archivo ZIP después de la descarga
+    });
+  });
+
+  archive.on("error", (err) => {
+    res.status(500).json({ error: "Error al crear el archivo ZIP" });
+  });
+
+  archive.pipe(output);
+
+  archivos.forEach((archivo) => {
+    const filePath = path.join(uploadPath, archivo);
+    if (fs.existsSync(filePath)) {
+      archive.file(filePath, { name: archivo });
+    }
+  });
+
+  archive.finalize();
+};
+
 module.exports = {
   subirArchivos,
   eliminarArchivo,
   editarNombreArchivo,
   obtenerArchivosPorEvento,
+  eliminarArchivos,
+  descargarArchivo,
+  descargarArchivosZip, // Agregar la nueva función al módulo exportado
 };

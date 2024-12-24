@@ -23,8 +23,8 @@ export const Archivos = ({ onFilesChange }) => {
   const [error, setError] = useState("");
 
   const handleFileChange = (newFiles) => {
-    let validFiles = [];
-    let totalSize = 0;
+    let validFiles = [...files];
+    let totalSize = validFiles.reduce((acc, file) => acc + file.size, 0);
     let formatError = false;
 
     for (let file of newFiles) {
