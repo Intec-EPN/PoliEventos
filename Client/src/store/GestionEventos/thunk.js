@@ -99,7 +99,6 @@ export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            alert("Archivos subidos exitosamente");
         } catch (error) {
             console.error("Error al subir archivos", error);
             alert("Error al subir archivos");
@@ -252,11 +251,9 @@ export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) =
         try {
             const url = `/gestion/archivos/${eventoId}`;
             const response = await axiosInstance.patch(url, { nuevoDepartamento });
-            if (response.status === 200) {
-                alert("Archivos renombrados exitosamente");
-            } else {
+            if (!response.status === 200) {
                 alert(response.data.error || "Error al renombrar archivos");
-            }
+            } 
         } catch (error) {
             console.error("Error al renombrar archivos", error);
             alert("Error al renombrar archivos");

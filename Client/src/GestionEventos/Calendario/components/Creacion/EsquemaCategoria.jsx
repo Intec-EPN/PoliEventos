@@ -30,13 +30,16 @@ export const EsquemaCategoria = ({
     : [];
 
   // Control de los campos
-  const { control, reset, setValue } = useFormContext();
+  const { control, reset, setValue, getValues } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "esquemasCategorias",
   });
 
   const handleRemove = (index) => {
+    const currentValues = getValues("esquemasCategorias");
+    currentValues.splice(index, 1);
+    setValue("esquemasCategorias", currentValues);
     remove(index);
   };
 
@@ -54,6 +57,12 @@ export const EsquemaCategoria = ({
       setValue("esquemasCategorias", defaultValues);
     }
   }, [editMode, fields, setValue, defaultValues, isReset]);
+
+  useEffect(() => {
+    if (!editMode && isReset) {
+      setValue("esquemasCategorias", defaultValues);
+    }
+  }, [editMode, setValue, defaultValues, isReset]);
 
   return (
     <Box sx={{ my: 1 }}>
@@ -73,12 +82,12 @@ export const EsquemaCategoria = ({
       ))}
       {editMode && (
         <Button
-          onClick={() =>
+          onClick={() => {
             append({
               esquemaId: "",
               categoriaId: "",
-            })
-          }
+            });
+          }}
           sx={{ display: "flex", justifyContent: "start", m: 0, p: 0 }}
         >
           <AddCircleOutlineOutlinedIcon sx={{ mt: 0.4, color: "#0a3b91" }} />

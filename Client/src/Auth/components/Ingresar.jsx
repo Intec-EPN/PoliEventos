@@ -31,9 +31,6 @@ export const Ingresar = () => {
   const [exito, setExito] = useState(false);
 
   const onSubmit = async (data, event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.debug("Formulario enviado con datos:", data);
     try {
       await dispatch(startLogin(data));
       setExito(true);
@@ -43,7 +40,6 @@ export const Ingresar = () => {
     }
   };
 
-  console.debug("Renderizando componente Ingresar");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

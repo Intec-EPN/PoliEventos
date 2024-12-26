@@ -29,9 +29,9 @@ import {
 } from "../../../store/GestionEventos/thunk";
 import { setEventoEdicion } from "../../../store/GestionEventos/gestionEventosSlice";
 import { DepartamentoItemInicial } from "./Creacion/DepartamentoItemInicial";
-import { EsquemaCategoriaItemInicial } from "./Creacion/EsquemaCategoriaItemInicial";
 import { ArchivosInicial } from "./Creacion/ArchivosInicial";
 import { EnlaceInicial } from "./Creacion/EnlaceInicial";
+import { EsquemaCategoriaEditar } from "./Creacion/EsquemaCategoriaEditar";
 
 export const ModalEditar = ({
   modalIsOpen,
@@ -120,8 +120,13 @@ export const ModalEditar = ({
     });
     console.log("Datos del formulario enviados:", data);
 
+    // Asegúrate de que las categorías por defecto se mantengan si no se han eliminado
     if (!isReset && event) {
       data.esquemasCategorias = event.data?.esquemaCategoria || [];
+    } else {
+      data.esquemasCategorias = data.esquemasCategorias.filter(
+        (categoria) => categoria.esquemaId && categoria.categoriaId
+      );
     }
 
     // Validaciones de campos obligatorios
@@ -144,8 +149,7 @@ export const ModalEditar = ({
       return;
     }
     if (data.esquemasCategorias.length === 0) {
-      alert("Debe seleccionar al menos una categoría.");
-      return;
+      data.esquemasCategorias = event.data?.esquemaCategoria;
     }
 
     const startDate = dayjs(
@@ -272,25 +276,9 @@ export const ModalEditar = ({
           </Box>
           <Descripcion defaultValue={event?.data?.descripcion} />
           <Expositores defaultValues={event?.data?.expositores} />
-          <Box sx={{ display: "none" }}>
-            {event.data?.esquemaCategoria.map((esquemaCategoria, index) => (
-              <EsquemaCategoriaItemInicial
-                key={index}
-                esquemas={event.data?.esquemaCategoria}
-                index={index}
-                onRemove={(index) => {
-                  const updatedEsquemas = [...event.data?.esquemaCategoria];
-                  updatedEsquemas.splice(index, 1);
-                  methods.setValue("esquemasCategorias", updatedEsquemas);
-                }}
-              />
-            ))}
-          </Box>
-          <EsquemaCategoria
-            defaultValues={event.data?.esquemaCategoria}
-            isFromModalEvento={true}
-            isReset={isReset}
-          />
+
+          <EsquemaCategoriaEditar esquemasCategorias={event?.data?.esquemaCategoria}/>
+
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
           </DialogContentText>
@@ -318,6 +306,7 @@ export const ModalEditar = ({
             />
             <EnlaceInicial enlace={event?.data} />
           </Box>
+
         </FormProvider>
       </DialogContent>
       <DialogActions>
