@@ -23,7 +23,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   startDeletingArchivo,
+  startEditingArchivosPorEvento,
   startEditingEvento,
+  startUpLoadingArchivos,
 } from "../../../store/GestionEventos/thunk";
 import { setEventoEdicion } from "../../../store/GestionEventos/gestionEventosSlice";
 import { DepartamentoItemInicial } from "./Creacion/DepartamentoItemInicial";
@@ -62,7 +64,7 @@ export const ModalEditar = ({
 
   const [showDepartamento, setShowDepartamento] = useState(false);
   const dispatch = useDispatch();
-  
+
   const handleReset = (editMode) => {
     setShowDepartamento(editMode);
     setIsReset(true);
@@ -182,6 +184,16 @@ export const ModalEditar = ({
       })
     );
     dispatch(startEditingEvento(event.id, files));
+
+    if (!files.length > 0) {
+      dispatch(
+        startEditingArchivosPorEvento({
+          eventoId: event.id,
+          nuevoDepartamento: data.departamento.join("__"),
+        })
+      );
+    }
+
     handleEditClose();
     methods.reset();
     setIsReset(false);

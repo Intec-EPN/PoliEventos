@@ -5,7 +5,7 @@ const { crearEvento, obtenerEventos, eliminarEvento, editarEvento } = require('.
 const { obtenerDepartamentosId } = require('../Administracion/controllers/Roles/departamentosController');
 const { obtenerEsquemasCategoriasCalendario } = require('../Administracion/controllers/Categorizaciones/esquemasController');
 const { obtenerPermisosPorRol } = require('../Administracion/controllers/Roles/permisosController');
-const { subirArchivos, eliminarArchivo, editarNombreArchivo, obtenerArchivosPorEvento, eliminarArchivos, descargarArchivo, descargarArchivosZip } = require('./controllers/archivosController');
+const { subirArchivos, eliminarArchivo, editarNombreArchivo, obtenerArchivosPorEvento, eliminarArchivos, descargarArchivo, descargarArchivosZip, editarNombresArchivosPorEvento } = require('./controllers/archivosController');
 
 // Rutas de eventos
 router.post('/', crearEvento);
@@ -34,5 +34,7 @@ router.get('/archivos/:idEvento', obtenerArchivosPorEvento);
 router.get('/archivos/descargar/:nombreArchivo', descargarArchivo);
 // Descargar archivos ZIP
 router.post('/descargar-zip', descargarArchivosZip);
+// Editar nombres de archivos por evento
+router.patch('/archivos/:eventoId', editarNombresArchivosPorEvento);
 
 module.exports = router;

@@ -110,6 +110,46 @@ const editarNombreArchivo = async (req, res) => {
   }
 }
 
+const editarNombresArchivosPorEvento = async (req, res) => {
+  const { eventoId } = req.params;
+  let { nuevoDepartamento } = req.body;
+  const uploadPath = path.join(__dirname, "../../../archivosEventos");
+
+  // Asegurarse de que nuevoDepartamento sea un array
+  if (!Array.isArray(nuevoDepartamento)) {
+    nuevoDepartamento = [nuevoDepartamento];
+  }
+
+  fs.readdir(uploadPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: "Error al leer los archivos" });
+    }
+
+    const archivosAEditar = files.filter(file => file.includes(`__${eventoId}__`));
+
+    if (archivosAEditar.length > 0) {
+      const nuevoDepartamentoTexto = nuevoDepartamento.join("__");
+      archivosAEditar.forEach(archivo => {
+        const partes = archivo.split("__");
+        if (partes.length >= 3) {
+          const nuevoNombreArchivo = `${partes[0]}__${partes[1]}__${nuevoDepartamentoTexto}${archivo.substring(archivo.lastIndexOf('.'))}`;
+          const filePath = path.join(uploadPath, archivo);
+          const nuevoFilePath = path.join(uploadPath, nuevoNombreArchivo);
+
+          fs.rename(filePath, nuevoFilePath, (err) => {
+            if (err) {
+              return res.status(500).json({ error: "Error al renombrar el archivo" });
+            }
+          });
+        }
+      });
+      res.status(200).json({ message: "Archivos renombrados exitosamente" });
+    } else {
+      res.status(404).json({ error: "No se encontraron archivos para el evento" });
+    }
+  });
+};
+
 const obtenerArchivosPorEvento = async (req, res) => {
   const { idEvento } = req.params;
   console.log('idevento', idEvento);
@@ -189,4 +229,5 @@ module.exports = {
   eliminarArchivos,
   descargarArchivo,
   descargarArchivosZip, // Agregar la nueva función al módulo exportado
+  editarNombresArchivosPorEvento,
 };

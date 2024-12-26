@@ -247,3 +247,20 @@ export const startDescargarArchivosZip = (archivos) => {
     };
 };
 
+export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) => {
+    return async (dispatch) => {
+        try {
+            const url = `/gestion/archivos/${eventoId}`;
+            const response = await axiosInstance.patch(url, { nuevoDepartamento });
+            if (response.status === 200) {
+                alert("Archivos renombrados exitosamente");
+            } else {
+                alert(response.data.error || "Error al renombrar archivos");
+            }
+        } catch (error) {
+            console.error("Error al renombrar archivos", error);
+            alert("Error al renombrar archivos");
+        }
+    };
+};
+
