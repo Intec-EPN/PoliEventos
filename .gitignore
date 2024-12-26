@@ -29,7 +29,7 @@ lerna-debug.log*
 *.sw?
 
 # Archivos e imagenes
-/Server/archivosEventos/*
+/Server/archivosEventos/
 
 # History
 .history/

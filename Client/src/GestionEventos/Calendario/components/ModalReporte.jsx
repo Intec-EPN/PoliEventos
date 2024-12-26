@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Box, Dialog, DialogTitle, Button } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { saveAs } from "file-saver";
 import FormReporte from "./Reporte/FormReporte";
 import SelectDepartamento from "./Reporte/SelectDepartamento";
 import dayjs from "../../../dayjsConfig";
 import html2canvas from "html2canvas";
-import { saveAs } from "file-saver";
 
 import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import ImageIcon from "@mui/icons-material/Image";
@@ -83,6 +83,8 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   );
 
   const dispatch = useDispatch();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     if (eventos) {
@@ -128,6 +130,8 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   }, [events]);
 
   const handleGenerateChart = (timeRange, startDate, endDate) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
     const filteredEvents = filterEvents(startDate, endDate);
 
     const groupedData = groupEventsByTimeRange(
@@ -165,14 +169,14 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   };
 
   const handleDownloadCSV = () => {
-    const filteredEvents = filterEvents();
+    const filteredEvents = filterEvents(startDate, endDate);
     const csv = convertToCSV(filteredEvents, departamentos);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     saveAs(blob, "events.csv");
   };
 
-  const handlePrintEventIds = () => {
-    const filteredEvents = filterEvents();
+  const handleDownloadFiles = () => {
+    const filteredEvents = filterEvents(startDate, endDate);
     const eventIds = filteredEvents.map(event => event.id);
     dispatch(startLoadingArchivosPorIds(eventIds));
   };
@@ -266,7 +270,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
               </Button>
               <Button
                 variant="outlined"
-                onClick={handlePrintEventIds}
+                onClick={handleDownloadFiles}
                 sx={{ color: "#354776" }}
                 startIcon={<PrintIcon />}
               >
