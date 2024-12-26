@@ -35,6 +35,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
       setStartTime(formattedStartTime);
       setValue("startDate", formattedStartDate);
       setValue("startTime", formattedStartTime);
+      console.log("Default start date and time set:", formattedStartDate, formattedStartTime);
     }
     if (defaultEnd) {
       const formattedEndDate = dayjs(defaultEnd).format("DD/MM/YYYY");
@@ -43,6 +44,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
       setEndTime(formattedEndTime);
       setValue("endDate", formattedEndDate);
       setValue("endTime", formattedEndTime);
+      console.log("Default end date and time set:", formattedEndDate, formattedEndTime);
     }
   }, [defaultStart, defaultEnd, setValue]);
 
@@ -54,6 +56,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
       setStartTime(formattedStartTime);
       setValue("startDate", formattedStartDate);
       setValue("startTime", formattedStartTime);
+      console.log("Start date and time from state set:", formattedStartDate, formattedStartTime);
     }
     if (!endDate && end) {
       const formattedEndDate = dayjs(end).format("DD/MM/YYYY");
@@ -62,6 +65,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
       setEndTime(formattedEndTime);
       setValue("endDate", formattedEndDate);
       setValue("endTime", formattedEndTime);
+      console.log("End date and time from state set:", formattedEndDate, formattedEndTime);
     }
   }, [start, end, setValue, startDate, endDate]);
 
@@ -69,25 +73,31 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
     if (startDate && !startTime) {
       setStartTime("00:00");
       setValue("startTime", "00:00");
+      console.log("Start time set to default 00:00");
     }
     if (endDate && !endTime) {
       setEndTime("00:00");
       setValue("endTime", "00:00");
+      console.log("End time set to default 00:00");
     }
   }, [startDate, endDate, startTime, endTime, setValue]);
 
   useEffect(() => {
     if (startDate) {
       setValue("startDate", startDate);
+      console.log("Start date set in form:", startDate);
     }
     if (startTime) {
       setValue("startTime", startTime);
+      console.log("Start time set in form:", startTime);
     }
     if (endDate) {
       setValue("endDate", endDate);
+      console.log("End date set in form:", endDate);
     }
     if (endTime) {
       setValue("endTime", endTime);
+      console.log("End time set in form:", endTime);
     }
   }, [startDate, startTime, endDate, endTime, setValue]);
 
@@ -119,6 +129,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
                 const formattedDate = date ? date.format("DD/MM/YYYY") : "";
                 setStartDate(formattedDate);
                 setValue("startDate", formattedDate);
+                console.log("Start date changed:", formattedDate);
               }}
               slotProps={{
                 textField: {
@@ -134,6 +145,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
                   : "";
                 setStartTime(formattedTime);
                 setValue("startTime", formattedTime);
+                console.log("Start time changed:", formattedTime);
               }}
               ampm={false}
               slotProps={{
@@ -154,6 +166,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
                 const formattedDate = date ? date.format("DD/MM/YYYY") : "";
                 setEndDate(formattedDate);
                 setValue("endDate", formattedDate);
+                console.log("End date changed:", formattedDate);
               }}
               slotProps={{
                 textField: {
@@ -169,6 +182,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
                   : "";
                 setEndTime(formattedTime);
                 setValue("endTime", formattedTime);
+                console.log("End time changed:", formattedTime);
               }}
               ampm={false}
               slotProps={{

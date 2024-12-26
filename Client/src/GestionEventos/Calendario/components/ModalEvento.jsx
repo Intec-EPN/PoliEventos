@@ -46,15 +46,16 @@ export const ModalEvento = ({
   const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState([]);
   const [sendFiles, setSendFiles] = useState(false);
-  
+
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
   }, [dispatch]);
 
-  const { departamentos } = useSelector((state) => state.gestionEvento);
+  const { departamentos, eventoCreacion } = useSelector((state) => state.gestionEvento);
   const { nivelFacultad, nivelDepartamento, departamentoNivelId } = useSelector(
     (state) => state.adminAuth
   );
+  const { start, end } = useSelector((state) => state.gestionEvento.eventoCreacion);
 
   const handleFilesChange = (newFiles) => {
     setFiles(newFiles);
@@ -109,16 +110,22 @@ export const ModalEvento = ({
       return;
     }
 
+    // Verificar y establecer fechas y horas si no son válidas
+    if (data.startDate === "DD/MM/YYYY" || data.startTime === "HH:mm") {
+      data.startDate = dayjs(start).format("DD/MM/YYYY");
+      data.startTime = dayjs(start).format("HH:mm");
+    }
+    if (data.endDate === "DD/MM/YYYY" || data.endTime === "HH:mm") {
+      data.endDate = dayjs(end).format("DD/MM/YYYY");
+      data.endTime = dayjs(end).format("HH:mm");
+    }
+
     const startDate = dayjs(
-      `${data.startDate || dayjs().format("DD/MM/YYYY")} ${
-        data.startTime || dayjs().hour(8).minute(0).format("HH:mm")
-      }`,
+      `${data.startDate} ${data.startTime}`,
       "DD/MM/YYYY HH:mm"
     );
     const endDate = dayjs(
-      `${data.endDate || dayjs().format("DD/MM/YYYY")} ${
-        data.endTime || dayjs().hour(9).minute(0).format("HH:mm")
-      }`,
+      `${data.endDate} ${data.endTime}`,
       "DD/MM/YYYY HH:mm"
     );
 

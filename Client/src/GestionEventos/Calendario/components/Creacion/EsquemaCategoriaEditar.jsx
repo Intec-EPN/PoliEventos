@@ -69,7 +69,7 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
       <DialogContentText sx={{ color: "#333333" }}>
         Categorías del evento
       </DialogContentText>
-      <Box display={"flex"} sx={{ flexDirection: "column" }} gap={1}>
+      <Box display={"flex"} sx={{ flexDirection: "column" }} gap={1} mt={1}>
         {esquemasCategorias.map((esquemaCategoria, index) => (
           <Box key={index} display={"flex"} sx={{ width: "100%" }} gap={1}>
             <Box display={"flex"} sx={{ width: "100%" }} gap={1}>

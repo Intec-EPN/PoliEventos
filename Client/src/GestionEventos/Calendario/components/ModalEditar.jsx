@@ -118,16 +118,6 @@ export const ModalEditar = ({
     filesToDelete.forEach(({ fileName: nombreArchivo, eventId: eventoId }) => {
       dispatch(startDeletingArchivo({ nombreArchivo, eventoId }));
     });
-    console.log("Datos del formulario enviados:", data);
-
-    // Asegúrate de que las categorías por defecto se mantengan si no se han eliminado
-    if (!isReset && event) {
-      data.esquemasCategorias = event.data?.esquemaCategoria || [];
-    } else {
-      data.esquemasCategorias = data.esquemasCategorias.filter(
-        (categoria) => categoria.esquemaId && categoria.categoriaId
-      );
-    }
 
     // Validaciones de campos obligatorios
     if (!data.titulo || !data.lugar || !data.descripcion) {
@@ -148,8 +138,8 @@ export const ModalEditar = ({
       alert("Debe seleccionar al menos un departamento.");
       return;
     }
-    if (data.esquemasCategorias.length === 0) {
-      data.esquemasCategorias = event.data?.esquemaCategoria;
+    if (!data.esquemasCategorias || data.esquemasCategorias.length === 0) {
+      data.esquemasCategorias = event.data?.esquemaCategoria || [];
     }
 
     const startDate = dayjs(
