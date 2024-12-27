@@ -124,9 +124,7 @@ export const startDeletingEvento = (eventoId) => {
     };
 }
 
-export const startDeletingArchivos = ({ eventoId }) => {
-    console.log("eventoId", eventoId);
-    
+export const startDeletingArchivos = ({ eventoId }) => {    
     return async (dispatch) => {
         try {
             const url = `/gestion/archivo/${eventoId}`;

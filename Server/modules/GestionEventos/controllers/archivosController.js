@@ -80,7 +80,7 @@ const eliminarArchivos = async (req, res) => {
       });
       res.status(200).json({ message: "Archivos eliminados exitosamente" });
     } else {
-      res.status(404).json({ error: "No se encontraron archivos para el evento" });
+      res.status(200).json({ message: "No se encontraron archivos para el evento" });
     }
   });
 }
@@ -145,7 +145,7 @@ const editarNombresArchivosPorEvento = async (req, res) => {
       });
       res.status(200).json({ message: "Archivos renombrados exitosamente" });
     } else {
-      res.status(404).json({ error: "No se encontraron archivos para el evento" });
+      res.status(200).json({ error: "No se encontraron archivos para el evento" });
     }
   });
 };
