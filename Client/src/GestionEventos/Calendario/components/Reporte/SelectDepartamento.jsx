@@ -54,6 +54,9 @@ const SelectDepartamento = ({
     <Box sx={{ width: "100%", mb: 2 }}>
       {nivelFacultad && (
         <FormControl component="fieldset">
+          <Typography variant="h6" sx={{ fontSize: "0.9rem" }}>
+            Filtra por departamento
+          </Typography>
           <RadioGroup row value={filterType} onChange={handleFilterTypeChange}>
             <FormControlLabel
               value="departamento"
@@ -75,7 +78,7 @@ const SelectDepartamento = ({
             fontWeight: "500",
             color: "#164dc9",
             fontSize: "1.1rem",
-            ml:1
+            ml: 1,
           }}
         >
           En
@@ -88,7 +91,7 @@ const SelectDepartamento = ({
         </Typography>
       )}
       {nivelFacultad && filterType === "departamento" && (
-        <FormControl sx={{ width: "100%", mt:1.5 }}>
+        <FormControl sx={{ width: "100%", mt: 1.5 }}>
           <InputLabel id="departamento-label">Departamento/s</InputLabel>
           <Select
             labelId="departamento-label"

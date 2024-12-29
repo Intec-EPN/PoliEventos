@@ -1,9 +1,9 @@
 import { Box, DialogContentText, Button, IconButton } from "@mui/material";
-import { EsquemaCategoriaItemEditar } from "./EsquemaCategoriaItemEditar";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { EsquemaCategoriaItemEditar } from "./EsquemaCategoriaItemEditar";
 import { startLoadingEsquemasCategorias } from "../../../../store/GestionEventos/thunk";
 import { useFormContext } from "react-hook-form";
 import Select from "react-select";
