@@ -85,6 +85,11 @@ const convertToCSV = (data, departamentos) => {
           return dep ? dep.departamento : depId;
         })
         .join(", "),
+      esquemasCategorias: row.esquemasCategorias
+        .map(
+          (ec) => `${ec.esquemaNombre} - ${ec.categoriaNombre}`
+        )
+        .join(", "),
     }))
   );
 
@@ -312,6 +317,11 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
           const dep = departamentos.find((dep) => dep.id === depId);
           return dep ? dep.departamento : depId;
         })
+        .join(", "),
+      esquemasCategorias: event.esquemasCategorias
+        .map(
+          (ec) => `${ec.esquemaNombre} - ${ec.categoriaNombre}`
+        )
         .join(", "),
     }));
 
