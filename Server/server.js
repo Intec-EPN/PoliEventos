@@ -37,7 +37,7 @@ authenticateDB(); // Esto llamará a la función que autentica la base de datos
 
 
 // Sincronizar modelo y BDD
-sequelize.sync()
+sequelize.sync({ force: true })
     .then(async () => {
         await agregarValoresIniciales();
         console.log('Base de datos sincronizada');
