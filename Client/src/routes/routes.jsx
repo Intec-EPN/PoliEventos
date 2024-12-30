@@ -13,7 +13,6 @@ import { LoginMain } from "../Auth/LoginMain";
 import { AdminAuth } from "../components/AdminAuth";
 import { RolesAuth } from "../components/RolesAuth";
 import { EventosGeneralPage } from "../Eventos/EventosGeneralPage";
-import { Calendario } from "../GestionEventos/Calendario/Calendario";
 import { EventosPage } from "../GestionEventos/Calendario/EventosPage";
 
 export const routes = [

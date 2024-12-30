@@ -21,11 +21,10 @@ export const Titulo = ({ defaultValue }) => {
         id="titulo"
         name="titulo"
         placeholder="Título*"
-        // label="Título"
         type="text"
         fullWidth
         variant="outlined"
-        slotProps={{ htmlInput: { maxLength: 60 } }}
+        slotProps={{ htmlInput: { maxLength: 70 } }}
         {...register("titulo")}
       />
     </Box>

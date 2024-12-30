@@ -35,7 +35,7 @@ export const PersonaCargo = ({ defaultValues }) => {
 
   return (
     <Box sx={{my:1}}>
-      <DialogContentText sx={{ color:"#333333" }}>Personal a cargo</DialogContentText>
+      <DialogContentText sx={{ color:"#333333" }}>Personal a cargo*</DialogContentText>
       {fields.map((field, index) => (
         <Box key={field.id} display={"flex"} sx={{ width: "100%" }} gap={1}>
           <TextField

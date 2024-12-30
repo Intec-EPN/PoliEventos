@@ -20,11 +20,11 @@ export const Lugar = ({ defaultValue }) => {
         id="lugar"
         name="lugar"
         placeholder="Lugar*"
-        // label="Lugar"
         type="text"
         fullWidth
         variant="outlined"
         {...register("lugar")}
+        slotProps={{ htmlInput: { maxLength: 70 } }}
       />
     </Box>
   );

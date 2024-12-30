@@ -21,8 +21,7 @@ export const Descripcion = ({ defaultValue }) => {
         margin="dense"
         id="descripcion"
         name="descripcion"
-        placeholder="Descripción"
-        // label="Descripción"
+        placeholder="Descripción*"
         type="text"
         fullWidth
         variant="outlined"

@@ -8,9 +8,38 @@ const EventosDepartamentosModel = require("../models/tablas-intermedias/evento_d
 const EventosPersonasCargoModel = require("../models/tablas-intermedias/evento_personasModel");
 const EventosExpositoresModel = require("../models/tablas-intermedias/evento_expositoresModel");
 
+const validarEvento = async (eventoCreacion) => {
+    const errores = [];
+
+    // Validar campos obligatorios
+    if (!eventoCreacion.title) errores.push("El título es obligatorio.");
+    if (!eventoCreacion.data.lugar) errores.push("El lugar es obligatorio.");
+    if (!eventoCreacion.data.descripcion) errores.push("La descripción es obligatoria.");
+    if (!eventoCreacion.data.personasACargo || eventoCreacion.data.personasACargo.length === 0) {
+        errores.push("Debe agregar al menos una persona a cargo.");
+    }
+    if (!eventoCreacion.data.departamento || eventoCreacion.data.departamento.length === 0) {
+        errores.push("Debe seleccionar al menos un departamento.");
+    }
+    if (!eventoCreacion.data.esquemaCategoria || eventoCreacion.data.esquemaCategoria.length === 0) {
+        errores.push("Debe seleccionar al menos una categoría.");
+    }
+
+    if (isNaN(startDate) || isNaN(endDate)) {
+        errores.push("Las fechas de inicio y fin deben ser válidas.");
+    } 
+    return errores;
+};
+
 const crearEvento = async (req, res) => {
     const { usuarioId, eventoCreacion } = req.body;
     try {
+        // Validar el evento
+        const errores = await validarEvento(eventoCreacion);
+        if (errores.length > 0) {
+            return res.status(400).json({ message: 'Errores de validación', errores });
+        }
+
         // Crear el evento
         const evento = await EventosModel.create({
             title: eventoCreacion.title,

@@ -30,7 +30,7 @@ export const Calendario = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoading(true); // Iniciar carga
+    setLoading(true); 
     dispatch(startLoadingEventos());
   }, [dispatch]);
 

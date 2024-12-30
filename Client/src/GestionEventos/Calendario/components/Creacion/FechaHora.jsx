@@ -85,21 +85,28 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
   useEffect(() => {
     if (startDate) {
       setValue("startDate", startDate);
-      console.log("Start date set in form:", startDate);
     }
     if (startTime) {
       setValue("startTime", startTime);
-      console.log("Start time set in form:", startTime);
     }
     if (endDate) {
       setValue("endDate", endDate);
-      console.log("End date set in form:", endDate);
     }
     if (endTime) {
       setValue("endTime", endTime);
-      console.log("End time set in form:", endTime);
     }
   }, [startDate, startTime, endDate, endTime, setValue]);
+
+  useEffect(() => {
+    if (startDate && endDate && startDate === endDate && startTime && endTime) {
+      const start = dayjs(`${startDate} ${startTime}`, "DD/MM/YYYY HH:mm");
+      const end = dayjs(`${endDate} ${endTime}`, "DD/MM/YYYY HH:mm");
+      if (end.isBefore(start)) {
+        setEndTime(startTime);
+        setValue("endTime", startTime);
+      }
+    }
+  }, [startDate, endDate, startTime, endTime, setValue]);
 
   const formatTime = (time) => {
     return dayjs(time, "HH:mm").format("HH:mm");

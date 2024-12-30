@@ -188,7 +188,7 @@ export const ModalEvento = ({
             md: "70vw",
             lg: "50vw",
           },
-          position: "relative", // Añadir posición relativa
+          position: "relative", 
         },
         onSubmit: methods.handleSubmit(onSubmit),
       }}
@@ -225,7 +225,7 @@ export const ModalEvento = ({
           <Expositores />
           <EsquemaCategoria isFromModalEvento={true} isReset={isReset} />
           <DialogContentText sx={{ color: "#333333" }}>
-            Organizadores del evento
+            Organizadores del evento*
           </DialogContentText>
           {nivelFacultad && (
             <>
