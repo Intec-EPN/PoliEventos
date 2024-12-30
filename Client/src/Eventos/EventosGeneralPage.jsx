@@ -34,7 +34,7 @@ export const EventosGeneralPage = () => {
   }, [eventos]);
   const { departamentos } = useSelector((state) => state.gestionEvento);
   const sortedEvents = events.sort(
-    (a, b) =>  new Date(b.start) - new Date(a.start) 
+    (a, b) => new Date(b.start) - new Date(a.start)
   );
 
   const onLogin = () => {
@@ -55,9 +55,7 @@ export const EventosGeneralPage = () => {
           <Box
             sx={{
               width: "100%",
-              maxHeight: "80vh",
-              paddingBottom: "10rem",
-              marginBottom: "5rem",
+              paddingBottom: "2rem",
             }}
           >
             {sortedEvents.map((event, index) => (
@@ -77,7 +75,8 @@ export const EventosGeneralPage = () => {
           alignItems: "center",
           width: "100%",
           gap: 2,
-          py: 0.3,
+          pt: 0.4,
+          pb:0.9,
         }}
       >
         <Box display="flex" alignItems="center">

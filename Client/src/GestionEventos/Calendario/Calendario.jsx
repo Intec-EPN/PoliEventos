@@ -159,7 +159,7 @@ export const Calendario = () => {
             alignItems: "center",
             flexDirection: "column",
             paddingBottom: "10rem",
-            pt: "20rem",
+            pt: "23rem",
           }}
         >
           <CircularProgress sx={{ color: "#0a3b91" }} />
@@ -184,7 +184,7 @@ export const Calendario = () => {
         >
           <>
             <Calendar
-              style={{ height: "87vh", width: "90vw" }}
+              style={{ height: "90vh", width: "90vw" }}
               localizer={localizer}
               events={events}
               startAccessor="start"

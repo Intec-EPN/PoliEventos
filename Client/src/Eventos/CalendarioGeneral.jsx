@@ -84,7 +84,6 @@ export const CalendarioGeneral = () => {
               events={events}
               startAccessor="start"
               endAccessor="end"
-              //   selectable
               onSelectEvent={handleOpenEvent}
               views={[Views.MONTH, Views.DAY]}
               components={{
