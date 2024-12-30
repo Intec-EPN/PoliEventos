@@ -14,10 +14,8 @@ export const Ingresar = () => {
     if (user) {
       if (user.nombre === "admn") {
         navigate("/admin/permisos");
-      } else if (user.roles.length > 0) {
-        navigate("/eventos");
-      } else {
-        setError("Usuario no encontrado");
+      } else if (user.roles && user.roles.length > 0) {
+        navigate("/calendario");
       }
       setExito(true);
     }
@@ -32,14 +30,16 @@ export const Ingresar = () => {
   const [error, setError] = useState(null);
   const [exito, setExito] = useState(false);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, event) => {
     try {
       await dispatch(startLogin(data));
       setExito(true);
     } catch (err) {
+      console.error("Error en onSubmit:", err);
       setError(err.message || "Error al iniciar sesión");
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,6 +56,7 @@ export const Ingresar = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "0.3rem",
+          maxWidth:{xs:"18rem", sm:"100%"},
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: "600", color: "#0a2257" }}>
@@ -87,8 +88,16 @@ export const Ingresar = () => {
             helperText={errors.contraseña?.message}
           />
         </Box>
-        {error && <span>{error}</span>}
-        {exito && <span>Inicio de sesión exitoso</span>}
+        {error && (
+          <Typography variant="body2" color="error" mb={2}>
+            {error}
+          </Typography>
+        )}
+        {exito && (
+          <Typography variant="body2" color="success" mb={2}>
+            Inicio de sesión exitoso
+          </Typography>
+        )}
         <Button variant="contained" type="submit">
           Ingresar
         </Button>

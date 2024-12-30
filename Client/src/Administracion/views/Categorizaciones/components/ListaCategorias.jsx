@@ -130,7 +130,6 @@ useEffect(() => {
         nombre: nombre,
         descripcion: descripcion,
       };
-      console.log('Debug', esquemaActual);
       
       dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
       dispatch(setEsquemaActual(nombre));
@@ -195,7 +194,7 @@ useEffect(() => {
         <Box display="flex" justifyContent="end">
           <Button
             variant="contained"
-            sx={{ backgroundColor: "#2c4175", mb: 2 }}
+            sx={{ backgroundColor: "green", mb: 2 }}
             onClick={handleAgregarClick}
           >
             Agregar

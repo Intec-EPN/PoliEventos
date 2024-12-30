@@ -1,9 +1,14 @@
 require('dotenv').config();
 const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { sequelize, authenticateDB } = require('./config/db');
 const routes = require('./modules/routes');
+const ExpositoresModel = require('./modules/GestionEventos/models/expositoresModel');
+const EventosExpositoresModel = require('./modules/GestionEventos/models/tablas-intermedias/evento_expositoresModel');
+const agregarValoresIniciales = require('./config/valoresIniciales');
 
 const app = express();
 
@@ -32,8 +37,9 @@ authenticateDB(); // Esto llamará a la función que autentica la base de datos
 
 
 // Sincronizar modelo y BDD
-sequelize.sync({ force: false })
-    .then(() => {
+sequelize.sync()
+    .then(async () => {
+        await agregarValoresIniciales();
         console.log('Base de datos sincronizada');
         app.listen(PORT, () => {
             console.log(`Servidor corriendo en el puerto ${PORT}`);

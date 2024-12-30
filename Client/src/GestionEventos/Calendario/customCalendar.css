@@ -1,0 +1,227 @@
+/* Filas de celdas habiles de mes. */
+.rbc-row-bg {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  color: white;
+}
+/* Filas de celdas fueras de rango del mes */
+.rbc-off-range-bg {
+  background-color: #ced8eb64;
+  border-radius: 5px;
+  color: white;
+}
+/* Celdas habiles de mes */
+.rbc-day-bg {
+  border-radius: 5px;
+  color: white;
+}
+/* Celda de hoy */
+.rbc-today {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  color: white;
+}
+
+.rbc-date-cell.rbc-now.rbc-current > .rbc-button-link {
+  font-size: 1rem;
+  padding: 2px;
+}
+.rbc-date-cell.rbc-now.rbc-current {
+  background-color: green;
+  border-radius: 50;
+}
+
+/* Colores de numeros pequeños arriba dependiendo el padre */
+.rbc-off-range > .rbc-button-link {
+  color: rgb(144, 144, 144);
+}
+.rbc-row > .rbc-button-link {
+  color: #122950;
+}
+/* rbc-date-cell rbc-now rbc-current */
+.rbc-current > .rbc-button-link {
+  color: white;
+}
+
+/* Cabecera de las columnas. */
+.rbc-header {
+  padding: 5px 0;
+  display: flex;
+  justify-content: end;
+}
+
+/* Eventos cortos. */
+.rbc-event {
+  background-color: #0a3b91 !important;
+  padding: 5px;
+  padding-left: 7px;
+}
+/* .rbc-event > .rbc-event-content {
+  border-left: 3px solid #fff;
+  padding-left: 4px;
+} */
+
+/* Flecha de evento largo. */
+.rbc-event-allday {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Evento seleccionado. */
+.rbc-selected {
+  background-color: #0a3b91 !important;
+  color: white;
+}
+
+/* Vista semana */
+.rbc-today > .rbc-timeslot-group {
+  background-color: rgba(46, 64, 162, 0.403);
+}
+
+/* Botones de hoy, siguiente y previo */
+.rbc-toolbar > .rbc-btn-group {
+  height: 100%;
+}
+
+.rbc-toolbar > .rbc-btn-group:first-child > button:first-child {
+  height: 100%;
+  border-radius: 10px;
+  margin-right: 0.7rem;
+  background-color: green;
+  color: white;
+  border: green;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2) {
+  margin-right: 0.3rem;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2),
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3) {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2) svg:hover,
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3) svg:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2):hover,
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3):hover {
+  border: none;
+  background-color: white;
+}
+
+.rbc-toolbar > .rbc-btn-group > button:nth-child(2):active,
+.rbc-toolbar > .rbc-btn-group > button:nth-child(3):active {
+  border: none;
+  background-color: white;
+}
+
+/* Para alinear al centro */
+.rbc-toolbar > .rbc-btn-group {
+  flex: 1;
+  width: 100;
+}
+
+.transition-box {
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.calendar-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.list-view {
+  opacity: 1;
+  transform: scale(0.95);
+}
+
+.rbc-month-view {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.rbc-month-view-enter {
+  opacity: 0;
+  transform: translateY(-10%);
+}
+
+.rbc-month-view-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rbc-month-view-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rbc-month-view-exit-active {
+  opacity: 0;
+  transform: translateY(10%);
+}
+
+.rbc-events-container {
+  background-color: rgba(214, 242, 158, 0.764);
+}
+
+/* Mes/Día */
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) {
+  display: flex;
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) > button {
+  color: #0a3b91;
+  background-color: white;
+  border: 1px solid #0a3b91;
+  display: flex;
+  align-items: center;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) > button:hover {
+  border: none;
+  background-color: #0a3b91;
+  color: white;
+  border-radius: 5px;
+}
+
+.rbc-toolbar > .rbc-btn-group:nth-of-type(3) > .rbc-active {
+  border: none;
+  background-color: #0a3b91;
+  color: white;
+  transform: scale(1.05);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/*Vista día*/
+.rbc-current-time-indicator {
+  background-color: transparent;
+}
+
+.rbc-event-label {
+  margin-bottom: 5px;
+}
+
+/* Ver más () */
+.rbc-row-segment > .rbc-show-more {
+  margin-left: 5px;
+  margin-top: 5px;
+  color: #0a3b91;
+}

@@ -8,7 +8,13 @@ import { startLoadingRoles } from "../../../../../store/Administracion/Roles/thu
 import { Box, Typography } from "@mui/material";
 import { setRolesAsignar } from "../../../../../store/Administracion/Usuarios/usuariosSlice";
 
-export default function SelectRoles() {
+export function resetSelectRoles(ref) {
+  if (ref.current) {
+    ref.current.value = null;
+  }
+}
+
+export default function SelectRoles({ reset }) {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(startLoadingRoles());
@@ -24,20 +30,17 @@ export default function SelectRoles() {
     Facultad: acciones[6].bgColor || "#FFF",
   });
   const { usuarios, usuarioAsignar } = useSelector((state) => state.usuarios);
+
   React.useEffect(() => {
     if (usuarioAsignar) {
-      setSelectedRoles(
-        usuarios
-          .find((usuario) => usuario.id === usuarioAsignar)
-          .roles.map((rol) => {
-            console.log(rol);
-            return {
-              id: rol.rol_id,
-              nombre: rol.rol_nombre,
-            };
-          })
-      );
-      console.log("roles", selectedRoles);
+      const usuario = usuarios.find((usuario) => usuario.id === usuarioAsignar);
+      if (usuario) {
+        const rolesUsuario = usuario.roles.map((rol) => ({
+          id: rol.rol_id,
+          nombre: rol.rol_nombre,
+        }));
+        setSelectedRoles(rolesUsuario);
+      }
     }
   }, [usuarios, usuarioAsignar]);
 
@@ -78,9 +81,19 @@ export default function SelectRoles() {
           colorNivel,
         };
       });
-      setSelectedRoles(selectedRolesMapeados);
+
+      const hasChanged = selectedRolesMapeados.some((mappedRole, index) => {
+        return (
+          mappedRole.id !== selectedRoles[index].id ||
+          mappedRole.colorNivel !== selectedRoles[index].colorNivel
+        );
+      });
+
+      if (hasChanged) {
+        setSelectedRoles(selectedRolesMapeados);
+      }
     }
-  }, [selectedRoles, rolesRecuperados]);
+  }, [rolesRecuperados, selectedRoles]);
 
   React.useEffect(() => {
     if (rolesRecuperados.length > 0) {
@@ -120,60 +133,63 @@ export default function SelectRoles() {
   }, [rolesRecuperados]);
 
   React.useEffect(() => {
-    setSelectedRoles([]); // Inicializar el estado cuando el componente se monte
-    return () => {
-      setSelectedRoles([]); // Limpiar el estado cuando el componente se desmonte
-    };
-  }, []);
+    if (reset) {
+      setSelectedRoles([]);
+    }
+  }, [reset]);
 
   const handleRolesSelect = (event, newValue) => {
-    const uniqueValues = newValue.filter(
-      (value, index, self) => index === self.findIndex((v) => v.id === value.id)
-    );
-    setSelectedRoles(uniqueValues);
-    dispatch(setRolesAsignar(uniqueValues.map((rol) => rol.id)));
+    setSelectedRoles(newValue ? [newValue] : []);
+    dispatch(setRolesAsignar(newValue ? [newValue.id] : []));
   };
-  const filteredRoles = roles.filter(
-    (role) => !selectedRoles.some((selectedRole) => selectedRole.id === role.id)
-  );
 
   return (
     <Box sx={{ width: "100%" }}>
       <Typography variant="h7" color="primary" sx={{ fontWeight: 700, mb: 1 }}>
-        Selecciona uno o más roles
+        Selecciona un rol
       </Typography>
       <Stack spacing={3} sx={{ width: "100%" }}>
         <Autocomplete
-          multiple
+          multiple={false}
           id="tags-standard"
-          options={filteredRoles}
-          getOptionLabel={(option) => option.nombre}
+          options={roles}
+          getOptionLabel={(option) => option.nombre || ""}
           onChange={handleRolesSelect}
-          filterSelectedOptions={true}
-          value={selectedRoles}
-          noOptionsText="No hay más roles."
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => {
-              const { key, ...tagProps } = getTagProps({ index });
-              return (
-                <Chip
-                  key={key}
-                  label={option.nombre}
-                  {...tagProps}
-                  style={{ backgroundColor: option.colorNivel, color: "white" }}
-                />
-              );
-            })
-          }
+          value={selectedRoles[0] || null}
+          renderOption={(props, option) => (
+            <li {...props} key={option.id}>
+              <Chip
+                label={option.nombre}
+                style={{ backgroundColor: option.colorNivel, color: "white" }}
+              />
+            </li>
+          )}
           renderInput={(params) => (
             <TextField
               {...params}
               variant="standard"
-              label="Rol/Roles"
-              // placeholder="Agrega otro."
+              label={selectedRoles.length === 0 ? "Rol" : ""}
+              placeholder={selectedRoles.length === 0 ? "Rol" : ""}
               sx={{
-                input: { color: "black" }, // Cambia el color del texto aquí
-                label: { color: "#676767" }, // Cambia el color del label aquí
+                input: { color: "black" },
+                label: { color: "#676767" },
+              }}
+              slotProps={{
+                inputLabel: { shrink: true },
+                input: {
+                  ...params.InputProps,
+                  startAdornment: selectedRoles.map((option) => (
+                    <Chip
+                      key={option.id}
+                      label={option.nombre}
+                      style={{ backgroundColor: option.colorNivel, color: "white" }}
+                    />
+                  )),
+                  inputProps: {
+                    ...params.inputProps,
+                    value: '', 
+                  },
+                },
               }}
             />
           )}

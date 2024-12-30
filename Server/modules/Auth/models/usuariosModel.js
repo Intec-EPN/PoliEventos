@@ -33,6 +33,12 @@ const UsuariosModel = sequelize.define('Usuarios', {
 }, {
     tableName: 'usuarios',
     timestamps: false, // El timestamp ya lo hace la base  
+    indexes: [
+        {
+            unique: true,
+            fields: ['correo']
+        }
+    ]
 });
 
 module.exports = UsuariosModel;

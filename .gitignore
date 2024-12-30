@@ -28,6 +28,11 @@ lerna-debug.log*
 *.sln
 *.sw?
 
+# Archivos e imagenes
+/Server/archivosEventos/
+
 # History
 .history/
 *.history
+
+/BDD/*

@@ -13,19 +13,23 @@ import { TextField } from "@mui/material";
 import { IndicadoresUsuario } from "./IndicadoresUsuario";
 import { Row } from "./Row";
 import { useMediaQuery } from "@mui/material";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-function createData(nombre, correo, fecha, id, habilitado) {
+function createData(nombre, correo, fecha, id, habilitado, conEventos) {
   return {
     nombre,
     correo,
     fecha,
     id,
     habilitado,
+    conEventos
   };
 }
 
 export const TablaUsuarios = () => {
   const { usuarios } = useSelector((state) => state.usuarios);
+  const navigate = useNavigate();
   const [rows, setRows] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 960px)");
@@ -40,7 +44,8 @@ export const TablaUsuarios = () => {
           usuario.correo,
           fecha,
           usuario.id,
-          usuario.habilitado
+          usuario.habilitado,
+          usuario.conEventos
         ),
         roles: usuario.roles,
       };
@@ -59,34 +64,57 @@ export const TablaUsuarios = () => {
       row.data.correo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleCrearUsuario = () => {
+    navigate("/admin/usuarios/crear");
+  };
+
   return (
     <Box>
       <IndicadoresUsuario />
       <Typography variant="h6" color="primary" sx={{ fontWeight: 700, mt: 2 }}>
         Filtro
       </Typography>
-      <TextField
-        label="Buscar por nombre o correo"
-        variant="outlined"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        fullWidth
-        sx={{ mb: 2 }}
-      />
+      <Box container display="flex" gap={2}>
+        <Box sx={{flex:8}}>
+          <TextField
+            label="Buscar por nombre o correo"
+            variant="outlined"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+        </Box>
+        <Box
+          sx={{ width:"auto", mr: "1rem", display: "flex", justifyContent: "end" }}
+        >
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "green", height: 55 }}
+            onClick={handleCrearUsuario}
+          >
+            Crear Usuario
+          </Button>
+        </Box>
+      </Box>
       <TableContainer component={Paper} elevation={0}>
         <Table
           aria-label="collapsible table"
-          sx={{ backgroundColor: "#2c4175", color: "white" }}
+          sx={{ backgroundColor: "#2c4175" }}
         >
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "white" }}>
             <TableRow>
               <TableCell sx={{ fontSize: "1.2rem" }} />
-              <TableCell sx={{ color: "white", fontSize: "1.1rem" }}>
+              <TableCell sx={{ fontSize: "1.1rem", color: "#2c4175" }}>
                 Usuario
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem" }}
+                sx={{
+                  color: "#2c4175",
+                  fontWeight: "bold",
+                  fontSize: "1.1rem",
+                }}
               >
                 Correo
               </TableCell>
@@ -94,7 +122,7 @@ export const TablaUsuarios = () => {
                 <TableCell
                   align="center"
                   sx={{
-                    color: "white",
+                    color: "#2c4175",
                     fontWeight: "bold",
                     fontSize: "1.1rem",
                   }}
@@ -104,7 +132,11 @@ export const TablaUsuarios = () => {
               )}
               <TableCell
                 align="center"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "1.1rem" }}
+                sx={{
+                  color: "#2c4175",
+                  fontWeight: "bold",
+                  fontSize: "1.1rem",
+                }}
               >
                 Acciones
               </TableCell>
@@ -112,7 +144,7 @@ export const TablaUsuarios = () => {
           </TableHead>
           <TableBody>
             {filteredRows.map((row) => (
-              <Row key={row.data.nombre} row={row.data} roles={row.roles} />
+              <Row key={row.data.nombre} row={row.data} roles={row.roles} conEventos={row.data.conEventos}/>
             ))}
           </TableBody>
         </Table>

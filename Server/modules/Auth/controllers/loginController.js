@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const UsuariosModel = require("../models/usuariosModel");
 const { sequelize } = require("../../../config/db");
 const { ValidarLogin } = require("../middleware/validacionesUsuario");
+const RolPermisosModel = require("../../Administracion/models/Roles/tablas-intermedias/rol_permisosModel");
+const PermisosModel = require("../../Administracion/models/Roles/permisosModel");
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -13,10 +15,16 @@ const loginUsuario = [
         const { email, password } = req.body;
 
         try {
+
             // Buscar el usuario por correo electrónico
             const usuario = await UsuariosModel.findOne({ where: { correo: email } });
             if (!usuario) {
                 return res.status(401).json({ error: 'Credenciales inválidas.' });
+            }
+
+            // Verificar si el usuario está habilitado
+            if (!usuario.habilitado) {
+                return res.status(401).json({ error: 'Usuario no habilitado.' });
             }
 
             // Verificar la contraseña
@@ -28,8 +36,35 @@ const loginUsuario = [
             // Obtener los roles del usuario utilizando el procedimiento almacenado
             const roles = await obtenerRolesPorUsuario(usuario.id);
 
-            // Crear el token con el id del usuario, nombre, correo y sus roles
-            const token = await jwt.sign({ id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles }, jwtSecret, {
+            // Verificar si roles está vacío
+            if (roles.length === 0) {
+                return res.status(401).json({ error: 'El usuario no tiene roles asignados.' });
+            }
+
+            // Obtener el id del primer rol del usuario
+            const rolId = roles[0].rol_id;
+
+            // Obtener los permisos asociados al rol
+            const permisos = await RolPermisosModel.findAll({
+                where: { rol_id: rolId },
+                include: [{ model: PermisosModel, as: 'Permiso' }]
+            });
+
+            // Determinar el nivel de acceso más alto
+            let nivelAcceso = 'propio';
+            permisos.forEach(permiso => {
+                if (permiso) {
+                    const permisoId = permiso.permiso_id; // Cambiado a permiso_id
+                    if (permisoId >= 6) {
+                        nivelAcceso = 'facultad';
+                    } else if (permisoId >= 2 && permisoId <= 5) {
+                        nivelAcceso = 'departamento';
+                    }
+                }
+            });
+
+            // Crear el token con el id del usuario, nombre, correo, roles y nivel de acceso
+            const token = await jwt.sign({ id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso }, jwtSecret, {
                 expiresIn: '2h'
             });
 
@@ -40,16 +75,14 @@ const loginUsuario = [
                 sameSite: 'lax', // Protección contra CSRF
                 maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
-            //TODO QUITAR CUANDO YA NO SE NECESITE
+            // TODO QUITAR LO NECESARIO
             // Responder con éxito
-            res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles });
+            res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
-            console.error(`Error al iniciar sesión: ${error}`);
             res.status(401).json({ error: 'Error del inicio de sesión.' });
         }
     }
 ];
-
 
 const obtenerRolesPorUsuario = async (usuario_id) => {
     const results = await sequelize.query('CALL ObtenerRolesPorUsuarioId(:usuario_id)', {

@@ -20,6 +20,23 @@ const obtenerDepartamentos = async (req, res) => {
     }
 };
 
+const obtenerDepartamentosId = async (req, res) => {
+    try {
+        // findAll para obtener todos
+        const departamentos = await DepartamentosModel.findAll({
+            attributes: ['id', ['nombre', 'departamento']]
+        });
+        if (departamentos) {
+            res.status(200).json(departamentos);
+        } else {
+            res.status(500).json({ error: 'No existen departamentos.' });
+        }
+    } catch (error) {
+        console.error(`Error al obtener los departamentos: ${error}`);
+        res.status(500).json({ error: 'Error al obtener los departamentos.' });
+    }
+};
+
 // TABLA INTERMEDIA
 const obtenerDepartamentosRolId = async (req, res) => {
     const rolId = req.params.id;
@@ -55,4 +72,4 @@ const obtenerDepartamentoId = async (departamentoCodigo) => {
     return departamento ? departamento.id : null;
 };
 
-module.exports = { obtenerDepartamentosRolId, obtenerDepartamentos, obtenerDepartamentosArray, obtenerDepartamentoId };
+module.exports = { obtenerDepartamentosRolId, obtenerDepartamentosId, obtenerDepartamentos, obtenerDepartamentosArray, obtenerDepartamentoId };

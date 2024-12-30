@@ -2,10 +2,10 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { set, useForm } from "react-hook-form";
 import axiosInstance from "../../../../api/axiosConfig"; // Importar axiosInstance
 import { useState } from "react"; // Importar useState
-import PopUpRegistro from "../../../../Auth/components/PopUpRegistro"; // Importar PopUpRegistro
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { startLoadingUsuarios } from "../../../../store/Administracion/Usuarios/thunks";
+import { PopUpCrearUsuario } from "./PopUpCrearUsuario";
 
 export const CrearUsuarios = () => {
   const {
@@ -17,8 +17,15 @@ export const CrearUsuarios = () => {
   const [exito, setExito] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleClose = () => setExito(false);
+  const handleClose = () => {
+    navigate("/admin/usuarios/lista");
+    setExito(false)
+  };
   const onSubmit = async (data) => {
+    if (data.primer_nombre.trim().toLowerCase() === "admn" || data.segundo_nombre.trim().toLowerCase() === "admn") {
+      setError("El nombre o apellido no puede ser 'admn'");
+      return;
+    }
     try {
       const response = await axiosInstance.post("/auth/create", {
         nombre: `${data.primer_nombre.trim()} ${data.segundo_nombre.trim()}`,
@@ -27,9 +34,6 @@ export const CrearUsuarios = () => {
       });
       setExito(true);
       dispatch(startLoadingUsuarios());
-      setTimeout(() => {
-        navigate("/admin/usuarios/lista");
-      }, 2000);
     } catch (err) {
       setError(err.response?.data?.error || "Error al registrar usuario");
     }
@@ -104,7 +108,7 @@ export const CrearUsuarios = () => {
           )}
           <Box display="flex" width="98%"  gap={2}>
             <Button fullWidth variant="contained" type="submit">
-              Crear Usuario
+              Guardar Usuario
             </Button>
             <Button
               fullWidth
@@ -118,7 +122,7 @@ export const CrearUsuarios = () => {
         </Box>
       </form>
 
-      <PopUpRegistro open={exito} handleClose={handleClose} />
+      <PopUpCrearUsuario open={exito} handleClose={handleClose} />
     </>
   );
 };

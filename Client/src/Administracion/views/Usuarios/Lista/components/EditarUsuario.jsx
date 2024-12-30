@@ -4,6 +4,7 @@ import {
   startLoadingUsuarios,
   startUpdatingUsuario,
 } from "../../../../../store/Administracion/Usuarios/thunks";
+import { opcionActual } from "../../../../../store/Administracion/administracionSlice";
 import { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ export const EditarUsuario = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    dispatch(opcionActual("Editar usuario"));
     dispatch(startLoadingUsuarios());
   }, [dispatch]);
 
@@ -86,7 +88,7 @@ export const EditarUsuario = () => {
       >
         <TextField label="Nombre" {...register("nombre", { required: true })} />
         <TextField label="Correo" {...register("correo", { required: true })} />
-        <Typography variant="body1" color="red"> Cambie la contraseña sólo si es <strong>estrictamente</strong> necesario.</Typography>
+        <Typography variant="body1" color="red">Si desea resetear la contraseña digitela <strong>aquí</strong>.</Typography>
         <TextField
           label="Contraseña nueva (opcional)"
           type="password"

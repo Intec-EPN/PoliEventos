@@ -134,48 +134,6 @@ const crearEsquemasCategorias = async (req, res) => {
         res.status(500).json({ error: "Error al crear el esquema." });
     }
 };
-// DEPRECADO: Usado para obligar a añadir categorías al usuario.
-// const crearEsquemasCategorias = async (req, res) => {
-//     const { nombre, descripcion, visible, categorias } = req.body;
-
-//     try {
-//         // Verificar si el esquema ya existe:
-//         const esquemaExistente = await EsquemasCategorizacionModel.findOne({ where: { nombre } });
-//         if (esquemaExistente) {
-//             return res.status(400).json({ message: 'El esquema de categorización ya existe.' });
-//         }
-
-//         // Iniciar transacción que asegure la operación (create)
-//         await sequelize.transaction(async (t) => {
-//             // Primero, creo el esquema principal
-//             const nuevoEsquema = await EsquemasCategorizacionModel.create(
-//                 {
-//                     nombre,
-//                     descripcion,
-//                     visible
-//                 },
-//                 { transaction: t } // Transacción para asegurar la atomicidad
-//             );
-
-//             // Luego, creo las categorías asociadas
-//             for (const categoria of categorias) {
-//                 await CategoriasModel.create(
-//                     {
-//                         nombre: categoria.nombre,
-//                         visible: categoria.visible,
-//                         esquema_id: nuevoEsquema.id // Relaciono la categoría con el nuevo esquema creado
-//                     },
-//                     { transaction: t } // Transacción para asegurar la atomicidad
-//                 );
-//             }
-//         });
-
-//         res.status(201).json({ message: "Esquema y categorías creadas correctamente." });
-//     } catch (error) {
-//         console.error(`Error al crear el esquema y categorías: ${error}`);
-//         res.status(500).json({ error: "Error al crear el esquema y categorías." });
-//     }
-// };
 
 const cambiarVisibilidadEsquema = async (req, res) => {
     const { id } = req.params;
@@ -269,7 +227,40 @@ const eliminarCategoria = async (req, res) => {
     }
 };
 
+const obtenerEsquemasCategoriasCalendario = async (req, res) => {
+    try {
+        const esquemas = await EsquemasCategorizacionModel.findAll({
+            attributes: ['id', 'nombre', 'visible'],
+            where: { visible: true }
+        });
 
+        const categorias = await CategoriasModel.findAll({
+            attributes: ['id', 'nombre', 'esquema_id', 'visible'],
+            where: { visible: true }
+        });
+
+        if (esquemas && categorias) {
+            const esquemasCategorias = esquemas.map(esquema => {
+                const categoriasFiltradas = categorias.filter(cat => cat.esquema_id === esquema.id);
+                return {
+                    esquemaId: esquema.id,
+                    esquemaNombre: esquema.nombre,
+                    categorias: categoriasFiltradas.map(cat => ({
+                        categoriaId: cat.id,
+                        categoriaNombre: cat.nombre
+                    }))
+                };
+            });
+
+            res.status(200).json(esquemasCategorias);
+        } else {
+            res.status(404).json({ error: 'No se encontraron esquemas o categorías visibles.' });
+        }
+    } catch (error) {
+        console.error(`Error al obtener esquemas y categorías: ${error}`);
+        res.status(500).json({ error: 'Error al obtener esquemas y categorías.' });
+    }
+};
 
 module.exports = { 
     obtenerEsquemasCategorias, 
@@ -278,5 +269,6 @@ module.exports = {
     cambiarVisibilidadEsquema, 
     cambiarVisibilidadCategoria, 
     eliminarEsquemaCategorias,
-    eliminarCategoria
+    eliminarCategoria,
+    obtenerEsquemasCategoriasCalendario
 };

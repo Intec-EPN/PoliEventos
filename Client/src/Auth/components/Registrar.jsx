@@ -14,6 +14,10 @@ export const Registrar = ({ onRegistroExitoso }) => {
   const [exito, setExito] = useState(false);
   const handleClose = () => setExito(false);
   const onSubmit = async (data) => {
+    if (data.primer_nombre.trim().toLowerCase() === "admn" || data.segundo_nombre.trim().toLowerCase() === "admn") {
+      setError("El nombre o apellido no puede ser 'admn'");
+      return;
+    }
     try {
       const response = await axiosInstance.post("/auth/create", {
         nombre: `${data.primer_nombre.trim()} ${data.segundo_nombre.trim()}`,

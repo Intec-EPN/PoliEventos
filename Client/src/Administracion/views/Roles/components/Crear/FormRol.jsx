@@ -238,7 +238,7 @@ export const FormRol = () => {
         sx={{ backgroundColor: "#1e2c4f", mt: 2, mb: 2 }}
         type="submit"
       >
-        CREAR ROL
+        Guardar ROL
       </Button>
       <PopUpCrear open={open} handleClose={handleClose} />
     </form>

@@ -1,4 +1,7 @@
 const { sequelize } = require("../../../../config/db");
+const PermisosModel = require("../../models/Roles/permisosModel");
+const RolPermisosModel = require("../../models/Roles/tablas-intermedias/rol_permisosModel");
+
 
 const obtenerPermisosBase = async (req, res) => {
     try {
@@ -70,6 +73,31 @@ const obtenerPermisosRol = async (permisoId) => {
     }
 };
 
+const obtenerPermisosPorRol = async (req, res) => {
+    const { rolId } = req.params;
+    try {
+        const permisos = await RolPermisosModel.findAll({
+            where: { rol_id: rolId },
+            include: [{ model: PermisosModel }]
+        });
 
+        const permisosFiltrados = permisos.map(permiso => ({
+            permiso_id: permiso.permiso_id,
+            accion: permiso.Permiso.accion,
+            nivel_id: permiso.Permiso.nivel_id
+        }));
 
-module.exports = { obtenerPermisosBase, obtenerPermisosAcciones, obtenerEstructura, obtenerPermisosRol };
+        res.status(200).json(permisosFiltrados);
+    } catch (error) {
+        console.error(`Error al obtener permisos por rol ${rolId}: ${error}`);
+        res.status(500).json({ error: 'Error al obtener permisos por rol.' });
+    }
+};
+
+module.exports = { 
+    obtenerPermisosBase, 
+    obtenerPermisosAcciones, 
+    obtenerEstructura, 
+    obtenerPermisosRol,
+    obtenerPermisosPorRol 
+};

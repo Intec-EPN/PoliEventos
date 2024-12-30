@@ -109,9 +109,9 @@ export const UsuariosSubItem = ({ toggleDrawer, isOpen }) => {
                 },
               },
             }}
-            onClick={() => handleSubNavigation("usuarios/asignar", "Asignar roles")}
+            onClick={() => handleSubNavigation("usuarios/crear", "Crea un usuario")}
           >
-            <ListItemText primary="Asignar roles" />
+            <ListItemText primary="Crea un usuario" />
           </ListItemButton>
           <ListItemButton
             selected={false} // No se usa estado
@@ -137,9 +137,9 @@ export const UsuariosSubItem = ({ toggleDrawer, isOpen }) => {
                 },
               },
             }}
-            onClick={() => handleSubNavigation("usuarios/crear", "Crea un usuario")}
+            onClick={() => handleSubNavigation("usuarios/asignar", "Asignar roles")}
           >
-            <ListItemText primary="Crea un usuario" />
+            <ListItemText primary="Asignar roles" />
           </ListItemButton>
         </List>
       </Collapse>

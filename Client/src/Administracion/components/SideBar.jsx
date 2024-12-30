@@ -17,7 +17,6 @@ const opciones = [
   { label: "Roles", path: "roles" },
   { label: "Usuarios", path: "usuarios" },
   { label: "Permisos", path: "permisos" },
-  { label: "Logs", path: "logs" },
 ];
 
 export const SideBar = ({ drawerWidth, isOpen, toggleDrawer }) => {

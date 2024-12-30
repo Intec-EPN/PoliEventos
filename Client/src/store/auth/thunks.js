@@ -1,5 +1,5 @@
 import axiosInstance from "../../api/axiosConfig";
-import { loginSuccess, logout } from "./adminAuthSlice";
+import { loginSuccess, logout, setPermisos } from "./adminAuthSlice";
 
 export const startLogin = (data) => {
     return async (dispatch) => {
@@ -8,11 +8,17 @@ export const startLogin = (data) => {
                 email: data.correo.trim(),
                 password: data.contraseña.trim(),
             }, {
-                withCredentials: true // Envío Cookies
+                withCredentials: true
             });
-            await dispatch(loginSuccess({user: response.data}));
+
+            await dispatch(loginSuccess({ user: response.data }));
+            await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));
         } catch (error) {
-            throw new Error("Credenciales incorrectas", error);
+            if (error.response && error.response.data && error.response.data.error) {
+                throw new Error(error.response.data.error);
+            } else {
+                throw new Error("Credenciales incorrectas");
+            }
         }
     };
 };
@@ -21,7 +27,7 @@ export const startLogout = () => {
     return async (dispatch) => {
         try {
             await axiosInstance.post("/auth/logout", {}, {
-                withCredentials: true 
+                withCredentials: true
             });
             dispatch(logout());
         } catch (error) {
@@ -30,3 +36,25 @@ export const startLogout = () => {
         }
     };
 };
+
+export const startLoadingPermisos = (id) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosInstance.get(`/gestion/permisos/${id}`
+                , {
+                    withCredentials: true,
+                }
+            );
+            const permisos = data.map(permiso => ({
+                permisoId: permiso.permiso_id,
+                accionNombre: permiso.accion,
+                nivelId: permiso.nivel_id
+            }));
+            dispatch(setPermisos(permisos));
+        } catch (error) {
+            console.error("Error al cargar permisos", error);
+            throw new Error("Error al cargar permisos");
+        }
+    };
+};
+

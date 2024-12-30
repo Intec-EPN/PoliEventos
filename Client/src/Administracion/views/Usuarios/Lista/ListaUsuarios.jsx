@@ -7,7 +7,7 @@ import { opcionActual } from "../../../../store/Administracion/administracionSli
 export const ListaUsuarios = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(opcionActual("Lista usuarios"));
+    dispatch(opcionActual("Lista de usuarios"));
   }, [dispatch]);
   return (
     <Box ml={2} mt={2} width="97%">

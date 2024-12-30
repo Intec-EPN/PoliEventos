@@ -8,8 +8,6 @@ import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid2, useMediaQuery } from "@mui/material";
@@ -22,10 +20,13 @@ import {
 import { setUsuarioActual } from "../../../../../store/Administracion/Usuarios/usuariosSlice";
 import { useNavigate } from "react-router-dom";
 
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+
 export const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { row, roles } = props;
+  const { row, roles, conEventos } = props;
   const [open, setOpen] = React.useState(false);
   const isMobileOrTablet = useMediaQuery("(max-width: 960px)");
   const { roles: rolesRecuperados } = useSelector((state) => state.rol);
@@ -43,7 +44,7 @@ export const Row = (props) => {
         roles.some((rol) => rol.rol_nombre === rolRecuperado.rol)
       )
     );
-  }, [usuarios]);
+  }, [usuarios, dispatch]);
 
   // Editar usuario.
   const onEditUsuario = (usuarioId) => {
@@ -107,16 +108,36 @@ export const Row = (props) => {
           </IconButton>
           {row.habilitado ? (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <VisibilityIcon sx={{ color: "white" }} />
+              <Box
+                sx={{
+                  color: roles.length === 0 ? "white" : "#36b257",
+                  display: "inline-flex",
+                }}
+              >
+                <ToggleOnIcon />
+              </Box>
             </IconButton>
           ) : (
             <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <VisibilityOffIcon sx={{ color: "white" }} />
+              <Box
+                sx={{
+                  color: roles.length === 0 ? "white" : "red",
+                  display: "inline-flex",
+                }}
+              >
+                <ToggleOffIcon />
+              </Box>
             </IconButton>
           )}
-          <IconButton onClick={() => onBorrarUsuario(row.id)}>
-            <DeleteIcon sx={{ color: "white" }} />
-          </IconButton>
+          {!conEventos ? (
+            <IconButton onClick={() => onBorrarUsuario(row.id)}>
+              <DeleteIcon sx={{ color: "white", display: "inline-flex" }} />
+            </IconButton>
+          ) : (
+            <IconButton disabled>
+              <DeleteIcon sx={{ color: "#2c4175", display: "inline-flex" }} />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -128,7 +149,7 @@ export const Row = (props) => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                {roles.length === 0 ? "Asigna roles por favor." : "Roles"}
+                {roles.length === 0 ? "Asigna un rol por favor." : "Rol"}
               </Typography>
               <Box sx={{ width: "100%" }}>
                 {!isMobileOrTablet &&
@@ -165,7 +186,7 @@ export const Row = (props) => {
 
       <TableRow>
         <TableCell colSpan={5} sx={{ padding: 0, backgroundColor: "#fff" }}>
-          <Box sx={{ height: "1.5rem" }} />
+          <Box sx={{ height: "1rem" }} />
         </TableCell>
       </TableRow>
     </React.Fragment>

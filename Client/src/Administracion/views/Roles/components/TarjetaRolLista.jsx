@@ -22,20 +22,10 @@ export const TarjetaRolLista = ({
   horizontal = false,
 }) => {
   const dispatch = useDispatch();
-  const onBorrarRol = (rol) => {
-    if (
-      window.confirm(`¿Estás seguro de que deseas eliminar el rol "${rol}"?`)
-    ) {
-      dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
-    }
-  };
-
   const { usuarios } = useSelector((state) => state.usuarios);
-
   const [usado, setUsado] = useState(false);
-
-
   const [isMounted, setIsMounted] = useState(false);
+  const [usuariosCargados, setUsuariosCargados] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,15 +33,26 @@ export const TarjetaRolLista = ({
 
 
   useEffect(() => {
-    setUsado(
-      usuarios.some((usuario) =>
-        usuario.roles.some((role) => {
-          return role.rol_nombre === rol;
-        })
-      ) || false
-    );
-  }, [rol]);
+    if (usuarios.length > 0) {
+      const usado = usuarios.some((usuario) =>
+        usuario.roles.some((role) => role.rol_nombre === rol) || false
+      );
+      setUsado(usado);
+      setUsuariosCargados(true);
+    }
+  }, [usuarios, rol]);
 
+  if (!usuariosCargados) {
+    return null; // No renderizar nada hasta que los usuarios estén cargados
+  }
+
+  const onBorrarRol = (rol) => {
+    if (
+      window.confirm(`¿Estás seguro de que deseas eliminar el rol "${rol}"?`)
+    ) {
+      dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
+    }
+  };
   return (
     <Card
       sx={{
@@ -95,7 +96,7 @@ export const TarjetaRolLista = ({
       <CardContent
         sx={{
           width: "100%",
-          flex: 2,
+          flex: 3,
           display: "flex",
           alignItems: "center",
           ml: 2,
@@ -109,7 +110,7 @@ export const TarjetaRolLista = ({
       </CardContent>
 
       {/* Icono de eliminar */}
-      {isMounted && !usado && (
+      {isMounted && !usado ? (
         <Box
           sx={{
             display: "flex",
@@ -121,7 +122,19 @@ export const TarjetaRolLista = ({
             <DeleteIcon sx={{ color: "red" }} />
           </IconButton>
         </Box>
-      )}
+      ):
+      <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            padding: 2,
+          }}
+        >
+          <IconButton>
+            <DeleteIcon sx={{ color: "white" }} />
+          </IconButton>
+        </Box>
+      }
     </Card>
   );
 };

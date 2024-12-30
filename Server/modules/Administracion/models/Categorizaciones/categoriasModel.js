@@ -1,8 +1,9 @@
 // Modelo Categorías
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../../../config/db');
+const EsquemasCategorizacionModel = require('./esquemasModel');
 
-const CategoriasModel = sequelize.define('Categorias',{
+const CategoriasModel = sequelize.define('Categorias', {
     id: {
         type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
@@ -18,15 +19,21 @@ const CategoriasModel = sequelize.define('Categorias',{
     },
     esquema_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false, 
+        allowNull: false,
+        references: {
+            model: 'esquemas_categorizacion',
+            key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
     }
-},{
+}, {
     tableName: 'categorias',
     timestamps: false,
 });
 
 // Relaciones:
 // Una categoría pertenece a un esquema. 
-CategoriasModel.belongsTo(CategoriasModel, {foreignKey: 'esquema_id'});
+CategoriasModel.belongsTo(EsquemasCategorizacionModel, { foreignKey: 'esquema_id' });
 
 module.exports = CategoriasModel;
