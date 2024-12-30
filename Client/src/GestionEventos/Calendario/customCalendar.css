@@ -52,7 +52,7 @@
 
 /* Eventos cortos. */
 .rbc-event {
-  background-color: #0a3b91;
+  background-color: #0a3b91 !important;
   padding: 5px;
   padding-left: 7px;
 }
@@ -91,6 +91,7 @@
   color: white;
   border: green;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .rbc-toolbar > .rbc-btn-group > button:nth-child(2) {
@@ -209,20 +210,18 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-
 /*Vista día*/
 .rbc-current-time-indicator {
   background-color: transparent;
 }
 
-.rbc-event-label{
+.rbc-event-label {
   margin-bottom: 5px;
 }
 
 /* Ver más () */
-.rbc-row-segment > .rbc-show-more{
+.rbc-row-segment > .rbc-show-more {
   margin-left: 5px;
   margin-top: 5px;
   color: #0a3b91;
 }
-

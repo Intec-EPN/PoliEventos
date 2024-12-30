@@ -43,7 +43,7 @@ export const EventosPage = () => {
   }, [eventos]);
 
   const sortedEvents = events.sort(
-    (a, b) => new Date(a.start) - new Date(b.start)
+    (a, b) =>  new Date(b.start) - new Date(a.start) 
   );
 
   const onLogout = async () => {
