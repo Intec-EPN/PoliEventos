@@ -76,7 +76,7 @@ export const EventosGeneralPage = () => {
           width: "100%",
           gap: 2,
           pt: 0.4,
-          pb:0.9,
+          pb: 0.9,
         }}
       >
         <Box display="flex" alignItems="center">
@@ -119,7 +119,12 @@ export const EventosGeneralPage = () => {
             </Box>
           )}
         </Box>
-        <Box display="flex" alignItems="center" gap={2}>
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
+          alignItems="center"
+          gap={{ xs: 0, sm: 2 }}
+        >
           {departamentos?.map((dep) => (
             <Box
               sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}

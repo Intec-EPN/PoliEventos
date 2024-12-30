@@ -1,4 +1,4 @@
-import { Box, Fab, IconButton, Typography } from "@mui/material";
+import { Box, Fab, IconButton, Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Calendario } from "./Calendario";
 import { EventoSimple } from "./components/EventoSimple";
@@ -103,16 +103,29 @@ export const EventosPage = () => {
               position: "fixed",
               bottom: { xs: 55, sm: 32, md: 35 },
               right: 0,
-              pr: { xs: 2, sm: 8, md: 5, xl:8},
+              pr: { xs: 2, sm: 8, md: 5, xl: 8 },
               p: { xs: 1, sm: 2 },
               zIndex: 100,
             }}
           >
-            <Fab aria-label="report" sx={{ backgroundColor: "#0a3b91" }}>
-              <IconButton onClick={handleOpenReporte} sx={{ color: "#ffffff" }}>
-                <AssessmentOutlinedIcon />
-              </IconButton>
-            </Fab>
+            <Tooltip title="Generar reporte" placement="top">
+              <Fab
+                aria-label="report"
+                sx={{
+                  backgroundColor: "#0a3b91",
+                  "&:hover": {
+                    backgroundColor: "green",
+                  },
+                }}
+              >
+                <IconButton
+                  onClick={handleOpenReporte}
+                  sx={{ color: "#ffffff" }}
+                >
+                  <AssessmentOutlinedIcon />
+                </IconButton>
+              </Fab>
+            </Tooltip>
           </Box>
         )}
       </Box>
@@ -180,7 +193,7 @@ export const EventosPage = () => {
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
           alignItems="center"
-          gap={{xs: 0, sm: 2}}
+          gap={{ xs: 0, sm: 2 }}
         >
           {departamentos?.map((dep) => (
             <Box
