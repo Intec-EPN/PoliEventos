@@ -1,11 +1,13 @@
 import { Box, Typography, Icon } from "@mui/material";
 import dayjs from "../../../dayjsConfig";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import { GiMicrophone } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { startLoadingDepartamentos } from "../../../store/GestionEventos/thunk";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export const EventoSimple = ({ event }) => {
   const { title, start, end, data } = event;
@@ -52,10 +54,15 @@ export const EventoSimple = ({ event }) => {
           py: 1,
           color: "#0a3b91",
           textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          justifyContent: "center",
         }}
       >
+        <CalendarMonthIcon />
         {startDate}
-        {endDate !== startDate ? ` al ${endDate}` : ""} | {startTime} -{" "}
+        {endDate !== startDate ? ` al ${endDate}` : ""} <AccessTimeIcon /> {startTime} -{" "}
         {endTime}
       </Typography>
       <Box
