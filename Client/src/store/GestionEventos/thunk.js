@@ -6,9 +6,9 @@ export const startLoadingEventos = () => {
     return async (dispatch) => {
         try {
             const { data } = await axiosInstance.get("/gestion"
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             dispatch(setEventos(data));
         } catch (error) {
@@ -32,9 +32,9 @@ export const startCreateEvento = (files) => {
                     usuarioId: usuarioId,
                     eventoCreacion: eventoCreacion
                 }
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             console.log(data);
 
@@ -61,7 +61,7 @@ export const startEditingEvento = (eventoId, files) => {
             const usuarioId = state.adminAuth.user.id;
 
             console.log("eventoEdicion", eventoEdicion);
-            
+
 
             const url = `/gestion/${eventoId}`;
             await axiosInstance.put(url,
@@ -69,9 +69,9 @@ export const startEditingEvento = (eventoId, files) => {
                     usuarioId: usuarioId,
                     eventoEdicion: eventoEdicion
                 }
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             if (files.length > 0) {
                 dispatch(startUpLoadingArchivos({ files, eventoId, departamentos }));
@@ -98,6 +98,8 @@ export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
+            }, {
+                withCredentials: true,
             });
         } catch (error) {
             console.error("Error al subir archivos", error);
@@ -112,11 +114,11 @@ export const startDeletingEvento = (eventoId) => {
         try {
             const url = `/gestion/${eventoId}`;
             await axiosInstance.delete(url
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
-            dispatch(startDeletingArchivos({eventoId}))
+            dispatch(startDeletingArchivos({ eventoId }))
             dispatch(startLoadingEventos());
         } catch (error) {
             throw new Error("Error al eliminar evento");
@@ -124,16 +126,16 @@ export const startDeletingEvento = (eventoId) => {
     };
 }
 
-export const startDeletingArchivos = ({ eventoId }) => {    
+export const startDeletingArchivos = ({ eventoId }) => {
     return async (dispatch) => {
         try {
             const url = `/gestion/archivo/${eventoId}`;
             console.log(url);
 
             await axiosInstance.delete(url
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             dispatch(startLoadingEventos());
         } catch (error) {
@@ -149,9 +151,9 @@ export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
             console.log(url);
 
             await axiosInstance.delete(url
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             dispatch(startLoadingEventos());
         } catch (error) {
@@ -164,9 +166,9 @@ export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
         try {
             const { data } = await axiosInstance.get("/gestion/departamentos/"
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             dispatch(setDepartamentos(data));
         } catch (error) {
@@ -180,9 +182,9 @@ export const startLoadingEsquemasCategorias = () => {
     return async (dispatch) => {
         try {
             const { data } = await axiosInstance.get("/gestion/esquemas_categorias/"
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             dispatch(setEsquemasCategorias(data));
         } catch (error) {
@@ -197,9 +199,9 @@ export const startLoadingArchivos = (eventoId) => {
         let { eventId } = eventoId;
         try {
             const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             dispatch(setFilesObtenidos(data));
         } catch (error) {
@@ -214,7 +216,11 @@ export const startLoadingArchivosPorIds = (eventIds) => {
         try {
             const archivos = [];
             for (const eventId of eventIds) {
-                const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`);
+                const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`
+                    , {
+                        withCredentials: true,
+                    }
+                );
                 archivos.push(...data.archivos);
             }
             if (archivos.length > 0) {
@@ -234,6 +240,8 @@ export const startDescargarArchivosZip = (archivos) => {
         try {
             const { data } = await axiosInstance.post("/gestion/descargar-zip", { archivos }, {
                 responseType: 'blob',
+            }, {
+                withCredentials: true,
             });
             const blob = new Blob([data], { type: 'application/zip' });
             saveAs(blob, 'archivos.zip');
@@ -248,10 +256,12 @@ export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) =
     return async (dispatch) => {
         try {
             const url = `/gestion/archivos/${eventoId}`;
-            const response = await axiosInstance.patch(url, { nuevoDepartamento });
+            const response = await axiosInstance.patch(url, { nuevoDepartamento }, {
+                withCredentials: true,
+            });
             if (!response.status === 200) {
                 alert(response.data.error || "Error al renombrar archivos");
-            } 
+            }
         } catch (error) {
             console.error("Error al renombrar archivos", error);
             alert("Error al renombrar archivos");

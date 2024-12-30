@@ -24,10 +24,6 @@ const validarEvento = async (eventoCreacion) => {
     if (!eventoCreacion.data.esquemaCategoria || eventoCreacion.data.esquemaCategoria.length === 0) {
         errores.push("Debe seleccionar al menos una categoría.");
     }
-
-    if (isNaN(startDate) || isNaN(endDate)) {
-        errores.push("Las fechas de inicio y fin deben ser válidas.");
-    } 
     return errores;
 };
 
@@ -143,11 +139,11 @@ const obtenerEventos = async (req, res) => {
             });
 
             return {
-                id: evento.id, 
+                id: evento.id,
                 start: evento.start,
                 end: evento.end,
                 title: evento.title,
-                usuarioId: evento.usuario_id, 
+                usuarioId: evento.usuario_id,
                 data: {
                     lugar: evento.lugar,
                     descripcion: evento.descripcion,

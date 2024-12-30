@@ -8,9 +8,9 @@ export const startLogin = (data) => {
                 email: data.correo.trim(),
                 password: data.contraseña.trim(),
             }, {
-                withCredentials: true 
-            });   
-                              
+                withCredentials: true
+            });
+
             await dispatch(loginSuccess({ user: response.data }));
             await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));
         } catch (error) {
@@ -41,9 +41,9 @@ export const startLoadingPermisos = (id) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosInstance.get(`/gestion/permisos/${id}`
-                //     , {
-                //     withCredentials: true,
-                // }
+                , {
+                    withCredentials: true,
+                }
             );
             const permisos = data.map(permiso => ({
                 permisoId: permiso.permiso_id,
