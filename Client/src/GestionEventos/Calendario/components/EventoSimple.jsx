@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { startLoadingDepartamentos } from "../../../store/GestionEventos/thunk";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 export const EventoSimple = ({ event }) => {
   const { title, start, end, data } = event;
@@ -45,7 +45,13 @@ export const EventoSimple = ({ event }) => {
   }, [deptsCargados, departamento]);
 
   return (
-    <Box sx={{ width: { xs: "90%", md: "60%" }, margin: "0 auto", paddingBottom: 2 }}>
+    <Box
+      sx={{
+        width: { xs: "90%", md: "60%" },
+        margin: "0 auto",
+        paddingBottom: 2,
+      }}
+    >
       <Typography
         variant="body1"
         sx={{
@@ -62,8 +68,8 @@ export const EventoSimple = ({ event }) => {
       >
         <CalendarMonthIcon />
         {startDate}
-        {endDate !== startDate ? ` al ${endDate}` : ""} <AccessTimeIcon /> {startTime} -{" "}
-        {endTime}
+        {endDate !== startDate ? ` al ${endDate}` : ""} <AccessTimeIcon />{" "}
+        {startTime} - {endTime}
       </Typography>
       <Box
         sx={{
@@ -75,19 +81,26 @@ export const EventoSimple = ({ event }) => {
           mb: 4,
         }}
       >
-        <Typography
-          variant="body1"
-          sx={{
-            backgroundColor: "#0a3b91",
-            px: 2,
-            py: 1,
-            color: "white",
-          }}
-        >
-          {title} | {lugar}
+        <Box display="flex" backgroundColor="#0a3b91" justifyContent="start">
+          <Typography
+            variant="body1"
+            sx={{
+              backgroundColor: "#0a3b91",
+              px: 2,
+              py: 1,
+              color: "white",
+            }}
+          >
+            {title} | {lugar}
+          </Typography>
           {depts?.map((dep) => (
             <Box
-              sx={{ ml:"0.5rem", display: "inline-flex", gap: 0.5, alignItems: "center" }}
+              sx={{
+                ml: "0.5rem",
+                display: "inline-flex",
+                gap: 0.5,
+                alignItems: "center",
+              }}
               key={dep.id}
             >
               <span
@@ -108,7 +121,7 @@ export const EventoSimple = ({ event }) => {
               ></span>
             </Box>
           ))}
-        </Typography>
+        </Box>
         <Box
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
