@@ -8,6 +8,12 @@ const UsuariosModel = require("../modules/Auth/models/usuariosModel");
 const { sequelize } = require("./db");
 
 const agregarValoresIniciales = async () => {
+    const facultad = await FacultadesModel.count();
+    if (facultad === 0) {
+        await FacultadesModel.bulkCreate([
+            { nombre: 'FIEE' }
+        ]);
+    }
     const departamentos = await DepartamentosModel.count();
     if (departamentos === 0) {
         await DepartamentosModel.bulkCreate([
@@ -16,13 +22,6 @@ const agregarValoresIniciales = async () => {
             { nombre: 'DEE', facultad_id: 1 }
         ]);
     }
-    const facultad = await FacultadesModel.count();
-    if (facultad === 0) {
-        await FacultadesModel.bulkCreate([
-            { nombre: 'FIEE' }
-        ]);
-    }
-
     const niveles = await NivelesModel.count();
     if (niveles === 0) {
         await NivelesModel.bulkCreate([
