@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const DepartamentosModel = require("../modules/Administracion/models/Roles/departamentosModel");
 const FacultadesModel = require("../modules/Administracion/models/Roles/facultadesModel");
 const NivelesModel = require("../modules/Administracion/models/Roles/nivelesModel");
@@ -65,11 +66,12 @@ const agregarValoresIniciales = async () => {
     const user = await UsuariosModel.findOne({ where: { nombre: 'admn' } });
     let userAdmin = 0;
     if (!user) {
+        const hashedPassword = await bcrypt.hash(process.env.USERPASS, 10); 
         const admin = await UsuariosModel.create({
             nombre: process.env.USERADMIN,
             correo: process.env.USEREMAIL,
-            password: process.env.USERPASS,
-        })
+            password_hash: hashedPassword, 
+        });
         userAdmin = admin.id;
     }
 
