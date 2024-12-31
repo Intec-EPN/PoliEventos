@@ -6,7 +6,7 @@ const PersonasCargoModel = require('../personasCargoModel');
 
 const EventosPersonasCargoModel = sequelize.define('eventos_personas_cargo', {
     evento_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         references: {
@@ -16,7 +16,7 @@ const EventosPersonasCargoModel = sequelize.define('eventos_personas_cargo', {
         onDelete: 'CASCADE',
     },
     persona_cargo_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         references: {

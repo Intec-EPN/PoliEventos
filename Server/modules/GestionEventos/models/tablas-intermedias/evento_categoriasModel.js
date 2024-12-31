@@ -5,7 +5,7 @@ const CategoriasModel = require('../../../Administracion/models/Categorizaciones
 
 const EventosCategoriasModel = sequelize.define('eventos_categorias', {
     evento_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true, 
         references: {

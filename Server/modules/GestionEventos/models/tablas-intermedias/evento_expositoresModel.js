@@ -6,7 +6,7 @@ const ExpositoresModel = require('../expositoresModel');
 
 const EventosExpositoresModel = sequelize.define('eventos_expositores', {
     evento_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         references: {
@@ -16,7 +16,7 @@ const EventosExpositoresModel = sequelize.define('eventos_expositores', {
         onDelete: 'CASCADE',
     },
     expositor_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         references: {
