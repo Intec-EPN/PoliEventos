@@ -3,7 +3,7 @@ const { sequelize } = require('../../../config/db');
 
 const PersonasCargoModel = sequelize.define('personas_cargo', {
     id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
     },

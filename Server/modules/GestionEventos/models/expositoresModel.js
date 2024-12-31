@@ -4,7 +4,7 @@ const { sequelize } = require('../../../config/db');
 
 const ExpositoresModel = sequelize.define('expositores', {
     id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
     },

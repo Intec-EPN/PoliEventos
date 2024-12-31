@@ -5,7 +5,7 @@ const DepartamentosModel = require('../../../Administracion/models/Roles/departa
 
 const EventosDepartamentosModel = sequelize.define('eventos_departamentos', {
     evento_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         references: {

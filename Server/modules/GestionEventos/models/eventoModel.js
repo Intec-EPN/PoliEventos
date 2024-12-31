@@ -3,7 +3,7 @@ const { sequelize } = require('../../../config/db');
 
 const EventosModel = sequelize.define('Eventos', {
     id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
     },
@@ -31,7 +31,7 @@ const EventosModel = sequelize.define('Eventos', {
         type: DataTypes.INTEGER,
     },
     usuario_id: {
-        type: DataTypes.CHAR(36),
+        type: DataTypes.UUID,
         references: {
             model: 'usuarios',
             key: 'id',
