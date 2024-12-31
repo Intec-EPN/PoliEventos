@@ -1,13 +1,9 @@
 require('dotenv').config();
 const express = require('express');
-const multer = require('multer');
-const fs = require('fs');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { sequelize, authenticateDB } = require('./config/db');
 const routes = require('./modules/routes');
-const ExpositoresModel = require('./modules/GestionEventos/models/expositoresModel');
-const EventosExpositoresModel = require('./modules/GestionEventos/models/tablas-intermedias/evento_expositoresModel');
 const agregarValoresIniciales = require('./config/valoresIniciales');
 
 const app = express();
@@ -21,10 +17,10 @@ app.use(cookieParser());
 const corsOptions = {
     origin: 'http://localhost:5173', // Reemplaza con el dominio de tu cliente
     credentials: true, // Permitir el envío de cookies
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
 };
+// Configura CORS
 app.use(cors(corsOptions));
+
 
 // Rutas
 app.use('/api', routes); // Archivo de índice para manejar todas las rutas
@@ -35,7 +31,7 @@ const PORT = process.env.PORT || 5000;
 authenticateDB(); // Esto llamará a la función que autentica la base de datos
 
 // Sincronizar modelo y BDD
-sequelize.sync({force: false})
+sequelize.sync()
     .then(async () => {
         await agregarValoresIniciales();
         console.log('Base de datos sincronizada');

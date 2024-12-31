@@ -111,13 +111,11 @@ export const ModalEvento = ({
     }
 
     // Verificar y establecer fechas y horas si no son válidas
-    if (data.startDate === "DD/MM/YYYY" || data.startTime === "HH:mm") {
-      data.startDate = dayjs(start).format("DD/MM/YYYY");
-      data.startTime = dayjs(start).format("HH:mm");
+    if (!data.startTime || data.startTime === "HH:mm") {
+      data.startTime = dayjs().hour(8).minute(0).format("HH:mm");
     }
-    if (data.endDate === "DD/MM/YYYY" || data.endTime === "HH:mm") {
-      data.endDate = dayjs(end).format("DD/MM/YYYY");
-      data.endTime = dayjs(end).format("HH:mm");
+    if (!data.endTime || data.endTime === "HH:mm") {
+      data.endTime = dayjs().hour(9).minute(0).format("HH:mm");
     }
 
     const startDate = dayjs(

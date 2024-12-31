@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,15 @@ export const Ingresar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.adminAuth);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [error, setError] = useState(null);
+  const [exito, setExito] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -21,25 +30,16 @@ export const Ingresar = () => {
     }
   }, [user, navigate]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const [error, setError] = useState(null);
-  const [exito, setExito] = useState(false);
-
-  const onSubmit = async (data, event) => {
+  const onSubmit = async (data) => {
+    setExito(false);
+    setError(null);
     try {
       await dispatch(startLogin(data));
       setExito(true);
     } catch (err) {
-      console.error("Error en onSubmit:", err);
       setError(err.message || "Error al iniciar sesión");
     }
   };
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,7 +56,7 @@ export const Ingresar = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "0.3rem",
-          maxWidth:{xs:"18rem", sm:"100%"},
+          maxWidth: { xs: "18rem", sm: "100%" },
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: "600", color: "#0a2257" }}>

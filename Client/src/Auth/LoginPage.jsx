@@ -14,6 +14,7 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
+    console.log("useEffect - registroExitoso:", registroExitoso); // Agrega este log
     if (registroExitoso) {
       setTimeout(() => {
         setSeleccion("ingresar");
@@ -22,6 +23,10 @@ export const LoginPage = () => {
       }, 2000);
     }
   }, [registroExitoso]);
+
+  useEffect(() => {
+    console.log("useEffect - seleccion:", seleccion); // Agrega este log
+  }, [seleccion]);
 
   return (
     <>
@@ -35,7 +40,10 @@ export const LoginPage = () => {
           justifyContent: "center",
         }}
       >
-        <BotonSeleccionar alignment={seleccion} onSeleccionChange={handleSeleccionChange} />
+        <BotonSeleccionar
+          alignment={seleccion}
+          onSeleccionChange={handleSeleccionChange}
+        />
         {/* SEPARACIÓN DE LOS BOTONES */}
         {seleccion === "ingresar" ? (
           <Ingresar />

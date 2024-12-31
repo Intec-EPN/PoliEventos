@@ -71,14 +71,14 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
 
   useEffect(() => {
     if (startDate && !startTime) {
-      setStartTime("00:00");
-      setValue("startTime", "00:00");
-      console.log("Start time set to default 00:00");
+      setStartTime("08:00");
+      setValue("startTime", "08:00");
+      console.log("Start time set to default 08:00");
     }
     if (endDate && !endTime) {
-      setEndTime("00:00");
-      setValue("endTime", "00:00");
-      console.log("End time set to default 00:00");
+      setEndTime("09:00");
+      setValue("endTime", "09:00");
+      console.log("End time set to default 09:00");
     }
   }, [startDate, endDate, startTime, endTime, setValue]);
 

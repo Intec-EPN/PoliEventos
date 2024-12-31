@@ -12,22 +12,26 @@ const loginUsuario = [
     ValidarLogin, // Validar y sanitizar los campos
     async (req, res) => {
         const { email, password } = req.body;
+        console.log("loginUsuario - email:", email); // Agrega este log
         try {
             // Buscar el usuario por correo electrónico
             const usuario = await UsuariosModel.findOne({ where: { correo: email } });
             if (!usuario) {
-                return res.status(401).json({ error: 'Credenciales inválidas.' });
+                console.log("loginUsuario - usuario no encontrado"); // Agrega este log
+                return res.status(400).json({ error: 'Credenciales inválidas.' });
             }
 
             // Verificar si el usuario está habilitado
             if (!usuario.habilitado) {
-                return res.status(401).json({ error: 'Usuario no habilitado.' });
+                console.log("loginUsuario - usuario no habilitado"); // Agrega este log
+                return res.status(400).json({ error: 'Usuario no habilitado.' });
             }
 
             // Verificar la contraseña
             const isMatch = await bcrypt.compare(password, usuario.password_hash);
             if (!isMatch) {
-                return res.status(401).json({ error: 'Contraseña incorrecta.' });
+                console.log("loginUsuario - contraseña incorrecta"); // Agrega este log
+                return res.status(400).json({ error: 'Contraseña incorrecta.' });
             }
 
             // Obtener los roles del usuario utilizando el procedimiento almacenado
@@ -37,7 +41,8 @@ const loginUsuario = [
 
             // Verificar si roles está vacío
             if (roles.length === 0) {
-                return res.status(401).json({ error: 'El usuario no tiene roles asignados.' });
+                console.log("loginUsuario - sin roles asignados"); // Agrega este log
+                return res.status(400).json({ error: 'El usuario no tiene roles asignados.' });
             }
 
             // Obtener el id del primer rol del usuario
@@ -80,7 +85,7 @@ const loginUsuario = [
             res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
             console.error("Error en loginUsuario:", error);
-            res.status(401).json({ error: 'Error del inicio de sesión.' });
+            res.status(400).json({ error: 'Error del inicio de sesión.' });
         }
     }
 ];
