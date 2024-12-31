@@ -24,7 +24,7 @@ const RolesModel = sequelize.define('Roles',{
     },
     facultad_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false, 
+        allowNull: true, 
     } 
 
 },{

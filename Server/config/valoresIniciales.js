@@ -8,18 +8,19 @@ const UsuariosModel = require("../modules/Auth/models/usuariosModel");
 const { sequelize } = require("./db");
 
 const agregarValoresIniciales = async () => {
+    const facultad = await FacultadesModel.count();
+    if (facultad === 0) {
+        await FacultadesModel.bulkCreate([
+            { nombre: 'FIEE' }
+        ]);
+    }
+
     const departamentos = await DepartamentosModel.count();
     if (departamentos === 0) {
         await DepartamentosModel.bulkCreate([
             { nombre: 'DETRI', facultad_id: 1 },
             { nombre: 'DACI', facultad_id: 1 },
             { nombre: 'DEE', facultad_id: 1 }
-        ]);
-    }
-    const facultad = await FacultadesModel.count();
-    if (facultad === 0) {
-        await FacultadesModel.bulkCreate([
-            { nombre: 'FIEE' }
         ]);
     }
 
@@ -51,8 +52,6 @@ const agregarValoresIniciales = async () => {
     let rolAdmin = 0;
     if (!rol) {
         await sequelize.transaction(async (t) => {
-            await sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { transaction: t });
-
             const nuevoRol = await RolesModel.create({
                 nombre: 'Administrador',
                 descripcion: 'Rol especial para el administrador',
@@ -61,8 +60,6 @@ const agregarValoresIniciales = async () => {
             }, { transaction: t });
 
             rolAdmin = nuevoRol.id;
-
-            await sequelize.query('SET FOREIGN_KEY_CHECKS = 1', { transaction: t });
         });
     }
 
