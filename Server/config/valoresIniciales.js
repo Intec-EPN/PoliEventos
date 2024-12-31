@@ -67,7 +67,7 @@ const agregarValoresIniciales = async () => {
     if (!user) {
         const admin = await UsuariosModel.create({
             nombre: process.env.USERADMIN,
-            email: process.env.USEREMAIL,
+            correo: process.env.USEREMAIL,
             password: process.env.USERPASS,
         })
         userAdmin = admin.id;
