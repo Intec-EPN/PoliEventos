@@ -24,22 +24,25 @@ export const LoginPage = () => {
   }, [registroExitoso]);
 
   return (
-    <Box
-      sx={{
-        background: "radial-gradient(circle, #03266e 0%, #151e37 100%)",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <BotonSeleccionar alignment={seleccion} onSeleccionChange={handleSeleccionChange} />
-      {seleccion === "ingresar" ? (
-        <Ingresar />
-      ) : (
-        <Registrar onRegistroExitoso={() => setRegistroExitoso(true)} />
-      )}
-    </Box>
+    <>
+      <Box
+        sx={{
+          background: "radial-gradient(circle, #03266e 0%, #151e37 100%)",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <BotonSeleccionar alignment={seleccion} onSeleccionChange={handleSeleccionChange} />
+        {/* SEPARACIÓN DE LOS BOTONES */}
+        {seleccion === "ingresar" ? (
+          <Ingresar />
+        ) : (
+          <Registrar onRegistroExitoso={() => setRegistroExitoso(true)} />
+        )}
+      </Box>
+    </>
   );
 };

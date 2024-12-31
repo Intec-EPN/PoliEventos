@@ -14,12 +14,10 @@ export const startLogin = (data) => {
             await dispatch(loginSuccess({ user: response.data }));
             await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));
         } catch (error) {
-            if (error.response && error.response.status === 401) {
-                throw new Error("Credenciales incorrectas");
-            } else if (error.response && error.response.data && error.response.data.error) {
+            if (error.response && error.response.data && error.response.data.error) {
                 throw new Error(error.response.data.error);
             } else {
-                throw new Error("Error al iniciar sesión");
+                throw new Error("Credenciales incorrectas");
             }
         }
     };
@@ -42,9 +40,11 @@ export const startLogout = () => {
 export const startLoadingPermisos = (id) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosInstance.get(`/gestion/permisos/${id}`, {
-                withCredentials: true,
-            });
+            const { data } = await axiosInstance.get(`/gestion/permisos/${id}`
+                , {
+                    withCredentials: true,
+                }
+            );
             const permisos = data.map(permiso => ({
                 permisoId: permiso.permiso_id,
                 accionNombre: permiso.accion,

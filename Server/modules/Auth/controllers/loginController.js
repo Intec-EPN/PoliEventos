@@ -75,7 +75,7 @@ const loginUsuario = [
                 sameSite: 'lax', // Protección contra CSRF
                 maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
-            // TODO QUITAR LO NECESARIO
+
             // Responder con éxito
             res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
