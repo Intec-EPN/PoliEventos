@@ -10,10 +10,8 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const loginUsuario = [
     ValidarLogin, // Validar y sanitizar los campos
-
     async (req, res) => {
         const { email, password } = req.body;
-
         try {
 
             // Buscar el usuario por correo electrónico

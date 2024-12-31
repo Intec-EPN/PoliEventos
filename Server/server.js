@@ -9,6 +9,7 @@ const routes = require('./modules/routes');
 const ExpositoresModel = require('./modules/GestionEventos/models/expositoresModel');
 const EventosExpositoresModel = require('./modules/GestionEventos/models/tablas-intermedias/evento_expositoresModel');
 const agregarValoresIniciales = require('./config/valoresIniciales');
+const crearProcedimientosAlmacenados = require('./config/procedimientosAlmacenados');
 
 const app = express();
 
@@ -40,6 +41,7 @@ authenticateDB(); // Esto llamará a la función que autentica la base de datos
 sequelize.sync({ force: true })
     .then(async () => {
         await agregarValoresIniciales();
+        await crearProcedimientosAlmacenados();
         console.log('Base de datos sincronizada');
         app.listen(PORT, () => {
             console.log(`Servidor corriendo en el puerto ${PORT}`);
