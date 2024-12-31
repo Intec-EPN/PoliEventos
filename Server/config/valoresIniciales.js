@@ -50,8 +50,6 @@ const agregarValoresIniciales = async () => {
     let rolAdmin = 0;
     if (!rol) {
         await sequelize.transaction(async (t) => {
-            await sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { transaction: t });
-
             const nuevoRol = await RolesModel.create({
                 nombre: 'Administrador',
                 descripcion: 'Rol especial para el administrador',
@@ -60,10 +58,9 @@ const agregarValoresIniciales = async () => {
             }, { transaction: t });
 
             rolAdmin = nuevoRol.id;
-
-            await sequelize.query('SET FOREIGN_KEY_CHECKS = 1', { transaction: t });
         });
     }
+
 
     const user = await UsuariosModel.findOne({ where: { nombre: 'admn' } });
     let userAdmin = 0;
