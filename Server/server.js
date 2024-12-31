@@ -38,10 +38,10 @@ authenticateDB(); // Esto llamará a la función que autentica la base de datos
 
 
 // Sincronizar modelo y BDD
-sequelize.sync({ force: true })
+sequelize.sync()
     .then(async () => {
         await agregarValoresIniciales();
-        await crearProcedimientosAlmacenados();
+        // await crearProcedimientosAlmacenados();
         console.log('Base de datos sincronizada');
         app.listen(PORT, () => {
             console.log(`Servidor corriendo en el puerto ${PORT}`);

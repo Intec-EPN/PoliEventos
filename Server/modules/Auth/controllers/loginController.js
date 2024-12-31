@@ -13,7 +13,6 @@ const loginUsuario = [
     async (req, res) => {
         const { email, password } = req.body;
         try {
-
             // Buscar el usuario por correo electrónico
             const usuario = await UsuariosModel.findOne({ where: { correo: email } });
             if (!usuario) {
@@ -32,7 +31,9 @@ const loginUsuario = [
             }
 
             // Obtener los roles del usuario utilizando el procedimiento almacenado
+            console.log("Obteniendo roles para el usuario:", usuario.id);
             const roles = await obtenerRolesPorUsuario(usuario.id);
+            console.log("Roles obtenidos:", roles);
 
             // Verificar si roles está vacío
             if (roles.length === 0) {
@@ -47,6 +48,7 @@ const loginUsuario = [
                 where: { rol_id: rolId },
                 include: [{ model: PermisosModel, as: 'Permiso' }]
             });
+            console.log("Permisos obtenidos:", permisos);
 
             // Determinar el nivel de acceso más alto
             let nivelAcceso = 'propio';
@@ -77,19 +79,27 @@ const loginUsuario = [
             // Responder con éxito
             res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
+            console.error("Error en loginUsuario:", error);
             res.status(401).json({ error: 'Error del inicio de sesión.' });
         }
     }
 ];
 
 const obtenerRolesPorUsuario = async (usuario_id) => {
-    const results = await sequelize.query('CALL ObtenerRolesPorUsuarioId(:usuario_id)', {
-        replacements: { usuario_id },
-        type: sequelize.QueryTypes.SELECT
-    });
-    // Transformar el objeto en un array
-    const rolesArray = Object.values(results[0]);
-    return rolesArray || [];
+    try {
+        console.log("Ejecutando procedimiento almacenado para usuario_id:", usuario_id);
+        const results = await sequelize.query('CALL ObtenerRolesPorUsuarioId(:usuario_id)', {
+            replacements: { usuario_id },
+            type: sequelize.QueryTypes.SELECT
+        });
+        console.log("Resultados del procedimiento almacenado:", results);
+        // Transformar el objeto en un array
+        const rolesArray = Object.values(results[0]);
+        return rolesArray || [];
+    } catch (error) {
+        console.error("Error en obtenerRolesPorUsuario:", error);
+        throw error;
+    }
 };
 
 module.exports = { loginUsuario, obtenerRolesPorUsuario };

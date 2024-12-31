@@ -87,12 +87,12 @@ export const Ingresar = () => {
             error={!!errors.contraseña}
             helperText={errors.contraseña?.message}
           />
+          {error && (
+            <Typography variant="body2" color="error" mb={2}>
+              {error}
+            </Typography>
+          )}
         </Box>
-        {error && (
-          <Typography variant="body2" color="error" mb={2}>
-            {error}
-          </Typography>
-        )}
         {exito && (
           <Typography variant="body2" color="success" mb={2}>
             Inicio de sesión exitoso

@@ -11,10 +11,5 @@ router.post('/create', crearUsuario);
 router.post('/login', loginUsuario);
 router.post('/logout', authMiddleware, logoutUsuario);
 
-// Ruta protegida de prueba
-router.get('/test', authMiddleware, (req, res) => {
-    res.status(200).json({ message: 'Ruta de prueba', user: req.user });
-});
-
 
 module.exports = router;
