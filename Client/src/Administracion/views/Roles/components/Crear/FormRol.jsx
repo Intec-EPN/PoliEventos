@@ -39,13 +39,13 @@ export const FormRol = () => {
 
   // Traigo los permisos como array para convertirlos a objeto.
   const { permisosAcciones } = useSelector((state) => state.permiso);
-
+  
   // Convertir array de niveles en un objeto con las claves "Propio", "Departamento", "Facultad"
   const niveles = permisosAcciones.reduce((acc, nivel) => {
     acc[nivel.nombre] = nivel;
     return acc;
   }, {});
-
+  
   useEffect(() => {
     if (!creandoRol) {
       reset({

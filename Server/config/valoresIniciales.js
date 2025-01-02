@@ -27,7 +27,7 @@ const agregarValoresIniciales = async () => {
     if (niveles === 0) {
         await NivelesModel.bulkCreate([
             { nombre: 'Propio', color: '#FFF', icono: 'PersonIcon' },
-            { nombre: 'PropiDepartamentoo', color: '#FFF', icono: 'ApartmentIcon' },
+            { nombre: 'Departamento', color: '#FFF', icono: 'ApartmentIcon' },
             { nombre: 'Facultad', color: '#FFF', icono: 'AccountBalanceIcon' },
         ]);
     }
