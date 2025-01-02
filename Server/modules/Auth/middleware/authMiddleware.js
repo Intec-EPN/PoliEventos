@@ -4,7 +4,7 @@ const jwtSecret = process.env.JWT_SECRET;
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.access_token;
     if (!token) {
-        return res.status(401).json({ message: 'Acceso no autorizado T.' });
+        return res.status(400).json({ message: 'Acceso no autorizado T.' });
     }
     try {
         const decoded = jwt.verify(token, jwtSecret);
@@ -13,7 +13,7 @@ const authMiddleware = (req, res, next) => {
         // Continuar con la siguiente función de middleware o ruta
         next();
     } catch (error) {
-        return res.status(401).json({ message: 'Acceso no autorizado. A' });
+        return res.status(400).json({ message: 'Acceso no autorizado. A' });
     }
 };
 

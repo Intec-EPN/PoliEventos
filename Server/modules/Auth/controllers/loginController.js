@@ -12,36 +12,28 @@ const loginUsuario = [
     ValidarLogin, // Validar y sanitizar los campos
     async (req, res) => {
         const { email, password } = req.body;
-        console.log("loginUsuario - email:", email); // Agrega este log
         try {
             // Buscar el usuario por correo electrónico
             const usuario = await UsuariosModel.findOne({ where: { correo: email } });
             if (!usuario) {
-                console.log("loginUsuario - usuario no encontrado"); // Agrega este log
                 return res.status(400).json({ error: 'Credenciales inválidas.' });
             }
 
             // Verificar si el usuario está habilitado
             if (!usuario.habilitado) {
-                console.log("loginUsuario - usuario no habilitado"); // Agrega este log
                 return res.status(400).json({ error: 'Usuario no habilitado.' });
             }
 
             // Verificar la contraseña
             const isMatch = await bcrypt.compare(password, usuario.password_hash);
             if (!isMatch) {
-                console.log("loginUsuario - contraseña incorrecta"); // Agrega este log
                 return res.status(400).json({ error: 'Contraseña incorrecta.' });
             }
 
-            // Obtener los roles del usuario utilizando el procedimiento almacenado
-            console.log("Obteniendo roles para el usuario:", usuario.id);
             const roles = await obtenerRolesPorUsuario(usuario.id);
-            console.log("Roles obtenidos:", roles);
 
             // Verificar si roles está vacío
             if (roles.length === 0) {
-                console.log("loginUsuario - sin roles asignados"); // Agrega este log
                 return res.status(400).json({ error: 'El usuario no tiene roles asignados.' });
             }
 
@@ -53,7 +45,6 @@ const loginUsuario = [
                 where: { rol_id: rolId },
                 include: [{ model: PermisosModel, as: 'Permiso' }]
             });
-            console.log("Permisos obtenidos:", permisos);
 
             // Determinar el nivel de acceso más alto
             let nivelAcceso = 'propio';
@@ -92,12 +83,10 @@ const loginUsuario = [
 
 const obtenerRolesPorUsuario = async (usuario_id) => {
     try {
-        console.log("Ejecutando procedimiento almacenado para usuario_id:", usuario_id);
         const results = await sequelize.query('CALL ObtenerRolesPorUsuarioId(:usuario_id)', {
             replacements: { usuario_id },
             type: sequelize.QueryTypes.SELECT
         });
-        console.log("Resultados del procedimiento almacenado:", results);
         // Transformar el objeto en un array
         const rolesArray = Object.values(results[0]);
         return rolesArray || [];
