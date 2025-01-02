@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UsuariosModel = require("../models/usuariosModel");
@@ -68,7 +69,7 @@ const loginUsuario = [
             res.cookie('access_token', token, {
                 httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
                 secure: process.env.NODE_ENV === 'production', // Sólo por HTTPS en producción
-                sameSite: 'lax', // Protección contra CSRF
+                sameSite: 'none', // Protección contra CSRF
                 maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
 
