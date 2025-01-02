@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { Calendario } from "./Calendario";
 import { EventoSimple } from "./components/EventoSimple";
 import { useDispatch, useSelector } from "react-redux";
-import { startLoadingEventos } from "../../store/GestionEventos/thunk";
+import {
+  startLoadingDepartamentos,
+  startLoadingEventos,
+} from "../../store/GestionEventos/thunk";
 import { useNavigate } from "react-router-dom";
 import { startLogout } from "../../store/auth/thunks";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -13,8 +16,14 @@ import { LogoutOutlined } from "@mui/icons-material";
 import { ModalReporte } from "./components/ModalReporte";
 
 export const EventosPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formato, setFormato] = useState(true);
   const [modalReporteIsOpen, setModalReporteIsOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(startLoadingDepartamentos());
+  }, [dispatch]);
 
   const [events, setEvents] = useState([]);
   const [reportePermiso, setReportePermiso] = useState(false);
@@ -23,9 +32,6 @@ export const EventosPage = () => {
   const { nivelPropio, permisos } = useSelector((state) => state.adminAuth);
 
   const { departamentos } = useSelector((state) => state.gestionEvento);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(startLoadingEventos());
