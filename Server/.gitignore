@@ -28,3 +28,6 @@ node_modules
 # Specific API path
 src/api/api.js
 
+archivosEventos/*
+
+
