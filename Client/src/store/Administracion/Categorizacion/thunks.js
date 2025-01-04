@@ -119,9 +119,7 @@ export const startDeletingEsquema = (id) => {
 };
 
 
-export const startDeletingCategory = ({idCategoria, idEsquema}) => {
-    console.log(idCategoria, idEsquema);
-    
+export const startDeletingCategory = ({idCategoria, idEsquema}) => {   
     return async (dispatch) => {
         try {
             // Se manda a eliminar con el id simplemente:

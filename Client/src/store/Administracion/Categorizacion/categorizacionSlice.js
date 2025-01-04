@@ -61,8 +61,6 @@ export const categorizacionSlice = createSlice({
             const esquemaEncontrado = state.esquemas.find(esq => esq.nombre === action.payload);
             if (esquemaEncontrado) {
                 state.esquemaCategorizacionActual = esquemaEncontrado;
-            } else {
-                console.log('No se encontró el esquema.');
             }
         },
         setNuevoEsquemaCategorizacionActual: (state, action) => {

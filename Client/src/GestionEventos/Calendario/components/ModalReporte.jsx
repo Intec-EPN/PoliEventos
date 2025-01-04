@@ -244,9 +244,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     setEndDate(endDate);
     const filteredEvents = filterEvents(startDate, endDate);
 
-    console.log("Filtered Events:", filteredEvents);
-    console.log("Selected Esquema Categoria:", selectedEsquemaCategoria);
-
     const groupedData = groupEventsByTimeRange(
       filteredEvents,
       timeRange,

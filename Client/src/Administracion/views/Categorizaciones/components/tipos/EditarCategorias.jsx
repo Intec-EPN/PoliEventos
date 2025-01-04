@@ -110,7 +110,6 @@ export const EditarCategorias = () => {
   const onSubmit = (data) => {
     const { nombre, descripcion, nuevasCategorias } = data;
     if (!nombre || !descripcion) {
-      console.log("Hay errores en los campos del hijo");
       return;
     }
 
@@ -118,7 +117,6 @@ export const EditarCategorias = () => {
     if (handleAgregarCategoria && nuevasCategorias) {
       for (const categoria of nuevasCategorias) {
         if (!categoria.value) {
-          console.log("Hay categorías nuevas vacías");
           return;
         }
       }

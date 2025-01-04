@@ -31,7 +31,6 @@ export const startCreateEvento = (files) => {
             }, {
                 withCredentials: true,
             });
-            console.log(data);
 
             const eventoId = data.evento.id; // Obtener el ID del evento
 
@@ -47,16 +46,12 @@ export const startCreateEvento = (files) => {
 };
 
 export const startEditingEvento = (eventoId, files) => {
-    console.log("files", files);
     return async (dispatch, getState) => {
         try {
             const state = getState();
             const eventoEdicion = state.gestionEvento.eventoEdicion;
             const departamentos = state.gestionEvento.eventoEdicion.data.departamento;
             const usuarioId = state.adminAuth.user.id;
-
-            console.log("eventoEdicion", eventoEdicion);
-
 
             const url = `/gestion/${eventoId}`;
             await axiosInstance.put(url, {
@@ -119,7 +114,6 @@ export const startDeletingArchivos = ({ eventoId }) => {
     return async (dispatch) => {
         try {
             const url = `/gestion/archivo/${eventoId}`;
-            console.log(url);
 
             await axiosInstance.delete(url, {
                 withCredentials: true,
@@ -135,7 +129,6 @@ export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
     return async (dispatch) => {
         try {
             const url = `/gestion/archivo/${nombreArchivo}/${eventoId.eventId}`;
-            console.log(url);
 
             await axiosInstance.delete(url, {
                 withCredentials: true,

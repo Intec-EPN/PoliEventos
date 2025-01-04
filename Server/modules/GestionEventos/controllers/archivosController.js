@@ -1,7 +1,7 @@
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const archiver = require("archiver"); 
+const archiver = require("archiver");
 
 
 // Configuración de multer para guardar archivos
@@ -152,19 +152,14 @@ const editarNombresArchivosPorEvento = async (req, res) => {
 
 const obtenerArchivosPorEvento = async (req, res) => {
   const { idEvento } = req.params;
-  console.log('idevento', idEvento);
-  
+
   const uploadPath = path.join(__dirname, "../../../archivosEventos");
 
   fs.readdir(uploadPath, (err, files) => {
     if (err) {
       return res.status(500).json({ error: "Error al leer los archivos" });
     }
-
     const archivosEvento = files.filter(file => file.includes(`__${idEvento}__`));
-
-    console.log('encontrados', archivosEvento);
-    
     res.status(200).json({ archivos: archivosEvento });
   });
 }

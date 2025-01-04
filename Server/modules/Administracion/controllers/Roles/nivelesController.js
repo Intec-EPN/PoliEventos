@@ -7,7 +7,6 @@ const obtenerNivelesBase = async(req, res) => {
         const result = await sequelize.query('call ObtenerNiveles();');        
         res.status(200).json(result);
     } catch (error) {
-        console.log(`Error al obtener niveles: ${error}`);
         res.status(500).json({error: 'Error al obtener niveles.'});
     }
 };
@@ -20,7 +19,6 @@ const obtenerNivelesArray = async () => {
         });
         return niveles;
     } catch (error) {
-        console.error(`Error al obtener los niveles: ${error}`);
         throw new Error('Error al obtener los niveles.');
     }
 }

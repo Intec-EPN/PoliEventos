@@ -25,7 +25,6 @@ const obtenerRolDescripcionId = async (req, res) => {
             res.status(500).json({ error: 'Rol no encontrado.' });
         }
     } catch (error) {
-        console.log(`Error al obtener rol con descripcion: ${error}`);
         res.status(500).json({ error: 'Error al obtener rol con descripcion.' });
     }
 };
@@ -169,8 +168,6 @@ const eliminarRolPorNombre = async (req, res) => {
     const nombre = req.params.nombre.trim(); // Trimear el nombre del rol
     // TODO VALIDAR QUE NO EXISTAN EVENTOS CON RELACIÓN A ALGUNA CATEGORÍA DE LOS USUARIOS
     try {
-        console.log(nombre);
-        
         // Verificamos si el rol existe antes de intentar eliminar
         const rolExistente = await RolesModel.findOne({ where: { nombre } });
         

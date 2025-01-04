@@ -73,7 +73,6 @@ export const ModalEditar = ({
   useEffect(() => {
     if (modalIsOpen && event) {
       setLoading(true);
-      console.log("Modal abierto con evento:", event);
       methods.reset({
         esquemasCategorias: event.data?.esquemaCategoria || [],
         personasCargo: event.data?.personasACargo || [],
@@ -92,7 +91,6 @@ export const ModalEditar = ({
       setTimeout(() => setLoading(false), 1500);
     } else if (modalIsOpen && !event) {
       setLoading(true);
-      console.log("Modal abierto sin evento");
       methods.reset({
         esquemasCategorias: [],
         personasCargo: [],

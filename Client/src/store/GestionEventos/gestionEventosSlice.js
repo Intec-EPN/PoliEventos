@@ -101,8 +101,6 @@ export const gestionEventosSlice = createSlice({
                     enlaces
                 },
             };
-            console.log(state.eventoEdicion);
-            
         },
         setDepartamentos: (state, action) => {
             state.departamentos = action.payload;

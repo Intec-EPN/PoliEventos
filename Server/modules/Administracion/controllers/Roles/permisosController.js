@@ -8,7 +8,6 @@ const obtenerPermisosBase = async (req, res) => {
         const result = await sequelize.query('call ObtenerPermisos();');
         res.status(200).json(result);
     } catch (error) {
-        console.log(`Error al obtener permisos: ${error}`);
         res.status(500).json({ error: 'Error al obtener permisos.' });
     }
 };
