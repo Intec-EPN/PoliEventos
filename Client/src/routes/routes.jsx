@@ -11,6 +11,7 @@ import { ListaUsuarios } from "../Administracion/views/Usuarios/Lista/ListaUsuar
 import { Usuarios } from "../Administracion/views/Usuarios/Usuarios";
 import { LoginMain } from "../Auth/LoginMain";
 import { AdminAuth } from "../components/AdminAuth";
+import { ErrorMessage } from "../components/ErrorMessage";
 import { RolesAuth } from "../components/RolesAuth";
 import { EventosGeneralPage } from "../Eventos/EventosGeneralPage";
 import { EventosPage } from "../GestionEventos/Calendario/EventosPage";
@@ -83,7 +84,15 @@ export const routes = [
     element: <RolesAuth component={EventosPage} />,
   },
   {
-    path: "/eventos",
+    path: "/",
     element: <EventosGeneralPage />,
+  },
+  {
+    path: "/error",
+    element: <ErrorMessage />,
+  },
+  {
+    path: "*",
+    element: <ErrorMessage />,
   },
 ];
