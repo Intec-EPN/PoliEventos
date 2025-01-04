@@ -5,11 +5,9 @@ import { saveAs } from "file-saver";
 export const startLoadingEventos = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosInstance.get("/gestion"
-                , {
-                    withCredentials: true,
-                }
-            );
+            const { data } = await axiosInstance.get("/gestion", {
+                withCredentials: true,
+            });
             dispatch(setEventos(data));
         } catch (error) {
             console.error("Error al cargar eventos", error);
@@ -27,15 +25,12 @@ export const startCreateEvento = (files) => {
 
             const usuarioId = state.adminAuth.user.id;
 
-            const { data } = await axiosInstance.post("/gestion",
-                {
-                    usuarioId: usuarioId,
-                    eventoCreacion: eventoCreacion
-                }
-                , {
-                    withCredentials: true,
-                }
-            );
+            const { data } = await axiosInstance.post("/gestion", {
+                usuarioId: usuarioId,
+                eventoCreacion: eventoCreacion
+            }, {
+                withCredentials: true,
+            });
             console.log(data);
 
             const eventoId = data.evento.id; // Obtener el ID del evento
@@ -64,15 +59,12 @@ export const startEditingEvento = (eventoId, files) => {
 
 
             const url = `/gestion/${eventoId}`;
-            await axiosInstance.put(url,
-                {
-                    usuarioId: usuarioId,
-                    eventoEdicion: eventoEdicion
-                }
-                , {
-                    withCredentials: true,
-                }
-            );
+            await axiosInstance.put(url, {
+                usuarioId: usuarioId,
+                eventoEdicion: eventoEdicion
+            }, {
+                withCredentials: true,
+            });
             if (files.length > 0) {
                 dispatch(startUpLoadingArchivos({ files, eventoId, departamentos }));
             }
@@ -98,7 +90,6 @@ export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            }, {
                 withCredentials: true,
             });
         } catch (error) {
@@ -113,11 +104,9 @@ export const startDeletingEvento = (eventoId) => {
     return async (dispatch) => {
         try {
             const url = `/gestion/${eventoId}`;
-            await axiosInstance.delete(url
-                , {
-                    withCredentials: true,
-                }
-            );
+            await axiosInstance.delete(url, {
+                withCredentials: true,
+            });
             dispatch(startDeletingArchivos({ eventoId }))
             dispatch(startLoadingEventos());
         } catch (error) {
@@ -132,11 +121,9 @@ export const startDeletingArchivos = ({ eventoId }) => {
             const url = `/gestion/archivo/${eventoId}`;
             console.log(url);
 
-            await axiosInstance.delete(url
-                , {
-                    withCredentials: true,
-                }
-            );
+            await axiosInstance.delete(url, {
+                withCredentials: true,
+            });
             dispatch(startLoadingEventos());
         } catch (error) {
             throw new Error("Error al eliminar archivo");
@@ -150,11 +137,9 @@ export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
             const url = `/gestion/archivo/${nombreArchivo}/${eventoId.eventId}`;
             console.log(url);
 
-            await axiosInstance.delete(url
-                , {
-                    withCredentials: true,
-                }
-            );
+            await axiosInstance.delete(url, {
+                withCredentials: true,
+            });
             dispatch(startLoadingEventos());
         } catch (error) {
             throw new Error("Error al eliminar archivo");
@@ -165,11 +150,9 @@ export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
 export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosInstance.get("/gestion/departamentos/"
-                , {
-                    withCredentials: true,
-                }
-            );
+            const { data } = await axiosInstance.get("/gestion/departamentos/", {
+                withCredentials: true,
+            });
             dispatch(setDepartamentos(data));
         } catch (error) {
             console.error("Error al cargar departamentos", error);
@@ -181,11 +164,9 @@ export const startLoadingDepartamentos = () => {
 export const startLoadingEsquemasCategorias = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosInstance.get("/gestion/esquemas_categorias/"
-                , {
-                    withCredentials: true,
-                }
-            );
+            const { data } = await axiosInstance.get("/gestion/esquemas_categorias/", {
+                withCredentials: true,
+            });
             dispatch(setEsquemasCategorias(data));
         } catch (error) {
             console.error("Error al cargar departamentos", error);
@@ -198,11 +179,9 @@ export const startLoadingArchivos = (eventoId) => {
     return async (dispatch) => {
         let { eventId } = eventoId;
         try {
-            const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`
-                , {
-                    withCredentials: true,
-                }
-            );
+            const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`, {
+                withCredentials: true,
+            });
             dispatch(setFilesObtenidos(data));
         } catch (error) {
             console.error("Error al cargar archivos", error);
@@ -216,11 +195,9 @@ export const startLoadingArchivosPorIds = (eventIds) => {
         try {
             const archivos = [];
             for (const eventId of eventIds) {
-                const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`
-                    , {
-                        withCredentials: true,
-                    }
-                );
+                const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`, {
+                    withCredentials: true,
+                });
                 archivos.push(...data.archivos);
             }
             if (archivos.length > 0) {
@@ -240,7 +217,6 @@ export const startDescargarArchivosZip = (archivos) => {
         try {
             const { data } = await axiosInstance.post("/gestion/descargar-zip", { archivos }, {
                 responseType: 'blob',
-            }, {
                 withCredentials: true,
             });
             const blob = new Blob([data], { type: 'application/zip' });

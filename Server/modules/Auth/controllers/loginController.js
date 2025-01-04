@@ -68,11 +68,15 @@ const loginUsuario = [
             // Establecer la cookie con el token
             res.cookie('access_token', token, {
                 httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
-                secure: process.env.NODE_ENV === 'production', // Sólo por HTTPS en producción
+                // secure: process.env.NODE_ENV === 'production', // Sólo por HTTPS en producción
+                secure: true,
                 sameSite: 'none', // Protección contra CSRF
-                maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
+                // maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
 
+            // Agregar un console.log para ver si la cookie se establece correctamente
+            console.log("Cookie establecida:", req.cookies);
+            
             // Responder con éxito
             res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {

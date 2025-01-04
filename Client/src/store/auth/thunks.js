@@ -36,11 +36,9 @@ export const startLogout = () => {
 export const startLoadingPermisos = (id) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosInstance.get(`/gestion/permisos/${id}`
-                , {
-                    withCredentials: true,
-                }
-            );
+            const { data } = await axiosInstance.get(`/gestion/permisos/${id}`, {
+                withCredentials: true,
+            });
             const permisos = data.map(permiso => ({
                 permisoId: permiso.permiso_id,
                 accionNombre: permiso.accion,

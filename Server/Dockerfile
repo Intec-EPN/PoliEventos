@@ -10,6 +10,10 @@ COPY package.json package-lock.json ./
 # Instalación de dependencias
 RUN npm ci
 
+# Esperar a que se levante la base:
+RUN apt-get update && apt-get install -y wait-for-it
+
+
 # Copia el resto de los archivos del backend
 COPY . .
 
@@ -17,4 +21,4 @@ COPY . .
 EXPOSE 3000
 
 # Comando para ejecutar tu aplicación
-CMD ["node", "server.js"]
+CMD ["wait-for-it", "db:3306", "--", "node", "server.js"]

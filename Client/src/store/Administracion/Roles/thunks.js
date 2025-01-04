@@ -4,7 +4,9 @@ import { setCreandoRolEnBase, setDepartamento, setFacultades, setPermisos, setRo
 export const startLoadingRoles = () => {
     return async (dispatch) => {
         try {
-            const response = await axiosInstance.get('/admin/roles/array');
+            const response = await axiosInstance.get('/admin/roles/array', {
+                withCredentials: true,
+            });
             dispatch(setRoles(response.data));
         } catch (error) {
             throw new Error("Error al cargar", error);
@@ -15,7 +17,9 @@ export const startLoadingRoles = () => {
 export const startLoadingFacultades = () => {
     return async (dispatch) => {
         try {
-            const response = await axiosInstance.get('/admin/facultades/');
+            const response = await axiosInstance.get('/admin/facultades/', {
+                withCredentials: true,
+            });
             dispatch(setFacultades(response.data));
         } catch (error) {
             throw new Error("Error al cargar", error);
@@ -27,7 +31,9 @@ export const startLoadingDepartamentosFacultades = () => {
     return async (dispatch) => {
         try {
             // Para escalar a más facultades, aquí se enviará el id de la facultad.
-            const { data: deptFacultad } = await axiosInstance.get('admin/facultades/getdept/1');
+            const { data: deptFacultad } = await axiosInstance.get('admin/facultades/getdept/1', {
+                withCredentials: true,
+            });
 
             const departamentosFacultad = deptFacultad.map(dept => dept.departamento);
 
@@ -43,7 +49,9 @@ export const startLoadingPermisosEstructura = () => {
     return async (dispatch) => {
         try {
             // Traigo los permisos con sus correspondientes cuestiones.
-            const { data } = await axiosInstance.get('admin/permisos/estructura');
+            const { data } = await axiosInstance.get('admin/permisos/estructura', {
+                withCredentials: true,
+            });
             dispatch(setPermisos(data));
         } catch (error) {
             throw new Error("Error al cargar", error);
@@ -55,7 +63,9 @@ export const startCreatingRoles = (rolData) => {
     return async (dispatch) => {
         dispatch(setCreandoRolEnBase(true));
         try {
-            await axiosInstance.post('admin/roles/create', rolData);
+            await axiosInstance.post('admin/roles/create', rolData, {
+                withCredentials: true,
+            });
             dispatch(startLoadingRoles());
             dispatch(setCreandoRolEnBase(false));
             return true;
@@ -72,7 +82,9 @@ export const startCreatingRoles = (rolData) => {
 export const startDeletingRol = (nombre) => {
     return async (dispatch) => {
         try {
-            await axiosInstance.delete(`admin/roles/${nombre.trim()}`); // Trimear el nombre del rol
+            await axiosInstance.delete(`admin/roles/${nombre.trim()}`, {
+                withCredentials: true,
+            }); // Trimear el nombre del rol
             // TODO debug
             dispatch(startLoadingRoles());
         } catch (error) {

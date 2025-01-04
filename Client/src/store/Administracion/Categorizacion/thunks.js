@@ -4,7 +4,9 @@ import { agregarEsquema, eliminarCategoria, eliminarEsquema, setCancelar, setEsq
 export const startLoadingEsquemas = () => {
     return async (dispatch) => {
         try {
-            const response = await axiosInstance.get('/admin/esquemas/get');
+            const response = await axiosInstance.get('/admin/esquemas/get', {
+                withCredentials: true,
+            });
             dispatch(setEsquemas(response.data))
         } catch (error) {
             throw new Error("Error al cargar", error);
@@ -30,7 +32,9 @@ export const startEditingEsquema = (id) => {
                 visible: esquemaCategorizacionActual.visible,
                 categorias: esquemaCategorizacionActual.categorias
             };
-            await axiosInstance.put(`/admin/esquemas/${id}`, data);
+            await axiosInstance.put(`/admin/esquemas/${id}`, data, {
+                withCredentials: true,
+            });
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 alert(error.response.data.message);
@@ -56,7 +60,9 @@ export const startCreatingEsquema = () => {
                 visible: true,
             };
             // Realiza la petición POST para crear el nuevo esquema
-            await axiosInstance.post('/admin/esquemas', data);
+            await axiosInstance.post('/admin/esquemas', data, {
+                withCredentials: true,
+            });
             dispatch(startLoadingEsquemas());
 
         } catch (error) {
@@ -74,7 +80,9 @@ export const startChangingVisible = () => {
         try {
             // Obtengo ell id del esquema
             const { idEsquemaCambiarVisibilidad } = getState().categorizacion;
-            await axiosInstance.put(`/admin/esquemas/visibilidad/${idEsquemaCambiarVisibilidad}`);
+            await axiosInstance.put(`/admin/esquemas/visibilidad/${idEsquemaCambiarVisibilidad}`, {}, {
+                withCredentials: true,
+            });
         } catch (error) {
             throw new Error(error);
         }
@@ -87,7 +95,9 @@ export const startChangingCategoryVisible = () => {
         try {
             // Obtengo ell id del esquema
             const { idCategoriaCambiarVisibilidad } = getState().categorizacion;
-            await axiosInstance.put(`/admin/esquemas/categoria/visibilidad/${idCategoriaCambiarVisibilidad}`);
+            await axiosInstance.put(`/admin/esquemas/categoria/visibilidad/${idCategoriaCambiarVisibilidad}`, {}, {
+                withCredentials: true,
+            });
         } catch (error) {
             throw new Error(error);
         }
@@ -98,7 +108,9 @@ export const startDeletingEsquema = (id) => {
     return async (dispatch) => {
         try {
             // Se manda a eliminar con el id simplemente:
-            await axiosInstance.delete(`/admin/esquemas/${id}`);
+            await axiosInstance.delete(`/admin/esquemas/${id}`, {
+                withCredentials: true,
+            });
             dispatch(eliminarEsquema(id));
         } catch (error) {
             throw new Error(error);
@@ -113,7 +125,9 @@ export const startDeletingCategory = ({idCategoria, idEsquema}) => {
     return async (dispatch) => {
         try {
             // Se manda a eliminar con el id simplemente:
-            await axiosInstance.delete(`/admin/esquemas/categoria/${idCategoria}`);
+            await axiosInstance.delete(`/admin/esquemas/categoria/${idCategoria}`, {
+                withCredentials: true,
+            });
             dispatch(eliminarCategoria({idCategoria, idEsquema}));
         } catch (error) {
             throw new Error(error);

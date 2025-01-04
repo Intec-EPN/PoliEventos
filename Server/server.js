@@ -15,7 +15,11 @@ app.use(cookieParser());
 
 // Configura CORS
 const corsOptions = {
-    origin: 'http://localhost:5173', // Reemplaza con el dominio de tu cliente
+    // origin: ['http://localhost:5173','http://192.168.100.99:5173'], // Reemplaza con el dominio de tu cliente
+    origin: (origin, callback) => {
+        // Permite todos los orígenes para pruebas, pero con cookies activadas
+        callback(null, true);
+    },
     credentials: true, // Permitir el envío de cookies
 };
 // Configura CORS
