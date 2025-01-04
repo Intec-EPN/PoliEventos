@@ -33,9 +33,9 @@ export const EventosGeneralPage = () => {
     }
   }, [eventos]);
   const { departamentos } = useSelector((state) => state.gestionEvento);
-  const sortedEvents = events.sort(
-    (a, b) => new Date(b.start) - new Date(a.start)
-  );
+  const sortedEvents = events
+    .sort((a, b) => new Date(a.start) - new Date(b.start))
+    .slice(0, 10);
 
   const onLogin = () => {
     navigate("/login");
@@ -58,6 +58,17 @@ export const EventosGeneralPage = () => {
               paddingBottom: "2rem",
             }}
           >
+            <Typography
+              textAlign={"center"}
+              sx={{
+                my: 1,
+                fontWeight: "500",
+                fontSize: "0.9rem",
+                color: "#1e3990",
+              }}
+            >
+              Se muestran únicamente los 10 eventos más cercanos:
+            </Typography>
             {sortedEvents.map((event, index) => (
               <EventoSimple key={index} event={event} />
             ))}

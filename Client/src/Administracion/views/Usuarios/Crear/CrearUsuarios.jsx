@@ -19,10 +19,13 @@ export const CrearUsuarios = () => {
   const dispatch = useDispatch();
   const handleClose = () => {
     navigate("/admin/usuarios/lista");
-    setExito(false)
+    setExito(false);
   };
   const onSubmit = async (data) => {
-    if (data.primer_nombre.trim().toLowerCase() === "admn" || data.segundo_nombre.trim().toLowerCase() === "admn") {
+    if (
+      data.primer_nombre.trim().toLowerCase() === "admn" ||
+      data.segundo_nombre.trim().toLowerCase() === "admn"
+    ) {
       setError("El nombre o apellido no puede ser 'admn'");
       return;
     }
@@ -106,7 +109,7 @@ export const CrearUsuarios = () => {
               {error}
             </Typography>
           )}
-          <Box display="flex" width="98%"  gap={2}>
+          <Box display="flex" width="98%" gap={2}>
             <Button fullWidth variant="contained" type="submit">
               Guardar Usuario
             </Button>

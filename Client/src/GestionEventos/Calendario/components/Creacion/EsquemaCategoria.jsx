@@ -67,10 +67,10 @@ export const EsquemaCategoria = ({
   return (
     <Box sx={{ my: 1 }}>
       <DialogContentText sx={{ color: "#333333" }}>
-        Categorías del evento
+        Categorías del evento*
       </DialogContentText>
       {fields.map((field, index) => (
-        <Box key={field.id} display={"flex"} sx={{ width: "100%" }} gap={1}>
+        <Box key={field.id} display={"flex"} width={{xs: "80%",sm:"90%", md: "100%", lg: "100%", xl:"100%" }} gap={1}>
           <EsquemaCategoriaItem
             index={index}
             esquemas={[...availableEsquemas, ...esquemas.filter(e => e.esquemaId === field.esquemaId)]}

@@ -70,9 +70,9 @@ export const ModalEvento = ({
         expositores: [],
         tipoSeleccion: "departamento",
         startDate: dayjs().format("DD/MM/YYYY"),
-        startTime: dayjs().hour(8).minute(0).format("HH:mm"),
+        startTime: "08:00",
         endDate: dayjs().format("DD/MM/YYYY"),
-        endTime: dayjs().hour(9).minute(0).format("HH:mm"),
+        endTime: "09:00",
       });
       setIsReset(true);
       setTimeout(() => setLoading(false), 1500);
@@ -87,10 +87,17 @@ export const ModalEvento = ({
 
   const onSubmit = (data) => {
     setSendFiles(true);
-    console.log("Datos del formulario antes de la validación:", data);
 
     // Asegurarse de que data.departamento sea un array
     data.departamento = data.departamento || [departamentoNivelId];
+
+    // Establecer valores por defecto si no se selecciona nada
+    if (!data.startTime || data.startTime === "hh:mm") {
+      data.startTime = "08:00";
+    }
+    if (!data.endTime || data.endTime === "hh:mm") {
+      data.endTime = "09:00";
+    }
 
     // Validaciones de campos obligatorios
     if (!data.titulo || !data.lugar || !data.descripcion) {
@@ -112,10 +119,10 @@ export const ModalEvento = ({
 
     // Verificar y establecer fechas y horas si no son válidas
     if (!data.startTime || data.startTime === "HH:mm") {
-      data.startTime = dayjs().hour(8).minute(0).format("HH:mm");
+      data.startTime = "08:00";
     }
     if (!data.endTime || data.endTime === "HH:mm") {
-      data.endTime = dayjs().hour(9).minute(0).format("HH:mm");
+      data.endTime = "09:00";
     }
 
     const startDate = dayjs(
@@ -126,6 +133,7 @@ export const ModalEvento = ({
       `${data.endDate} ${data.endTime}`,
       "DD/MM/YYYY HH:mm"
     );
+
 
     if (!startDate.isValid() || !endDate.isValid()) {
       alert("Fecha u hora inválida.");

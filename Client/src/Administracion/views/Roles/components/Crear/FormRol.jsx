@@ -108,8 +108,8 @@ export const FormRol = () => {
                 noLeadingTrailingSpaces: (value) =>
                   value.trim() === value ||
                   "El nombre del rol no debe comenzar o terminar con espacios.",
-                  notAdmn: (value) =>
-                    value.toLowerCase() !== "admn" ||
+                  notAdmin: (value) =>
+                    value.toLowerCase() !== "administrador" ||
                     'Nombre de rol no permitido, ingrese otro.',
               },
             }}

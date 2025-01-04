@@ -14,7 +14,6 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect - registroExitoso:", registroExitoso); // Agrega este log
     if (registroExitoso) {
       setTimeout(() => {
         setSeleccion("ingresar");
@@ -24,9 +23,7 @@ export const LoginPage = () => {
     }
   }, [registroExitoso]);
 
-  useEffect(() => {
-    console.log("useEffect - seleccion:", seleccion); // Agrega este log
-  }, [seleccion]);
+
 
   return (
     <>

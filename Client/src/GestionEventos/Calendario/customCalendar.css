@@ -38,9 +38,12 @@
 .rbc-row > .rbc-button-link {
   color: #122950;
 }
+.rbc-date-cell > .rbc-button-link {
+  color: black;
+}
 /* rbc-date-cell rbc-now rbc-current */
 .rbc-current > .rbc-button-link {
-  color: white;
+  color: white !important;
 }
 
 /* Cabecera de las columnas. */
