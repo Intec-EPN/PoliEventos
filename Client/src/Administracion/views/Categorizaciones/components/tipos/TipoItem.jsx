@@ -11,23 +11,27 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { cambiarVisibilidadCategoria } from "../../../../../store/Administracion/Categorizacion/categorizacionSlice";
-import { startChangingCategoryVisible, startDeletingCategory } from "../../../../../store/Administracion/Categorizacion/thunks";
+import {
+  startChangingCategoryVisible,
+  startDeletingCategory,
+} from "../../../../../store/Administracion/Categorizacion/thunks";
 
 export const TipoItem = ({
   index,
   categoria,
   visible,
+  usado,
   editTipo,
   control,
   errors,
   validateTipo,
 }) => {
+  console.log("debug2", usado);
+
   const dispatch = useDispatch();
   const { esquemaCategorizacionActual, esquemas } = useSelector(
     (state) => state.categorizacion
   );
-
-  
 
   if (
     !esquemaCategorizacionActual ||
@@ -36,8 +40,9 @@ export const TipoItem = ({
     return <div>Cargando...</div>;
   }
 
-
-  const esquemaActual = esquemas.find( esq => esq.nombre === esquemaCategorizacionActual.nombre);
+  const esquemaActual = esquemas.find(
+    (esq) => esq.nombre === esquemaCategorizacionActual.nombre
+  );
 
   const categoriaActual = esquemaActual.categorias.find(
     (cat) => cat.id === index
@@ -58,7 +63,7 @@ export const TipoItem = ({
       "¿Estás seguro de que quieres eliminar esta categoría?"
     );
     if (confirmacion) {
-      dispatch(startDeletingCategory({idCategoria, idEsquema}));
+      dispatch(startDeletingCategory({ idCategoria, idEsquema }));
     }
   };
 
@@ -69,13 +74,13 @@ export const TipoItem = ({
           name={`tipos[${index}]`}
           control={control}
           defaultValue={categoria || ""}
-          rules={{ 
+          rules={{
             validate: validateTipo,
             maxLength: {
               value: 150,
               message: "La categoría no puede tener más de 150 caracteres",
             },
-           }}
+          }}
           render={({ field }) => (
             <OutlinedInput
               {...field}
@@ -99,9 +104,15 @@ export const TipoItem = ({
           )}
         </IconButton>
       )}
-      <IconButton disabled={!editTipo} onClick={() => onBorrar()}>
-        <DeleteIcon sx={{ color: `${editTipo ? '#2c4175' : '#90a4ae'}` }} />
-      </IconButton>
+      {!usado ? (
+        <IconButton disabled={!editTipo} onClick={() => onBorrar()}>
+          <DeleteIcon sx={{ color: `${editTipo ? "#2c4175" : "#90a4ae"}` }} />
+        </IconButton>
+      ) : (
+        <IconButton disabled>
+          <DeleteIcon sx={{ color: "white" }} />
+        </IconButton>
+      )}
     </ListItem>
   );
 };

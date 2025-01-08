@@ -1,4 +1,5 @@
 const { sequelize } = require("../../../../config/db");
+const EventosCategoriasModel = require("../../../GestionEventos/models/tablas-intermedias/evento_categoriasModel");
 const CategoriasModel = require("../../models/Categorizaciones/categoriasModel");
 const EsquemasCategorizacionModel = require("../../models/Categorizaciones/esquemasModel");
 const { Op } = require('sequelize'); 
@@ -12,24 +13,31 @@ const obtenerEsquemasCategorias = async (req, res) => {
         const categorias = await CategoriasModel.findAll({
             attributes: ['id', 'nombre', 'visible', 'esquema_id']
         });
+
+        const eventosCategorias = await EventosCategoriasModel.findAll({
+            attributes: ['categoria_id']
+        });
+
         if (esquemas && categorias) {
             const esquemasCategorias = esquemas.map(esquema => {
                 const categoriasFiltradas = categorias.filter(cat => cat.esquema_id === esquema.id);
-                if (categoriasFiltradas.length > 0) {
-                    return {
-                        id: esquema.id,
-                        nombre: esquema.nombre,
-                        descripcion: esquema.descripcion,
-                        visible: esquema.visible,
-                        categorias: categoriasFiltradas
-                    }
-                };
+                const esquemaUsado = categoriasFiltradas.some(cat => eventosCategorias.some(evCat => evCat.categoria_id === cat.id));
                 return {
                     id: esquema.id,
                     nombre: esquema.nombre,
                     descripcion: esquema.descripcion,
                     visible: esquema.visible,
-                    categorias: []
+                    usado: esquemaUsado,
+                    categorias: categoriasFiltradas.map(cat => {
+                        const categoriaUsada = eventosCategorias.some(evCat => evCat.categoria_id === cat.id);
+                        return {
+                            id: cat.id,
+                            nombre: cat.nombre,
+                            visible: cat.visible,
+                            usado: categoriaUsada,
+                            esquema_id: cat.esquema_id
+                        };
+                    })
                 };
             });
             res.status(200).json(esquemasCategorias);

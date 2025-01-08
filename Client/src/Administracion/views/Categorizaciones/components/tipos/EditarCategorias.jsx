@@ -229,12 +229,13 @@ export const EditarCategorias = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <List sx={{ width: "100%" }}>
           <Grid2 container>
-            {categorias.map(({ id, nombre, visible }) => (
+            {categorias.map(({ id, nombre, visible, usado }) => (
               <TipoItem
                 key={id}
                 index={id}
                 visible={visible}
                 categoria={nombre}
+                usado={usado}
                 editTipo={editCategoria}
                 control={control}
                 errors={errors}

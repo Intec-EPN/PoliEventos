@@ -56,10 +56,9 @@ export const ListaCategorias = () => {
     descripcion: "",
   });
 
-useEffect(() => {
-  dispatch(setNuevoEsquemaCategorizacionActual(nuevoEsquema))
-}, [nuevoEsquema]);
-
+  useEffect(() => {
+    dispatch(setNuevoEsquemaCategorizacionActual(nuevoEsquema));
+  }, [nuevoEsquema]);
 
   const [agregando, setAgregando] = useState(false);
 
@@ -123,17 +122,17 @@ useEffect(() => {
     }
   };
 
-    // Lógica para editar un esquema.
-    const onEdit = (nombre, descripcion) => {
-      navigate(`/admin/categorizaciones/${nombre}/editar`);
-      const esquemaActual = {
-        nombre: nombre,
-        descripcion: descripcion,
-      };
-      
-      dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
-      dispatch(setEsquemaActual(nombre));
+  // Lógica para editar un esquema.
+  const onEdit = (nombre, descripcion) => {
+    navigate(`/admin/categorizaciones/${nombre}/editar`);
+    const esquemaActual = {
+      nombre: nombre,
+      descripcion: descripcion,
     };
+
+    dispatch(setNuevoEsquemaCategorizacionActual(esquemaActual));
+    dispatch(setEsquemaActual(nombre));
+  };
 
   return (
     <Box>
@@ -142,11 +141,19 @@ useEffect(() => {
           esquemas.map((esquema) =>
             esquema ? (
               <ListItem
-                sx={{ bgcolor: esquema.categorias.length === 0 ? "#dc8626" : "#2c4175", mb: 2 }}
+                sx={{
+                  bgcolor:
+                    esquema.categorias.length === 0 ? "#dc8626" : "#2c4175",
+                  mb: 2,
+                }}
                 key={esquema.id}
                 secondaryAction={
                   <>
-                    <IconButton onClick={() => onEdit(esquema.nombre, esquema.descripcion)}>
+                    <IconButton
+                      onClick={() =>
+                        onEdit(esquema.nombre, esquema.descripcion)
+                      }
+                    >
                       <EditIcon sx={{ color: "white" }} />
                     </IconButton>
 
@@ -164,9 +171,11 @@ useEffect(() => {
                       </IconButton>
                     )}
 
-                    <IconButton onClick={() => onBorrar(esquema.id)}>
-                      <DeleteIcon sx={{ color: "white" }} />
-                    </IconButton>
+                    {!esquema.usado && (
+                      <IconButton onClick={() => onBorrar(esquema.id)}>
+                        <DeleteIcon sx={{ color: "white" }} />
+                      </IconButton>
+                    )}
                   </>
                 }
               >
