@@ -86,9 +86,7 @@ const convertToCSV = (data, departamentos) => {
         })
         .join(", "),
       esquemasCategorias: row.esquemasCategorias
-        .map(
-          (ec) => `${ec.esquemaNombre} - ${ec.categoriaNombre}`
-        )
+        .map((ec) => `${ec.esquemaNombre} - ${ec.categoriaNombre}`)
         .join(", "),
     }))
   );
@@ -146,7 +144,9 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     (state) => state.gestionEvento
   );
 
-  const [selectedEsquemaCategoria, setSelectedEsquemaCategoria] = useState([{ esquemaId: null, categoriaId: null }]);
+  const [selectedEsquemaCategoria, setSelectedEsquemaCategoria] = useState([
+    { esquemaId: null, categoriaId: null },
+  ]);
 
   useEffect(() => {
     dispatch(startLoadingEsquemasCategorias());
@@ -166,7 +166,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   useEffect(() => {
     if (eventos) {
       const eventosFormateados = eventos.map((evento) => ({
-        id: evento.id, 
+        id: evento.id,
         date: dayjs(evento.start).format("YYYY-MM-DD"),
         name: evento.title,
         departamentos: evento.data.departamento,
@@ -211,10 +211,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       const eventDate = dayjs(event.date);
       const start = startDate ? dayjs(startDate) : null;
       const end = endDate ? dayjs(endDate) : null;
-      const matchesDepartment = selectedDepartments.length === 0 || event.departamentos.some((dep) => selectedDepartments.includes(dep));
+      const matchesDepartment =
+        selectedDepartments.length === 0 ||
+        event.departamentos.some((dep) => selectedDepartments.includes(dep));
       const matchesEsquemaCategoria = selectedEsquemaCategoria.some(
         (selected) =>
-          !selected.esquemaId || event.esquemasCategorias.some(
+          !selected.esquemaId ||
+          event.esquemasCategorias.some(
             (ec) =>
               ec.esquemaId === selected.esquemaId &&
               (!selected.categoriaId || ec.categoriaId === selected.categoriaId)
@@ -310,7 +313,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     const filteredEvents = filterEvents(startDate, endDate);
     console.log(filteredEvents);
     const data = filteredEvents.map((event) => ({
-      
       ...event,
       enlace: event.enlace ? event.enlace : "Sin enlace.",
       departamentos: event.departamentos
@@ -320,9 +322,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         })
         .join(", "),
       esquemasCategorias: event.esquemasCategorias
-        .map(
-          (ec) => `${ec.esquemaNombre} - ${ec.categoriaNombre}`
-        )
+        .map((ec) => `${ec.esquemaNombre} - ${ec.categoriaNombre}`)
         .join(", "),
     }));
 
@@ -381,7 +381,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
           selectedDepartments={selectedDepartments}
           setSelectedDepartments={setSelectedDepartments}
         />
-        <SelectEsquemaCategorias 
+        <SelectEsquemaCategorias
           selectedEsquemaCategoria={selectedEsquemaCategoria}
           setSelectedEsquemaCategoria={setSelectedEsquemaCategoria}
         />
@@ -399,41 +399,47 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         </Box>
         <CustomTabPanel value={tabValue} index={0}>
           {chartData && (
-            <BarChart
-              chartData={chartData}
-              chartRef={chartRef}
-              handleSaveImage={handleSaveImage}
-              handleDownloadCSV={handleDownloadCSV}
-              handleDownloadFiles={handleDownloadFiles}
-              handleDownloadExcel={handleDownloadExcel}
-              totalEvents={chartData.totalEvents}
-            />
+            <Box sx={{display: "flex", flexDirection:"column",justifyContent: "center"}}>
+              <BarChart
+                chartData={chartData}
+                chartRef={chartRef}
+                handleSaveImage={handleSaveImage}
+                handleDownloadCSV={handleDownloadCSV}
+                handleDownloadFiles={handleDownloadFiles}
+                handleDownloadExcel={handleDownloadExcel}
+                totalEvents={chartData.totalEvents}
+              />
+            </Box>
           )}
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={1}>
           {chartData && (
-            <PieChart
-              chartData={chartData.pieChartData}
-              chartRef={chartRef}
-              handleSaveImage={handleSaveImage}
-              handleDownloadCSV={handleDownloadCSV}
-              handleDownloadFiles={handleDownloadFiles}
-              handleDownloadExcel={handleDownloadExcel}
-              totalEvents={chartData.totalEvents}
-            />
+            <Box sx={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
+              <PieChart
+                chartData={chartData.pieChartData}
+                chartRef={chartRef}
+                handleSaveImage={handleSaveImage}
+                handleDownloadCSV={handleDownloadCSV}
+                handleDownloadFiles={handleDownloadFiles}
+                handleDownloadExcel={handleDownloadExcel}
+                totalEvents={chartData.totalEvents}
+              />
+            </Box>
           )}
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={2}>
           {chartData && (
-            <LineChart
-              chartData={chartData}
-              chartRef={chartRef}
-              handleSaveImage={handleSaveImage}
-              handleDownloadCSV={handleDownloadCSV}
-              handleDownloadFiles={handleDownloadFiles}
-              handleDownloadExcel={handleDownloadExcel}
-              totalEvents={chartData.totalEvents}
-            />
+            <Box sx={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
+              <LineChart
+                chartData={chartData}
+                chartRef={chartRef}
+                handleSaveImage={handleSaveImage}
+                handleDownloadCSV={handleDownloadCSV}
+                handleDownloadFiles={handleDownloadFiles}
+                handleDownloadExcel={handleDownloadExcel}
+                totalEvents={chartData.totalEvents}
+              />
+            </Box>
           )}
         </CustomTabPanel>
       </Box>

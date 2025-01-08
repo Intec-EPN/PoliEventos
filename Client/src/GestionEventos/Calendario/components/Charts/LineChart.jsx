@@ -56,7 +56,7 @@ const LineChart = ({
           </Tooltip>
         </Box>
         <Box sx={{ width: "100%" }}>
-          <Box sx={{ width: { xs: 250, sm: 600, md: 700 } }}>
+          <Box sx={{ width: { xs: 250, sm: 600, md: 700 }, margin:"0 auto" }}>
             <MuiLineChart
               xAxis={[
                 {

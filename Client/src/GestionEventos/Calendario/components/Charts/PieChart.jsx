@@ -71,6 +71,7 @@ const PieChart = ({
             display: "flex",
             alignItems: "center",
             fontFamily: "roboto, sans-serif",
+            margin: "0 auto"  
           }}
         >
           <MuiPieChart

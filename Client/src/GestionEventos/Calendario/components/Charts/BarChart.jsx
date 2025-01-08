@@ -18,7 +18,7 @@ const BarChart = ({
   return (
     <>
       <Box ref={chartRef} sx={{ width: "100%" }}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Box sx={{ display: "flex", justifyContent:"center" ,alignItems: "center", mb: 2 }}>
           <Tooltip
             title="Recuerde que un evento puede tener varias categorizaciones."
             placement="right"
@@ -38,7 +38,7 @@ const BarChart = ({
             </Typography>
           </Tooltip>
         </Box>
-        <Box sx={{ width: { xs: 250, sm: 600, md: 700 } }}>
+        <Box sx={{ width: { xs: 250, sm: 600, md: 700 }, margin:"0 auto" }}>
           <MuiBarChart
             borderRadius={5}
             xAxis={[

@@ -55,7 +55,7 @@ export const CrearUsuarios = () => {
             ml: "1rem",
             display: "flex",
             flexDirection: "column",
-            width: "45%",
+            width: {xs:"90%", md:"45%"},
           }}
         >
           <Typography variant="p" sx={{ color: "#0a2257" }}>
@@ -66,7 +66,7 @@ export const CrearUsuarios = () => {
             flexDirection="column"
             gap="1rem"
             my="1rem"
-            sx={{ width: "100%", maxWidth: "40rem" }}
+            sx={{ width: "100%" }}
           >
             <Box display="flex" gap={2} flexWrap={{ xs: "wrap", md: "nowrap" }}>
               <TextField
@@ -109,7 +109,7 @@ export const CrearUsuarios = () => {
               {error}
             </Typography>
           )}
-          <Box display="flex" width="98%" gap={2}>
+          <Box display="flex" width="100%" gap={2}>
             <Button fullWidth variant="contained" type="submit">
               Guardar Usuario
             </Button>
