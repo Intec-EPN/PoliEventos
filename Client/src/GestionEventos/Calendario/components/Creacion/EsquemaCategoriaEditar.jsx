@@ -19,15 +19,21 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
   );
 
   const esquemasCategorias = watch("esquemasCategorias") || data;
+  console.log(esquemasCategoriasCargados);
+  
   const esquemas = esquemasCategoriasCargados
-    ? esquemasCategoriasCargados.map((esquemaCategoria) => ({
-        value: esquemaCategoria.esquemaId,
-        label: esquemaCategoria.esquemaNombre,
-        categorias: esquemaCategoria.categorias.map((categoria) => ({
-          value: categoria.categoriaId,
-          label: categoria.categoriaNombre,
-        })),
-      }))
+    ? esquemasCategoriasCargados
+        .filter((esquemaCategoria) => esquemaCategoria.visible)
+        .map((esquemaCategoria) => ({
+          value: esquemaCategoria.esquemaId,
+          label: esquemaCategoria.esquemaNombre,
+          categorias: esquemaCategoria.categorias
+            .filter((categoria) => categoria.visible)
+            .map((categoria) => ({
+              value: categoria.categoriaId,
+              label: categoria.categoriaNombre,
+            })),
+        }))
     : [];
 
   const handleAddCategoria = () => {
@@ -79,7 +85,7 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
                   value={
                     esquemas.find(
                       (option) => option.value === esquemaCategoria.esquemaId
-                    ) || null
+                    ) || { label: "Esquema en desuso, asigne otro." }
                   }
                   onChange={(selectedOption) =>
                     handleChangeEsquema(index, selectedOption)
@@ -121,7 +127,7 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
                   categorias={
                     esquemas.find(
                       (esquema) => esquema.value === esquemaCategoria.esquemaId
-                    )?.categorias || []
+                    )?.categorias || [{ label: "Categoría en desuso, asigne otra." }]
                   }
                   onChange={(value) => handleChangeCategoria(index, value)}
                 />

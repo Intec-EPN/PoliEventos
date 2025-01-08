@@ -231,12 +231,12 @@ const obtenerEsquemasCategoriasCalendario = async (req, res) => {
     try {
         const esquemas = await EsquemasCategorizacionModel.findAll({
             attributes: ['id', 'nombre', 'visible'],
-            where: { visible: true }
+            // where: { visible: true }
         });
 
         const categorias = await CategoriasModel.findAll({
             attributes: ['id', 'nombre', 'esquema_id', 'visible'],
-            where: { visible: true }
+            // where: { visible: true }
         });
 
         if (esquemas && categorias) {
@@ -245,9 +245,11 @@ const obtenerEsquemasCategoriasCalendario = async (req, res) => {
                 return {
                     esquemaId: esquema.id,
                     esquemaNombre: esquema.nombre,
+                    visible: esquema.visible,
                     categorias: categoriasFiltradas.map(cat => ({
                         categoriaId: cat.id,
-                        categoriaNombre: cat.nombre
+                        categoriaNombre: cat.nombre,
+                        visible: cat.visible
                     }))
                 };
             });

@@ -102,29 +102,6 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
     }
   }, [startDate, endDate, startTime, endTime, setValue]);
 
-  useEffect(() => {
-    if (!startDate) {
-      const defaultStartDate = dayjs().format("DD/MM/YYYY");
-      setStartDate(defaultStartDate);
-      setValue("startDate", defaultStartDate);
-    }
-    if (!startTime || startTime === "HH:mm") {
-      const defaultStartTime = "08:00";
-      setStartTime(defaultStartTime);
-      setValue("startTime", defaultStartTime);
-    }
-    if (!endDate) {
-      const defaultEndDate = dayjs().format("DD/MM/YYYY");
-      setEndDate(defaultEndDate);
-      setValue("endDate", defaultEndDate);
-    }
-    if (!endTime || endTime === "HH:mm") {
-      const defaultEndTime = "09:00";
-      setEndTime(defaultEndTime);
-      setValue("endTime", defaultEndTime);
-    }
-  }, [setValue, startDate, startTime, endDate, endTime]);
-
   const formatTime = (time) => {
     return dayjs(time, "HH:mm").format("HH:mm");
   };

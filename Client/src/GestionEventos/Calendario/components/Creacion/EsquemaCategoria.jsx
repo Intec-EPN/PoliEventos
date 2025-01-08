@@ -22,10 +22,17 @@ export const EsquemaCategoria = ({
 
   const { esquemasCategorias } = useSelector((state) => state.gestionEvento);
   const esquemas = esquemasCategorias
-    ? esquemasCategorias.map((esquemaCategoria) => ({
+    ? esquemasCategorias
+    .filter((esquemaCategoria) => esquemaCategoria.visible)
+    .map((esquemaCategoria) => ({
         esquemaId: esquemaCategoria.esquemaId,
         esquemaNombre: esquemaCategoria.esquemaNombre,
-        categorias: esquemaCategoria.categorias,
+        categorias: esquemaCategoria.categorias
+            .filter((categoria) => categoria.visible)
+            .map((categoria) => ({
+              categoriaId: categoria.categoriaId,
+              categoriaNombre: categoria.categoriaNombre,
+            })),
       }))
     : [];
 
