@@ -93,6 +93,12 @@ const eliminarUsuario = async (req, res) => {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
+        // Verificar si el usuario tiene eventos asociados
+        const eventos = await EventosModel.findOne({ where: { usuario_id: usuarioId } });
+        if (eventos) {
+            return res.status(400).json({ error: 'El usuario tiene eventos asociados y no puede ser eliminado' });
+        }
+
         // Eliminar las asignaciones existentes del usuario
         await UsuarioRolModel.destroy({
             where: { usuario_id: usuarioId }
