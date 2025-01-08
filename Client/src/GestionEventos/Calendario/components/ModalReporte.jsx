@@ -166,10 +166,11 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   useEffect(() => {
     if (eventos) {
       const eventosFormateados = eventos.map((evento) => ({
-        id: evento.id, // Agregar el id del evento
+        id: evento.id, 
         date: dayjs(evento.start).format("YYYY-MM-DD"),
         name: evento.title,
         departamentos: evento.data.departamento,
+        enlace: evento.data.enlaces,
         esquemasCategorias: evento.data.esquemaCategoria.map(
           (esquemaCategoria) => {
             const esquema = esquemasCategorias.find(
@@ -307,8 +308,11 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
 
   const handleDownloadExcel = () => {
     const filteredEvents = filterEvents(startDate, endDate);
+    console.log(filteredEvents);
     const data = filteredEvents.map((event) => ({
+      
       ...event,
+      enlace: event.enlace ? event.enlace : "Sin enlace.",
       departamentos: event.departamentos
         .map((depId) => {
           const dep = departamentos.find((dep) => dep.id === depId);

@@ -85,7 +85,6 @@ export const startDeletingRol = (nombre) => {
             await axiosInstance.delete(`admin/roles/${nombre.trim()}`, {
                 withCredentials: true,
             }); // Trimear el nombre del rol
-            // TODO debug
             dispatch(startLoadingRoles());
         } catch (error) {
             if (error.response && error.response.status === 400) {

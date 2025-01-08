@@ -44,7 +44,7 @@ export const EnlaceInicial = ({ enlace }) => {
             }}
           >
             <ArrowOutwardIcon
-              sx={{ fontSize: "1rem", color: "white", pl: 1, py: 1.3 }}
+              sx={{ fontSize: "1rem", color: "white", pl: 2, py: 1.3 }}
             />
             <Typography
               sx={{
@@ -52,7 +52,8 @@ export const EnlaceInicial = ({ enlace }) => {
                 color: "white",
                 backgroundColor: "#0f5add",
                 ml: 0.5,
-                fontSize: "0.9rem",
+                fontSize: "0.95rem",
+                pl: 0.7,
               }}
             >
               {enlaces}

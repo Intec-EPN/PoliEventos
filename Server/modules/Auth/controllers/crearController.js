@@ -19,7 +19,6 @@ const crearUsuario = [
                 correo: email,
                 password_hash: hashedPassword
             });
-            //TODO QUITAR CUANDO YA NO SE NECESITE
             res.status(200).json({ message: 'Usuario creado exitosamente.' });
         } catch (error) {
             console.error(`Error al crear el usuario: ${error}`);

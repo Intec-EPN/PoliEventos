@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FechaVer } from "./Visualizar/FechaVer";
@@ -18,22 +19,21 @@ import { HoraVer } from "./Visualizar/HoraVer";
 import { ModalEditar } from "./ModalEditar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { startDeletingEvento } from "../../../store/GestionEventos/thunk";
-import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
+import {
+  startDeletingEvento,
+  startLoadingArchivosPorIds,
+} from "../../../store/GestionEventos/thunk";
+import DownloadIcon from "@mui/icons-material/Download";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
   const dispatch = useDispatch();
 
   const { id, start, end, title, data, usuarioId } = event || {};
-  
-  const {
-    departamento,
-    descripcion,
-    expositores,
-    lugar,
-    personasACargo,
-  } = data || {};
+
+  const { departamento, descripcion, expositores, lugar, personasACargo } =
+    data || {};
 
   const handleClose = () => {
     setModalIsOpen(false);
@@ -49,6 +49,10 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const handleEditClose = () => {
     setEditModalIsOpen(false);
     setModalIsOpen(false);
+  };
+
+  const handleDownloadFiles = () => {
+    dispatch(startLoadingArchivosPorIds([event.id]));
   };
 
   const {
@@ -139,6 +143,57 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
         )}
         {departamento?.length > 0 && (
           <DepartamentoVer departamentos={departamento} />
+        )}
+
+        {permisoEditEvento && (
+          <Box>
+            {event?.data?.enlaces && (
+              <Box sx={{ display: "flex", justifyContent: "start", mt: 2 }}>
+                <a
+                  href={event.data.enlaces}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    textDecoration: "none",
+                    display: "flex",
+                    gap: 1,
+                    alignItems: "center",
+                    backgroundColor: "#0f5add",
+                    borderRadius: '5px',
+                    height: "100%",
+                  }}
+                >
+                  <ArrowOutwardIcon
+                    sx={{ fontSize: "1rem", color: "white", pl: 2, py: 1.3 }}
+                  />
+                  <Typography
+                    sx={{
+                      textDecoration: "none",
+                      color: "white",
+                      backgroundColor: "#0f5add",
+                      ml: 0.5,
+                      fontSize: "0.95rem",
+                      pl: 0.7,
+                      pr:3,
+                    }}
+                  >
+                    {event.data.enlaces}
+                  </Typography>
+                </a>
+              </Box>
+            )}
+            <Box sx={{ display: "flex", justifyContent: "start", mt: 2 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DownloadIcon />}
+                sx={{ backgroundColor: "#2c4175" }}
+                onClick={handleDownloadFiles}
+              >
+                Descargar Archivos
+              </Button>
+            </Box>
+          </Box>
         )}
       </DialogContent>
       <DialogActions>

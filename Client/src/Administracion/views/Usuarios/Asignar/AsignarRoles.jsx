@@ -64,7 +64,6 @@ export const AsignarRoles = () => {
           <Box display={"inline-flex"}>
             <strong>Roles</strong>
           </Box>
-          {/* TODO ALINACION */}
           <Box display="flex" gap="2rem" mt={1}>
             <Box display={"flex"} gap={2} flexWrap={"wrap"}>
               <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>

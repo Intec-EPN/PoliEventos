@@ -88,9 +88,6 @@ export const categorizacionSlice = createSlice({
         setCancelar: (state, action) => {
             state.cancelar = action.payload;
         },
-        actualizarAgregandoCategorias: (state, action) => {
-            state.agregandoCategorias = action.payload;
-        }
     }
 });
 
@@ -112,6 +109,4 @@ export const {
     actualizarEsquemas,
     setNuevoEsquemaCategorizacionActual,
     setCancelar,
-    //TODO es necesario al final ese metodo?
-    actualizarAgregandoCategorias
 } = categorizacionSlice.actions;
