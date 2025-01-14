@@ -66,7 +66,8 @@ export const Archivos = ({ onFilesChange }) => {
         sx={{
           fontSize: "0.8rem",
           color: "#898989",
-          textAlign: "end",
+          textAlign: {xs:"start",sm:"end"},
+          py: {xs: 1,sm:0}
         }}
       >
         Tamaño máximo total de 5MB. Formatos váldios: .png, .jpeg, .jpg, .webp,

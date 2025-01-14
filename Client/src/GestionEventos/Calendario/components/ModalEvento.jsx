@@ -90,13 +90,19 @@ export const ModalEvento = ({
 
     // Asegurarse de que data.departamento sea un array
     data.departamento = data.departamento || [departamentoNivelId];
-
+    
     // Establecer valores por defecto si no se selecciona nada
     if (!data.startTime || data.startTime === "hh:mm") {
       data.startTime = "08:00";
     }
     if (!data.endTime || data.endTime === "hh:mm") {
       data.endTime = "09:00";
+    }
+    if (!data.startDate || data.startDate === "DD/MM/YYYY") {
+      data.startDate = dayjs(start).format("DD/MM/YYYY");
+    }
+    if (!data.endDate || data.endDate === "DD/MM/YYYY") {
+      data.endDate = dayjs(end).format("DD/MM/YYYY");
     }
 
     // Validaciones de campos obligatorios
@@ -115,14 +121,6 @@ export const ModalEvento = ({
     if (data.esquemasCategorias.length === 0) {
       alert("Debe seleccionar al menos una categoría.");
       return;
-    }
-
-    // Verificar y establecer fechas y horas si no son válidas
-    if (!data.startTime || data.startTime === "HH:mm") {
-      data.startTime = "08:00";
-    }
-    if (!data.endTime || data.endTime === "HH:mm") {
-      data.endTime = "09:00";
     }
 
     const startDate = dayjs(

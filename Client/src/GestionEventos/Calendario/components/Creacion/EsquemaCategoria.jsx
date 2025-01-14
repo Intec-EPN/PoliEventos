@@ -23,17 +23,17 @@ export const EsquemaCategoria = ({
   const { esquemasCategorias } = useSelector((state) => state.gestionEvento);
   const esquemas = esquemasCategorias
     ? esquemasCategorias
-    .filter((esquemaCategoria) => esquemaCategoria.visible)
-    .map((esquemaCategoria) => ({
-        esquemaId: esquemaCategoria.esquemaId,
-        esquemaNombre: esquemaCategoria.esquemaNombre,
-        categorias: esquemaCategoria.categorias
+        .filter((esquemaCategoria) => esquemaCategoria.visible)
+        .map((esquemaCategoria) => ({
+          esquemaId: esquemaCategoria.esquemaId,
+          esquemaNombre: esquemaCategoria.esquemaNombre,
+          categorias: esquemaCategoria.categorias
             .filter((categoria) => categoria.visible)
             .map((categoria) => ({
               categoriaId: categoria.categoriaId,
               categoriaNombre: categoria.categoriaNombre,
             })),
-      }))
+        }))
     : [];
 
   // Control de los campos
@@ -77,10 +77,13 @@ export const EsquemaCategoria = ({
         Categorías del evento*
       </DialogContentText>
       {fields.map((field, index) => (
-        <Box key={field.id} display={"flex"} width={{xs: "80%",sm:"90%", md: "100%", lg: "100%", xl:"100%" }} gap={1}>
+        <Box key={field.id} display={"flex"} gap={1} width={{xs:"80%", sm:"100%"}}>
           <EsquemaCategoriaItem
             index={index}
-            esquemas={[...availableEsquemas, ...esquemas.filter(e => e.esquemaId === field.esquemaId)]}
+            esquemas={[
+              ...availableEsquemas,
+              ...esquemas.filter((e) => e.esquemaId === field.esquemaId),
+            ]}
           />
           <IconButton onClick={() => handleRemove(index)}>
             <DeleteIcon />
