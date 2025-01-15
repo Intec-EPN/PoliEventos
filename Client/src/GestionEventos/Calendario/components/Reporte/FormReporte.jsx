@@ -66,7 +66,7 @@ const FormReporte = ({ onGenerateChart }) => {
             mt: 0.7,
           }}
         >
-          Generar Gráfico
+          Generar gráficos
         </Button>
       </Box>
     </>

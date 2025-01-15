@@ -1,19 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import { Box, Dialog, DialogTitle, Button, Tabs, Tab } from "@mui/material";
-import { saveAs } from "file-saver";
+import { useSelector, useDispatch } from "react-redux";
 import FormReporte from "./Reporte/FormReporte";
 import SelectDepartamento from "./Reporte/SelectDepartamento";
-import dayjs from "../../../dayjsConfig";
-import html2canvas from "html2canvas";
-import { useSelector, useDispatch } from "react-redux";
+import SelectEsquemaCategorias from "./Reporte/SelectEsquemaCategorias";
+import BarChart from "./Charts/BarChart";
+import PieChart from "./Charts/PieChart";
+import LineChart from "./Charts/LineChart";
+import AsistentesChart from "./Charts/AsistentesChart";
 import {
   startLoadingArchivosPorIds,
   startLoadingEsquemasCategorias,
 } from "../../../store/GestionEventos/thunk";
-import BarChart from "./Charts/BarChart";
-import PieChart from "./Charts/PieChart";
-import LineChart from "./Charts/LineChart";
-import SelectEsquemaCategorias from "./Reporte/SelectEsquemaCategorias";
+import { saveAs } from "file-saver";
+import dayjs from "../../../dayjsConfig";
+import html2canvas from "html2canvas";
 import XLSX from "xlsx";
 
 const esquemaColors = [
@@ -171,6 +172,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         name: evento.title,
         departamentos: evento.data.departamento,
         enlace: evento.data.enlaces,
+        asistentes: evento.data.asistentes,
         esquemasCategorias: evento.data.esquemaCategoria.map(
           (esquemaCategoria) => {
             const esquema = esquemasCategorias.find(
@@ -275,6 +277,16 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       label: esquema.label,
     }));
 
+    const asistentesData = esquemasCategorias.map((esquema) => ({
+      label: esquema.label,
+      asistentes: filteredEvents.reduce((acc, event) => {
+        const count = event.esquemasCategorias.filter(
+          (ec) => ec.esquemaNombre === esquema.label
+        ).length;
+        return acc + count * event.asistentes;
+      }, 0),
+    }));
+
     setChartData({
       xAxis: sortedKeys,
       series: seriesData.map((serie) => ({
@@ -283,6 +295,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       })),
       pieChartData,
       totalEvents: filteredEvents.length,
+      asistentesData,
     });
   };
 
@@ -395,6 +408,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             <Tab label="Barras" {...a11yProps(0)} />
             <Tab label="Pastel" {...a11yProps(1)} />
             <Tab label="Líneas" {...a11yProps(2)} />
+            <Tab label="Asistentes" {...a11yProps(3)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={tabValue} index={0}>
@@ -432,6 +446,21 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             <Box sx={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
               <LineChart
                 chartData={chartData}
+                chartRef={chartRef}
+                handleSaveImage={handleSaveImage}
+                handleDownloadCSV={handleDownloadCSV}
+                handleDownloadFiles={handleDownloadFiles}
+                handleDownloadExcel={handleDownloadExcel}
+                totalEvents={chartData.totalEvents}
+              />
+            </Box>
+          )}
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={3}>
+          {chartData && (
+            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <AsistentesChart
+                chartData={chartData.asistentesData}
                 chartRef={chartRef}
                 handleSaveImage={handleSaveImage}
                 handleDownloadCSV={handleDownloadCSV}
