@@ -59,17 +59,21 @@ export const EventoSimple = ({ event }) => {
           px: 2,
           py: 1,
           color: "#0a3b91",
-          textAlign: "center",
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           alignItems: "center",
           gap: 1,
           justifyContent: "center",
         }}
       >
-        <CalendarMonthIcon />
-        {startDate}
-        {endDate !== startDate ? ` al ${endDate}` : ""} <AccessTimeIcon />{" "}
-        {startTime} - {endTime}
+        <Box sx={{ display:"flex", textAlign: "center" }}>
+          <CalendarMonthIcon />
+          {startDate}
+          {endDate !== startDate ? ` al ${endDate}` : ""}
+        </Box>
+        <Box sx={{ display:"flex", textAlign: "center" }}>
+          <AccessTimeIcon /> {startTime} - {endTime}
+        </Box>
       </Typography>
       <Box
         sx={{
@@ -89,21 +93,23 @@ export const EventoSimple = ({ event }) => {
               px: 2,
               py: 1,
               color: "white",
+              flex: {xs: 3, sm: 2},
             }}
           >
             {title} | {lugar}
           </Typography>
-          {depts?.map((dep) => (
-            <Box
-              sx={{
-                ml: "0.5rem",
-                display: "inline-flex",
-                gap: 0.5,
-                alignItems: "center",
-              }}
-              key={dep.id}
-            >
+          <Box
+            sx={{
+              mr: "1rem",
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+              flex: 1,
+            }}
+          >
+            {depts?.map((dep) => (
               <span
+                key={dep.id}
                 style={{
                   border: "0.5px solid rgba(0, 0, 0, 0.15)",
                   backgroundColor:
@@ -115,18 +121,18 @@ export const EventoSimple = ({ event }) => {
                       ? "#fbbc04"
                       : "transparent",
                   display: "inline-flex",
-                  width: "5px",
-                  height: "11px",
+                  width: "10px",
+                  height: "15px",
                 }}
               ></span>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
         <Box
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
           flexWrap="wrap"
-          gap={2}
+          gap={{ xs: 0, sm: 2 }}
           sx={{
             color: "#0a3b91",
             p: 1,

@@ -47,6 +47,8 @@ export const Registrar = ({ onRegistroExitoso }) => {
             flexDirection: "column",
             alignItems: "center",
             gap: "0.3rem",
+            width: {xs: "80%", sm: "85%"},
+            margin: "0 auto",
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: "600", color: "#0a2257" }}>

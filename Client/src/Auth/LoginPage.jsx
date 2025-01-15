@@ -1,11 +1,13 @@
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Typography, Box, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Ingresar } from "./components/Ingresar";
 import { Registrar } from "./components/Registrar";
 import BotonSeleccionar from "./components/BotonSeleccionar";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState("ingresar");
   const [registroExitoso, setRegistroExitoso] = useState(false);
 
@@ -22,8 +24,6 @@ export const LoginPage = () => {
       }, 2000);
     }
   }, [registroExitoso]);
-
-
 
   return (
     <>
@@ -47,6 +47,21 @@ export const LoginPage = () => {
         ) : (
           <Registrar onRegistroExitoso={() => setRegistroExitoso(true)} />
         )}
+        <Box
+          sx={{
+            mt: 2,
+          }}
+        >
+          <IconButton
+            variant="contained"
+            sx={{
+              color: "white",
+            }}
+            onClick={() => navigate("/")}
+          >
+            <CalendarMonthIcon sx={{ fontSize: "2rem" }} />
+          </IconButton>
+        </Box>
       </Box>
     </>
   );

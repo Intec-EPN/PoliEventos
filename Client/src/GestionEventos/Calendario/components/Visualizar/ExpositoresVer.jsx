@@ -12,7 +12,7 @@ export const ExpositoresVer = ({ expositores }) => {
       >
         {expositores.length > 1 ? "Expositores:" : "Expositor:"}
       </Typography>
-      <Box display={"flex"} mt={1} gap={2}>
+      <Box display={"flex"} mt={1} gap={2} flexWrap={"wrap"}>
         {expositores.map((expositor, index) => {
           return (
             <Box display={"flex"} key={index} alignItems={"center"}>

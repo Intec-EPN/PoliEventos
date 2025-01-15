@@ -67,7 +67,7 @@ export const EventosGeneralPage = () => {
                 color: "#1e3990",
               }}
             >
-              Se muestran únicamente los 10 eventos más cercanos:
+              Se muestran los 10 eventos más cercanos:
             </Typography>
             {sortedEvents.map((event, index) => (
               <EventoSimple key={index} event={event} />

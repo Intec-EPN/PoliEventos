@@ -45,7 +45,7 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
       >
         {departamentos.length > 1 ? "Departamentos:" : "Departamento:"}
       </Typography>
-      <Box display={"flex"} mt={1} gap={2}>
+      <Box display={"flex"} mt={1} gap={2} flexWrap={"wrap"}>
         {depts.map((departamento, index) => {
           return (
             <Box display={"flex"} key={index} alignItems={"center"}>

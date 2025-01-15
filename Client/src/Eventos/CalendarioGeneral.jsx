@@ -54,8 +54,7 @@ export const CalendarioGeneral = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            paddingBottom: "10rem",
-            pt: "23rem",
+            height: "95vh",
           }}
         >
           <CircularProgress sx={{ color: "#0a3b91" }} />
@@ -79,7 +78,7 @@ export const CalendarioGeneral = () => {
         >
           <>
             <Calendar
-              style={{ height: "90vh", width: "90vw" }}
+              style={{ height: "90vh", width: "95vw" }}
               localizer={localizer}
               events={events}
               startAccessor="start"
@@ -150,45 +149,72 @@ const CustomEvent = ({ event }) => {
         ? "#fbbc04"
         : "white";
   } else if (dep.length === 2) {
-    backgroundColor = `linear-gradient(to bottom, ${
-      dep[0] === 1
-        ? "#4b99d2"
-        : dep[0] === 2
-        ? "#c05476"
-        : dep[0] === 3
-        ? "#fbbc04"
-        : "white"
-    } 50%, ${
-      dep[1] === 1
-        ? "#4b99d2"
-        : dep[1] === 2
-        ? "#a479b1"
-        : dep[1] === 3
-        ? "#fbbc04"
-        : "white"
-    } 50%)`;
+    backgroundColor = {
+      xs: `linear-gradient(to right, ${
+        dep[0] === 1
+          ? "#4b99d2"
+          : dep[0] === 2
+          ? "#c05476"
+          : dep[0] === 3
+          ? "#fbbc04"
+          : "white"
+      } 50%, ${
+        dep[1] === 1
+          ? "#4b99d2"
+          : dep[1] === 2
+          ? "#a479b1"
+          : dep[1] === 3
+          ? "#fbbc04"
+          : "white"
+      } 50%)`,
+      sm: `linear-gradient(to bottom, ${
+        dep[0] === 1
+          ? "#4b99d2"
+          : dep[0] === 2
+          ? "#c05476"
+          : dep[0] === 3
+          ? "#fbbc04"
+          : "white"
+      } 50%, ${
+        dep[1] === 1
+          ? "#4b99d2"
+          : dep[1] === 2
+          ? "#a479b1"
+          : dep[1] === 3
+          ? "#fbbc04"
+          : "white"
+      } 50%)`,
+    };
   } else {
     backgroundColor = "white";
   }
 
   return (
-    <Box sx={{ display: "flex", gap: 1 }}>
-      <span
-        style={{
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
+        gap: { xs: 0, sm: 1 },
+      }}
+    >
+      <Box
+        sx={{
           background: backgroundColor,
-          display: "inline-flex",
-          minWidth: "0.3rem",
-          maxWidth: "0.5rem",
-          height: "auto",
+          width: { xs: "100%", sm: "0.3rem" },
+          minWidth: { xs: "100%", sm: "0.3rem" },
+          maxWidth: { xs: "100%", sm: "0.3rem" },
+          height: { xs: "0.15rem", sm: "auto" },
+          display: { xs: "block", sm: "inline-block" },
         }}
-      ></span>
+      ></Box>
       <Box
         sx={{
           width: "auto",
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
-          fontWeight: "bold",
+          fontWeight: { xs: "200", sm: "bold" },
+          fontSize: { xs: "0.6rem", sm: "1rem" },
         }}
       >
         {event.title}
@@ -200,6 +226,7 @@ const CustomEvent = ({ event }) => {
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
+          display: { xs: "none", sm: "block" },
         }}
       >
         {dayjs(event.start).format("HH:mm")} -{" "}

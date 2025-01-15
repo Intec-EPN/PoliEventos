@@ -274,7 +274,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             asistentesIniciales={asistentesActualizados}
           />
         )}
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
           <Button
             onClick={handleClose}
             variant="outlined"

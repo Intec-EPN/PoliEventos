@@ -16,7 +16,7 @@ export const PersonasVer = ({ personas }) => {
       >
         A cargo:
       </Typography>
-      <Box display={"flex"} mt={1} gap={2}>
+      <Box display={"flex"} mt={1} gap={2} flexWrap={"wrap"}>
         {personas.map((persona, index) => {
           return (
             <Box display={"flex"} key={index} alignItems={"center"}>
@@ -30,7 +30,11 @@ export const PersonasVer = ({ personas }) => {
                 {persona.nombre}
               </Typography>
               {persona.mail && (
-                <IconButton onClick={() => window.location.href = `mailto:${persona.mail}`}>
+                <IconButton
+                  onClick={() =>
+                    (window.location.href = `mailto:${persona.mail}`)
+                  }
+                >
                   <ForwardToInboxIcon sx={{ fontSize: "1.2rem" }} />
                 </IconButton>
               )}
