@@ -284,4 +284,23 @@ const editarEvento = async (req, res) => {
     }
 };
 
-module.exports = { crearEvento, obtenerEventos, eliminarEvento, editarEvento };
+
+const agregarAsistentes = async (req, res) => {
+    const { eventoId } = req.params;
+    const { asistentes } = req.body;
+    try {
+        const evento = await EventosModel.findByPk(eventoId);
+        if (!evento) {
+            return res.status(404).json({ message: 'Evento no encontrado' });
+        }
+
+        await evento.update({ asistentes });
+
+        res.status(200).json({ message: 'Asistentes agregados exitosamente', evento });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al agregar asistentes', error });
+    }
+};
+
+module.exports = { crearEvento, obtenerEventos, eliminarEvento, editarEvento, agregarAsistentes };

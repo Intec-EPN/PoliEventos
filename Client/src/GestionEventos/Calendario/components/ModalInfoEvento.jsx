@@ -25,21 +25,37 @@ import {
 } from "../../../store/GestionEventos/thunk";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import { ModalAsistentes } from "./ModalAsistentes";
+import { set } from "react-hook-form";
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
   const dispatch = useDispatch();
 
   const { id, start, end, title, data, usuarioId } = event || {};
-
-  const { departamento, descripcion, expositores, lugar, personasACargo } =
-    data || {};
+  const {
+    departamento,
+    descripcion,
+    expositores,
+    lugar,
+    personasACargo,
+    asistentes,
+  } = data || {};
 
   const handleClose = () => {
     setModalIsOpen(false);
   };
 
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [addAsistentesModalIsOpen, setAddAsistentesModalIsOpen] =
+    useState(false);
+
+    const [asistentesActualizados, setAsistentesActualizados] =
+    useState(null);
+    useEffect(() => {
+      setAsistentesActualizados(asistentes);
+    }, [asistentes]);
 
   const handleDelete = () => {
     dispatch(startDeletingEvento(event.id));
@@ -53,6 +69,15 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
 
   const handleDownloadFiles = () => {
     dispatch(startLoadingArchivosPorIds([event.id]));
+  };
+
+  const handleAddAsistentes = () => {
+    setAddAsistentesModalIsOpen(true);
+  };
+
+  const handleAddAsistentesClose = (asistentes) => {
+    setAddAsistentesModalIsOpen(false);
+    setAsistentesActualizados(asistentes);
   };
 
   const {
@@ -146,7 +171,13 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
         )}
 
         {permisoEditEvento && (
-          <Box>
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            gap={2}
+            alignItems={"center"}
+            flexWrap={"wrap"}
+          >
             {event?.data?.enlaces && (
               <Box sx={{ display: "flex", justifyContent: "start", mt: 2 }}>
                 <a
@@ -159,7 +190,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                     gap: 1,
                     alignItems: "center",
                     backgroundColor: "#0f5add",
-                    borderRadius: '5px',
+                    borderRadius: "5px",
                     height: "100%",
                   }}
                 >
@@ -174,7 +205,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                       ml: 0.5,
                       fontSize: "0.95rem",
                       pl: 0.7,
-                      pr:3,
+                      pr: 3,
                     }}
                   >
                     {event.data.enlaces}
@@ -182,7 +213,14 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                 </a>
               </Box>
             )}
-            <Box sx={{ display: "flex", justifyContent: "start", mt: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                flexDirection: "row",
+                mt: 2,
+              }}
+            >
               <Button
                 variant="contained"
                 color="primary"
@@ -191,6 +229,26 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                 onClick={handleDownloadFiles}
               >
                 Descargar Archivos
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<EmojiPeopleIcon />}
+                sx={{
+                  backgroundColor:
+                    asistentesActualizados === null || asistentesActualizados === 0 ? "#d8872d" : "#2c4175",
+                }}
+                onClick={handleAddAsistentes}
+              >
+                {asistentesActualizados === null || asistentesActualizados === 0
+                  ? "Agregar asistentes"
+                  : "Editar asistentes: " + asistentesActualizados}
               </Button>
             </Box>
           </Box>
@@ -204,6 +262,16 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             setModalIsOpen={setEditModalIsOpen}
             event={event}
             handleEditClose={handleEditClose}
+          />
+        )}
+        {/* Asistentes dependiendo del rol */}
+        {permisoEditEvento && (
+          <ModalAsistentes
+            open={addAsistentesModalIsOpen}
+            onClose={handleAddAsistentesClose}
+            eventoId={event.id}
+            handleEditClose={handleEditClose}
+            asistentesIniciales={asistentesActualizados}
           />
         )}
         <Box sx={{ display: "flex", gap: 1 }}>

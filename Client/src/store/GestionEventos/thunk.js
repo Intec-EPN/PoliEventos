@@ -238,3 +238,17 @@ export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) =
     };
 };
 
+
+export const startEditingAsistentes = ({eventoId, asistentes}) => {
+    return async (dispatch) => {
+        try{
+            const url = `/gestion/asistentes/${eventoId}`;
+            await axiosInstance.patch(url, {asistentes}, {
+                withCredentials: true,
+            });
+            dispatch(startLoadingEventos());
+        }catch(error){
+            throw new Error("Error al editar asistentes");
+        }    
+    }
+}
