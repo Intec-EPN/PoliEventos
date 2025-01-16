@@ -65,14 +65,13 @@ const loginUsuario = [
                 expiresIn: '2h'
             });
 
+            console.log("***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************", process.env.NODE_ENV)
             // Establecer la cookie con el token
             res.cookie('access_token', token, {
                 httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
-                secure: true,
-                sameSite: 'none' // Protección contra CSRF (LAX cuando está en local).
-                // secure: process.env.NODE_ENV === 'production', // Sólo por HTTPS en producción
-                // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Protección contra CSRF (LAX cuando está en local).
-                // maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
+                secure: process.env.NODE_ENV === 'production', // Sólo por HTTPS en producción
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Protección contra CSRF (LAX cuando está en local).
+                maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
            
             // Responder con éxito

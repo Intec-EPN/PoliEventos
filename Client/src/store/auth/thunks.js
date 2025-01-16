@@ -10,7 +10,6 @@ export const startLogin = (data) => {
             }, {
                 withCredentials: true
             });
-
             await dispatch(loginSuccess({ user: response.data }));
             await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));
         } catch (error) {
