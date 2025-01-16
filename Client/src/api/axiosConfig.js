@@ -4,10 +4,8 @@ import { api } from './api';
 // Crear una instancia de Axios
 const axiosInstance = axios.create({
   baseURL: api,
-  // timeout: 10000, // Tiempo de espera
   withCredentials: true, // Asegúrate de enviar credenciales (cookies)
-});  
-
+});
 
 // Interceptores
 axiosInstance.interceptors.request.use(
@@ -19,7 +17,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-
 axiosInstance.interceptors.response.use(
   response => response,
   error => {
@@ -30,6 +27,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 export default axiosInstance;

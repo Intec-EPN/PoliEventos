@@ -71,7 +71,6 @@ export const startEditingEvento = (eventoId, files) => {
     };
 };
 
-
 export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
     return async (dispatch) => {
         const departamentosFormatted = departamentos.join("__");
@@ -93,7 +92,6 @@ export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
         }
     }
 }
-
 
 export const startDeletingEvento = (eventoId) => {
     return async (dispatch) => {
@@ -237,7 +235,6 @@ export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) =
         }
     };
 };
-
 
 export const startEditingAsistentes = ({eventoId, asistentes}) => {
     return async (dispatch) => {

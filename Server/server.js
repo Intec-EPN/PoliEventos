@@ -41,3 +41,10 @@ sequelize.sync()
     .catch(err => {
         console.error('Error al sincronizar la base de datos:', err);
     });
+
+// Agregar logs adicionales para depurar el problema
+app.use((req, res, next) => {
+    console.log("req", req);
+    console.log('Cookies:', req.cookies);
+    next();
+});
