@@ -65,16 +65,6 @@ const loginUsuario = [
                 expiresIn: '2h'
             });
 
-            console.log("Entorno:", process.env.NODE_ENV); // Agregar log para verificar el entorno
-            // Tu código anterior...
-
-            // Verificar el entorno y imprimir el mensaje
-            if (process.env.NODE_ENV === 'production') {
-                console.log('Iguales?: true');
-            } else {
-                console.log('Iguales?: false');
-            }
-
             // Establecer la cookie con el token
             res.cookie('access_token', token, {
                 httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
