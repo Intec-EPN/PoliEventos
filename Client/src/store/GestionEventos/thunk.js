@@ -5,8 +5,11 @@ import { saveAs } from "file-saver";
 export const startLoadingEventos = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const { data } = await axiosInstance.get("/gestion", {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setEventos(data));
         } catch (error) {
@@ -19,6 +22,7 @@ export const startLoadingEventos = () => {
 export const startCreateEvento = (files) => {
     return async (dispatch, getState) => {
         try {
+            const token = localStorage.getItem('token');
             const state = getState();
             const eventoCreacion = state.gestionEvento.eventoCreacion;
             const departamentos = state.gestionEvento.eventoCreacion.data.departamento;
@@ -29,7 +33,9 @@ export const startCreateEvento = (files) => {
                 usuarioId: usuarioId,
                 eventoCreacion: eventoCreacion
             }, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
 
             const eventoId = data.evento.id; // Obtener el ID del evento
@@ -48,6 +54,7 @@ export const startCreateEvento = (files) => {
 export const startEditingEvento = (eventoId, files) => {
     return async (dispatch, getState) => {
         try {
+            const token = localStorage.getItem('token');
             const state = getState();
             const eventoEdicion = state.gestionEvento.eventoEdicion;
             const departamentos = state.gestionEvento.eventoEdicion.data.departamento;
@@ -58,7 +65,9 @@ export const startEditingEvento = (eventoId, files) => {
                 usuarioId: usuarioId,
                 eventoEdicion: eventoEdicion
             }, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             if (files.length > 0) {
                 dispatch(startUpLoadingArchivos({ files, eventoId, departamentos }));
@@ -80,11 +89,12 @@ export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
             formData.append("files", file, newFileName);
         });
         try {
+            const token = localStorage.getItem('token');
             await axiosInstance.post("/gestion/subir", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    'Authorization': `Bearer ${token}`,
                 },
-                withCredentials: true,
             });
         } catch (error) {
             console.error("Error al subir archivos", error);
@@ -96,9 +106,12 @@ export const startUpLoadingArchivos = ({ files, eventoId, departamentos }) => {
 export const startDeletingEvento = (eventoId) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const url = `/gestion/${eventoId}`;
             await axiosInstance.delete(url, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startDeletingArchivos({ eventoId }))
             dispatch(startLoadingEventos());
@@ -111,10 +124,12 @@ export const startDeletingEvento = (eventoId) => {
 export const startDeletingArchivos = ({ eventoId }) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const url = `/gestion/archivo/${eventoId}`;
-
             await axiosInstance.delete(url, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingEventos());
         } catch (error) {
@@ -126,10 +141,12 @@ export const startDeletingArchivos = ({ eventoId }) => {
 export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const url = `/gestion/archivo/${nombreArchivo}/${eventoId.eventId}`;
-
             await axiosInstance.delete(url, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingEventos());
         } catch (error) {
@@ -141,8 +158,11 @@ export const startDeletingArchivo = ({ nombreArchivo, eventoId }) => {
 export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const { data } = await axiosInstance.get("/gestion/departamentos/", {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setDepartamentos(data));
         } catch (error) {
@@ -155,8 +175,11 @@ export const startLoadingDepartamentos = () => {
 export const startLoadingEsquemasCategorias = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const { data } = await axiosInstance.get("/gestion/esquemas_categorias/", {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setEsquemasCategorias(data));
         } catch (error) {
@@ -170,8 +193,11 @@ export const startLoadingArchivos = (eventoId) => {
     return async (dispatch) => {
         let { eventId } = eventoId;
         try {
+            const token = localStorage.getItem('token');
             const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setFilesObtenidos(data));
         } catch (error) {
@@ -184,10 +210,13 @@ export const startLoadingArchivos = (eventoId) => {
 export const startLoadingArchivosPorIds = (eventIds) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const archivos = [];
             for (const eventId of eventIds) {
                 const { data } = await axiosInstance.get(`/gestion/archivos/${eventId}`, {
-                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
                 });
                 archivos.push(...data.archivos);
             }
@@ -206,9 +235,12 @@ export const startLoadingArchivosPorIds = (eventIds) => {
 export const startDescargarArchivosZip = (archivos) => {
     return async () => {
         try {
+            const token = localStorage.getItem('token');
             const { data } = await axiosInstance.post("/gestion/descargar-zip", { archivos }, {
                 responseType: 'blob',
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             const blob = new Blob([data], { type: 'application/zip' });
             saveAs(blob, 'archivos.zip');
@@ -222,9 +254,12 @@ export const startDescargarArchivosZip = (archivos) => {
 export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const url = `/gestion/archivos/${eventoId}`;
             const response = await axiosInstance.patch(url, { nuevoDepartamento }, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             if (!response.status === 200) {
                 alert(response.data.error || "Error al renombrar archivos");
@@ -236,16 +271,19 @@ export const startEditingArchivosPorEvento = ({ eventoId, nuevoDepartamento }) =
     };
 };
 
-export const startEditingAsistentes = ({eventoId, asistentes}) => {
+export const startEditingAsistentes = ({ eventoId, asistentes }) => {
     return async (dispatch) => {
-        try{
+        try {
+            const token = localStorage.getItem('token');
             const url = `/gestion/asistentes/${eventoId}`;
-            await axiosInstance.patch(url, {asistentes}, {
-                withCredentials: true,
+            await axiosInstance.patch(url, { asistentes }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingEventos());
-        }catch(error){
+        } catch (error) {
             throw new Error("Error al editar asistentes");
-        }    
+        }
     }
 }

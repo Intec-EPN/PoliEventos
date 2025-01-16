@@ -4,8 +4,11 @@ import { setUsuarios } from "./usuariosSlice";
 export const startLoadingUsuarios = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.get('/admin/usuarios/get', {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setUsuarios(response.data));
         } catch (error) {
@@ -17,8 +20,11 @@ export const startLoadingUsuarios = () => {
 export const startRolesUsuarios = (usuarioId, rolesIds) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.post('/admin/usuarios/asignar', { usuarioId, rolesIds }, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingUsuarios());
         } catch (error) {
@@ -30,8 +36,11 @@ export const startRolesUsuarios = (usuarioId, rolesIds) => {
 export const startDeletingUsuario = (usuarioId) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.delete(`/admin/usuarios/${usuarioId}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingUsuarios());
         } catch (error) {
@@ -43,8 +52,11 @@ export const startDeletingUsuario = (usuarioId) => {
 export const startChangingEnabled = (usuarioId) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.patch(`/admin/usuarios/habilitar/${usuarioId}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingUsuarios());
         } catch (error) {
@@ -56,8 +68,11 @@ export const startChangingEnabled = (usuarioId) => {
 export const startUpdatingUsuario = (usuarioId, updatedData) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.patch(`/admin/usuarios/${usuarioId}`, updatedData, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingUsuarios());
         } catch (error) {

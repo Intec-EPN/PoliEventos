@@ -4,8 +4,11 @@ import { agregarEsquema, eliminarCategoria, eliminarEsquema, setCancelar, setEsq
 export const startLoadingEsquemas = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.get('/admin/esquemas/get', {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setEsquemas(response.data))
         } catch (error) {
@@ -17,6 +20,7 @@ export const startLoadingEsquemas = () => {
 export const startEditingEsquema = (id) => {
     return async (dispatch, getState) => {
         try {
+            const token = localStorage.getItem('token');
             // Obtengo el esquema actual (lo tengo en redux)
             const { esquemaCategorizacionActual } = getState().categorizacion;
 
@@ -33,7 +37,9 @@ export const startEditingEsquema = (id) => {
                 categorias: esquemaCategorizacionActual.categorias
             };
             await axiosInstance.put(`/admin/esquemas/${id}`, data, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
         } catch (error) {
             if (error.response && error.response.status === 400) {
@@ -50,6 +56,7 @@ export const startEditingEsquema = (id) => {
 export const startCreatingEsquema = () => {
     return async (dispatch, getState) => {
         try {
+            const token = localStorage.getItem('token');
             // Obtengo el esquema actual (lo tengo en redux)
             const { esquemaCategorizacionActual } = getState().categorizacion;
 
@@ -61,7 +68,9 @@ export const startCreatingEsquema = () => {
             };
             // Realiza la petición POST para crear el nuevo esquema
             await axiosInstance.post('/admin/esquemas', data, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingEsquemas());
 
@@ -78,10 +87,13 @@ export const startCreatingEsquema = () => {
 export const startChangingVisible = () => {
     return async (dispatch, getState) => {
         try {
+            const token = localStorage.getItem('token');
             // Obtengo ell id del esquema
             const { idEsquemaCambiarVisibilidad } = getState().categorizacion;
             await axiosInstance.put(`/admin/esquemas/visibilidad/${idEsquemaCambiarVisibilidad}`, {}, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
         } catch (error) {
             throw new Error(error);
@@ -93,10 +105,13 @@ export const startChangingVisible = () => {
 export const startChangingCategoryVisible = () => {
     return async (dispatch, getState) => {
         try {
+            const token = localStorage.getItem('token');
             // Obtengo ell id del esquema
             const { idCategoriaCambiarVisibilidad } = getState().categorizacion;
             await axiosInstance.put(`/admin/esquemas/categoria/visibilidad/${idCategoriaCambiarVisibilidad}`, {}, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
         } catch (error) {
             throw new Error(error);
@@ -107,9 +122,12 @@ export const startChangingCategoryVisible = () => {
 export const startDeletingEsquema = (id) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             // Se manda a eliminar con el id simplemente:
             await axiosInstance.delete(`/admin/esquemas/${id}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(eliminarEsquema(id));
         } catch (error) {
@@ -119,14 +137,17 @@ export const startDeletingEsquema = (id) => {
 };
 
 
-export const startDeletingCategory = ({idCategoria, idEsquema}) => {   
+export const startDeletingCategory = ({ idCategoria, idEsquema }) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             // Se manda a eliminar con el id simplemente:
             await axiosInstance.delete(`/admin/esquemas/categoria/${idCategoria}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
-            dispatch(eliminarCategoria({idCategoria, idEsquema}));
+            dispatch(eliminarCategoria({ idCategoria, idEsquema }));
         } catch (error) {
             throw new Error(error);
         }

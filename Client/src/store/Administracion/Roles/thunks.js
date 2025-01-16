@@ -4,8 +4,11 @@ import { setCreandoRolEnBase, setDepartamento, setFacultades, setPermisos, setRo
 export const startLoadingRoles = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.get('/admin/roles/array', {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setRoles(response.data));
         } catch (error) {
@@ -17,8 +20,11 @@ export const startLoadingRoles = () => {
 export const startLoadingFacultades = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             const response = await axiosInstance.get('/admin/facultades/', {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setFacultades(response.data));
         } catch (error) {
@@ -30,9 +36,12 @@ export const startLoadingFacultades = () => {
 export const startLoadingDepartamentosFacultades = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             // Para escalar a más facultades, aquí se enviará el id de la facultad.
             const { data: deptFacultad } = await axiosInstance.get('admin/facultades/getdept/1', {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
 
             const departamentosFacultad = deptFacultad.map(dept => dept.departamento);
@@ -48,9 +57,12 @@ export const startLoadingDepartamentosFacultades = () => {
 export const startLoadingPermisosEstructura = () => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             // Traigo los permisos con sus correspondientes cuestiones.
             const { data } = await axiosInstance.get('admin/permisos/estructura', {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(setPermisos(data));
         } catch (error) {
@@ -63,17 +75,20 @@ export const startCreatingRoles = (rolData) => {
     return async (dispatch) => {
         dispatch(setCreandoRolEnBase(true));
         try {
+            const token = localStorage.getItem('token');
             await axiosInstance.post('admin/roles/create', rolData, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
             dispatch(startLoadingRoles());
             dispatch(setCreandoRolEnBase(false));
             return true;
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                alert(error.response.data.message); 
-            }            
-            dispatch(setCreandoRolEnBase(false)); 
+                alert(error.response.data.message);
+            }
+            dispatch(setCreandoRolEnBase(false));
             return false;
         }
     }
@@ -82,14 +97,17 @@ export const startCreatingRoles = (rolData) => {
 export const startDeletingRol = (nombre) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token');
             await axiosInstance.delete(`admin/roles/${nombre.trim()}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             }); // Trimear el nombre del rol
             dispatch(startLoadingRoles());
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                alert(error.response.data.message); 
-            }            
+                alert(error.response.data.message);
+            }
         }
     }
 }
