@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 // Configura CORS
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://poli-eventos-test.netlify.app'], // Reemplaza con el dominio de tu cliente
+    origin: ['http://localhost:5173', 'https://poli-eventos-test.netlify.app'], 
     credentials: true, // Permitir el envío de cookies
 };
 // Configura CORS

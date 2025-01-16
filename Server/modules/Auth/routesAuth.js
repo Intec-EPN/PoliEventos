@@ -11,5 +11,4 @@ router.post('/create', crearUsuario);
 router.post('/login', loginUsuario);
 router.post('/logout', authMiddleware, logoutUsuario);
 
-
 module.exports = router;
