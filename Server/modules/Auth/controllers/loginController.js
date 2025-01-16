@@ -65,16 +65,8 @@ const loginUsuario = [
                 expiresIn: '2h'
             });
 
-            // Establecer la cookie con el token
-            res.cookie('access_token', token, {
-                httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
-                secure: process.env.NODE_ENV == 'production', // Sólo por HTTPS en producción
-                sameSite: process.env.NODE_ENV == 'production' ? 'none' : 'lax', // Protección contra CSRF (LAX cuando está en local).
-                maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
-            });
-
             // Responder con éxito
-            res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
+            res.status(200).json({ message: 'Inicio de sesión exitoso.', token, id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
             console.error("Error en loginUsuario:", error);
             res.status(400).json({ error: 'Error del inicio de sesión.' });

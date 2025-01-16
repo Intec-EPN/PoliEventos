@@ -4,12 +4,15 @@ import { api } from './api';
 // Crear una instancia de Axios
 const axiosInstance = axios.create({
   baseURL: api,
-  withCredentials: true, // Asegúrate de enviar credenciales (cookies)
 });
 
 // Interceptores
 axiosInstance.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -17,15 +20,5 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response && error.response.status === 401) {
-        // Redirigir al usuario a la página de inicio de sesión
-        window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
 
 export default axiosInstance;

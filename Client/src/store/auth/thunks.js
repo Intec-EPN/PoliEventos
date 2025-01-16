@@ -7,9 +7,11 @@ export const startLogin = (data) => {
             const response = await axiosInstance.post("/auth/login", {
                 email: data.correo.trim(),
                 password: data.contraseña.trim(),
-            }, {
-                withCredentials: true
             });
+
+            // Guardar el token en el almacenamiento local.
+            localStorage.setItem("token", response.data.token);
+
             await dispatch(loginSuccess({ user: response.data }));
             await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));
         } catch (error) {
@@ -21,9 +23,8 @@ export const startLogin = (data) => {
 export const startLogout = () => {
     return async (dispatch) => {
         try {
-            await axiosInstance.post("/auth/logout", {}, {
-                withCredentials: true
-            });
+            await axiosInstance.post("/auth/logout");
+            localStorage.removeItem('token');
             dispatch(logout());
         } catch (error) {
             console.error("Error al cerrar sesión", error);
@@ -35,8 +36,11 @@ export const startLogout = () => {
 export const startLoadingPermisos = (id) => {
     return async (dispatch) => {
         try {
+            const token = localStorage.getItem('token'); 
             const { data } = await axiosInstance.get(`/gestion/permisos/${id}`, {
-                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                },
             });
             const permisos = data.map(permiso => ({
                 permisoId: permiso.permiso_id,
