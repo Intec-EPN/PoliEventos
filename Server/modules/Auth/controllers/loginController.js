@@ -66,16 +66,23 @@ const loginUsuario = [
             });
 
             console.log("Entorno:", process.env.NODE_ENV); // Agregar log para verificar el entorno
-            console.log("Iguales?:", process.env.NODE_ENV === 'production'); // Agregar log para verificar el entorno
+            // Tu código anterior...
+
+            // Verificar el entorno y imprimir el mensaje
+            if (process.env.NODE_ENV === 'production') {
+                console.log('Iguales?: true');
+            } else {
+                console.log('Iguales?: false');
+            }
 
             // Establecer la cookie con el token
             res.cookie('access_token', token, {
                 httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
-                secure: process.env.NODE_ENV === 'production', // Sólo por HTTPS en producción
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Protección contra CSRF (LAX cuando está en local).
+                secure: process.env.NODE_ENV == 'production', // Sólo por HTTPS en producción
+                sameSite: process.env.NODE_ENV == 'production' ? 'none' : 'lax', // Protección contra CSRF (LAX cuando está en local).
                 maxAge: 2 * 60 * 60 * 1000 // 2 horas en milisegundos
             });
-           
+
             // Responder con éxito
             res.status(200).json({ message: 'Inicio de sesión exitoso.', id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
         } catch (error) {
