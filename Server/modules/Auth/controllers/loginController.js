@@ -64,6 +64,8 @@ const loginUsuario = [
             const token = await jwt.sign({ id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso }, jwtSecret, {
                 expiresIn: '2h'
             });
+
+            console.log("Entorno:", process.env.NODE_ENV); // Agregar log para verificar el entorno
             // Establecer la cookie con el token
             res.cookie('access_token', token, {
                 httpOnly: true, // Sólo a través del servidor (No Javascript del cliente).
