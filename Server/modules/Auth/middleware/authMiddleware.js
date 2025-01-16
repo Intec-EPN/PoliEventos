@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
 const authMiddleware = (req, res, next) => {
+    console.log("req", req);
+    console.log('Cookies:', req.cookies);
     const token = req.cookies.access_token;
 
     if (!token) {
@@ -17,5 +19,6 @@ const authMiddleware = (req, res, next) => {
         return res.status(400).json({ message: 'Acceso no autorizado. A', error: error });
     }
 };
+
 
 module.exports = authMiddleware;
