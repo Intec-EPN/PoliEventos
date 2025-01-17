@@ -35,15 +35,15 @@ const agregarValoresIniciales = async () => {
     const permisos = await PermisosModel.count();
     if (permisos === 0) {
         await PermisosModel.bulkCreate([
-            { accion: 'Gestionar evento', tooltip: 'Crear, editar, eliminar y descargar información privada de un elemento propio.', bgColor: '#43b0db', nivel_id: '1' },
-            { accion: 'Editar evento', tooltip: 'Editar evento que pertenezca al departamento.', bgColor: '#f09b3c', nivel_id: '2' },
-            { accion: 'Eliminar evento', tooltip: 'Eliminar evento que pertenezca al departamento', bgColor: '#f09229', nivel_id: '2' },
-            { accion: 'Generar reporte', tooltip: 'Generar reporte de cualquier evento en el departamento.', bgColor: '#dc8626', nivel_id: '2' },
-            { accion: 'Descarga privada', tooltip: 'Descargar información privada de evento de departamento.', bgColor: '#dc7400', nivel_id: '2' },
-            { accion: 'Editar evento', tooltip: 'Editar evento que pertenezca al facultad.', bgColor: '#4da93a', nivel_id: '3' },
-            { accion: 'Eliminar evento', tooltip: 'Eliminar evento que pertenezca al facultad', bgColor: '#248d18', nivel_id: '3' },
-            { accion: 'Generar reporte', tooltip: 'Generar reporte de cualquier evento en el facultad.', bgColor: '#017b00', nivel_id: '3' },
-            { accion: 'Descarga privada', tooltip: 'Descargar información privada de evento de facultad.', bgColor: '#006f00', nivel_id: '3' }
+            { accion: 'Gestionar evento', tooltip: 'Crear, editar, eliminar y descargar información privada de un evento propio.', bgColor: '#43b0db', nivel_id: '1' },
+            { accion: 'Editar evento', tooltip: 'Editar evento que pertenece al mismo departamento.', bgColor: '#f09b3c', nivel_id: '2' },
+            { accion: 'Eliminar evento', tooltip: 'Eliminar evento que pertenece al mismo departamento', bgColor: '#f09229', nivel_id: '2' },
+            { accion: 'Generar reporte', tooltip: 'Generar reporte de los eventos del mismo departamento.', bgColor: '#dc8626', nivel_id: '2' },
+            { accion: 'Descarga privada', tooltip: 'Descargar archivos asociados del mismo departamento.', bgColor: '#dc7400', nivel_id: '2' },
+            { accion: 'Editar evento', tooltip: 'Editar evento que pertenezca a la facultad.', bgColor: '#4da93a', nivel_id: '3' },
+            { accion: 'Eliminar evento', tooltip: 'Eliminar evento que pertenezca a la facultad', bgColor: '#248d18', nivel_id: '3' },
+            { accion: 'Generar reporte', tooltip: 'Generar reporte de los eventos de la facultad.', bgColor: '#017b00', nivel_id: '3' },
+            { accion: 'Descarga privada', tooltip: 'Descargar archivos asociados a la facultad.', bgColor: '#006f00', nivel_id: '3' }
         ]);
     }
 
