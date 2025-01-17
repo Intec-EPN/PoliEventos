@@ -9,11 +9,12 @@ export const Indicadores = ({ value, editar = false }) => {
     <Box
       display="flex"
       sx={{
-        gap: { xs: 1, md: 2 },
+        gap: 1,
         flexDirection: { xs: "column", md: "row" },
         width: "100%",
         justifyContent: { xs: "center", md: "left" },
-        padding: { xs: 1, md: 0 },
+        flexWrap: "wrap",
+        padding: { xs: 1, md: "0rem" },
         mt: 2.5,
       }}
       mb={1}
@@ -56,7 +57,9 @@ export const Indicadores = ({ value, editar = false }) => {
           </Typography>
           <Box display="flex" gap={1}>
             <EditIcon sx={{ color: "#2c4175" }} />
-            <Typography variant="p">Edita {value}.</Typography>
+            <Typography variant="p">
+              Edita {value} o agrega categorías dentro.
+            </Typography>
           </Box>
         </>
       ) : null}
@@ -75,8 +78,10 @@ export const Indicadores = ({ value, editar = false }) => {
             <hr></hr>
           </Typography>
           <Box display="flex" gap={1}>
-            <SquareIcon sx={{ color: "#dc8626",width:"1.3rem" }} />
-            <Typography variant="p" color="#dc8626">Categorización vacía</Typography>
+            <SquareIcon sx={{ color: "#dc8626", width: "1.3rem" }} />
+            <Typography variant="p" color="#dc8626">
+              Categorización vacía
+            </Typography>
           </Box>
         </>
       ) : null}
