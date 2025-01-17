@@ -13,6 +13,7 @@ import { RadioButton } from "./RadioButton";
 import { startCreatingRoles } from "../../../../../store/Administracion/Roles/thunks";
 import { useNavigate } from "react-router-dom";
 import PopUpCrear from "./PopUpCrear";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export const FormRol = () => {
   // Hook Form
@@ -39,13 +40,13 @@ export const FormRol = () => {
 
   // Traigo los permisos como array para convertirlos a objeto.
   const { permisosAcciones } = useSelector((state) => state.permiso);
-  
+
   // Convertir array de niveles en un objeto con las claves "Propio", "Departamento", "Facultad"
   const niveles = permisosAcciones.reduce((acc, nivel) => {
     acc[nivel.nombre] = nivel;
     return acc;
   }, {});
-  
+
   useEffect(() => {
     if (!creandoRol) {
       reset({
@@ -82,6 +83,14 @@ export const FormRol = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Button
+        variant="contained"
+        sx={{ backgroundColor: "red", mt: 2, mb: 2 }}
+        onClick={() => navigate("/admin/roles/lista")}
+      >
+        <ArrowBackIosIcon sx={{ width: "15px" }} />
+        Lista
+      </Button>
       <Typography
         variant="h6"
         noWrap
@@ -108,9 +117,9 @@ export const FormRol = () => {
                 noLeadingTrailingSpaces: (value) =>
                   value.trim() === value ||
                   "El nombre del rol no debe comenzar o terminar con espacios.",
-                  notAdmin: (value) =>
-                    value.toLowerCase() !== "administrador" ||
-                    'Nombre de rol no permitido, ingrese otro.',
+                notAdmin: (value) =>
+                  value.toLowerCase() !== "administrador" ||
+                  "Nombre de rol no permitido, ingrese otro.",
               },
             }}
             render={({ field }) => (

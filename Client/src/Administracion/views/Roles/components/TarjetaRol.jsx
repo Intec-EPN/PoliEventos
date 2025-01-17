@@ -27,6 +27,7 @@ export const TarjetaRol = ({
   };
 
   const { usuarios } = useSelector((state) => state.usuarios);
+  const { facultades } = useSelector((state) => state.rol);
 
   const [usado, setUsado] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -77,14 +78,22 @@ export const TarjetaRol = ({
           </Typography>
           <Typography textAlign="justify">{descripcion}</Typography>
           <Grid2 container justifyContent="center" alignItems="center" mt={2}>
-            {departamentos.map((dep, index) => (
+            {departamentos.length > 1 ? (
               <Chip
-                key={index}
-                label={dep}
+                label={facultades[0].nombre}
                 variant="outlined"
                 sx={{ backgroundColor: "#004aad", color: "white" }}
               />
-            ))}
+            ) : (
+              departamentos.map((dep, index) => (
+                <Chip
+                  key={index}
+                  label={dep}
+                  variant="outlined"
+                  sx={{ backgroundColor: "#004aad", color: "white" }}
+                />
+              ))
+            )}
           </Grid2>
         </CardContent>
         <CardContent sx={{ width: "100%", padding: 2 }}>

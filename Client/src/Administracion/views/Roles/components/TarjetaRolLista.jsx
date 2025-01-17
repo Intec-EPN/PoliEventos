@@ -23,6 +23,8 @@ export const TarjetaRolLista = ({
 }) => {
   const dispatch = useDispatch();
   const { usuarios } = useSelector((state) => state.usuarios);
+  // En caso de querer escalar a mas facultades, se deberá agregar a los departamentos que vienen el id de la facultad para compararlo con el obtenido del selector y obtener la facultad en la línea 88.
+  const { facultades } = useSelector((state) => state.rol);
   const [usado, setUsado] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [usuariosCargados, setUsuariosCargados] = useState(false);
@@ -81,14 +83,22 @@ export const TarjetaRolLista = ({
         </Typography>
         <Typography textAlign="justify">{descripcion}</Typography>
         <Grid2 container justifyContent="center" alignItems="center" mt={2}>
-          {departamentos.map((dep, index) => (
+          {departamentos.length > 1 ? (
             <Chip
-              key={index}
-              label={dep}
+              label={facultades[0].nombre}
               variant="outlined"
               sx={{ backgroundColor: "#004aad", color: "white" }}
             />
-          ))}
+          ) : (
+            departamentos.map((dep, index) => (
+              <Chip
+                key={index}
+                label={dep}
+                variant="outlined"
+                sx={{ backgroundColor: "#004aad", color: "white" }}
+              />
+            ))
+          )}
         </Grid2>
       </CardContent>
 

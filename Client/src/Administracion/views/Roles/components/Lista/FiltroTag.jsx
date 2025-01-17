@@ -75,7 +75,6 @@ export const FiltroTag = ({ permisosAcciones = [], acciones = [] }) => {
           </ListSubheader>,
           ...permiso.acciones.map((accionId) => {
             const accion = acciones.find((a) => a.id === accionId);
-            // Verificamos que la acción esté definida antes de acceder a su id
             if (!accion) return null;
             return (
               <MenuItem

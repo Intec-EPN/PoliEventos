@@ -26,7 +26,6 @@ export const RadioButton = ({ reset }) => {
 
     dispatch(reiniciarRol());
     
-    // Analisis de dispatch y demás.
     const selectedValue = e.target.value;
     dispatch(handleSeleccion(selectedValue));
     if (selectedValue === "Facultad") {

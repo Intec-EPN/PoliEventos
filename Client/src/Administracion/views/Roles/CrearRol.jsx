@@ -10,7 +10,7 @@ export const CrearRol = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(reiniciarRol());
-    dispatch(opcionActual('Crea un Rol'));
+    dispatch(opcionActual('Crea un rol'));
   }, [dispatch]);
 
   return (
