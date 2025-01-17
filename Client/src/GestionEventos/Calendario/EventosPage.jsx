@@ -9,11 +9,13 @@ import {
 } from "../../store/GestionEventos/thunk";
 import { useNavigate } from "react-router-dom";
 import { startLogout } from "../../store/auth/thunks";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import EventIcon from "@mui/icons-material/Event";
+import { ModalReporte } from "./components/ModalReporte";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { LogoutOutlined } from "@mui/icons-material";
-import { ModalReporte } from "./components/ModalReporte";
+import PersonIcon from "@mui/icons-material/Person";
+import { PermisosUsuario } from "./components/PermisosUsuario";
 
 export const EventosPage = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,9 @@ export const EventosPage = () => {
   const [reportePermiso, setReportePermiso] = useState(false);
 
   const { eventos } = useSelector((state) => state.gestionEvento);
-  const { nivelPropio, permisos } = useSelector((state) => state.adminAuth);
+  const { user, nivelPropio, permisos } = useSelector(
+    (state) => state.adminAuth
+  );
 
   const { departamentos } = useSelector((state) => state.gestionEvento);
 
@@ -84,12 +88,108 @@ export const EventosPage = () => {
     >
       <Box
         sx={{
+          position: "fixed",
+          top: 0,
+          textAlign: "center",
+          backgroundColor: "#ffffff",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          width: "100%",
+          gap: 2,
+          pt: 0.4,
+          pb: 0.9,
+          zIndex: 50,
+          boxShadow: "0px 4px 2px -2px rgba(0, 0, 0, 0.15)",
+          ml: -1,
+        }}
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          flex={1}
+          justifyContent={"center"}
+        >
+          <Box display="flex" flexDirection="row" alignItems="center" gap={0.5}>
+            <Typography
+              onClick={() => setFormato(false)}
+              sx={{
+                cursor: "pointer",
+                fontSize: { xs: "0.8rem", sm: "0.9rem" },
+                color: "#0a3b91",
+                pt: 0.1,
+                ml: { xs: 1.5, sm: 0 },
+              }}
+            >
+              {user?.nombre}
+            </Typography>
+            <PersonIcon
+              sx={{
+                color: "#0a3b91",
+                fontSize: { xs: "0.9rem", sm: "1.1rem" },
+              }}
+            />
+          </Box>
+        </Box>
+        <Box
+          display="flex"
+          alignItems="center"
+          flex={2}
+          justifyContent={"center"}
+        >
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            gap={0.5}
+            flexWrap={"wrap"}
+          >
+            {/* <Typography
+              onClick={() => setFormato(false)}
+              sx={{
+                cursor: "pointer",
+                fontSize: "0.9rem",
+                color: "#0a3b91",
+                pt: 0.1,
+              }}
+            >
+              Permisos
+            </Typography> */}
+            <PermisosUsuario permisos={permisos} />
+          </Box>
+        </Box>
+        <Box
+          display="flex"
+          alignItems="center"
+          flex={1}
+          justifyContent={"center"}
+        >
+          <Typography
+            onClick={onLogout}
+            sx={{ cursor: "pointer", fontSize: { xs: "0.8rem", sm: "0.9rem" }, color: "#0a3b91" }}
+          >
+            Cerrar sesión
+          </Typography>
+          <IconButton onClick={onLogout}>
+            <LogoutOutlined
+              sx={{
+                color: "#0a3b91",
+                fontSize: { xs: "1rem", sm: "1.2rem" },
+              }}
+            />
+          </IconButton>
+        </Box>
+      </Box>
+      <Box
+        sx={{
           width: "100%",
           mt: "0.5rem",
         }}
       >
         {formato ? (
-          <Calendario />
+          <Box mt={"3rem"}>
+            <Calendario />
+          </Box>
         ) : (
           <Box
             sx={{
@@ -101,6 +201,7 @@ export const EventosPage = () => {
               textAlign={"center"}
               sx={{
                 my: 1,
+                mt: { xs: 7, sm: 6 },
                 fontWeight: "500",
                 fontSize: "0.9rem",
                 color: "#1e3990",
@@ -111,38 +212,6 @@ export const EventosPage = () => {
             {sortedEvents.map((event, index) => (
               <EventoSimple key={index} event={event} />
             ))}
-          </Box>
-        )}
-
-        {!nivelPropio && reportePermiso && (
-          <Box
-            sx={{
-              position: "fixed",
-              bottom: { xs: 55, sm: 32, md: 35 },
-              right: 0,
-              pr: { xs: 2, sm: 8, md: 5, xl: 8 },
-              p: { xs: 1, sm: 2 },
-              zIndex: 100,
-            }}
-          >
-            <Tooltip title="Generar reporte" placement="top">
-              <Fab
-                aria-label="report"
-                sx={{
-                  backgroundColor: "#0a3b91",
-                  "&:hover": {
-                    backgroundColor: "green",
-                  },
-                }}
-              >
-                <IconButton
-                  onClick={handleOpenReporte}
-                  sx={{ color: "#ffffff" }}
-                >
-                  <AssessmentOutlinedIcon />
-                </IconButton>
-              </Fab>
-            </Tooltip>
           </Box>
         )}
       </Box>
@@ -164,9 +233,16 @@ export const EventosPage = () => {
           pt: 0.4,
           pb: 0.9,
           zIndex: 50,
+          boxShadow: "0px -4px 2px -2px rgba(0, 0, 0, 0.15)",
+          ml: -1,
         }}
       >
-        <Box display="flex" alignItems="center">
+        <Box
+          display="flex"
+          alignItems="center"
+          flex={1}
+          justifyContent={"center"}
+        >
           {formato ? (
             <Box display="flex" flexDirection="row" alignItems="center">
               <Typography
@@ -211,6 +287,8 @@ export const EventosPage = () => {
           flexDirection={{ xs: "column", sm: "row" }}
           alignItems="center"
           gap={{ xs: 0, sm: 2 }}
+          flex={2}
+          justifyContent={"center"}
         >
           {departamentos?.map((dep) => (
             <Box
@@ -240,21 +318,34 @@ export const EventosPage = () => {
             </Box>
           ))}
         </Box>
-        <Box display="flex" alignItems="center">
-          <Typography
-            onClick={onLogout}
-            sx={{ cursor: "pointer", fontSize: "0.9rem", color: "#0a3b91" }}
-          >
-            Cerrar sesión
-          </Typography>
-          <IconButton onClick={onLogout}>
-            <LogoutOutlined
-              sx={{
-                color: "#0a3b91",
-                fontSize: { xs: "1rem", sm: "1.2rem" },
-              }}
-            />
-          </IconButton>
+        <Box
+          display="flex"
+          alignItems="center"
+          flex={1}
+          justifyContent={"center"}
+        >
+          {!nivelPropio && reportePermiso && (
+            <>
+              <Typography
+                onClick={handleOpenReporte}
+                sx={{
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                  color: "#0a3b91",
+                }}
+              >
+                Generar reporte
+              </Typography>
+              <IconButton onClick={handleOpenReporte}>
+                <AssessmentOutlinedIcon
+                  sx={{
+                    color: "#0a3b91",
+                    fontSize: { xs: "1rem", sm: "1.2rem" },
+                  }}
+                />
+              </IconButton>
+            </>
+          )}
         </Box>
       </Box>
     </Box>

@@ -88,6 +88,8 @@ export const EventosGeneralPage = () => {
           gap: 2,
           pt: 0.4,
           pb: 0.9,
+          boxShadow: "0px -4px 2px -2px rgba(0, 0, 0, 0.15)",
+          ml:-1,
         }}
       >
         <Box display="flex" alignItems="center">

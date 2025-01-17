@@ -183,7 +183,7 @@ export const Calendario = () => {
         >
           <>
             <Calendar
-              style={{ height: "90vh", width: "95vw" }}
+              style={{ height: "85vh", width: "95vw" }}
               localizer={localizer}
               events={events}
               startAccessor="start"
