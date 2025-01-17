@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 export const Row = (props) => {
   const dispatch = useDispatch();
@@ -66,6 +67,12 @@ export const Row = (props) => {
       dispatch(startDeletingUsuario(usuarioId));
     }
   };
+
+  // Navegar a asignar rol.
+  const onAsignarRol = () => {
+    navigate("/admin/usuarios/asignar");
+  };
+
   return (
     <React.Fragment>
       <TableRow
@@ -149,7 +156,16 @@ export const Row = (props) => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                {roles.length === 0 ? "Asigna un rol por favor." : "Rol"}
+                {roles.length === 0 ? (
+                  <>
+                    Asigna un rol por favor.
+                    <IconButton onClick={onAsignarRol}>
+                      <ArrowOutwardIcon />
+                    </IconButton>
+                  </>
+                ) : (
+                  "Rol"
+                )}
               </Typography>
               <Box sx={{ width: "100%" }}>
                 {!isMobileOrTablet &&

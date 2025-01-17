@@ -32,7 +32,7 @@ export const FechaVer = ({ start, end }) => {
         {moreDays ? "Fechas:" : "Fecha:"}
       </Typography>
       {moreDays ? (
-        <Box display={"flex"} sx={{ width: "100%" }}>
+        <Box display={"flex"} sx={{ width: "100%", flexWrap:"wrap" }}>
           <Typography
             variant="body1"
             sx={{ fontSize: "1.1rem", mr: 1, ml: 1, fontWeight: "450" }}
