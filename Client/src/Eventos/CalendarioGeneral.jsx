@@ -207,30 +207,36 @@ const CustomEvent = ({ event }) => {
           display: { xs: "block", sm: "inline-block" },
         }}
       ></Box>
-      <Box
-        sx={{
-          width: "auto",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          fontWeight: { xs: "200", sm: "bold" },
-          fontSize: { xs: "0.6rem", sm: "1rem" },
-        }}
-      >
-        {event.title}
-      </Box>
-      <Box
-        sx={{
-          width: "auto",
-          maxWidth: "50%",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          display: { xs: "none", sm: "block" },
-        }}
-      >
-        {dayjs(event.start).format("HH:mm")} -{" "}
-        {dayjs(event.end).format("HH:mm")}
+      <Box display="flex" sx={{ justifyContent: "space-between", width:"90%", gap:1 }}>
+        <Box
+          sx={{
+            width: "auto",
+            maxWidth: "50%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            fontSize: { xs: "0.6rem", sm: "1rem",
+            flex:1 
+            },
+          }}
+        >
+          {event.title}
+        </Box>
+        <Box
+          sx={{
+            width: "auto",
+            maxWidth: "100%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            display: { xs: "none", sm: "block" },
+            textAlign: "right",
+            flex:2
+          }}
+        >
+          {dayjs(event.start).format("HH:mm")} -{" "}
+          {dayjs(event.end).format("HH:mm")}
+        </Box>
       </Box>
     </Box>
   );

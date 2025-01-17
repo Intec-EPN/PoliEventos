@@ -9,11 +9,9 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
   }, [dispatch]);
-  const color = "black";
   const { departamentos: deptsCargados } = useSelector(
     (state) => state.gestionEvento
   );
- 
 
   const [depts, setDepts] = useState([]);
 
@@ -25,6 +23,7 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
         })
         .map((dept) => {
           return {
+            id: dept.id,
             nombre: dept.departamento,
           };
         });
@@ -32,6 +31,18 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
     }
   }, [deptsCargados]);
 
+  const obtenerColorPorDeptId = (id) => {
+    switch (id) {
+      case 1:
+        return "#4b99d2";
+      case 2:
+        return "#a479b1";
+      case 3:
+        return "#fbbc04";
+      default:
+        return "black";
+    }
+  };
 
   return (
     <Box mt={2}>
@@ -47,6 +58,7 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
       </Typography>
       <Box display={"flex"} mt={1} gap={2} flexWrap={"wrap"}>
         {depts.map((departamento, index) => {
+          const color = obtenerColorPorDeptId(departamento.id);
           return (
             <Box display={"flex"} key={index} alignItems={"center"}>
               <Icon sx={{ fontSize: "1.7rem", color: color }}>
@@ -57,7 +69,7 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
                 sx={{
                   ml: 1,
                   fontWeight: "500",
-                  color: color,
+                  color: "black",
                   fontSize: "1.1rem",
                 }}
               >

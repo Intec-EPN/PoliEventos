@@ -1,4 +1,4 @@
-import { Box, Typography, Icon } from "@mui/material";
+import { Box, Typography, Icon, IconButton } from "@mui/material";
 import dayjs from "../../../dayjsConfig";
 import { GiMicrophone } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 
 export const EventoSimple = ({ event }) => {
   const { title, start, end, data } = event;
@@ -44,6 +45,19 @@ export const EventoSimple = ({ event }) => {
     }
   }, [deptsCargados, departamento]);
 
+  const obtenerColorPorDeptId = (id) => {
+    switch (id) {
+      case 1:
+        return "#4b99d2";
+      case 2:
+        return "#a479b1";
+      case 3:
+        return "#fbbc04";
+      default:
+        return "black";
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -66,12 +80,12 @@ export const EventoSimple = ({ event }) => {
           justifyContent: "center",
         }}
       >
-        <Box sx={{ display:"flex", textAlign: "center" }}>
+        <Box sx={{ display: "flex", textAlign: "center", gap:1 }}>
           <CalendarMonthIcon />
           {startDate}
           {endDate !== startDate ? ` al ${endDate}` : ""}
         </Box>
-        <Box sx={{ display:"flex", textAlign: "center" }}>
+        <Box sx={{ display: "flex", textAlign: "center", gap:1 }}>
           <AccessTimeIcon /> {startTime} - {endTime}
         </Box>
       </Typography>
@@ -93,7 +107,7 @@ export const EventoSimple = ({ event }) => {
               px: 2,
               py: 1,
               color: "white",
-              flex: {xs: 3, sm: 2},
+              flex: { xs: 3, sm: 2 },
             }}
           >
             {title} | {lugar}
@@ -164,6 +178,15 @@ export const EventoSimple = ({ event }) => {
               <Typography variant="body2" sx={{ ml: 1 }}>
                 {expositor.nombre}
               </Typography>
+              {expositor.mail && (
+                <IconButton
+                  onClick={() =>
+                    (window.location.href = `mailto:${expositor.mail}`)
+                  }
+                >
+                  <ForwardToInboxIcon sx={{ width: "90%" }} />
+                </IconButton>
+              )}
             </Box>
           ))}
           {personasACargo?.map((persona, index) => (
@@ -187,6 +210,15 @@ export const EventoSimple = ({ event }) => {
               <Typography variant="body2" sx={{ ml: 1 }}>
                 {persona.nombre}
               </Typography>
+              {persona.mail && (
+                <IconButton
+                  onClick={() =>
+                    (window.location.href = `mailto:${persona.mail}`)
+                  }
+                >
+                  <ForwardToInboxIcon sx={{ fontSize: "1.2rem" }} />
+                </IconButton>
+              )}
             </Box>
           ))}
           {depts.map((dept, index) => (
@@ -200,7 +232,7 @@ export const EventoSimple = ({ event }) => {
               <Icon
                 sx={{
                   fontSize: "1.2rem",
-                  color: "black",
+                  color: obtenerColorPorDeptId(dept.id),
                   width: "auto",
                   height: "auto",
                   pt: "0.3rem",
@@ -208,7 +240,7 @@ export const EventoSimple = ({ event }) => {
               >
                 <ApartmentOutlinedIcon />
               </Icon>
-              <Typography variant="body2" sx={{ ml: 1 }}>
+              <Typography variant="body2" sx={{ ml: 1, color: "black" }}>
                 {dept.nombre}
               </Typography>
             </Box>
