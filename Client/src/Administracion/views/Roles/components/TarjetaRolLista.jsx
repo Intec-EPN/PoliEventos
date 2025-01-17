@@ -31,11 +31,11 @@ export const TarjetaRolLista = ({
     setIsMounted(true);
   }, []);
 
-
   useEffect(() => {
     if (usuarios.length > 0) {
-      const usado = usuarios.some((usuario) =>
-        usuario.roles.some((role) => role.rol_nombre === rol) || false
+      const usado = usuarios.some(
+        (usuario) =>
+          usuario.roles.some((role) => role.rol_nombre === rol) || false
       );
       setUsado(usado);
       setUsuariosCargados(true);
@@ -114,27 +114,36 @@ export const TarjetaRolLista = ({
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
-            padding: 2,
+            justifyContent: "center",
+            width: "10%",
+            maxWidth: "100%",
           }}
         >
           <IconButton onClick={() => onBorrarRol(rol)}>
-            <DeleteIcon sx={{ color: "red" }} />
+            <DeleteIcon sx={{ color: "red", width: "100%" }} />
           </IconButton>
         </Box>
-      ):
-      <Box
+      ) : (
+        <Box
           sx={{
             display: "flex",
             alignItems: "center",
             padding: 2,
+            maxWidth: "10%",
           }}
         >
-          <IconButton>
-            <DeleteIcon sx={{ color: "white" }} />
-          </IconButton>
+          <Typography
+            textAlign="center"
+            variant="h6"
+            sx={{
+              color: "black",
+              fontSize: "0.9rem",
+            }}
+          >
+            Rol se ha asignado (No se puede eliminar).
+          </Typography>
         </Box>
-      }
+      )}
     </Card>
   );
 };

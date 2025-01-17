@@ -25,10 +25,15 @@ export const TarjetaRol = ({
   const onBorrarRol = (rol) => {
     dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
   };
-  
+
   const { usuarios } = useSelector((state) => state.usuarios);
 
   const [usado, setUsado] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     setUsado(
@@ -39,7 +44,6 @@ export const TarjetaRol = ({
       ) || false
     );
   }, [rol]);
-
 
   return (
     <>
@@ -52,27 +56,36 @@ export const TarjetaRol = ({
         }}
       >
         <CardContent sx={{ backgroundColor: "#004aad", color: "white" }}>
-          {lista && !usado && (
-            <Box display="flex" justifyContent="end">
+          {lista && isMounted && !usado && (
+            <Box display="flex" justifyContent="center">
               <IconButton onClick={() => onBorrarRol(rol)}>
                 <DeleteIcon sx={{ color: "red" }} />
               </IconButton>
             </Box>
+          )}
+          {usado && (
+            <Typography
+              textAlign="center"
+              variant="h6"
+              sx={{ color: "#eff5ff",fontSize: "0.9rem" }}
+            >
+              Rol se ha asignado (No se puede eliminar).
+            </Typography>
           )}
           <Typography textAlign="center" variant="h4">
             {rol}
           </Typography>
           <Typography textAlign="justify">{descripcion}</Typography>
           <Grid2 container justifyContent="center" alignItems="center" mt={2}>
-          {departamentos.map((dep, index) => (
-            <Chip
-              key={index}
-              label={dep}
-              variant="outlined"
-              sx={{ backgroundColor: "#004aad", color: "white" }}
-            />
-          ))}
-        </Grid2>
+            {departamentos.map((dep, index) => (
+              <Chip
+                key={index}
+                label={dep}
+                variant="outlined"
+                sx={{ backgroundColor: "#004aad", color: "white" }}
+              />
+            ))}
+          </Grid2>
         </CardContent>
         <CardContent sx={{ width: "100%", padding: 2 }}>
           <SeccionPermisos niveles={permisos} departamentos={departamentos} />
