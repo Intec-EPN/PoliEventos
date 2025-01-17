@@ -20,7 +20,7 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
 // Configura CORS
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Rutas
 app.use('/api', routes); // Archivo de índice para manejar todas las rutas

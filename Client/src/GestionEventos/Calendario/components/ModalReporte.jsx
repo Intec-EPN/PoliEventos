@@ -324,7 +324,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
 
   const handleDownloadExcel = () => {
     const filteredEvents = filterEvents(startDate, endDate);
-    console.log(filteredEvents);
     const data = filteredEvents.map((event) => ({
       ...event,
       enlace: event.enlace ? event.enlace : "Sin enlace.",

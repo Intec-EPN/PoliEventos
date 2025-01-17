@@ -26,8 +26,6 @@ export const TipoItem = ({
   errors,
   validateTipo,
 }) => {
-  console.log("debug2", usado);
-
   const dispatch = useDispatch();
   const { esquemaCategorizacionActual, esquemas } = useSelector(
     (state) => state.categorizacion

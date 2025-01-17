@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { api } from './api';
 
 // Crear una instancia de Axios
 const axiosInstance = axios.create({
-  baseURL: api,
+  // baseURL: import.meta.env.VITE_API_URL,
+  baseURL: "http://localhost:5000/api",
 });
 
 // Interceptores

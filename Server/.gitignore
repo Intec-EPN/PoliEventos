@@ -30,4 +30,6 @@ src/api/api.js
 
 archivosEventos/*
 
+docker-compose.yml
+
 

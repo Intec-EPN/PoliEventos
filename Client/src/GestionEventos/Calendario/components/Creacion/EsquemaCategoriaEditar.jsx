@@ -19,8 +19,6 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
   );
 
   const esquemasCategorias = watch("esquemasCategorias") || data;
-  console.log(esquemasCategoriasCargados);
-  
   const esquemas = esquemasCategoriasCargados
     ? esquemasCategoriasCargados
         .filter((esquemaCategoria) => esquemaCategoria.visible)

@@ -1,24 +1,30 @@
-#Imagen de node:
+# Usa una imagen oficial de Node.js
 FROM node:20
 
-#Establece el directorio de trabajo
+# Instala netcat para wait-for-it.sh
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
+
+# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-#Copia el archivo package.json al directorio de trabajo
-COPY package.json package-lock.json ./
+# Copia el script wait-for-it al contenedor
+COPY esperardb.sh /usr/local/bin/
 
-# Instalación de dependencias
-RUN npm ci
+# Da permisos de ejecución al script dentro del contenedor
+RUN chmod +x /usr/local/bin/esperardb.sh
 
-# Esperar a que se levante la base:
-RUN apt-get update && apt-get install -y wait-for-it
+# Copia los archivos de tu proyecto
+COPY package*.json ./
 
+# Instala solo dependencias de producción
+RUN npm install 
 
-# Copia el resto de los archivos del backend
+# Copia el resto del proyecto
 COPY . .
 
-# Expone el puerto en el que corre tu servidor
-EXPOSE 3000
+# Expone el puerto en el que corre tu backend
+EXPOSE 5000
 
-# Comando para ejecutar tu aplicación
-CMD ["wait-for-it", "db:3306", "--", "node", "server.js"]
+# Comando para esperar la base de datos y luego ejecutar el servidor
+CMD ["esperardb.sh", "db", "3306", "--", "node", "server.js"]
+
