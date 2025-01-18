@@ -166,7 +166,11 @@ export const EventosPage = () => {
         >
           <Typography
             onClick={onLogout}
-            sx={{ cursor: "pointer", fontSize: { xs: "0.8rem", sm: "0.9rem" }, color: "#0a3b91" }}
+            sx={{
+              cursor: "pointer",
+              fontSize: { xs: "0.8rem", sm: "0.9rem" },
+              color: "#0a3b91",
+            }}
           >
             Cerrar sesión
           </Typography>
@@ -326,24 +330,52 @@ export const EventosPage = () => {
         >
           {!nivelPropio && reportePermiso && (
             <>
-              <Typography
-                onClick={handleOpenReporte}
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "0.9rem",
-                  color: "#0a3b91",
-                }}
+              <Box
+                alignItems="center"
+                justifyContent={"center"}
+                sx={{ display: { xs: "none", sm: "flex" } }}
               >
-                Generar reporte
-              </Typography>
-              <IconButton onClick={handleOpenReporte}>
-                <AssessmentOutlinedIcon
+                <Typography
+                  onClick={handleOpenReporte}
                   sx={{
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
                     color: "#0a3b91",
-                    fontSize: { xs: "1rem", sm: "1.2rem" },
                   }}
-                />
-              </IconButton>
+                >
+                  Generar reporte
+                </Typography>
+                <IconButton onClick={handleOpenReporte}>
+                  <AssessmentOutlinedIcon
+                    sx={{
+                      color: "#0a3b91",
+                      fontSize: { xs: "1rem", sm: "1.2rem" },
+                    }}
+                  />
+                </IconButton>
+              </Box>
+              <Box
+                alignItems="center"
+                justifyContent={"center"}
+                sx={{ display: { xs: "flex", sm: "none" } }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "0.9rem",
+                    color: "#0a3b91",
+                  }}
+                >
+                  Reporte en web
+                </Typography>
+                <IconButton disabled>
+                  <AssessmentOutlinedIcon
+                    sx={{
+                      color: "#0a3b91",
+                      fontSize: { xs: "1rem", sm: "1.2rem" },
+                    }}
+                  />
+                </IconButton>
+              </Box>
             </>
           )}
         </Box>

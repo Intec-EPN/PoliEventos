@@ -228,3 +228,19 @@
   margin-top: 5px;
   color: #0a3b91;
 }
+
+.rbc-show-more {
+  display: flex;
+}
+
+/* Estilos específicos para pantallas móviles */
+@media (max-width: 768px) {
+  .rbc-row-segment > .rbc-show-more {
+    width: 100%;
+    font-size: 0.7rem; 
+    padding-right:0.5rem;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+  }
+}
