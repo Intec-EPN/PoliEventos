@@ -9,6 +9,12 @@ const sequelize = new Sequelize(
         dialect: 'mysql',
         logging: console.log,
         port: process.env.DB_PORT,
+        pool: {
+            max: 5, 
+            min: 0, 
+            acquire: 30000,
+            idle: 150000,
+        },
     });
 
 const authenticateDB = async () => {
