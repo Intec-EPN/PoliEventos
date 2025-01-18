@@ -6,11 +6,7 @@ export const startLoadingEventos = () => {
     return async (dispatch) => {
         try {
             const token = localStorage.getItem('token');
-            const { data } = await axiosInstance.get("/gestion", {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+            const { data } = await axiosInstance.get("/gestion");
             dispatch(setEventos(data));
         } catch (error) {
             console.error("Error al cargar eventos", error);
@@ -159,11 +155,7 @@ export const startLoadingDepartamentos = () => {
     return async (dispatch) => {
         try {
             const token = localStorage.getItem('token');
-            const { data } = await axiosInstance.get("/gestion/departamentos/", {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+            const { data } = await axiosInstance.get("/gestion/departamentos/");
             dispatch(setDepartamentos(data));
         } catch (error) {
             console.error("Error al cargar departamentos", error);

@@ -35,7 +35,6 @@ export const rolSlice = createSlice({
       } else {
         // En caso de que sea otro nivel, simplemente asigna un arreglo
         state.rolEnCreacion.departamentos = Array.isArray(action.payload) ? action.payload : [action.payload];
-        console.log(state.rolEnCreacion.departamentos)
       }
     },
     setFiltro: (state, action) => {

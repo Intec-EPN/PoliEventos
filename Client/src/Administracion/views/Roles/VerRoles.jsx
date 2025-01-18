@@ -16,7 +16,6 @@ export const VerRoles = () => {
   const navigate = useNavigate();
   // Obtengo los departamentos.
   const { departamentos } = useSelector((state) => state.departamento);
-  const isMobileOrTablet = useMediaQuery("(max-width: 960px)");
   // Para usar en caso de tener filtro por permisos.
   // Obtengo los permisos.
   // const { permisosAcciones, acciones } = useSelector((state) => state.permiso);
@@ -28,7 +27,7 @@ export const VerRoles = () => {
   useEffect(() => {
     dispatch(startLoadingRoles());
     dispatch(startLoadingFacultades());
-    dispatch(opcionActual("Lista de Roles"));
+    dispatch(opcionActual("Lista de roles"));
   }, [dispatch]);
 
   const nombresFacultades = facultades.map((facultad) => facultad.nombre);
@@ -71,6 +70,7 @@ export const VerRoles = () => {
   const handleCrearRol = () => {
     navigate("/admin/roles/crear");
   };
+
   return (
     <>
       <Grid2 container ml={2} mt={2} display="flex" flexDirection="column">
@@ -81,7 +81,13 @@ export const VerRoles = () => {
         >
           Filtro
         </Typography>
-        <Box container display="flex" gap={2} alignItems="center">
+        <Box
+          container
+          display="flex"
+          gap={2}
+          alignItems="center"
+          width={"100%"}
+        >
           <Filtro opciones={nombresFacultades} filtro="Facultad" size={360} />
           <Filtro opciones={departamentos} filtro="Departamento" size={360} />
           <Box
@@ -105,23 +111,27 @@ export const VerRoles = () => {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 12, sm: 12, md: 12 }}
       >
-        {!isMobileOrTablet &&
-          rolesFiltrados.map((rol, index) => (
-            <Grid2 key={index} size={{ xs: 4, sm: 12 }}>
-              <TarjetaRolLista
-                {...rol}
-                id={index}
-                lista={true}
-                horizontal={true}
-              />
-            </Grid2>
-          ))}
-        {isMobileOrTablet &&
-          rolesFiltrados.map((rol, index) => (
+        <Box sx={{ display: { xs: "block", md: "none" }, width: "100%" }}>
+          {rolesFiltrados.map((rol, index) => (
             <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
               <TarjetaRol {...rol} id={index} lista={true} />
             </Grid2>
           ))}
+        </Box>
+        <Box sx={{ display: { xs: "none", md: "block" }, width: "100%" }}>
+          {rolesFiltrados.map((rol, index) => (
+            <Grid2 key={index} size={{ xs: 4, sm: 12 }}>
+              <Box
+                my={2}
+                display={"flex"}
+                justifyContent={"center"}
+                width="100%"
+              >
+                <TarjetaRolLista {...rol} id={index} horizontal={true} />
+              </Box>
+            </Grid2>
+          ))}
+        </Box>
       </Grid2>
     </>
   );

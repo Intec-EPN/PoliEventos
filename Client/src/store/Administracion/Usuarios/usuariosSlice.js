@@ -35,5 +35,4 @@ export const {
     setRolesAsignar,
     limpiarAsignacion,
     setUsuarioActual,
-    puedeBorrarse
 } = usuariosSlice.actions;

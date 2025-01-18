@@ -16,12 +16,11 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
     },
   },
 };
 
-export const Filtro = ({ opciones = [], filtro = "", size }) => {
+export const Filtro = ({ opciones = [], filtro = "" }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const dispatch = useDispatch();
 
@@ -41,15 +40,15 @@ export const Filtro = ({ opciones = [], filtro = "", size }) => {
   };
 
   return (
-    <Box sx={{flex:1}}>
-      <FormControl sx={{ m: 1, width: size }}>
+    <Box sx={{ flex: {xs: 2, md:1} }}>
+      <FormControl sx={{ m: 1, width: "100%" }}>
         <InputLabel id="filtro-label">{filtro}</InputLabel>
         <Select
           labelId="filtro-label"
           id="filtro-select"
           multiple
           value={selectedOptions}
-          onChange={(event) => setSelectedOptions(event.target.value)} // Solo actualiza el estado aquí
+          onChange={(event) => setSelectedOptions(event.target.value)}
           input={<OutlinedInput label={filtro} />}
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}

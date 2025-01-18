@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import { puedeBorrarse } from "../../../../store/Administracion/Usuarios/usuariosSlice";
+import { startLoadingUsuarios } from "../../../../store/Administracion/Usuarios/thunks";
 
 export const TarjetaRolLista = ({
   rol = "",
@@ -23,15 +23,12 @@ export const TarjetaRolLista = ({
 }) => {
   const dispatch = useDispatch();
   const { usuarios } = useSelector((state) => state.usuarios);
-  // En caso de querer escalar a mas facultades, se deberá agregar a los departamentos que vienen el id de la facultad para compararlo con el obtenido del selector y obtener la facultad en la línea 88.
   const { facultades } = useSelector((state) => state.rol);
   const [usado, setUsado] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [usuariosCargados, setUsuariosCargados] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    dispatch(startLoadingUsuarios());
+  }, [dispatch]);
 
   useEffect(() => {
     if (usuarios.length > 0) {
@@ -40,13 +37,8 @@ export const TarjetaRolLista = ({
           usuario.roles.some((role) => role.rol_nombre === rol) || false
       );
       setUsado(usado);
-      setUsuariosCargados(true);
     }
   }, [usuarios, rol]);
-
-  if (!usuariosCargados) {
-    return null; // No renderizar nada hasta que los usuarios estén cargados
-  }
 
   const onBorrarRol = (rol) => {
     if (
@@ -55,6 +47,7 @@ export const TarjetaRolLista = ({
       dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
     }
   };
+
   return (
     <Card
       sx={{
@@ -120,7 +113,7 @@ export const TarjetaRolLista = ({
       </CardContent>
 
       {/* Icono de eliminar */}
-      {isMounted && !usado ? (
+      {!usado && (
         <Box
           sx={{
             display: "flex",
@@ -133,7 +126,8 @@ export const TarjetaRolLista = ({
             <DeleteIcon sx={{ color: "red", width: "100%" }} />
           </IconButton>
         </Box>
-      ) : (
+      )}
+      {usado && (
         <Box
           sx={{
             display: "flex",
