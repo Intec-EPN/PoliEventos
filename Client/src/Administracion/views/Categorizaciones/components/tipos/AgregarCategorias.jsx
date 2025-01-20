@@ -19,7 +19,7 @@ export const AgregarCategorias = ({
   onCancelAgregar,
   editCategoria,
   clearErrors,
-  disableFields, // Nueva propiedad
+  disableFields, 
 }) => {
   return (
     <>
@@ -32,8 +32,8 @@ export const AgregarCategorias = ({
               defaultValue={field.value} // Asignar valor inicial
               rules={{
                 maxLength: {
-                  value: 50,
-                  message: "Máximo 50 caracteres", // Mensaje si se excede el límite
+                  value: 100,
+                  message: "Máximo 100 caracteres", // Mensaje si se excede el límite
                 },
                 validate: {
                   noLeadingTrailingSpaces: (value) =>

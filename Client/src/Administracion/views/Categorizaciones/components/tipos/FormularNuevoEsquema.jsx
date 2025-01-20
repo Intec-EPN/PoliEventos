@@ -1,17 +1,17 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 export const FormularNuevoEsquema = ({
   nuevoEsquema,
   setNuevoEsquema,
   onGuardar,
-  onCancel
+  onCancel,
 }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setError
+    setError,
   } = useForm({
     defaultValues: {
       nombre: nuevoEsquema.nombre,
@@ -34,10 +34,19 @@ export const FormularNuevoEsquema = ({
       }}
       onSubmit={handleSubmit(onSubmit)}
     >
+      <Typography
+        variant="h6"
+        fontWeight="500"
+        noWrap
+        component="div"
+        color="primary"
+      >
+        Ingresando nuevo esquema de categorización:
+      </Typography>
       <Controller
         name="nombre"
         control={control}
-        rules={{ 
+        rules={{
           required: "El nombre es obligatorio",
           maxLength: {
             value: 50,
@@ -45,9 +54,10 @@ export const FormularNuevoEsquema = ({
           },
           validate: {
             noLeadingOrTrailingSpaces: (value) =>
-              value.trim() === value || "El nombre no puede comenzar o terminar con un espacio",
+              value.trim() === value ||
+              "El nombre no puede comenzar o terminar con un espacio",
           },
-         }}
+        }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -55,7 +65,7 @@ export const FormularNuevoEsquema = ({
             value={nuevoEsquema.nombre}
             onChange={(e) => {
               setNuevoEsquema({ ...nuevoEsquema, nombre: e.target.value });
-              field.onChange(e); 
+              field.onChange(e);
             }}
             error={!!errors.nombre}
             helperText={errors.nombre?.message || "Máximo 50 caracteres"}
@@ -65,13 +75,13 @@ export const FormularNuevoEsquema = ({
       <Controller
         name="descripcion"
         control={control}
-        rules={{ 
+        rules={{
           required: "La descripción es obligatoria",
           maxLength: {
             value: 150,
             message: "La descripción no puede tener más de 150 caracteres",
           },
-         }}
+        }}
         render={({ field }) => (
           <TextField
             {...field}

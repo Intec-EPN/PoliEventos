@@ -75,8 +75,8 @@ export const TipoItem = ({
           rules={{
             validate: validateTipo,
             maxLength: {
-              value: 150,
-              message: "La categoría no puede tener más de 150 caracteres",
+              value: 100,
+              message: "La categoría no puede tener más de 100 caracteres",
             },
           }}
           render={({ field }) => (

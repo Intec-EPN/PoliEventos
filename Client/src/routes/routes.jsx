@@ -1,6 +1,5 @@
 import { AdministracionMain } from "../Administracion/AdministracionMain";
 import { Categorizaciones } from "../Administracion/views/Categorizaciones/Categorizaciones";
-import { CrearEsquema } from "../Administracion/views/Categorizaciones/components/tipos/CrearEsquema";
 import { EditarCategorias } from "../Administracion/views/Categorizaciones/components/tipos/EditarCategorias";
 import { Permisos } from "../Administracion/views/Permisos/Permisos";
 import { CrearRol, Roles, VerRoles } from "../Administracion/views/Roles";
@@ -32,10 +31,6 @@ export const routes = [
       {
         path: "categorizaciones/:esquemaActual/editar",
         element: <AdminAuth component={EditarCategorias} />,
-      },
-      {
-        path: "categorizaciones/:esquemaActual/crear",
-        element: <AdminAuth component={CrearEsquema} />,
       },
       {
         path: "roles",

@@ -290,7 +290,7 @@ export const EditarCategorias = () => {
             sx={{
               backgroundColor: "#2c4175",
               mr: 2,
-              width: { xs: "100%", md: "10%" },
+              width: { xs: "100%", md: "20%", lg: "10%" },
             }}
             onClick={handleSubmit(onSubmit)}
           >
@@ -301,7 +301,7 @@ export const EditarCategorias = () => {
             variant="contained"
             sx={{
               backgroundColor: "#e3320e",
-              width: { xs: "100%", md: "10%" },
+              width: { xs: "100%", md: "20%", lg: "10%" },
             }}
             onClick={() => onCancel()}
           >
