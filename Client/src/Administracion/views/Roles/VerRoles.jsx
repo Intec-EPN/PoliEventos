@@ -11,6 +11,7 @@ import {
 import { opcionActual } from "../../../store/Administracion/administracionSlice";
 import { TarjetaRolLista } from "./components/TarjetaRolLista";
 import { useNavigate } from "react-router-dom";
+import { IndicadoresRoles } from "./components/Lista/components/IndicadoresRoles";
 
 export const VerRoles = () => {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ export const VerRoles = () => {
 
   return (
     <>
-      <Grid2 container ml={2} mt={2} display="flex" flexDirection="column">
+      <Grid2 container ml={2} mt={0} display="flex" flexDirection="column">
         {/* 
         <Typography
           variant="h6"
@@ -107,6 +108,7 @@ export const VerRoles = () => {
           Filtro para permisos y acciones (en funcionamiento pero fuera de requerimientos).
           <FiltroTag permisosAcciones={permisosAcciones} acciones={acciones} />
         </Box> */}
+        <IndicadoresRoles />
       </Grid2>
       <Grid2
         container
