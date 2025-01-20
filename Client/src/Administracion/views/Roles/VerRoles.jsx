@@ -111,14 +111,16 @@ export const VerRoles = () => {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 12, sm: 12, md: 12 }}
       >
-        <Box sx={{ display: { xs: "block", md: "none" }, width: "100%" }}>
-          {rolesFiltrados.map((rol, index) => (
-            <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
-              <TarjetaRol {...rol} id={index} lista={true} />
-            </Grid2>
-          ))}
+        <Box sx={{ display: { xs: "block", lg: "none" }, width: "100%" }}>
+          <Grid2 container spacing={2}>
+            {rolesFiltrados.map((rol, index) => (
+              <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
+                <TarjetaRol {...rol} id={index} lista={true} />
+              </Grid2>
+            ))}
+          </Grid2>
         </Box>
-        <Box sx={{ display: { xs: "none", md: "block" }, width: "100%" }}>
+        <Box sx={{ display: { xs: "none", lg: "block" }, width: "100%" }}>
           {rolesFiltrados.map((rol, index) => (
             <Grid2 key={index} size={{ xs: 4, sm: 12 }}>
               <Box
