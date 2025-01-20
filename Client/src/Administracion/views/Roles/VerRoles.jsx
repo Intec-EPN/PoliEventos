@@ -74,6 +74,7 @@ export const VerRoles = () => {
   return (
     <>
       <Grid2 container ml={2} mt={2} display="flex" flexDirection="column">
+        {/* 
         <Typography
           variant="h6"
           color="primary"
@@ -81,6 +82,8 @@ export const VerRoles = () => {
         >
           Filtro
         </Typography>
+
+        Filtros
         <Box
           container
           display="flex"
@@ -101,9 +104,9 @@ export const VerRoles = () => {
               Crear Rol
             </Button>
           </Box>
-          {/* Filtro para permisos y acciones (en funcionamiento pero fuera de requerimientos). */}
-          {/* <FiltroTag permisosAcciones={permisosAcciones} acciones={acciones} /> */}
-        </Box>
+          Filtro para permisos y acciones (en funcionamiento pero fuera de requerimientos).
+          <FiltroTag permisosAcciones={permisosAcciones} acciones={acciones} />
+        </Box> */}
       </Grid2>
       <Grid2
         container
