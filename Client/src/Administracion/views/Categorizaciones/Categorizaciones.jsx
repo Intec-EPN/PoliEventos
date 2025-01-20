@@ -15,7 +15,7 @@ export const Categorizaciones = () => {
 
   return (
     <Box ml={3} mr={3}>
-      <Indicadores value={"una categorización"} editar={true} />
+      <Indicadores value={"categorización"} editar={true} />
       <ListaCategorias />
     </Box>
   );

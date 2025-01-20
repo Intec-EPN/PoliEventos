@@ -139,32 +139,32 @@ export const EventosGeneralPage = () => {
           gap={{ xs: 0, sm: 2 }}
         >
           {departamentos?.map((dep) => (
-            <Box
-              sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}
-              key={dep.id}
-            >
-              <span
-                style={{
-                  border: "0.5px solid rgba(0, 0, 0, 0.15)",
-                  backgroundColor:
-                    dep.id === 1
-                      ? "#4b99d2"
-                      : dep.id === 2
-                      ? "#a479b1"
-                      : dep.id === 3
-                      ? "#fbbc04"
-                      : "transparent",
-                  display: "inline-flex",
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                }}
-              ></span>
+              <Box
+                sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}
+                key={dep.id}
+              >
+                <span
+                  style={{
+                    border: "0.5px solid rgba(0, 0, 0, 0.15)",
+                    backgroundColor:
+                      dep.id === 1
+                        ? "#4b99d2"
+                        : dep.id === 2
+                        ? "#a479b1"
+                        : dep.id === 3
+                        ? "#fbbc04"
+                        : "transparent",
+                    display: "inline-flex",
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                  }}
+                ></span>
               <Typography variant="caption" sx={{ color: "#333333", pt: 0.1 }}>
-                {dep.departamento}
-              </Typography>
-            </Box>
-          ))}
+                  {dep.departamento}
+                </Typography>
+              </Box>
+            ))}
         </Box>
         <Box display="flex" alignItems="center">
           <Typography

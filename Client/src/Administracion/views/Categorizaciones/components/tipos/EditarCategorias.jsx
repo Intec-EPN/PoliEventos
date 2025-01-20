@@ -223,7 +223,7 @@ export const EditarCategorias = () => {
           <Typography variant="h6" color="#2c4175" mb={1}>
             Editar categorías actuales
           </Typography>
-          <Indicadores value={"una categoría"} />
+          <Indicadores value={"categoría"} />
         </>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>

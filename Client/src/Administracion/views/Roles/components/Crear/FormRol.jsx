@@ -242,13 +242,22 @@ export const FormRol = () => {
           </Box>
         </Grid2>
       </Grid2>
-      <Button
-        variant="contained"
-        sx={{ backgroundColor: "#1e2c4f", mt: 2, mb: 2 }}
-        type="submit"
-      >
-        Guardar ROL
-      </Button>
+      <Box display={"flex"} justifyContent="end">
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#1e2c4f",
+            mt: 4,
+            mb: 2,
+            px: 3,
+            py: 1,
+            fontSize: "1rem",
+          }}
+          type="submit"
+        >
+          Guardar ROL
+        </Button>
+      </Box>
       <PopUpCrear open={open} handleClose={handleClose} />
     </form>
   );

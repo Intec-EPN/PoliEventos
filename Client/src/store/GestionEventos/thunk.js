@@ -5,7 +5,6 @@ import { saveAs } from "file-saver";
 export const startLoadingEventos = () => {
     return async (dispatch) => {
         try {
-            const token = localStorage.getItem('token');
             const { data } = await axiosInstance.get("/gestion");
             dispatch(setEventos(data));
         } catch (error) {

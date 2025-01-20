@@ -18,7 +18,6 @@ export const CrearRol = () => {
       display={{ md: "flex", xs: "block" }}
       padding={2}
       gap={1}
-      sx={{ height: "100vh" }}
     >
       <Box flex={4}>
         <FormRol/>

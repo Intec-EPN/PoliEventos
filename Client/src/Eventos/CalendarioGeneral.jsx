@@ -154,7 +154,7 @@ const CustomEvent = ({ event }) => {
         dep[0] === 1
           ? "#4b99d2"
           : dep[0] === 2
-          ? "#c05476"
+          ? "#a479b1"
           : dep[0] === 3
           ? "#fbbc04"
           : "white"
@@ -171,7 +171,7 @@ const CustomEvent = ({ event }) => {
         dep[0] === 1
           ? "#4b99d2"
           : dep[0] === 2
-          ? "#c05476"
+          ? "#a479b1"
           : dep[0] === 3
           ? "#fbbc04"
           : "white"

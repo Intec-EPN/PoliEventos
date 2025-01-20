@@ -21,7 +21,7 @@ export const Indicadores = ({ value, editar = false }) => {
     >
       <Box display="flex" gap={1}>
         <VisibilityIcon sx={{ color: "#2c4175" }} />
-        <Typography variant="p">Cambia la visibilidad de {value}.</Typography>
+        <Typography variant="p">Visibilidad de la {value} al ingresar eventos.</Typography>
       </Box>
       <Typography
         variant="p"
@@ -38,7 +38,7 @@ export const Indicadores = ({ value, editar = false }) => {
       <Box display="flex" gap={1}>
         <DeleteIcon sx={{ color: "#2c4175" }} />
         <Typography variant="p">
-          Elimina {value} (si es que no está en uso).
+          Elimina la {value} (si es que no está en uso).
         </Typography>
       </Box>
       {editar ? (
@@ -58,12 +58,12 @@ export const Indicadores = ({ value, editar = false }) => {
           <Box display="flex" gap={1}>
             <EditIcon sx={{ color: "#2c4175" }} />
             <Typography variant="p">
-              Edita {value} o agrega categorías dentro.
+              Edita la {value} o agrega categorías dentro.
             </Typography>
           </Box>
         </>
       ) : null}
-      {value === "una categorización" ? (
+      {value === "categorización" ? (
         <>
           <Typography
             variant="p"
