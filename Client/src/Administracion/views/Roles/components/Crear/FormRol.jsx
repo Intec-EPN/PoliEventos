@@ -132,16 +132,16 @@ export const FormRol = () => {
                   fullWidth={true}
                   error={!!errors.nombreRol} // Muestra el error si existe
                   helperText={errors.nombreRol ? errors.nombreRol.message : ""}
-                  maxLength={30}
+                  maxLength={100}
                   onChange={(e) => {
-                    if (e.target.value.length <= 30) {
+                    if (e.target.value.length <= 100) {
                       field.onChange(e);
                       dispatch(setRol(e.target.value));
                     }
                   }}
                 />
                 <Typography variant="caption" color="textSecondary">
-                  Máximo 30 caracteres.
+                  Máximo 100 caracteres.
                 </Typography>
               </div>
             )}
