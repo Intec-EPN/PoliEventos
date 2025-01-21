@@ -110,41 +110,65 @@ export const Row = (props) => {
           </TableCell>
         )}
         <TableCell align="center">
-          <IconButton onClick={() => onEditUsuario(row.id)}>
-            <EditIcon sx={{ color: "white" }} />
-          </IconButton>
-          {row.habilitado ? (
-            <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box
-                sx={{
-                  color: roles.length === 0 ? "white" : "#36b257",
-                  display: "inline-flex",
-                }}
-              >
-                <ToggleOnIcon />
+          <Box
+            display={"flex"}
+            flexDirection={{ xs: "column", sm: "row" }}
+            alignItems={"center"}
+            width={"100%"}
+            justifyContent={"end"}
+          >
+            <Box
+              display={"flex"}
+              width={{ xs: "100%", md: "60%" }}
+              alignItems={"center"}
+            >
+              <Box flex={1}>
+                <IconButton onClick={() => onEditUsuario(row.id)}>
+                  <EditIcon sx={{ color: "white" }} />
+                </IconButton>
               </Box>
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
-              <Box
-                sx={{
-                  color: roles.length === 0 ? "white" : "red",
-                  display: "inline-flex",
-                }}
-              >
-                <ToggleOffIcon />
+              <Box flex={1}>
+                {row.habilitado ? (
+                  <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
+                    <Box
+                      sx={{
+                        color: roles.length === 0 ? "white" : "#36b257",
+                        display: "inline-flex",
+                      }}
+                    >
+                      <ToggleOnIcon />
+                    </Box>
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={() => onCambiarHabilitacion(row.id)}>
+                    <Box
+                      sx={{
+                        color: roles.length === 0 ? "white" : "red",
+                        display: "inline-flex",
+                      }}
+                    >
+                      <ToggleOffIcon />
+                    </Box>
+                  </IconButton>
+                )}
               </Box>
-            </IconButton>
-          )}
-          {!conEventos ? (
-            <IconButton onClick={() => onBorrarUsuario(row.id)}>
-              <DeleteIcon sx={{ color: "white", display: "inline-flex" }} />
-            </IconButton>
-          ) : (
-            <IconButton disabled>
-              <DeleteIcon sx={{ color: "#2c4175", display: "inline-flex" }} />
-            </IconButton>
-          )}
+              <Box flex={2}>
+                {!conEventos ? (
+                  <IconButton onClick={() => onBorrarUsuario(row.id)}>
+                    <DeleteIcon
+                      sx={{ color: "white", display: "inline-flex" }}
+                    />
+                  </IconButton>
+                ) : (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography variant="body2" sx={{ color: "white" }}>
+                      Usuario con eventos creados. (No se puede eliminar).
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+          </Box>
         </TableCell>
       </TableRow>
       <TableRow>
