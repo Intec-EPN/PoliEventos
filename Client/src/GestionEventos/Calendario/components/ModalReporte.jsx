@@ -218,15 +218,19 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       const matchesDepartment =
         selectedDepartments.length === 0 ||
         event.departamentos.some((dep) => selectedDepartments.includes(dep));
-      const matchesEsquemaCategoria = selectedEsquemaCategoria.some(
-        (selected) =>
-          !selected.esquemaId ||
-          event.esquemasCategorias.some(
-            (ec) =>
-              ec.esquemaId === selected.esquemaId &&
-              (!selected.categoriaId || ec.categoriaId === selected.categoriaId)
-          )
-      );
+      // Categorización en caso de que no se haya seleccionado un esquema 
+      const matchesEsquemaCategoria =
+        selectedEsquemaCategoria.length === 0 ||
+        // En vez de every, si se usa some agrega TODOS los que coincida, every solo si coincide.
+        selectedEsquemaCategoria.every(
+          (selected) =>
+            !selected.esquemaId ||
+            event.esquemasCategorias.some(
+              (ec) =>
+                ec.esquemaId === selected.esquemaId &&
+                (!selected.categoriaId || ec.categoriaId === selected.categoriaId)
+            )
+        );
 
       return (
         (!start || eventDate.isSameOrAfter(start)) &&
@@ -426,7 +430,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         </Box>
         <CustomTabPanel value={tabValue} index={0}>
           {chartData && (
-            <Box sx={{display: "flex", flexDirection:"column",justifyContent: "center"}}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <BarChart
                 chartData={chartData}
                 chartRef={chartRef}
@@ -441,7 +451,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={1}>
           {chartData && (
-            <Box sx={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <PieChart
                 chartData={chartData.pieChartData}
                 chartRef={chartRef}
@@ -456,7 +472,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={2}>
           {chartData && (
-            <Box sx={{display: "flex", flexDirection:"column", justifyContent: "center"}}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <LineChart
                 chartData={chartData}
                 chartRef={chartRef}
@@ -471,7 +493,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={3}>
           {chartData && (
-            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <AsistentesChart
                 chartData={chartData.asistentesData}
                 chartRef={chartRef}
@@ -486,7 +514,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={4}>
           {chartData && (
-            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <EstudiantesChart
                 chartData={chartData.estudiantesData}
                 chartRef={chartRef}
