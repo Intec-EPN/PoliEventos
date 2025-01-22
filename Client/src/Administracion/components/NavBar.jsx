@@ -18,8 +18,8 @@ export const NavBar = ({ drawerWidth, setChangeMediaQuery }) => {
 
   const onLogout = async () => {
     try {
-      navigate("/");
       await dispatch(startLogout());
+      navigate("/");
     } catch (error) {
       console.error("Error al cerrar sesión", error);
     }

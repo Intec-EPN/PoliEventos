@@ -58,8 +58,8 @@ export const EventosPage = () => {
 
   const onLogout = async () => {
     try {
-      navigate("/");
       await dispatch(startLogout());
+      navigate("/");
     } catch (error) {
       throw new Error("Error al cerrar sesión", error);
     }
