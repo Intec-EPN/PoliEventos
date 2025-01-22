@@ -161,7 +161,8 @@ const obtenerEventos = async (req, res) => {
                         mail: expositor.expositore ? expositor.expositore.correo : null,
                     })) || [],
                     enlaces: evento.enlaces,
-                    asistentes: evento.asistentes
+                    asistentes: evento.asistentes,
+                    estudiantes: evento.estudiantes
                 },
             };
         }));
@@ -303,4 +304,22 @@ const agregarAsistentes = async (req, res) => {
     }
 };
 
-module.exports = { crearEvento, obtenerEventos, eliminarEvento, editarEvento, agregarAsistentes };
+const agregarEstudiantes = async (req, res) => {
+    const { eventoId } = req.params;
+    const { estudiantes } = req.body;
+    try {
+        const evento = await EventosModel.findByPk(eventoId);
+        if (!evento) {
+            return res.status(404).json({ message: 'Evento no encontrado' });
+        }
+
+        await evento.update({ estudiantes });
+
+        res.status(200).json({ message: 'Estudiantes agregados exitosamente', evento });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al agregar asistentes', error });
+    }
+};
+
+module.exports = { crearEvento, obtenerEventos, eliminarEvento, editarEvento, agregarAsistentes, agregarEstudiantes };

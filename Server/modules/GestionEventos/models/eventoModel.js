@@ -30,6 +30,9 @@ const EventosModel = sequelize.define('Eventos', {
     asistentes: {
         type: DataTypes.INTEGER,
     },
+    estudiantes: {
+        type: DataTypes.INTEGER,
+    },
     usuario_id: {
         type: DataTypes.UUID,
         references: {

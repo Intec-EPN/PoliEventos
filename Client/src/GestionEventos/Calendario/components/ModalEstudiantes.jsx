@@ -9,54 +9,54 @@ import {
   Box,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { startEditingAsistentes } from "../../../store/GestionEventos/thunk";
+import { startEditingEstudiantes } from "../../../store/GestionEventos/thunk";
 
-export const ModalAsistentes = ({
+export const ModalEstudiantes = ({
   open,
   onClose,
   eventoId,
-  asistentesIniciales,
+  estudiantesIniciales,
 }) => {
   const dispatch = useDispatch();
-  const [asistentes, setAsistentes] = useState(null);  
+  const [estudiantes, setEstudiantes] = useState(null);  
   useEffect(() => {
-    if(asistentesIniciales !== null){
-      setAsistentes(asistentesIniciales);
+    if(estudiantesIniciales !== null){
+      setEstudiantes(estudiantesIniciales);
     }
-  }, [asistentesIniciales]);
+  }, [estudiantesIniciales]);
 
   const handleAsistenteChange = (event) => {
     const value = event.target.value;
     if (value >= 0) {
-      setAsistentes(value);
+      setEstudiantes(value);
     }
   };
 
   const handleEnviarAsistente = () => {
-    dispatch(startEditingAsistentes({ eventoId, asistentes }));
-    onClose(asistentes);
+    dispatch(startEditingEstudiantes({ eventoId, estudiantes }));
+    onClose(estudiantes);
   };
 
   const handleCloseModal = () => {
-    onClose(asistentesIniciales);
+    onClose(estudiantesIniciales);
   };
 
   return (
     <Dialog open={open} onClose={handleCloseModal}>
       <DialogTitle>
         {
-            asistentesIniciales === null ? "Agregar beneficiarios" : "Editar beneficiarios"
+            estudiantesIniciales === null ? "Agregar estudiantes" : "Editar estudiantes"
         }
       </DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label="Ingresa número de beneficiarios"
+          label="Ingresa el número de estudiantes"
           type="number"
           fullWidth
           variant="standard"
-          value={asistentes || 0} 
+          value={estudiantes || 0} 
           onChange={handleAsistenteChange}
           slotProps={{ htmlInput: { min: 0 } }}
         />

@@ -278,3 +278,19 @@ export const startEditingAsistentes = ({ eventoId, asistentes }) => {
         }
     }
 }
+export const startEditingEstudiantes = ({ eventoId, estudiantes }) => {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            const url = `/gestion/estudiantes/${eventoId}`;
+            await axiosInstance.patch(url, { estudiantes }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            dispatch(startLoadingEventos());
+        } catch (error) {
+            throw new Error("Error al editar estudiantes");
+        }
+    }
+}

@@ -23,11 +23,12 @@ import {
   startDeletingEvento,
   startLoadingArchivosPorIds,
 } from "../../../store/GestionEventos/thunk";
+import { ModalAsistentes } from "./ModalAsistentes";
+import { ModalEstudiantes } from "./ModalEstudiantes";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
-import { ModalAsistentes } from "./ModalAsistentes";
-import { set } from "react-hook-form";
+import HailIcon from '@mui/icons-material/Hail';
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
@@ -41,6 +42,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     lugar,
     personasACargo,
     asistentes,
+    estudiantes, 
   } = data || {};
 
   const handleClose = () => {
@@ -56,6 +58,15 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     useEffect(() => {
       setAsistentesActualizados(asistentes);
     }, [asistentes]);
+
+  const [addEstudiantesModalIsOpen, setAddEstudiantesModalIsOpen] =
+    useState(false);
+
+  const [estudiantesActualizados, setEstudiantesActualizados] =
+    useState(null);
+  useEffect(() => {
+    setEstudiantesActualizados(estudiantes);
+  }, [estudiantes]);
 
   const handleDelete = () => {
     dispatch(startDeletingEvento(event.id));
@@ -77,7 +88,20 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
 
   const handleAddAsistentesClose = (asistentes) => {
     setAddAsistentesModalIsOpen(false);
-    setAsistentesActualizados(asistentes);
+    if (asistentes !== undefined) {
+      setAsistentesActualizados(asistentes);
+    }
+  };
+
+  const handleAddEstudiantes = () => {
+    setAddEstudiantesModalIsOpen(true);
+  };
+
+  const handleAddEstudiantesClose = (estudiantes) => {
+    setAddEstudiantesModalIsOpen(false);
+    if (estudiantes !== undefined) {
+      setEstudiantesActualizados(estudiantes);
+    }
   };
 
   const {
@@ -247,8 +271,28 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                 onClick={handleAddAsistentes}
               >
                 {asistentesActualizados === null || asistentesActualizados === 0
-                  ? "Agregar asistentes"
-                  : "Editar asistentes: " + asistentesActualizados}
+                  ? "Agregar beneficiarios"
+                  : "Editar beneficiarios: " + asistentesActualizados}
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                mt: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<HailIcon />}
+                sx={{
+                  backgroundColor:
+                    estudiantesActualizados === null || estudiantesActualizados === 0 ? "#d8872d" : "#2c4175",
+                }}
+                onClick={handleAddEstudiantes}
+              >
+                {estudiantesActualizados === null || estudiantesActualizados === 0
+                  ? "Agregar estudiantes"
+                  : "Editar estudiantes: " + estudiantesActualizados}
               </Button>
             </Box>
           </Box>
@@ -272,6 +316,15 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             eventoId={event.id}
             handleEditClose={handleEditClose}
             asistentesIniciales={asistentesActualizados}
+          />
+        )}
+        {permisoEditEvento && (
+          <ModalEstudiantes
+            open={addEstudiantesModalIsOpen}
+            onClose={handleAddEstudiantesClose}
+            eventoId={event.id}
+            handleEditClose={handleEditClose}
+            estudiantesIniciales={estudiantesActualizados}
           />
         )}
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>

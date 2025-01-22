@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { crearEvento, obtenerEventos, eliminarEvento, editarEvento, agregarAsistentes } = require('./controllers/eventosController');
+const { crearEvento, obtenerEventos, eliminarEvento, editarEvento, agregarAsistentes, agregarEstudiantes } = require('./controllers/eventosController');
 const { obtenerDepartamentosId } = require('../Administracion/controllers/Roles/departamentosController');
 const { obtenerEsquemasCategoriasCalendario } = require('../Administracion/controllers/Categorizaciones/esquemasController');
 const { obtenerPermisosPorRol } = require('../Administracion/controllers/Roles/permisosController');
@@ -16,6 +16,8 @@ router.delete('/:id', authMiddleware, rolMiddleware, eliminarEvento);
 router.put('/:id', authMiddleware, rolMiddleware, editarEvento);
 // Editar asistentes de evento
 router.patch('/asistentes/:eventoId',authMiddleware, rolMiddleware, agregarAsistentes);
+// Editar estudiantes de evento
+router.patch('/estudiantes/:eventoId',authMiddleware, rolMiddleware, agregarEstudiantes);
 
 
 // Obtener departamentos

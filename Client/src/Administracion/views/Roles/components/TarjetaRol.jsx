@@ -70,7 +70,7 @@ export const TarjetaRol = ({
               variant="h6"
               sx={{ color: "#eff5ff",fontSize: "0.9rem" }}
             >
-              Rol se ha asignado (No se puede eliminar).
+              Rol con usuarios asignados (No se puede eliminar).
             </Typography>
           )}
           <Typography textAlign="center" variant="h4">

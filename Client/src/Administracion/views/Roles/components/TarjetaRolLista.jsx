@@ -144,7 +144,7 @@ export const TarjetaRolLista = ({
               fontSize: "0.9rem",
             }}
           >
-            Rol se ha asignado (No se puede eliminar).
+            Rol con usuarios asignados (No se puede eliminar).
           </Typography>
         </Box>
       )}

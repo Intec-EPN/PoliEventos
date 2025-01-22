@@ -74,42 +74,29 @@ export const VerRoles = () => {
 
   return (
     <>
-      <Grid2 container ml={2} mt={0} display="flex" flexDirection="column">
-        {/* 
-        <Typography
-          variant="h6"
-          color="primary"
-          sx={{ fontWeight: 700, mb: 1 }}
-        >
-          Filtro
-        </Typography>
-
-        Filtros
-        <Box
-          container
-          display="flex"
-          gap={2}
-          alignItems="center"
-          width={"100%"}
-        >
-          <Filtro opciones={nombresFacultades} filtro="Facultad" size={360} />
-          <Filtro opciones={departamentos} filtro="Departamento" size={360} />
-          <Box
-            sx={{ flex: 2, mr: "1rem", display: "flex", justifyContent: "end" }}
-          >
-            <Button
-              variant="contained"
-              sx={{ backgroundColor: "green", display: "flex", height: 55 }}
-              onClick={handleCrearRol}
-            >
-              Crear Rol
-            </Button>
-          </Box>
-          Filtro para permisos y acciones (en funcionamiento pero fuera de requerimientos).
-          <FiltroTag permisosAcciones={permisosAcciones} acciones={acciones} />
-        </Box> */}
+      <Box
+        display={{xs: "column", sm:"flex"}}
+        flexDirection="row"
+        width={{xs:"95%", sm:"94%", lg:"98%"}}
+        ml={2}
+        mt={2}
+        justifyContent={{xs: "center",sm:"space-between"}}
+        alignItems={"center"}
+      >
         <IndicadoresRoles />
-      </Grid2>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "green",
+            display: "flex",
+            height: 55,
+            width:{xs:"100%",md:"15%"}
+          }}
+          onClick={handleCrearRol}
+        >
+          Crear Rol
+        </Button>
+      </Box>
       <Grid2
         container
         margin={2}
