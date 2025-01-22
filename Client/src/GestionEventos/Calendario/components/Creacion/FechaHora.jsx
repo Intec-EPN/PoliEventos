@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 const hoy = dayjs().startOf("day");
 
-export const FechaHora = ({ defaultStart, defaultEnd }) => {
+export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
   const { register, setValue } = useFormContext();
   const { start, end } = useSelector(
     (state) => state.gestionEvento.eventoCreacion
@@ -122,7 +122,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
         >
           <Box display={"flex"} gap={1}>
             <DatePicker
-              minDate={hoy}
+              minDate={isEditMode ? null : hoy}
               value={startDate ? dayjs(startDate, "DD/MM/YYYY") : null}
               views={["year", "month", "day"]}
               format="DD/MM/YYYY"
@@ -134,6 +134,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
               slotProps={{
                 textField: {
                   ...register("startDate"),
+                  disabled: isEditMode,
                 },
               }}
             />
@@ -150,6 +151,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
               slotProps={{
                 textField: {
                   ...register("startTime"),
+                  disabled: isEditMode,
                 },
               }}
             />
@@ -157,7 +159,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
           <Typography variant={"body1"}>a</Typography>
           <Box display={"flex"} gap={1}>
             <DatePicker
-              minDate={startDate ? dayjs(startDate, "DD/MM/YYYY") : null}
+              minDate={isEditMode ? null : startDate ? dayjs(startDate, "DD/MM/YYYY") : null}
               value={endDate ? dayjs(endDate, "DD/MM/YYYY") : null}
               views={["year", "month", "day"]}
               format="DD/MM/YYYY"
@@ -169,6 +171,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
               slotProps={{
                 textField: {
                   ...register("endDate"),
+                  disabled: isEditMode,
                 },
               }}
             />
@@ -185,6 +188,7 @@ export const FechaHora = ({ defaultStart, defaultEnd }) => {
               slotProps={{
                 textField: {
                   ...register("endTime"),
+                  disabled: isEditMode,
                 },
               }}
             />

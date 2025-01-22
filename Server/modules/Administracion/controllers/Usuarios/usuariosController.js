@@ -11,10 +11,11 @@ const obtenerUsuarios = async (req, res) => {
         });
         const usuariosFiltadros = usuariosBruto.filter(user => user.nombre !== 'admn');
 
-        const usuarios = await Promise.all(usuariosFiltadros.map(async (usuario) => {
+        const usuarios = [];
+        for (const usuario of usuariosFiltadros) {
             const roles = await obtenerRolesPorUsuario(usuario.id);
             const eventos = await EventosModel.findOne({ where: { usuario_id: usuario.id } });
-            return {
+            usuarios.push({
                 id: usuario.id,
                 nombre: usuario.nombre,
                 correo: usuario.correo,
@@ -22,8 +23,8 @@ const obtenerUsuarios = async (req, res) => {
                 habilitado: usuario.habilitado,
                 roles: roles,
                 conEventos: eventos ? true : false,
-            };
-        }));
+            });
+        }
 
         res.status(200).json(usuarios);
     } catch (error) {
@@ -31,8 +32,6 @@ const obtenerUsuarios = async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los usuarios.' });
     }
 }
-
-
 
 const asignarRolesUsuario = async (req, res) => {
     const { usuarioId, rolesIds } = req.body;

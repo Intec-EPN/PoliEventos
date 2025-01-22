@@ -117,7 +117,8 @@ const obtenerEventos = async (req, res) => {
     try {
         const eventos = await EventosModel.findAll();
 
-        const eventosFormatted = await Promise.all(eventos.map(async evento => {
+        const eventosFormatted = [];
+        for (const evento of eventos) {
             const personasCargo = await EventosPersonasCargoModel.findAll({
                 where: { evento_id: evento.id },
                 include: [{ model: PersonasCargoModel }]
@@ -138,7 +139,7 @@ const obtenerEventos = async (req, res) => {
                 include: [{ model: DepartamentosModel }]
             });
 
-            return {
+            eventosFormatted.push({
                 id: evento.id,
                 start: evento.start,
                 end: evento.end,
@@ -164,8 +165,8 @@ const obtenerEventos = async (req, res) => {
                     asistentes: evento.asistentes,
                     estudiantes: evento.estudiantes
                 },
-            };
-        }));
+            });
+        }
 
         res.status(200).json(eventosFormatted);
     } catch (error) {

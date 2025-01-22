@@ -50,66 +50,56 @@ const obtenerRolesDescripcion = async (req, res) => {
 
 const obtenerRoles = async (req, res) => {
     try {
-        // findAll para obtener todos
         const rolesIniciales = await RolesModel.findAll({
             attributes: ['id', 'nombre', 'descripcion', 'departamento_id', 'facultad_id']
         });
-        const niveles = await obtenerNivelesArray(); // Obtengo los niveels para comparar luego.
+        const niveles = await obtenerNivelesArray();
 
-        const roles = await Promise.all(
-            rolesIniciales.map(async (rol) => {
-                let departamentos;
-                // Guardar la facultad
-                let facultad = null;
-                if (rol.facultad_id) {
-                    const facultadInfo = await FacultadesModel.findByPk(rol.facultad_id);
-                    facultad = facultadInfo ? facultadInfo.nombre : null;
-                }
+        const roles = [];
+        for (const rol of rolesIniciales) {
+            let departamentos;
+            let facultad = null;
+            if (rol.facultad_id) {
+                const facultadInfo = await FacultadesModel.findByPk(rol.facultad_id);
+                facultad = facultadInfo ? facultadInfo.nombre : null;
+            }
 
-                // Observar si este rol tienen nivel facultad:
-                let esFacultad = !rol.departamento_id;
-                // Obtener los departamentos
-                if (rol.departamento_id) {
-                    // Si tengo id de departamento, lo incluyo.
-                    departamentos = await obtenerDepartamentosArray(rol.id);
-                } else {
-                    // Si no tengo id, significa que es la facultad, incluyo los departamentos de la facultad:
-                    departamentos = await obtenerDeptFacultadId(rol.facultad_id);
-                }
+            let esFacultad = !rol.departamento_id;
+            if (rol.departamento_id) {
+                departamentos = await obtenerDepartamentosArray(rol.id);
+            } else {
+                departamentos = await obtenerDeptFacultadId(rol.facultad_id);
+            }
 
-                const acciones = await obtenerPermisosRol(rol.id)
-                // Agrupo las acciones por nivel_id (obtengo nivel de permisos)
-                const permisos = niveles.map(nivel => {
-                    // Filtro por el id del nivel
-                    const accionesFiltradas = acciones.filter(acc => acc.nivel_id === nivel.id);
-                    // Retorno mi nuevo objeto con lo necesario del nivel y las acciones correspondientes.
-                    if (accionesFiltradas.length > 0) {
-                        return {
-                            nombre: nivel.nombre,
-                            color: nivel.color,
-                            icono: nivel.icono,
-                            acciones: accionesFiltradas.map(acc => acc.permiso_id)
-                        }
-                    };
+            const acciones = await obtenerPermisosRol(rol.id);
+            const permisos = niveles.map(nivel => {
+                const accionesFiltradas = acciones.filter(acc => acc.nivel_id === nivel.id);
+                if (accionesFiltradas.length > 0) {
                     return {
                         nombre: nivel.nombre,
                         color: nivel.color,
                         icono: nivel.icono,
-                        acciones: []
-                    }
-                });
-
+                        acciones: accionesFiltradas.map(acc => acc.permiso_id)
+                    };
+                }
                 return {
-                    id: rol.id,
-                    rol: rol.nombre,
-                    descripcion: rol.descripcion,
-                    departamentos: departamentos.map(dep => dep.departamento), // Solo me traigo el nombre
-                    permisos: permisos,
-                    facultad: facultad,
-                    esFacultad: esFacultad
+                    nombre: nivel.nombre,
+                    color: nivel.color,
+                    icono: nivel.icono,
+                    acciones: []
                 };
-            })
-        );
+            });
+
+            roles.push({
+                id: rol.id,
+                rol: rol.nombre,
+                descripcion: rol.descripcion,
+                departamentos: departamentos.map(dep => dep.departamento),
+                permisos: permisos,
+                facultad: facultad,
+                esFacultad: esFacultad
+            });
+        }
         res.status(200).json(roles);
     } catch (error) {
         console.error(`Error al obtener los roles: ${error}`);
@@ -170,7 +160,7 @@ const eliminarRolPorNombre = async (req, res) => {
     try {
         // Verificamos si el rol existe antes de intentar eliminar
         const rolExistente = await RolesModel.findOne({ where: { nombre } });
-        
+
         if (!rolExistente) {
             return res.status(404).json({ message: 'Rol no encontrado.' });
         }

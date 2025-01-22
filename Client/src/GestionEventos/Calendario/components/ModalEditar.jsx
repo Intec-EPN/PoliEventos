@@ -155,12 +155,6 @@ export const ModalEditar = ({
 
     const startDateISO = startDate.toISOString();
     const endDateISO = endDate.toISOString();
-
-    if (dayjs(startDateISO).isBefore(hoy) || dayjs(endDateISO).isBefore(hoy)) {
-      alert("El evento debe ser en el futuro.");
-      return;
-    }
-
     dispatch(
       setEventoEdicion({
         titulo: data.titulo,
@@ -257,7 +251,7 @@ export const ModalEditar = ({
       <DialogTitle>Editar evento</DialogTitle>
       <DialogContent sx={{ p: 2 }}>
         <FormProvider {...methods}>
-          <FechaHora defaultStart={event?.start} defaultEnd={event?.end} />
+          <FechaHora defaultStart={event?.start} defaultEnd={event?.end} isEditMode={true} />
           <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
             <Titulo defaultValue={event?.title} />
             <Lugar defaultValue={event?.data?.lugar} />
