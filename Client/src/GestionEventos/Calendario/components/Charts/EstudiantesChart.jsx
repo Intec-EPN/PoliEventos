@@ -26,7 +26,7 @@ const esquemaColors = [
   "#009688",
 ];
 
-const AsistentesChart = ({
+const EstudiantesChart = ({
   chartData,
   chartRef,
   handleSaveImage,
@@ -38,7 +38,7 @@ const AsistentesChart = ({
   const data = {
     labels: chartData.map((data) => data.label),
     datasets: [{
-      data: chartData.map((data) => data.asistentes),
+      data: chartData.map((data) => data.estudiantes),
       backgroundColor: chartData.map((_, index) => esquemaColors[index % esquemaColors.length]),
       borderColor: chartData.map((_, index) => esquemaColors[index % esquemaColors.length]),
       borderWidth: 1
@@ -50,7 +50,7 @@ const AsistentesChart = ({
       legend: { display: false },
       title: {
         display: true,
-        text: "Beneficiarios por tipo de esquema de categorización"
+        text: "Estudiantes por tipo de esquema de categorización"
       }
     },
     scales: {
@@ -140,4 +140,4 @@ const AsistentesChart = ({
   );
 };
 
-export default AsistentesChart;
+export default EstudiantesChart;
