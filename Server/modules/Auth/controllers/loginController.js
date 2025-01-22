@@ -62,7 +62,7 @@ const loginUsuario = [
 
             // Crear el token con el id del usuario, nombre, correo, roles y nivel de acceso
             const token = await jwt.sign({ id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso }, jwtSecret, {
-                expiresIn: '2h'
+                expiresIn: '5h'
             });
 
             // Responder con éxito

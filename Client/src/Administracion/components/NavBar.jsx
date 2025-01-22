@@ -1,26 +1,31 @@
 import { LogoutOutlined, MenuOutlined } from "@mui/icons-material";
-import { AppBar, Box, Grid2, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Grid2,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { startLogout } from "../../store/auth/thunks";
 
-
 export const NavBar = ({ drawerWidth, setChangeMediaQuery }) => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector( state => state.adminAuth.user );
-  
+  const user = useSelector((state) => state.adminAuth.user);
+
   const onLogout = async () => {
     try {
+      navigate("/");
       await dispatch(startLogout());
-      navigate('/login');
     } catch (error) {
       console.error("Error al cerrar sesión", error);
     }
   };
 
-  const {opcion} = useSelector( state => state.administracion );
+  const { opcion } = useSelector((state) => state.administracion);
 
   return (
     <AppBar

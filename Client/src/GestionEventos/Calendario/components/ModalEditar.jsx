@@ -310,7 +310,7 @@ export const ModalEditar = ({
           variant="contained"
           sx={{ backgroundColor: "#2c4175" }}
         >
-          Editar evento
+          Guardar evento
         </Button>
       </DialogActions>
     </Dialog>

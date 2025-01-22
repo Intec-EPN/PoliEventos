@@ -83,6 +83,7 @@ export const Archivos = ({ onFilesChange }) => {
           border: "0.2rem solid #0a3b91",
           borderRadius: "7px",
           width: "100%",
+          cursor: "pointer",
         }}
         inputProps={{ accept: ALLOWED_EXTENSIONS.join(", ") }}
         InputProps={{
@@ -92,7 +93,11 @@ export const Archivos = ({ onFilesChange }) => {
           title: "Remove",
           children: <CloseIcon fontSize="small" sx={{ color: "#0a3b91" }} />,
         }}
-        getInputText={(value) => (value ? `${files.length} archivos` : "")}
+        getInputText={(value) =>
+          value
+            ? `${files.length} archivo${files.length > 1 ? "s" : ""}, HAZ CLIC AQUÍ PARA AGREGAR MÁS.`
+            : ""
+        }
       />
       {error && (
         <Typography sx={{ color: "red", fontSize: "0.8rem", mt: 1 }}>
