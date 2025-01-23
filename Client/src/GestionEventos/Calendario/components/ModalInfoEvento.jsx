@@ -110,13 +110,10 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     nivelDepartamento,
     nivelFacultad,
     departamentoNivelId,
-
   } = useSelector((state) => state.adminAuth);
 
   let permisoEditEvento = false;
   let permisoDeleteEvento = false;
-
-  console.log("nivelPropio", nivelPropio);
 
   if (nivelPropio) {
     permisoEditEvento =
@@ -141,7 +138,6 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     );
   }
 
- 
   return (
     <Dialog
       fullWidth
@@ -170,37 +166,39 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
           flexDirection={{ xs: "column", sm: "row" }}
           justifyContent={"space-between"}
         >
-          <Box
-            width={{ xs: "100%", sm: "50%" }}
-            display={{ xs: "flex", sm: "none" }}
-            flexDirection={"column"}
-            alignItems={{ xs: "center", sm: "flex-end" }}
-            mb={2}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: "500",
-                color: "#697585",
-                textAlign: { xs: "center", sm: "end" },
-              }}
+          {user && (
+            <Box
+              width={{ xs: "100%", sm: "50%" }}
+              display={{ xs: "flex", sm: "none" }}
+              flexDirection={"column"}
+              alignItems={{ xs: "center", sm: "flex-end" }}
+              mb={2}
             >
-              Creado por: {creador}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: "500",
-                color: "#697585",
-                textAlign: { xs: "center", sm: "end" },
-              }}
-            >
-              Fecha de creación del evento:{" "}
-              {createdAt !== null
-                ? dayjs(createdAt).format("DD/MM/YYYY")
-                : "Sin fecha."}
-            </Typography>
-          </Box>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: "500",
+                  color: "#697585",
+                  textAlign: { xs: "center", sm: "end" },
+                }}
+              >
+                Creado por: {creador}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: "500",
+                  color: "#697585",
+                  textAlign: { xs: "center", sm: "end" },
+                }}
+              >
+                Fecha de creación:{" "}
+                {createdAt !== null
+                  ? dayjs(createdAt).format("DD/MM/YYYY, hh:mm a")
+                  : "Sin fecha."}
+              </Typography>
+            </Box>
+          )}
           <Box
             display={{ xs: "block" }}
             gap={3}
@@ -212,28 +210,30 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             <HoraVer start={start} end={end} />
             <LugarVer lugar={lugar} />
           </Box>
-          <Box
-            width={"50%"}
-            display={{ xs: "none", sm: "flex" }}
-            flexDirection={"column"}
-            alignItems={"flex-end"}
-          >
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+          {user && (
+            <Box
+              width={"50%"}
+              display={{ xs: "none", sm: "flex" }}
+              flexDirection={"column"}
+              alignItems={"flex-end"}
             >
-              Creado por: {creador}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
-            >
-              Fecha de creación del evento:{" "}
-              {createdAt !== null
-                ? dayjs(createdAt).format("DD/MM/YYYY")
-                : "Sin fecha."}
-            </Typography>
-          </Box>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+              >
+                Creado por: {creador}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+              >
+                Fecha de creación:{" "}
+                {createdAt !== null
+                  ? dayjs(createdAt).format("DD/MM/YYYY, hh:mm a")
+                  : "Sin fecha."}
+              </Typography>
+            </Box>
+          )}
         </Box>
         <DescripcionVer descripcion={descripcion} />
         {expositores?.length > 0 && (

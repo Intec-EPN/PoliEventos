@@ -13,18 +13,18 @@ export const Titulo = ({ defaultValue }) => {
 
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{ width: "100%" }}>
-      <DialogContentText sx={{ color:"#333333" }}>¿Cuál es el nombre del evento?</DialogContentText>
+      <DialogContentText sx={{ color:"#333333" }}>Ingresa un nombre corto</DialogContentText>
       <TextField
         autoFocus
         required
         margin="dense"
         id="titulo"
         name="titulo"
-        placeholder="Título*"
+        placeholder="Título* (máximo 25 caracteres)"
         type="text"
         fullWidth
         variant="outlined"
-        slotProps={{ htmlInput: { maxLength: 70 } }}
+        slotProps={{ htmlInput: { maxLength: 25 } }}
         {...register("titulo")}
       />
     </Box>

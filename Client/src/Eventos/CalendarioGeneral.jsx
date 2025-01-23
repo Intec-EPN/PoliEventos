@@ -218,7 +218,7 @@ const CustomEvent = ({ event }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" },
+            fontSize: { xs: "0.6rem", sm: "0.8rem", md: "0.9rem" },
             flex: 1,
           }}
         >

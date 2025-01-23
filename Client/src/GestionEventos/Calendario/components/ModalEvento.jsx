@@ -31,6 +31,7 @@ export const ModalEvento = ({
   modalIsOpen,
   setModalIsOpen,
   handleAddEvent,
+  events
 }) => {
   const methods = useForm({
     defaultValues: {
@@ -116,10 +117,12 @@ export const ModalEvento = ({
     }
 
     if (!data.esquemasCategorias) {
-      alert("Debe seleccionar al menos un esquema.");
+      alert("Comple la categoría.");
       return;
     }
-    if (data.esquemasCategorias.length === 0) {
+    console.log(data.esquemasCategorias);
+    
+    if (data.esquemasCategorias.some(esquema => esquema.esquemaId === '')) {
       alert("Debe seleccionar al menos un esquema.");
       return;
     }
@@ -158,6 +161,26 @@ export const ModalEvento = ({
 
     const startDateISO = startDate.toISOString();
     const endDateISO = endDate.toISOString();
+
+    // Verificar si la fecha y hora coinciden con algún otro evento
+    const isOverlapping = events.some(
+      (event) =>
+        (startDate.isSame(event.start, 'day') && endDate.isSame(event.end, 'day')) &&
+        (startDate.isBetween(event.start, event.end, null, "[)") ||
+        endDate.isBetween(event.start, event.end, null, "(]") ||
+        startDate.isSame(event.start) ||
+        endDate.isSame(event.end))
+    );
+
+    if (isOverlapping) {
+      if (
+        !window.confirm(
+          "La hora coincide con otro evento. ¿Está seguro de que desea continuar?"
+        )
+      ) {
+        return;
+      }
+    }
 
     handleAddEvent({
       ...data,

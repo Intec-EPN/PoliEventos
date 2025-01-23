@@ -96,25 +96,6 @@ export const Calendario = () => {
       return;
     }
 
-    // Verificar si la fecha coincide con algún otro evento
-    const isOverlapping = events.some(
-      (event) =>
-        start.isBetween(event.start, event.end, null, "[)") ||
-        end.isBetween(event.start, event.end, null, "(]") ||
-        start.isSame(event.start) ||
-        end.isSame(event.end)
-    );
-
-    if (isOverlapping) {
-      if (
-        !window.confirm(
-          "La fecha coincide con otro evento. ¿Está seguro de que desea continuar?"
-        )
-      ) {
-        return;
-      }
-    }
-
     const eventoCreacion = {
       titulo,
       lugar,
@@ -235,6 +216,7 @@ export const Calendario = () => {
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={handleModalClose}
                 handleAddEvent={handleAddEvent}
+                events={events}
               />
             )}
 
@@ -333,7 +315,7 @@ const CustomEvent = ({ event }) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" },
+            fontSize: { xs: "0.6rem", sm: "0.8rem", md: "0.9rem" },
             flex: 1,
           }}
         >
