@@ -49,9 +49,13 @@ const loginUsuario = [
 
             // Determinar el nivel de acceso más alto
             let nivelAcceso = 'propio';
+            let propio = false;
             permisos.forEach(permiso => {
                 if (permiso) {
-                    const permisoId = permiso.permiso_id; // Cambiado a permiso_id
+                    const permisoId = permiso.permiso_id; 
+                    if (permisoId === 1) {
+                        propio = true;
+                    }
                     if (permisoId >= 6) {
                         nivelAcceso = 'facultad';
                     } else if (permisoId >= 2 && permisoId <= 5) {
@@ -61,12 +65,12 @@ const loginUsuario = [
             });
 
             // Crear el token con el id del usuario, nombre, correo, roles y nivel de acceso
-            const token = await jwt.sign({ id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso }, jwtSecret, {
+            const token = await jwt.sign({ id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso, propio:propio }, jwtSecret, {
                 expiresIn: '5h'
             });
 
             // Responder con éxito
-            res.status(200).json({ message: 'Inicio de sesión exitoso.', token, id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso });
+            res.status(200).json({ message: 'Inicio de sesión exitoso.', token, id: usuario.id, nombre: usuario.nombre, correo: usuario.correo, roles: roles, nivelAcceso: nivelAcceso, propio: propio });
         } catch (error) {
             console.error("Error en loginUsuario:", error);
             res.status(400).json({ error: 'Error del inicio de sesión.' });

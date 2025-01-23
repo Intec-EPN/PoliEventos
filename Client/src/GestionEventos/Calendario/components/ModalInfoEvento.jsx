@@ -110,10 +110,13 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     nivelDepartamento,
     nivelFacultad,
     departamentoNivelId,
+
   } = useSelector((state) => state.adminAuth);
 
   let permisoEditEvento = false;
   let permisoDeleteEvento = false;
+
+  console.log("nivelPropio", nivelPropio);
 
   if (nivelPropio) {
     permisoEditEvento =
@@ -138,10 +141,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     );
   }
 
-  if (!event) {
-    return null;
-  }
-
+ 
   return (
     <Dialog
       fullWidth

@@ -20,19 +20,17 @@ export const adminAuthSlice = createSlice({
             state.rol = rol;
             state.facultad = rol.facultad_id;
             const nivelAcceso = action.payload.user.nivelAcceso;
-            if (nivelAcceso === 'propio') {
+            const propio = action.payload.user.propio;
+            console.log(action.payload);
+            if (propio) {
                 state.nivelPropio = true;
-                state.nivelDepartamento = false;
-                state.nivelFacultad = false;
                 state.departamento = rol.departamento_id;
             } else if (nivelAcceso === 'departamento') {
-                state.nivelPropio = false;
                 state.nivelDepartamento = true;
                 state.nivelFacultad = false;
                 state.departamento = rol.departamento_id;
                 state.departamentoNivelId = rol.departamento_id;
             } else if (nivelAcceso === 'facultad') {
-                state.nivelPropio = false;
                 state.nivelDepartamento = false;
                 state.nivelFacultad = true;
                 state.departamento = null;
