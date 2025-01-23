@@ -44,9 +44,17 @@ const EventosModel = sequelize.define('Eventos', {
         type: DataTypes.STRING(255),
         allowNull: true,
     },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: true, // Permitir valores nulos temporalmente
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true, // Permitir valores nulos temporalmente
+    },
 }, {
     tableName: 'eventos',
-    timestamps: false,
+    timestamps: true,
 });
 
 module.exports = EventosModel;

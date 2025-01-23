@@ -17,7 +17,6 @@ import { PersonasVer } from "./Visualizar/PersonasVer";
 import { DepartamentoVer } from "./Visualizar/DepartamentoVer";
 import { HoraVer } from "./Visualizar/HoraVer";
 import { ModalEditar } from "./ModalEditar";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import {
   startDeletingEvento,
@@ -25,16 +24,17 @@ import {
 } from "../../../store/GestionEventos/thunk";
 import { ModalAsistentes } from "./ModalAsistentes";
 import { ModalEstudiantes } from "./ModalEstudiantes";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
-import HailIcon from '@mui/icons-material/Hail';
+import HailIcon from "@mui/icons-material/Hail";
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
   const dispatch = useDispatch();
 
-  const { id, start, end, title, data, usuarioId } = event || {};
+  const { id, start, end, title, data, usuarioId, creador } = event || {};
   const {
     departamento,
     descripcion,
@@ -42,7 +42,8 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     lugar,
     personasACargo,
     asistentes,
-    estudiantes, 
+    estudiantes,
+    createdAt,
   } = data || {};
 
   const handleClose = () => {
@@ -53,17 +54,15 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const [addAsistentesModalIsOpen, setAddAsistentesModalIsOpen] =
     useState(false);
 
-    const [asistentesActualizados, setAsistentesActualizados] =
-    useState(null);
-    useEffect(() => {
-      setAsistentesActualizados(asistentes);
-    }, [asistentes]);
+  const [asistentesActualizados, setAsistentesActualizados] = useState(null);
+  useEffect(() => {
+    setAsistentesActualizados(asistentes);
+  }, [asistentes]);
 
   const [addEstudiantesModalIsOpen, setAddEstudiantesModalIsOpen] =
     useState(false);
 
-  const [estudiantesActualizados, setEstudiantesActualizados] =
-    useState(null);
+  const [estudiantesActualizados, setEstudiantesActualizados] = useState(null);
   useEffect(() => {
     setEstudiantesActualizados(estudiantes);
   }, [estudiantes]);
@@ -167,15 +166,74 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
       <DialogTitle sx={{ textAlign: "center" }}>{title}</DialogTitle>
       <DialogContent>
         <Box
-          display={{ xs: "block", lg: "flex" }}
-          gap={3}
+          display={{ xs: "block", sm: "flex" }}
+          flexDirection={{ xs: "column", sm: "row" }}
           justifyContent={"space-between"}
-          width={"98%"}
-          mb={2}
         >
-          <FechaVer start={start} end={end} />
-          <HoraVer start={start} end={end} />
-          <LugarVer lugar={lugar} />
+          <Box
+            width={{ xs: "100%", sm: "50%" }}
+            display={{ xs: "flex", sm: "none" }}
+            flexDirection={"column"}
+            alignItems={{ xs: "center", sm: "flex-end" }}
+            mb={2}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: "500",
+                color: "#697585",
+                textAlign: { xs: "center", sm: "end" },
+              }}
+            >
+              Creado por: {creador}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: "500",
+                color: "#697585",
+                textAlign: { xs: "center", sm: "end" },
+              }}
+            >
+              Fecha de creación del evento:{" "}
+              {createdAt !== null
+                ? dayjs(createdAt).format("DD/MM/YYYY")
+                : "Sin fecha."}
+            </Typography>
+          </Box>
+          <Box
+            display={{ xs: "block" }}
+            gap={3}
+            justifyContent={"space-between"}
+            width={{ xs: "100%", sm: "50%" }}
+            mb={2}
+          >
+            <FechaVer start={start} end={end} />
+            <HoraVer start={start} end={end} />
+            <LugarVer lugar={lugar} />
+          </Box>
+          <Box
+            width={"50%"}
+            display={{ xs: "none", sm: "flex" }}
+            flexDirection={"column"}
+            alignItems={"flex-end"}
+          >
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+            >
+              Creado por: {creador}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+            >
+              Fecha de creación del evento:{" "}
+              {createdAt !== null
+                ? dayjs(createdAt).format("DD/MM/YYYY")
+                : "Sin fecha."}
+            </Typography>
+          </Box>
         </Box>
         <DescripcionVer descripcion={descripcion} />
         {expositores?.length > 0 && (
@@ -193,6 +251,18 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
         {departamento?.length > 0 && (
           <DepartamentoVer departamentos={departamento} />
         )}
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: "500",
+            color: "#164dc9",
+            fontSize: "1.2rem",
+            mt: 2,
+            mb: 1,
+          }}
+        >
+          Acciones:
+        </Typography>
 
         {permisoEditEvento && (
           <Box
@@ -203,7 +273,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             flexWrap={"wrap"}
           >
             {event?.data?.enlaces && (
-              <Box sx={{ display: "flex", justifyContent: "start", mt: 2 }}>
+              <Box sx={{ display: "flex", justifyContent: "start" }}>
                 <a
                   href={event.data.enlaces}
                   target="_blank"
@@ -242,7 +312,6 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                 display: "flex",
                 justifyContent: "start",
                 flexDirection: "row",
-                mt: 2,
               }}
             >
               <Button
@@ -255,18 +324,17 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                 Descargar Archivos
               </Button>
             </Box>
-            <Box
-              sx={{
-                mt: 2,
-              }}
-            >
+            <Box>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<EmojiPeopleIcon />}
                 sx={{
                   backgroundColor:
-                    asistentesActualizados === null || asistentesActualizados === 0 ? "#d8872d" : "#2c4175",
+                    asistentesActualizados === null ||
+                    asistentesActualizados === 0
+                      ? "#d8872d"
+                      : "#2c4175",
                 }}
                 onClick={handleAddAsistentes}
               >
@@ -275,22 +343,22 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                   : "Editar beneficiarios: " + asistentesActualizados}
               </Button>
             </Box>
-            <Box
-              sx={{
-                mt: 2,
-              }}
-            >
+            <Box>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<HailIcon />}
                 sx={{
                   backgroundColor:
-                    estudiantesActualizados === null || estudiantesActualizados === 0 ? "#d8872d" : "#2c4175",
+                    estudiantesActualizados === null ||
+                    estudiantesActualizados === 0
+                      ? "#d8872d"
+                      : "#2c4175",
                 }}
                 onClick={handleAddEstudiantes}
               >
-                {estudiantesActualizados === null || estudiantesActualizados === 0
+                {estudiantesActualizados === null ||
+                estudiantesActualizados === 0
                   ? "Agregar estudiantes"
                   : "Editar estudiantes: " + estudiantesActualizados}
               </Button>

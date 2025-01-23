@@ -7,6 +7,7 @@ const EventosCategoriasModel = require("../models/tablas-intermedias/evento_cate
 const EventosDepartamentosModel = require("../models/tablas-intermedias/evento_departamentosModel");
 const EventosPersonasCargoModel = require("../models/tablas-intermedias/evento_personasModel");
 const EventosExpositoresModel = require("../models/tablas-intermedias/evento_expositoresModel");
+const UsuariosModel = require("../../Auth/models/usuariosModel");
 
 const validarEvento = async (eventoCreacion) => {
     const errores = [];
@@ -119,6 +120,7 @@ const obtenerEventos = async (req, res) => {
 
         const eventosFormatted = [];
         for (const evento of eventos) {
+            const usuario = await UsuariosModel.findByPk(evento.usuario_id);
             const personasCargo = await EventosPersonasCargoModel.findAll({
                 where: { evento_id: evento.id },
                 include: [{ model: PersonasCargoModel }]
@@ -145,6 +147,7 @@ const obtenerEventos = async (req, res) => {
                 end: evento.end,
                 title: evento.title,
                 usuarioId: evento.usuario_id,
+                creador: usuario ? usuario.nombre : null, 
                 data: {
                     lugar: evento.lugar,
                     descripcion: evento.descripcion,
@@ -163,7 +166,8 @@ const obtenerEventos = async (req, res) => {
                     })) || [],
                     enlaces: evento.enlaces,
                     asistentes: evento.asistentes,
-                    estudiantes: evento.estudiantes
+                    estudiantes: evento.estudiantes,
+                    createdAt: evento.createdAt,
                 },
             });
         }
