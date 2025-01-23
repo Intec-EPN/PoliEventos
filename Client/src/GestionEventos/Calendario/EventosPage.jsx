@@ -31,7 +31,7 @@ export const EventosPage = () => {
   const [reportePermiso, setReportePermiso] = useState(false);
 
   const { eventos } = useSelector((state) => state.gestionEvento);
-  const { user, nivelPropio, permisos } = useSelector(
+  const { user, nivelPropio, permisos, departamento } = useSelector(
     (state) => state.adminAuth
   );
 
@@ -107,12 +107,30 @@ export const EventosPage = () => {
         <Box
           display="flex"
           alignItems="center"
-          flex={1}
-          justifyContent={"center"}
+          flex={2}
+          justifyContent={"start"}
+          ml={{ xs: 1, sm: 4 }}
         >
-          <Box display="flex" flexDirection="row" alignItems="center" gap={0.5}>
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            gap={0.5}
+            flexWrap={"wrap"}
+          >
+            <PermisosUsuario permisos={permisos} departamento={departamento} />
+          </Box>
+        </Box>
+        <Box
+          display="flex"
+          alignItems="center"
+          flex={2}
+          justifyContent={"END"}
+          gap={3}
+          mr={{ xs: 1, sm: 4 }}
+        >
+          <Box display="flex" flexDirection="row" alignItems="center" gap={0.1}>
             <Typography
-              onClick={() => setFormato(false)}
               sx={{
                 cursor: "pointer",
                 fontSize: { xs: "0.8rem", sm: "0.9rem" },
@@ -130,58 +148,26 @@ export const EventosPage = () => {
               }}
             />
           </Box>
-        </Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          flex={2}
-          justifyContent={"center"}
-        >
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            gap={0.5}
-            flexWrap={"wrap"}
-          >
-            {/* <Typography
-              onClick={() => setFormato(false)}
+          <Box display="flex" flexDirection="row" alignItems="center" gap={0.1}>
+            <Typography
+              onClick={onLogout}
               sx={{
                 cursor: "pointer",
-                fontSize: "0.9rem",
+                fontSize: { xs: "0.8rem", sm: "0.9rem" },
                 color: "#0a3b91",
-                pt: 0.1,
               }}
             >
-              Permisos
-            </Typography> */}
-            <PermisosUsuario permisos={permisos} />
+              Cerrar sesión
+            </Typography>
+            <IconButton onClick={onLogout}>
+              <LogoutOutlined
+                sx={{
+                  color: "#0a3b91",
+                  fontSize: { xs: "1rem", sm: "1.2rem" },
+                }}
+              />
+            </IconButton>
           </Box>
-        </Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          flex={1}
-          justifyContent={"center"}
-        >
-          <Typography
-            onClick={onLogout}
-            sx={{
-              cursor: "pointer",
-              fontSize: { xs: "0.8rem", sm: "0.9rem" },
-              color: "#0a3b91",
-            }}
-          >
-            Cerrar sesión
-          </Typography>
-          <IconButton onClick={onLogout}>
-            <LogoutOutlined
-              sx={{
-                color: "#0a3b91",
-                fontSize: { xs: "1rem", sm: "1.2rem" },
-              }}
-            />
-          </IconButton>
         </Box>
       </Box>
       <Box
@@ -294,6 +280,23 @@ export const EventosPage = () => {
           flex={2}
           justifyContent={"center"}
         >
+          <Box
+            sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}
+          >
+            <span
+              style={{
+                border: "1.5px solid rgb(0, 0, 0)",
+                backgroundColor: "white",
+                display: "inline-flex",
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+              }}
+            ></span>
+            <Typography variant="caption" sx={{ color: "#333333", pt: 0.1 }}>
+              FIEE
+            </Typography>
+          </Box>
           {departamentos?.map((dep) => (
             <Box
               sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}
@@ -328,7 +331,7 @@ export const EventosPage = () => {
           flex={1}
           justifyContent={"center"}
         >
-          {!nivelPropio && reportePermiso && (
+          {reportePermiso && (
             <>
               <Box
                 alignItems="center"

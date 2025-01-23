@@ -21,8 +21,8 @@ const colores = [
   "#006f00",
 ];
 
-export const PermisosUsuario = (permisos) => {
-  const permisosIconos = permisos.permisos.map((permiso) => {
+export const PermisosUsuario = ({permisos, departamento}) => {
+  const permisosIconos = permisos.map((permiso) => {
     let icon;
     if (permiso.permisoId == 2 || permiso.permisoId == 6) {
       icon = (
@@ -77,6 +77,32 @@ export const PermisosUsuario = (permisos) => {
     { nombre: "FACULTAD", icon: <AccountBalanceIcon /> },
   ];
 
+  const getDepartamentoNombre = (id) => {
+    switch (id) {
+      case 1:
+        return "DETRI";
+      case 2:
+        return "DACI";
+      case 3:
+        return "DEE";
+      default:
+        return "";
+    }
+  };
+
+  const getDepartamentoColor = (id) => {
+    switch (id) {
+      case 1:
+        return "#4b99d2";
+      case 2:
+        return "#a479b1";
+      case 3:
+        return "#fbbc04";
+      default:
+        return "transparent";
+    }
+  };
+
   return (
     <Box display={"flex"} flexWrap={"wrap"} justifyContent={"center"}>
       {niveles.map((nivel, nivelIndex) => (
@@ -98,6 +124,18 @@ export const PermisosUsuario = (permisos) => {
                   {nivel.icon}
                 </Box>
               </Tooltip>
+              {nivel.nombre === "DEPARTAMENTO" && (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    marginRight: 1.4,
+                    color: getDepartamentoColor(departamento),
+                    fontWeight: "bold",
+                  }}
+                >
+                  {getDepartamentoNombre(departamento)}
+                </Typography>
+              )}
               <Box display={"flex"} gap={0.5}>
                 {permisosIconos
                   .filter((permiso) => permiso.nivelId === nivelIndex + 1)

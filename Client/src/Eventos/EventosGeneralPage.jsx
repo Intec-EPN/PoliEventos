@@ -89,7 +89,7 @@ export const EventosGeneralPage = () => {
           pt: 0.4,
           pb: 0.9,
           boxShadow: "0px -4px 2px -2px rgba(0, 0, 0, 0.15)",
-          ml:-1,
+          ml: -1,
         }}
       >
         <Box display="flex" alignItems="center">
@@ -138,33 +138,48 @@ export const EventosGeneralPage = () => {
           alignItems="center"
           gap={{ xs: 0, sm: 2 }}
         >
+          <Box sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}>
+            <span
+              style={{
+                border: "1.5px solid rgb(0, 0, 0)",
+                backgroundColor: "white",
+                display: "inline-flex",
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+              }}
+            ></span>
+            <Typography variant="caption" sx={{ color: "#333333", pt: 0.1 }}>
+              FIEE
+            </Typography>
+          </Box>
           {departamentos?.map((dep) => (
-              <Box
-                sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}
-                key={dep.id}
-              >
-                <span
-                  style={{
-                    border: "0.5px solid rgba(0, 0, 0, 0.15)",
-                    backgroundColor:
-                      dep.id === 1
-                        ? "#4b99d2"
-                        : dep.id === 2
-                        ? "#a479b1"
-                        : dep.id === 3
-                        ? "#fbbc04"
-                        : "transparent",
-                    display: "inline-flex",
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                  }}
-                ></span>
+            <Box
+              sx={{ display: "inline-flex", gap: 0.5, alignItems: "center" }}
+              key={dep.id}
+            >
+              <span
+                style={{
+                  border: "0.5px solid rgba(0, 0, 0, 0.15)",
+                  backgroundColor:
+                    dep.id === 1
+                      ? "#4b99d2"
+                      : dep.id === 2
+                      ? "#a479b1"
+                      : dep.id === 3
+                      ? "#fbbc04"
+                      : "transparent",
+                  display: "inline-flex",
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                }}
+              ></span>
               <Typography variant="caption" sx={{ color: "#333333", pt: 0.1 }}>
-                  {dep.departamento}
-                </Typography>
-              </Box>
-            ))}
+                {dep.departamento}
+              </Typography>
+            </Box>
+          ))}
         </Box>
         <Box display="flex" alignItems="center">
           <Typography
