@@ -30,7 +30,7 @@ export const LinkArchivo = ({ defaultValue }) => {
         }}
         {...register("enlaces", {
           pattern: {
-            value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/,
+            value: /^(https?:\/\/|www\.)[^\s/$.?#].[^\s]*$/,
             message: "Por favor ingrese un enlace válido."
           }
         })}
