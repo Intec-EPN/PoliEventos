@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 export const TipoSeleccion = () => {
   const { register, setValue } = useFormContext();
+
+  useEffect(() => {
+    setValue("tipoSeleccion", "facultad");
+  }, [setValue]);
 
   const handleChange = (event) => {
     setValue("tipoSeleccion", event.target.value);
@@ -12,7 +16,12 @@ export const TipoSeleccion = () => {
   return (
     <Box sx={{ width: "100%" }} mt={0.5}>
       <FormControl component="fieldset">
-        <RadioGroup row {...register("tipoSeleccion")} onChange={handleChange}>
+        <RadioGroup
+          row
+          {...register("tipoSeleccion")}
+          onChange={handleChange}
+          defaultValue="facultad"
+        >
           <FormControlLabel value="departamento" control={<Radio />} label="Departamento" />
           <FormControlLabel value="facultad" control={<Radio />} label="Facultad" />
         </RadioGroup>

@@ -51,11 +51,15 @@ export const ModalEvento = ({
     dispatch(startLoadingDepartamentos());
   }, [dispatch]);
 
-  const { departamentos, eventoCreacion } = useSelector((state) => state.gestionEvento);
+  const { departamentos, eventoCreacion } = useSelector(
+    (state) => state.gestionEvento
+  );
   const { nivelFacultad, nivelDepartamento, departamentoNivelId } = useSelector(
     (state) => state.adminAuth
   );
-  const { start, end } = useSelector((state) => state.gestionEvento.eventoCreacion);
+  const { start, end } = useSelector(
+    (state) => state.gestionEvento.eventoCreacion
+  );
 
   const handleFilesChange = (newFiles) => {
     setFiles(newFiles);
@@ -90,7 +94,7 @@ export const ModalEvento = ({
 
     // Asegurarse de que data.departamento sea un array
     data.departamento = data.departamento || [departamentoNivelId];
-    
+
     // Establecer valores por defecto si no se selecciona nada
     if (!data.startTime || data.startTime === "hh:mm") {
       data.startTime = "08:00";
@@ -110,16 +114,26 @@ export const ModalEvento = ({
       alert("Debe completar los campos de título, lugar y descripción.");
       return;
     }
-    if (data.personasCargo.length === 0) {
-      alert("Debe agregar al menos una persona a cargo.");
+
+    if (!data.esquemasCategorias) {
+      alert("Debe seleccionar al menos un esquema.");
       return;
     }
+    if (data.esquemasCategorias.length === 0) {
+      alert("Debe seleccionar al menos un esquema.");
+      return;
+    }
+    if (data.esquemasCategorias.some(esquema => esquema.categoriaId === '')) {
+      alert("Cada esquema debe tener su categoría.");
+      return;
+    }
+
     if (data.departamento.length === 0) {
       alert("Debe seleccionar al menos un departamento.");
       return;
     }
-    if (data.esquemasCategorias.length === 0) {
-      alert("Debe seleccionar al menos una categoría.");
+    if (data.personasCargo.length === 0) {
+      alert("Debe agregar al menos una persona a cargo.");
       return;
     }
 
@@ -131,7 +145,6 @@ export const ModalEvento = ({
       `${data.endDate} ${data.endTime}`,
       "DD/MM/YYYY HH:mm"
     );
-
 
     if (!startDate.isValid() || !endDate.isValid()) {
       alert("Fecha u hora inválida.");
@@ -192,7 +205,7 @@ export const ModalEvento = ({
             md: "70vw",
             lg: "50vw",
           },
-          position: "relative", 
+          position: "relative",
         },
         onSubmit: methods.handleSubmit(onSubmit),
       }}

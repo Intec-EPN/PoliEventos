@@ -23,6 +23,13 @@ export const Departamento = () => {
   const { departamentos } = useSelector((state) => state.gestionEvento);
   const departamento = watch("departamento") || [];
 
+  useEffect(() => {
+    if (departamentos.length > 0) {
+      const allDepartamentos = departamentos.map((dep) => dep.id);
+      setValue("departamento", allDepartamentos);
+    }
+  }, [departamentos, setValue]);
+
   const handleChange = (event) => {
     const {
       target: { value },

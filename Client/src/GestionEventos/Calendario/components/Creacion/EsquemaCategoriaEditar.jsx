@@ -23,6 +23,7 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
     ? esquemasCategoriasCargados
         .filter((esquemaCategoria) => esquemaCategoria.visible)
         .map((esquemaCategoria) => ({
+          visible: esquemaCategoria.visible,
           value: esquemaCategoria.esquemaId,
           label: esquemaCategoria.esquemaNombre,
           categorias: esquemaCategoria.categorias
@@ -68,74 +69,82 @@ export const EsquemaCategoriaEditar = ({ esquemasCategorias: data }) => {
     (esquema) => !esquemasSeleccionados.includes(esquema.value)
   );
 
+
+
   return (
     <Box sx={{ my: 1 }}>
       <DialogContentText sx={{ color: "#333333" }}>
         Categorías del evento
       </DialogContentText>
       <Box display={"flex"} sx={{ flexDirection: "column" }} gap={1} mt={1}>
-        {esquemasCategorias.map((esquemaCategoria, index) => (
-          <Box key={index} display={"flex"} sx={{ width: "100%" }} gap={1}>
-            <Box display={"flex"} sx={{ width: "100%" }} gap={1}>
-              <Box sx={{ flex: 1 }}>
-                <Select
-                  options={esquemasDisponibles}
-                  value={
-                    esquemas.find(
-                      (option) => option.value === esquemaCategoria.esquemaId
-                    ) || { label: "Esquema en desuso, asigne otro." }
-                  }
-                  onChange={(selectedOption) =>
-                    handleChangeEsquema(index, selectedOption)
-                  }
-                  placeholder="Selecciona un esquema"
-                  styles={{
-                    control: (provided) => ({
-                      ...provided,
-                      height: "3rem",
-                      fontFamily: "Roboto",
-                      backgroundColor: "white",
-                      width: "100%",
-                      borderColor: "#c5c5c5",
-                      boxShadow: "none",
-                      display: "flex",
-                      alignItems: "center",
-                      "&:hover": {
+        {esquemasCategorias.map((esquemaCategoria, index) => {
+          const esquemaSeleccionado = esquemas.find(
+            (option) => option.value === esquemaCategoria.esquemaId
+          );
+          const esquemaValue = esquemaCategoria.esquemaId === null
+            ? null
+            : esquemaSeleccionado && esquemaSeleccionado.visible
+            ? esquemaSeleccionado
+            : { label: "Esquema en desuso, asigne otro." };
+          return (
+            <Box key={index} display={"flex"} sx={{ width: "100%" }} gap={1}>
+              <Box display={"flex"} sx={{ width: "100%" }} gap={1}>
+                <Box sx={{ flex: 1 }}>
+                  <Select
+                    options={esquemasDisponibles}
+                    value={esquemaValue}
+                    onChange={(selectedOption) =>
+                      handleChangeEsquema(index, selectedOption)
+                    }
+                    placeholder="Seleccione un esquema"
+                    styles={{
+                      control: (provided) => ({
+                        ...provided,
+                        height: "3rem",
+                        fontFamily: "Roboto",
+                        backgroundColor: "white",
+                        width: "100%",
                         borderColor: "#c5c5c5",
-                      },
-                    }),
-                    option: (provided, state) => ({
-                      ...provided,
-                      fontFamily: "Roboto",
-                      height: "3rem",
-                      display: "flex",
-                      alignItems: "center",
-                    }),
-                    indicatorSeparator: (provided) => ({
-                      ...provided,
-                      backgroundColor: "transparent",
-                    }),
-                  }}
-                />
+                        boxShadow: "none",
+                        display: "flex",
+                        alignItems: "center",
+                        "&:hover": {
+                          borderColor: "#c5c5c5",
+                        },
+                      }),
+                      option: (provided, state) => ({
+                        ...provided,
+                        fontFamily: "Roboto",
+                        height: "3rem",
+                        display: "flex",
+                        alignItems: "center",
+                      }),
+                      indicatorSeparator: (provided) => ({
+                        ...provided,
+                        backgroundColor: "transparent",
+                      }),
+                    }}
+                  />
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <EsquemaCategoriaItemEditar
+                    index={index}
+                    categoriaId={esquemaCategoria.categoriaId}
+                    categorias={
+                      esquemaSeleccionado?.categorias || [
+                        { label: "Categoría en desuso, asigne otra." },
+                      ]
+                    }
+                    onChange={(value) => handleChangeCategoria(index, value)}
+                  />
+                </Box>
               </Box>
-              <Box sx={{ flex: 1 }}>
-                <EsquemaCategoriaItemEditar
-                  index={index}
-                  categoriaId={esquemaCategoria.categoriaId}
-                  categorias={
-                    esquemas.find(
-                      (esquema) => esquema.value === esquemaCategoria.esquemaId
-                    )?.categorias || [{ label: "Categoría en desuso, asigne otra." }]
-                  }
-                  onChange={(value) => handleChangeCategoria(index, value)}
-                />
-              </Box>
+              <IconButton onClick={() => handleDeleteCategoria(index)}>
+                <DeleteIcon />
+              </IconButton>
             </Box>
-            <IconButton onClick={() => handleDeleteCategoria(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        ))}
+          );
+        })}
       </Box>
       <Button
         onClick={handleAddCategoria}

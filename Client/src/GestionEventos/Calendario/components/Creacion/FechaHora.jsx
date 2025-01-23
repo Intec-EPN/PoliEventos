@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 
 const hoy = dayjs().startOf("day");
 
+const isPastOrTodayEvent = (date) => dayjs(date).isSameOrBefore(hoy);
+
 export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
   const { register, setValue } = useFormContext();
   const { start, end } = useSelector(
@@ -106,6 +108,16 @@ export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
     return dayjs(time, "HH:mm").format("HH:mm");
   };
 
+  const handleEndDateChange = (date) => {
+    const formattedDate = date ? date.format("DD/MM/YYYY") : "";
+    if (dayjs(formattedDate, "DD/MM/YYYY").isBefore(dayjs(startDate, "DD/MM/YYYY"))) {
+      alert("La fecha de finalización no puede ser menor que la fecha de inicio.");
+      return;
+    }
+    setEndDate(formattedDate);
+    setValue("endDate", formattedDate);
+  };
+
   return (
     <Box mb={1.5}>
       <DialogContentText sx={{ color: "#333333" }}>
@@ -122,6 +134,7 @@ export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
         >
           <Box display={"flex"} gap={1}>
             <DatePicker
+              disabled={isEditMode && isPastOrTodayEvent(defaultStart)}
               minDate={isEditMode ? null : hoy}
               value={startDate ? dayjs(startDate, "DD/MM/YYYY") : null}
               views={["year", "month", "day"]}
@@ -134,11 +147,12 @@ export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
               slotProps={{
                 textField: {
                   ...register("startDate"),
-                  disabled: isEditMode,
+                  disabled: isEditMode && isPastOrTodayEvent(defaultEnd),
                 },
               }}
             />
             <TimePicker
+              disabled={isEditMode && isPastOrTodayEvent(defaultStart)}
               value={startTime ? dayjs(startTime, "HH:mm") : null}
               onChange={(time) => {
                 const formattedTime = time
@@ -151,7 +165,7 @@ export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
               slotProps={{
                 textField: {
                   ...register("startTime"),
-                  disabled: isEditMode,
+                  disabled: isEditMode && isPastOrTodayEvent(defaultEnd),
                 },
               }}
             />
@@ -159,23 +173,21 @@ export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
           <Typography variant={"body1"}>a</Typography>
           <Box display={"flex"} gap={1}>
             <DatePicker
+              disabled={isEditMode && isPastOrTodayEvent(defaultEnd)}
               minDate={isEditMode ? null : startDate ? dayjs(startDate, "DD/MM/YYYY") : null}
               value={endDate ? dayjs(endDate, "DD/MM/YYYY") : null}
               views={["year", "month", "day"]}
               format="DD/MM/YYYY"
-              onChange={(date) => {
-                const formattedDate = date ? date.format("DD/MM/YYYY") : "";
-                setEndDate(formattedDate);
-                setValue("endDate", formattedDate);
-              }}
+              onChange={handleEndDateChange}
               slotProps={{
                 textField: {
                   ...register("endDate"),
-                  disabled: isEditMode,
+                  disabled: isEditMode && isPastOrTodayEvent(defaultEnd),
                 },
               }}
             />
             <TimePicker
+              disabled={isEditMode && isPastOrTodayEvent(defaultEnd)}
               value={endTime ? dayjs(endTime, "HH:mm") : null}
               onChange={(time) => {
                 const formattedTime = time
@@ -188,7 +200,7 @@ export const FechaHora = ({ defaultStart, defaultEnd, isEditMode = false }) => {
               slotProps={{
                 textField: {
                   ...register("endTime"),
-                  disabled: isEditMode,
+                  disabled: isEditMode && isPastOrTodayEvent(defaultEnd),
                 },
               }}
             />

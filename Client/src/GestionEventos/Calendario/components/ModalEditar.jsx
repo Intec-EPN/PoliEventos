@@ -122,10 +122,7 @@ export const ModalEditar = ({
       alert("Debe completar los campos de título, lugar y descripción.");
       return;
     }
-    if (data.personasCargo.length === 0) {
-      alert("Debe agregar al menos una persona a cargo.");
-      return;
-    }
+
     if (
       !showDepartamento &&
       (!data.departamento || data.departamento.length === 0)
@@ -136,9 +133,15 @@ export const ModalEditar = ({
       alert("Debe seleccionar al menos un departamento.");
       return;
     }
+    if (data.personasCargo.length === 0) {
+      alert("Debe agregar al menos una persona a cargo.");
+      return;
+    }
     if (!data.esquemasCategorias || data.esquemasCategorias.length === 0) {
       data.esquemasCategorias = event.data?.esquemaCategoria || [];
     }
+
+    console.log(data.esquemasCategorias)
 
     const startDate = dayjs(
       `${data.startDate} ${data.startTime}`,
@@ -251,7 +254,11 @@ export const ModalEditar = ({
       <DialogTitle>Editar evento</DialogTitle>
       <DialogContent sx={{ p: 2 }}>
         <FormProvider {...methods}>
-          <FechaHora defaultStart={event?.start} defaultEnd={event?.end} isEditMode={true} />
+          <FechaHora
+            defaultStart={event?.start}
+            defaultEnd={event?.end}
+            isEditMode={true}
+          />
           <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
             <Titulo defaultValue={event?.title} />
             <Lugar defaultValue={event?.data?.lugar} />
@@ -259,7 +266,9 @@ export const ModalEditar = ({
           <Descripcion defaultValue={event?.data?.descripcion} />
           <Expositores defaultValues={event?.data?.expositores} />
 
-          <EsquemaCategoriaEditar esquemasCategorias={event?.data?.esquemaCategoria}/>
+          <EsquemaCategoriaEditar
+            esquemasCategorias={event?.data?.esquemaCategoria}
+          />
 
           <DialogContentText sx={{ color: "#333333" }}>
             Organizadores del evento
@@ -288,7 +297,6 @@ export const ModalEditar = ({
             />
             <EnlaceInicial enlace={event?.data} />
           </Box>
-
         </FormProvider>
       </DialogContent>
       <DialogActions>
