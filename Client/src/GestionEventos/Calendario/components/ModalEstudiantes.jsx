@@ -25,20 +25,26 @@ export const ModalEstudiantes = ({
     }
   }, [estudiantesIniciales]);
 
+  useEffect(() => {
+    if (open) {
+      setEstudiantes(estudiantesIniciales);
+    }
+  }, [open, estudiantesIniciales]);
+
   const handleAsistenteChange = (event) => {
-    const value = event.target.value;
+    const value = parseInt(event.target.value, 10);
     if (value >= 0) {
       setEstudiantes(value);
     }
   };
 
   const handleEnviarAsistente = () => {
-    dispatch(startEditingEstudiantes({ eventoId, estudiantes }));
-    onClose(estudiantes);
+    dispatch(startEditingEstudiantes({ eventoId, estudiantes: estudiantes || 0 }));
+    onClose(estudiantes || 0);
   };
 
   const handleCloseModal = () => {
-    onClose(estudiantesIniciales);
+    onClose(estudiantesIniciales !== null ? estudiantesIniciales : null);
   };
 
   return (
@@ -69,7 +75,7 @@ export const ModalEstudiantes = ({
           width={"100%"}
         >
           <Button
-            onClick={onClose}
+            onClick={handleCloseModal}
             variant="contained"
             color="error"
             sx={{ flex: 1 }}

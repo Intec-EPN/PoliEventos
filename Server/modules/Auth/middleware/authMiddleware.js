@@ -16,7 +16,10 @@ const authMiddleware = (req, res, next) => {
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'El token ha expirado.', expiredAt: error.expiredAt });
         }
-        return res.status(400).json({ message: 'Acceso no autorizado. A', error: error });
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(400).json({ message: 'El token es inválido o está mal formado.' });
+        }
+        return res.status(400).json({ message: 'Acceso no autorizado.', error: error });
     }
 };
 

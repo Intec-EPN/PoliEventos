@@ -11,7 +11,6 @@ export const startLogin = (data) => {
 
             // Guardar el token en el almacenamiento local.
             localStorage.setItem("token", response.data.token);
-            console.log('data', response.data);
             
             await dispatch(loginSuccess({ user: response.data }));
             await dispatch(startLoadingPermisos(response.data.roles[0].rol_id));

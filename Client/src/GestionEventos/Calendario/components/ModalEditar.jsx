@@ -141,8 +141,6 @@ export const ModalEditar = ({
       data.esquemasCategorias = event.data?.esquemaCategoria || [];
     }
 
-    console.log(data.esquemasCategorias)
-
     const startDate = dayjs(
       `${data.startDate} ${data.startTime}`,
       "DD/MM/YYYY HH:mm"

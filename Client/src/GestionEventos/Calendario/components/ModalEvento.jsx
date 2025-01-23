@@ -120,7 +120,6 @@ export const ModalEvento = ({
       alert("Comple la categoría.");
       return;
     }
-    console.log(data.esquemasCategorias);
     
     if (data.esquemasCategorias.some(esquema => esquema.esquemaId === '')) {
       alert("Debe seleccionar al menos un esquema.");

@@ -115,6 +115,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   let permisoEditEvento = false;
   let permisoDeleteEvento = false;
 
+
   if (nivelPropio) {
     permisoEditEvento =
       usuarioId === user.id &&
@@ -122,7 +123,8 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
     permisoDeleteEvento =
       usuarioId === user.id &&
       (permisos || []).some((permiso) => permiso.permisoId === 1);
-  } else if (nivelDepartamento) {
+  }
+  if (nivelDepartamento) {
     permisoEditEvento =
       (permisos || []).some((permiso) => permiso.permisoId === 2) &&
       (departamento || []).includes(departamentoNivelId);
@@ -381,7 +383,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
           <ModalAsistentes
             open={addAsistentesModalIsOpen}
             onClose={handleAddAsistentesClose}
-            eventoId={event.id}
+            eventoId={id}
             handleEditClose={handleEditClose}
             asistentesIniciales={asistentesActualizados}
           />
@@ -390,7 +392,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
           <ModalEstudiantes
             open={addEstudiantesModalIsOpen}
             onClose={handleAddEstudiantesClose}
-            eventoId={event.id}
+            eventoId={id}
             handleEditClose={handleEditClose}
             estudiantesIniciales={estudiantesActualizados}
           />
@@ -419,7 +421,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
               variant="contained"
               sx={{ backgroundColor: "#2c4175" }}
             >
-              Editar
+              Editar Detalles de evento
             </Button>
           )}
         </Box>

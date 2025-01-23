@@ -21,7 +21,6 @@ export const adminAuthSlice = createSlice({
             state.facultad = rol.facultad_id;
             const nivelAcceso = action.payload.user.nivelAcceso;
             const propio = action.payload.user.propio;
-            console.log(action.payload);
             if (propio) {
                 state.nivelPropio = true;
                 state.departamento = rol.departamento_id;
