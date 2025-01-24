@@ -127,9 +127,14 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   const [chartData, setChartData] = useState(null);
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [events, setEvents] = useState([]);
+  const [departamentosFijo, setDepartamentosFijo] = useState([]);
   const chartRef = useRef(null);
   const { eventos, departamentos } = useSelector(
     (state) => state.gestionEvento
+  );
+
+  const { nivelDepartamento, departamentoNivelId } = useSelector(
+    (state) => state.adminAuth
   );
 
   const dispatch = useDispatch();
@@ -200,7 +205,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   const handleClose = () => {
     setModalIsOpen(false);
   };
-
   const arraysEqual = (a, b) => {
     if (a.length !== b.length) return false;
     for (let i = 0; i < a.length; i++) {
@@ -208,7 +212,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     }
     return true;
   };
-
 
   const filterEvents = (startDate, endDate) => {
 
@@ -219,8 +222,10 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       const matchesDepartment =
         selectedDepartments.length === 0 ||
         arraysEqual(selectedDepartments, event.departamentos);
+      // Categorización en caso de que no se haya seleccionado un esquema
       const matchesEsquemaCategoria =
         selectedEsquemaCategoria.length === 0 ||
+        // En vez de every, si se usa some agrega TODOS los que coincida, every solo si coincide.
         selectedEsquemaCategoria.every(
           (selected) =>
             !selected.esquemaId ||
@@ -241,6 +246,15 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     });
   };
 
+  useEffect(() => {
+    if (departamentoNivelId != null) {
+      setDepartamentosFijo(
+        events.filter((event) =>
+          event.departamentos.includes(departamentoNivelId)
+        )
+      );
+    }
+  }, [events]);
 
   const handleGenerateChart = (timeRange, startDate, endDate) => {
     setStartDate(startDate);
@@ -382,13 +396,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
           },
           height: {
             xs: "90vh",
-            md: "90vh",
-            lg: "90vh",
+            md: "80vh",
+            lg: "70vh",
           },
           maxHeight: {
             xs: "90vh",
-            md: "90vh",
-            lg: "90vh",
+            md: "80vh",
+            lg: "70vh",
           },
         },
       }}
