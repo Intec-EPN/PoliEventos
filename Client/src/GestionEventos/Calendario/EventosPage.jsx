@@ -31,7 +31,7 @@ export const EventosPage = () => {
   const [reportePermiso, setReportePermiso] = useState(false);
 
   const { eventos } = useSelector((state) => state.gestionEvento);
-  const { user, nivelPropio, permisos, departamento, nivelFacultad } = useSelector(
+  const { user, nivelPropio, permisos, departamento, nivelFacultad, departamentoNivelId } = useSelector(
     (state) => state.adminAuth
   );
 

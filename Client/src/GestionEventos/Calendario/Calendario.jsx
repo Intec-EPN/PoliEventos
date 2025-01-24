@@ -266,43 +266,6 @@ const CustomEvent = ({ event }) => {
         : dep[0] === 3
         ? "#fbbc04"
         : "white";
-  } else if (dep.length === 2) {
-    backgroundColor = {
-      xs: `linear-gradient(to right, ${
-        dep[0] === 1
-          ? "#4b99d2"
-          : dep[0] === 2
-          ? "#a479b1"
-          : dep[0] === 3
-          ? "#fbbc04"
-          : "white"
-      } 50%, ${
-        dep[1] === 1
-          ? "#4b99d2"
-          : dep[1] === 2
-          ? "#a479b1"
-          : dep[1] === 3
-          ? "#fbbc04"
-          : "white"
-      } 50%)`,
-      sm: `linear-gradient(to bottom, ${
-        dep[0] === 1
-          ? "#4b99d2"
-          : dep[0] === 2
-          ? "#a479b1"
-          : dep[0] === 3
-          ? "#fbbc04"
-          : "white"
-      } 50%, ${
-        dep[1] === 1
-          ? "#4b99d2"
-          : dep[1] === 2
-          ? "#a479b1"
-          : dep[1] === 3
-          ? "#fbbc04"
-          : "white"
-      } 50%)`,
-    };
   } else {
     backgroundColor = "white";
   }

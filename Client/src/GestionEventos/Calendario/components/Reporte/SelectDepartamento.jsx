@@ -19,7 +19,7 @@ const SelectDepartamento = ({
   setSelectedDepartments,
 }) => {
   const dispatch = useDispatch();
-  const [filterType, setFilterType] = useState("departamento");
+  const [filterType, setFilterType] = useState("facultad");
 
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
@@ -30,13 +30,20 @@ const SelectDepartamento = ({
   );
   const { departamentos } = useSelector((state) => state.gestionEvento);
 
+  useEffect(() => {
+    if (nivelDepartamento && departamentoNivelId) {
+      setSelectedDepartments([departamentoNivelId]);
+    } else {
+      setSelectedDepartments(departamentos.map((dep) => dep.id));
+    }
+  }, [nivelDepartamento, departamentoNivelId, departamentos]);
+
+
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setSelectedDepartments(
-      typeof value === "string" ? value.split(",") : value
-    );
+    setSelectedDepartments([value]);
   };
 
   const handleFilterTypeChange = (event) => {
@@ -59,14 +66,14 @@ const SelectDepartamento = ({
           </Typography>
           <RadioGroup row value={filterType} onChange={handleFilterTypeChange}>
             <FormControlLabel
-              value="departamento"
-              control={<Radio />}
-              label="Departamento"
-            />
-            <FormControlLabel
               value="facultad"
               control={<Radio />}
               label="Facultad"
+            />
+            <FormControlLabel
+              value="departamento"
+              control={<Radio />}
+              label="Departamento"
             />
           </RadioGroup>
         </FormControl>
@@ -92,26 +99,21 @@ const SelectDepartamento = ({
       )}
       {nivelFacultad && filterType === "departamento" && (
         <FormControl sx={{ width: "100%", mt: 1.5 }}>
-          <InputLabel id="departamento-label">Departamento/s</InputLabel>
+          <InputLabel id="departamento-label">Departamento</InputLabel>
           <Select
             labelId="departamento-label"
             id="departamento-select"
-            multiple
-            value={selectedDepartments}
+            value={selectedDepartments[0] || ""}
             onChange={handleChange}
-            input={<OutlinedInput label="Departamento/s" />}
+            input={<OutlinedInput label="Departamento" />}
             renderValue={(selected) => {
-              if (selected.length === 0) {
-                return <em>Departamento/s</em>;
+              if (!selected) {
+                return <em>Departamento</em>;
               }
-              return selected
-                .map((value) => {
-                  const dep = departamentos
-                    ? departamentos.find((dep) => dep.id === value)
-                    : null;
-                  return dep ? dep.departamento : value;
-                })
-                .join(", ");
+              const dep = departamentos
+                ? departamentos.find((dep) => dep.id === selected)
+                : null;
+              return dep ? dep.departamento : selected;
             }}
           >
             {departamentos &&

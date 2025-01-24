@@ -18,7 +18,6 @@ import { Descripcion } from "./Creacion/Descripcion";
 import { Lugar } from "./Creacion/Lugar";
 import { PersonaCargo } from "./Creacion/PersonaCargo";
 import { Expositores } from "./Creacion/Expositores";
-import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,8 +33,6 @@ import { ArchivosInicial } from "./Creacion/ArchivosInicial";
 import { EnlaceInicial } from "./Creacion/EnlaceInicial";
 import { EsquemaCategoriaEditar } from "./Creacion/EsquemaCategoriaEditar";
 import Snackbar from "@mui/material/Snackbar";
-
-
 
 export const ModalEditar = ({
   modalIsOpen,
@@ -89,7 +86,7 @@ export const ModalEditar = ({
         endDate: event?.end ? dayjs(event.end).format("DD/MM/YYYY") : "",
         endTime: event?.end ? dayjs(event.end).format("HH:mm") : "",
         descripcion: event?.data?.descripcion || "",
-        departamento: event.data?.departamento || [],
+        departamento: event.data?.departamento || [1, 2, 3],
         tipoSeleccion: "departamento",
       });
       setIsReset(true);
@@ -108,7 +105,7 @@ export const ModalEditar = ({
         endTime: "",
         enlaces: "",
         descripcion: "",
-        departamento: [],
+        departamento: [1, 2, 3],
         tipoSeleccion: "departamento",
       });
       setIsReset(true);
@@ -279,17 +276,15 @@ export const ModalEditar = ({
             <DialogContentText sx={{ color: "#333333" }}>
               Organizadores del evento
             </DialogContentText>
-            {showDepartamento ? (
-              <>
-                <TipoSeleccion />
-                <Departamento />
-              </>
-            ) : (
-              <DepartamentoItemInicial
-                departamentos={event?.data?.departamento}
-                onReset={handleReset}
-              />
-            )}
+
+            <DepartamentoItemInicial
+              departamentos={event?.data?.departamento}
+              onReset={handleReset}
+            />
+
+
+
+            
             <PersonaCargo defaultValues={event?.data?.personasACargo} />
 
             <DialogContentText sx={{ color: "#333333" }}>

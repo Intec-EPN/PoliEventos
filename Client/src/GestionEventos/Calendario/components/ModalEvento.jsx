@@ -18,7 +18,6 @@ import { Descripcion } from "./Creacion/Descripcion";
 import { Lugar } from "./Creacion/Lugar";
 import { PersonaCargo } from "./Creacion/PersonaCargo";
 import { Expositores } from "./Creacion/Expositores";
-import { TipoSeleccion } from "./Creacion/TipoSeleccion";
 import dayjs from "../../../dayjsConfig";
 import { useEffect, useState } from "react";
 import { TabArchivos } from "./Creacion/TabArchivos";
@@ -50,7 +49,9 @@ export const ModalEvento = ({
 
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
-  }, [dispatch]);
+    // Seleccionar los tres departamentos por defecto
+    methods.setValue("departamento", [1, 2, 3]);
+  }, [dispatch, methods]);
 
   const { departamentos, eventoCreacion } = useSelector(
     (state) => state.gestionEvento
@@ -264,16 +265,12 @@ export const ModalEvento = ({
           <Expositores />
           <EsquemaCategoria isFromModalEvento={true} isReset={isReset} />
           <DialogContentText sx={{ color: "#333333" }}>
-            Organizadores del evento*
+            Organizadores del evento
           </DialogContentText>
-          {nivelFacultad && (
-            <>
-              <TipoSeleccion />
-              <Departamento />
-            </>
-          )}
+          {nivelFacultad && <Departamento />}
 
-          {((nivelPropio && nivelDepartamento)||(nivelPropio && !nivelFacultad)) &&
+          {((nivelPropio && nivelDepartamento) ||
+            (nivelPropio && !nivelFacultad)) &&
             departamentoNivelId && (
               <Typography
                 variant="h3"

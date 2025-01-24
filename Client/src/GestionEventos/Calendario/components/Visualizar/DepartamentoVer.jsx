@@ -1,8 +1,9 @@
 import { Box, Icon, Typography } from "@mui/material";
-import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { startLoadingDepartamentos } from "../../../../store/GestionEventos/thunk";
+import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 
 export const DepartamentoVer = ({ departamentos = [] }) => {
   const dispatch = useDispatch();
@@ -54,30 +55,49 @@ export const DepartamentoVer = ({ departamentos = [] }) => {
           fontWeight: "500",
         }}
       >
-        {departamentos.length > 1 ? "Departamentos:" : "Departamento:"}
+        {departamentos.length > 1 ? "Facultad:" : "Departamento:"}
       </Typography>
       <Box display={"flex"} mt={1} gap={2} flexWrap={"wrap"}>
-        {depts.map((departamento, index) => {
-          const color = obtenerColorPorDeptId(departamento.id);
-          return (
-            <Box display={"flex"} key={index} alignItems={"center"}>
-              <Icon sx={{ fontSize: "1.7rem", color: color }}>
-                <ApartmentOutlinedIcon />
-              </Icon>
-              <Typography
-                variant="body1"
-                sx={{
-                  ml: 1,
-                  fontWeight: "500",
-                  color: "black",
-                  fontSize: "1.1rem",
-                }}
-              >
-                {departamento.nombre}
-              </Typography>
-            </Box>
-          );
-        })}
+        {departamentos.length > 1 ? (
+          <Box display={"flex"} alignItems={"center"}>
+            <Icon sx={{ fontSize: "1.7rem", color: "black" }}>
+              <AccountBalanceOutlinedIcon />
+            </Icon>
+            <Typography
+              variant="body1"
+              sx={{
+                ml: 1,
+                fontWeight: "500",
+                color: "black",
+                fontSize: "1.1rem",
+              }}
+            >
+              FIEE
+            </Typography>
+          </Box>
+        ) : (
+          depts.map((departamento, index) => {
+            const color = obtenerColorPorDeptId(departamento.id);
+            return (
+              <Box display={"flex"} key={index} alignItems={"center"}>
+                <Icon sx={{ fontSize: "1.7rem", color: color }}>
+                  <ApartmentOutlinedIcon />
+                </Icon>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    ml: 1,
+                    fontWeight: "500",
+                    color: "black",
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  {departamento.nombre}
+                </Typography>
+              </Box>
+            );
+          })
+        )}
       </Box>
     </Box>
   );

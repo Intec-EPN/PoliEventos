@@ -127,14 +127,9 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   const [chartData, setChartData] = useState(null);
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [events, setEvents] = useState([]);
-  const [departamentosFijo, setDepartamentosFijo] = useState([]);
   const chartRef = useRef(null);
   const { eventos, departamentos } = useSelector(
     (state) => state.gestionEvento
-  );
-
-  const { nivelDepartamento, departamentoNivelId } = useSelector(
-    (state) => state.adminAuth
   );
 
   const dispatch = useDispatch();
@@ -206,10 +201,16 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     setModalIsOpen(false);
   };
 
-  const filterEvents = (startDate, endDate) => {
-    if (nivelDepartamento && departamentoNivelId != null) {
-      return departamentosFijo;
+  const arraysEqual = (a, b) => {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
     }
+    return true;
+  };
+
+
+  const filterEvents = (startDate, endDate) => {
 
     return events.filter((event) => {
       const eventDate = dayjs(event.date);
@@ -217,18 +218,17 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       const end = endDate ? dayjs(endDate) : null;
       const matchesDepartment =
         selectedDepartments.length === 0 ||
-        event.departamentos.some((dep) => selectedDepartments.includes(dep));
-      // Categorización en caso de que no se haya seleccionado un esquema 
+        arraysEqual(selectedDepartments, event.departamentos);
       const matchesEsquemaCategoria =
         selectedEsquemaCategoria.length === 0 ||
-        // En vez de every, si se usa some agrega TODOS los que coincida, every solo si coincide.
         selectedEsquemaCategoria.every(
           (selected) =>
             !selected.esquemaId ||
             event.esquemasCategorias.some(
               (ec) =>
                 ec.esquemaId === selected.esquemaId &&
-                (!selected.categoriaId || ec.categoriaId === selected.categoriaId)
+                (!selected.categoriaId ||
+                  ec.categoriaId === selected.categoriaId)
             )
         );
 
@@ -241,15 +241,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     });
   };
 
-  useEffect(() => {
-    if (departamentoNivelId != null) {
-      setDepartamentosFijo(
-        events.filter((event) =>
-          event.departamentos.includes(departamentoNivelId)
-        )
-      );
-    }
-  }, [events]);
 
   const handleGenerateChart = (timeRange, startDate, endDate) => {
     setStartDate(startDate);
@@ -391,13 +382,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
           },
           height: {
             xs: "90vh",
-            md: "80vh",
-            lg: "70vh",
+            md: "90vh",
+            lg: "90vh",
           },
           maxHeight: {
             xs: "90vh",
-            md: "80vh",
-            lg: "70vh",
+            md: "90vh",
+            lg: "90vh",
           },
         },
       }}

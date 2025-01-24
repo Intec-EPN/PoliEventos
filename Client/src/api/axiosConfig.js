@@ -37,6 +37,12 @@ axiosInstance.interceptors.response.use(
       alert('Lo sentimos, hubo un error. Vuelve a iniciar sesión.');
       window.location.reload();
     }
+    // Si la respuesta es 403 (Forbidden), redirigir a la página de inicio de sesión
+    if (error.response && error.response.status === 403) {
+      localStorage.removeItem('token');
+      alert('Lo sentimos, hubo un error. Vuelve a iniciar sesión.');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );
