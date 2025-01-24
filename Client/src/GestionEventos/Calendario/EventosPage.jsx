@@ -31,10 +31,11 @@ export const EventosPage = () => {
   const [reportePermiso, setReportePermiso] = useState(false);
 
   const { eventos } = useSelector((state) => state.gestionEvento);
-  const { user, nivelPropio, permisos, departamento } = useSelector(
+  const { user, nivelPropio, permisos, departamento, nivelFacultad } = useSelector(
     (state) => state.adminAuth
   );
 
+  
   const { departamentos } = useSelector((state) => state.gestionEvento);
 
   useEffect(() => {
@@ -118,7 +119,7 @@ export const EventosPage = () => {
             gap={0.5}
             flexWrap={"wrap"}
           >
-            <PermisosUsuario permisos={permisos} departamento={departamento} />
+            <PermisosUsuario permisos={permisos} departamento={departamento} nivelFacultad={nivelFacultad}/>
           </Box>
         </Box>
         <Box

@@ -21,7 +21,7 @@ const colores = [
   "#006f00",
 ];
 
-export const PermisosUsuario = ({permisos, departamento}) => {
+export const PermisosUsuario = ({permisos, departamento, nivelFacultad}) => {
   const permisosIconos = permisos.map((permiso) => {
     let icon;
     if (permiso.permisoId == 2 || permiso.permisoId == 6) {
@@ -134,6 +134,18 @@ export const PermisosUsuario = ({permisos, departamento}) => {
                   }}
                 >
                   {getDepartamentoNombre(departamento)}
+                </Typography>
+              )}
+              {nivel.nombre === "FACULTAD" && nivelFacultad && (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    marginRight: 1.4,
+                    color: "#000", // Puedes cambiar el color si es necesario
+                    fontWeight: "bold",
+                  }}
+                >
+                  FIEE
                 </Typography>
               )}
               <Box display={"flex"} gap={0.5}>
