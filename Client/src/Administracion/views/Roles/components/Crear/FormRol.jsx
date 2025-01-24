@@ -109,9 +109,9 @@ export const FormRol = () => {
             rules={{
               required: "El nombre del rol es obligatorio.",
               maxLength: {
-                value: 30,
+                value: 100,
                 message:
-                  "El nombre del rol no puede exceder los 30 caracteres.",
+                  "El nombre del rol no puede exceder los 100 caracteres.",
               },
               validate: {
                 noLeadingTrailingSpaces: (value) =>

@@ -5,6 +5,7 @@ import {
   OutlinedInput,
   FormControl,
   FormHelperText,
+  Typography,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -88,6 +89,9 @@ export const TipoItem = ({
             />
           )}
         />
+        <Typography variant="caption" color="textSecondary">
+          Máximo 100 caracteres.
+        </Typography>
         {/* Muestra un mensaje de error si existe */}
         {errors.tipos?.[index] && (
           <FormHelperText>{errors.tipos[index].message}</FormHelperText>

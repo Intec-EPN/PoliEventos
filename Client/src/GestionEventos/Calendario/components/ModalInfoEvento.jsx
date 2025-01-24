@@ -131,6 +131,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   let permisoDescargaArchivosTemp = false;
 
 
+  // Incluyente:
   // if (nivelDepartamento) {
   //   permisoEditEventoTemp =
   //     (permisos || []).some((permiso) => permiso.permisoId === 2) &&

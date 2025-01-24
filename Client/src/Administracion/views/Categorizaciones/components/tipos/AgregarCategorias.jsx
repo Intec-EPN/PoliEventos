@@ -64,7 +64,7 @@ export const AgregarCategorias = ({
                     onBlur={onBlur} // Maneja el evento blur
                     value={value} // Asigna el valor actual
                     error={hasError} // Muestra error si existe
-                    helperText={hasError ? errorMessage : ""} // Mensaje de error
+                    helperText={hasError ? errorMessage : "Máximo 100 caracteres."} // Mensaje de error
                   />
                 );
               }}
