@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogContentText,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { FechaHora } from "./Creacion/FechaHora";
@@ -32,6 +33,9 @@ import { DepartamentoItemInicial } from "./Creacion/DepartamentoItemInicial";
 import { ArchivosInicial } from "./Creacion/ArchivosInicial";
 import { EnlaceInicial } from "./Creacion/EnlaceInicial";
 import { EsquemaCategoriaEditar } from "./Creacion/EsquemaCategoriaEditar";
+import Snackbar from "@mui/material/Snackbar";
+
+
 
 export const ModalEditar = ({
   modalIsOpen,
@@ -45,6 +49,7 @@ export const ModalEditar = ({
   const [files, setFiles] = useState([]);
   const [filesToDelete, setFilesToDelete] = useState([]);
   const [sendFiles, setSendFiles] = useState(false);
+  const [showEditSuccessSnackbar, setShowEditSuccessSnackbar] = useState(false);
 
   const handleFilesChange = (newFiles) => {
     setFiles(newFiles);
@@ -171,6 +176,8 @@ export const ModalEditar = ({
       })
     );
     dispatch(startEditingEvento(event.id, files));
+    setShowEditSuccessSnackbar(true);
+    setTimeout(() => setShowEditSuccessSnackbar(false), 4500);
 
     if (!files.length > 0) {
       dispatch(
@@ -208,111 +215,128 @@ export const ModalEditar = ({
   }
 
   return (
-    <Dialog
-      fullWidth
-      open={modalIsOpen}
-      onClose={handleClose}
-      PaperProps={{
-        component: "form",
-        sx: {
-          p: 2,
-          width: {
-            xs: "90vw",
-            md: "70vw",
-            lg: "50vw",
+    <>
+      <Dialog
+        fullWidth
+        open={modalIsOpen}
+        onClose={handleClose}
+        PaperProps={{
+          component: "form",
+          sx: {
+            p: 2,
+            width: {
+              xs: "90vw",
+              md: "70vw",
+              lg: "50vw",
+            },
+            maxWidth: {
+              xs: "90vw",
+              md: "70vw",
+              lg: "50vw",
+            },
+            position: "relative",
           },
-          maxWidth: {
-            xs: "90vw",
-            md: "70vw",
-            lg: "50vw",
-          },
-          position: "relative",
-        },
-        onSubmit: methods.handleSubmit(onSubmit),
-      }}
-    >
-      {loading && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(3, 3, 59, 0.2)",
-            zIndex: 1,
-          }}
-        >
-          <CircularProgress sx={{ color: "#0a3b91" }} />
-        </Box>
-      )}
-      <DialogTitle>Editar evento</DialogTitle>
-      <DialogContent sx={{ p: 2 }}>
-        <FormProvider {...methods}>
-          <FechaHora
-            defaultStart={event?.start}
-            defaultEnd={event?.end}
-            isEditMode={true}
-          />
-          <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
-            <Titulo defaultValue={event?.title} />
-            <Lugar defaultValue={event?.data?.lugar} />
+          onSubmit: methods.handleSubmit(onSubmit),
+        }}
+      >
+        {loading && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(3, 3, 59, 0.2)",
+              zIndex: 1,
+            }}
+          >
+            <CircularProgress sx={{ color: "#0a3b91" }} />
           </Box>
-          <Descripcion defaultValue={event?.data?.descripcion} />
-          <Expositores defaultValues={event?.data?.expositores} />
-
-          <EsquemaCategoriaEditar
-            esquemasCategorias={event?.data?.esquemaCategoria}
-          />
-
-          <DialogContentText sx={{ color: "#333333" }}>
-            Organizadores del evento
-          </DialogContentText>
-          {showDepartamento ? (
-            <>
-              <TipoSeleccion />
-              <Departamento />
-            </>
-          ) : (
-            <DepartamentoItemInicial
-              departamentos={event?.data?.departamento}
-              onReset={handleReset}
+        )}
+        <DialogTitle>Editar evento</DialogTitle>
+        <DialogContent sx={{ p: 2 }}>
+          <FormProvider {...methods}>
+            <FechaHora
+              defaultStart={event?.start}
+              defaultEnd={event?.end}
+              isEditMode={true}
             />
-          )}
-          <PersonaCargo defaultValues={event?.data?.personasACargo} />
+            <Box display={"flex"} gap={1} alignItems={{ xs: "end", sm: "top" }}>
+              <Titulo defaultValue={event?.title} />
+              <Lugar defaultValue={event?.data?.lugar} />
+            </Box>
+            <Descripcion defaultValue={event?.data?.descripcion} />
+            <Expositores defaultValues={event?.data?.expositores} />
 
-          <DialogContentText sx={{ color: "#333333" }}>
-            Archivos
-          </DialogContentText>
-          <Box display="flex" flexDirection="column" sx={{ gap: 1 }}>
-            <ArchivosInicial
-              eventId={event?.id}
-              onFilesChange={handleFilesChange}
-              onFilesToDeleteChange={handleFilesToDeleteChange}
+            <EsquemaCategoriaEditar
+              esquemasCategorias={event?.data?.esquemaCategoria}
             />
-            <EnlaceInicial enlace={event?.data} />
-          </Box>
-        </FormProvider>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={handleClose}
-          variant="outlined"
-          sx={{ color: "red", border: "2px solid red" }}
+
+            <DialogContentText sx={{ color: "#333333" }}>
+              Organizadores del evento
+            </DialogContentText>
+            {showDepartamento ? (
+              <>
+                <TipoSeleccion />
+                <Departamento />
+              </>
+            ) : (
+              <DepartamentoItemInicial
+                departamentos={event?.data?.departamento}
+                onReset={handleReset}
+              />
+            )}
+            <PersonaCargo defaultValues={event?.data?.personasACargo} />
+
+            <DialogContentText sx={{ color: "#333333" }}>
+              Archivos
+            </DialogContentText>
+            <Box display="flex" flexDirection="column" sx={{ gap: 1 }}>
+              <ArchivosInicial
+                eventId={event?.id}
+                onFilesChange={handleFilesChange}
+                onFilesToDeleteChange={handleFilesToDeleteChange}
+              />
+              <EnlaceInicial enlace={event?.data} />
+            </Box>
+          </FormProvider>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            sx={{ color: "red", border: "2px solid red" }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ backgroundColor: "#2c4175" }}
+          >
+            Guardar evento
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showEditSuccessSnackbar}
+        onClose={() => setShowEditSuccessSnackbar(false)}
+        autoHideDuration={3000}
+      >
+        <Alert
+          onClose={() => setShowEditSuccessSnackbar(false)}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%", color: "white" }}
         >
-          Cancelar
-        </Button>
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{ backgroundColor: "#2c4175" }}
-        >
-          Guardar evento
-        </Button>
-      </DialogActions>
-    </Dialog>
+          Evento editado exitosamente.
+        </Alert>
+      </Snackbar>
+    </>
   );
 };

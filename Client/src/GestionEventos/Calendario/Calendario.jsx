@@ -3,7 +3,7 @@ import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import { ModalEvento } from "./components/ModalEvento";
 import { useEffect, useState } from "react";
 import dayjs from "../../dayjsConfig";
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   limpiarEventoCreacion,
@@ -20,12 +20,15 @@ import "./customCalendar.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import CircularProgress from "@mui/material/CircularProgress";
+import Snackbar from "@mui/material/Snackbar";
+
 
 const localizer = dayjsLocalizer(dayjs);
 
 export const Calendario = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -113,6 +116,8 @@ export const Calendario = () => {
     dispatch(startCreateEvento(files));
     dispatch(limpiarEventoCreacion());
     setModalIsOpen(false);
+    setShowSuccessSnackbar(true);
+    setTimeout(() => setShowSuccessSnackbar(false), 4500);
   };
 
   const handleModalClose = () => {
@@ -160,8 +165,24 @@ export const Calendario = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
           }}
         >
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={showSuccessSnackbar}
+            onClose={() => setShowSuccessSnackbar(false)}
+            autoHideDuration={3000}
+          >
+            <Alert
+              onClose={() => setShowSuccessSnackbar(false)}
+              severity="success"
+              variant="filled"
+              sx={{ width: '100%', color: 'white' }}
+            >
+              Evento creado exitosamente.
+            </Alert>
+          </Snackbar>
           <>
             <Calendar
               style={{ height: "85vh", width: "95vw" }}

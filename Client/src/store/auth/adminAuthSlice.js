@@ -21,10 +21,8 @@ export const adminAuthSlice = createSlice({
             state.facultad = rol.facultad_id;
             const nivelAcceso = action.payload.user.nivelAcceso;
             const propio = action.payload.user.propio;
-            if (propio) {
-                state.nivelPropio = true;
-                state.departamento = rol.departamento_id;
-            } 
+            
+
             if (nivelAcceso === 'departamento') {
                 state.nivelDepartamento = true;
                 state.nivelFacultad = false;
@@ -40,6 +38,10 @@ export const adminAuthSlice = createSlice({
                 state.nivelFacultad = false;
                 state.departamento = null;
             }
+            if (propio) {
+                state.nivelPropio = true;
+                state.departamento = rol.departamento_id;
+            } 
         },
         logout: (state) => {
             state.user = null;

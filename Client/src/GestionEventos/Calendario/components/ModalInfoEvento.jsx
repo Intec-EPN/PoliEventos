@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -29,6 +30,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import HailIcon from "@mui/icons-material/Hail";
+import Snackbar from "@mui/material/Snackbar";
 
 export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const hoy = dayjs();
@@ -70,10 +72,18 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   const handleDelete = () => {
     dispatch(startDeletingEvento(event.id));
     handleClose();
+    setShowDeleteSuccessSnackbar(true);
+    setTimeout(() => setShowDeleteSuccessSnackbar(false), 3000);
   };
+
+  const [showEditSuccessSnackbar, setShowEditSuccessSnackbar] = useState(false);
+  const [showDeleteSuccessSnackbar, setShowDeleteSuccessSnackbar] =
+    useState(false);
 
   const handleEditClose = () => {
     setEditModalIsOpen(false);
+    setShowEditSuccessSnackbar(true);
+    setTimeout(() => setShowEditSuccessSnackbar(false), 3000);
     setModalIsOpen(false);
   };
 
@@ -114,159 +124,201 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
 
   let permisoEditEvento = false;
   let permisoDeleteEvento = false;
+  let permisoDescargaArchivos = false;
 
+  let permisoEditEventoTemp = false;
+  let permisoDeleteEventoTemp = false;
+  let permisoDescargaArchivosTemp = false;
+
+
+  // if (nivelDepartamento) {
+  //   permisoEditEventoTemp =
+  //     (permisos || []).some((permiso) => permiso.permisoId === 2) &&
+  //     (departamento || []).includes(departamentoNivelId);
+  //   permisoDeleteEventoTemp =
+  //     (permisos || []).some((permiso) => permiso.permisoId === 3) &&
+  //     (departamento || []).includes(departamentoNivelId);
+  //   permisoDescargaArchivosTemp =
+  //     (permisos || []).some((permiso) => permiso.permisoId === 5) &&
+  //     (departamento || []).includes(departamentoNivelId);
+  // }
+
+
+  // Excluyente:
+  if (nivelDepartamento && departamento) {
+    permisoEditEventoTemp =
+      (permisos || []).some((permiso) => permiso.permisoId === 2) &&
+      (departamento.length == 1) && (departamento[0] == departamentoNivelId);
+    permisoDeleteEventoTemp =
+      (permisos || []).some((permiso) => permiso.permisoId === 3) &&
+      (departamento.length == 1) && (departamento[0] == departamentoNivelId);
+    permisoDescargaArchivosTemp =
+      (permisos || []).some((permiso) => permiso.permisoId === 5) &&
+      (departamento.length == 1) && (departamento[0] == departamentoNivelId);
+  }
+
+  if (nivelFacultad) {
+    permisoEditEventoTemp =
+      permisoEditEventoTemp ||
+      (permisos || []).some((permiso) => permiso.permisoId === 6);
+    permisoDeleteEventoTemp =
+      permisoDeleteEventoTemp ||
+      (permisos || []).some((permiso) => permiso.permisoId === 7);
+    permisoDescargaArchivosTemp =
+      permisoDescargaArchivosTemp ||
+      (permisos || []).some((permiso) => permiso.permisoId === 9);
+  }
 
   if (nivelPropio) {
-    permisoEditEvento =
-      usuarioId === user.id &&
-      (permisos || []).some((permiso) => permiso.permisoId === 1);
-    permisoDeleteEvento =
-      usuarioId === user.id &&
-      (permisos || []).some((permiso) => permiso.permisoId === 1);
+    permisoEditEventoTemp =
+      permisoEditEventoTemp ||
+      (usuarioId === user.id &&
+        (permisos || []).some((permiso) => permiso.permisoId === 1));
+    permisoDeleteEventoTemp =
+      permisoDeleteEventoTemp ||
+      (usuarioId === user.id &&
+        (permisos || []).some((permiso) => permiso.permisoId === 1));
+    permisoDescargaArchivosTemp =
+      permisoDescargaArchivosTemp ||
+      (usuarioId === user.id &&
+        (permisos || []).some((permiso) => permiso.permisoId === 1));
   }
-  if (nivelDepartamento) {
-    permisoEditEvento =
-      (permisos || []).some((permiso) => permiso.permisoId === 2) &&
-      (departamento || []).includes(departamentoNivelId);
-    permisoDeleteEvento =
-      (permisos || []).some((permiso) => permiso.permisoId === 3) &&
-      (departamento || []).includes(departamentoNivelId);
-  } else if (nivelFacultad) {
-    permisoEditEvento = (permisos || []).some(
-      (permiso) => permiso.permisoId === 6
-    );
-    permisoDeleteEvento = (permisos || []).some(
-      (permiso) => permiso.permisoId === 7
-    );
-  }
+
+  permisoEditEvento = permisoEditEventoTemp;
+  permisoDeleteEvento = permisoDeleteEventoTemp;
+  permisoDescargaArchivos = permisoDescargaArchivosTemp;
+
 
   return (
-    <Dialog
-      fullWidth
-      open={modalIsOpen}
-      onClose={handleClose}
-      PaperProps={{
-        sx: {
-          p: 2,
-          width: {
-            xs: "90vw",
-            md: "70vw",
-            lg: "50vw",
+    <>
+      <Dialog
+        fullWidth
+        open={modalIsOpen}
+        onClose={handleClose}
+        PaperProps={{
+          sx: {
+            p: 2,
+            width: {
+              xs: "90vw",
+              md: "70vw",
+              lg: "50vw",
+            },
+            maxWidth: {
+              xs: "90vw",
+              md: "70vw",
+              lg: "50vw",
+            },
           },
-          maxWidth: {
-            xs: "90vw",
-            md: "70vw",
-            lg: "50vw",
-          },
-        },
-      }}
-    >
-      <DialogTitle sx={{ textAlign: "center" }}>{title}</DialogTitle>
-      <DialogContent>
-        <Box
-          display={{ xs: "block", sm: "flex" }}
-          flexDirection={{ xs: "column", sm: "row" }}
-          justifyContent={"space-between"}
-        >
-          {user && (
+        }}
+      >
+        <DialogTitle sx={{ textAlign: "center" }}>{title}</DialogTitle>
+        <DialogContent>
+          <Box
+            display={{ xs: "block", sm: "flex" }}
+            flexDirection={{ xs: "column", sm: "row" }}
+            justifyContent={"space-between"}
+          >
+            {user && (
+              <Box
+                width={{ xs: "100%", sm: "50%" }}
+                display={{ xs: "flex", sm: "none" }}
+                flexDirection={"column"}
+                alignItems={{ xs: "center", sm: "flex-end" }}
+                mb={2}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: "500",
+                    color: "#697585",
+                    textAlign: { xs: "center", sm: "end" },
+                  }}
+                >
+                  Creado por: {creador}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: "500",
+                    color: "#697585",
+                    textAlign: { xs: "center", sm: "end" },
+                  }}
+                >
+                  Fecha de creación:{" "}
+                  {createdAt !== null
+                    ? dayjs(createdAt).format("DD/MM/YYYY, hh:mm a")
+                    : "Sin fecha."}
+                </Typography>
+              </Box>
+            )}
             <Box
+              display={{ xs: "block" }}
+              gap={3}
+              justifyContent={"space-between"}
               width={{ xs: "100%", sm: "50%" }}
-              display={{ xs: "flex", sm: "none" }}
-              flexDirection={"column"}
-              alignItems={{ xs: "center", sm: "flex-end" }}
               mb={2}
             >
-              <Typography
-                variant="body2"
-                sx={{
-                  fontWeight: "500",
-                  color: "#697585",
-                  textAlign: { xs: "center", sm: "end" },
-                }}
-              >
-                Creado por: {creador}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontWeight: "500",
-                  color: "#697585",
-                  textAlign: { xs: "center", sm: "end" },
-                }}
-              >
-                Fecha de creación:{" "}
-                {createdAt !== null
-                  ? dayjs(createdAt).format("DD/MM/YYYY, hh:mm a")
-                  : "Sin fecha."}
-              </Typography>
+              <FechaVer start={start} end={end} />
+              <HoraVer start={start} end={end} />
+              <LugarVer lugar={lugar} />
             </Box>
-          )}
-          <Box
-            display={{ xs: "block" }}
-            gap={3}
-            justifyContent={"space-between"}
-            width={{ xs: "100%", sm: "50%" }}
-            mb={2}
-          >
-            <FechaVer start={start} end={end} />
-            <HoraVer start={start} end={end} />
-            <LugarVer lugar={lugar} />
+            {user && (
+              <Box
+                width={"50%"}
+                display={{ xs: "none", sm: "flex" }}
+                flexDirection={"column"}
+                alignItems={"flex-end"}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+                >
+                  Creado por: {creador}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
+                >
+                  Fecha de creación:{" "}
+                  {createdAt !== null
+                    ? dayjs(createdAt).format("DD/MM/YYYY, hh:mm a")
+                    : "Sin fecha."}
+                </Typography>
+              </Box>
+            )}
           </Box>
-          {user && (
-            <Box
-              width={"50%"}
-              display={{ xs: "none", sm: "flex" }}
-              flexDirection={"column"}
-              alignItems={"flex-end"}
-            >
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
-              >
-                Creado por: {creador}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: "500", color: "#697585", textAlign: "end" }}
-              >
-                Fecha de creación:{" "}
-                {createdAt !== null
-                  ? dayjs(createdAt).format("DD/MM/YYYY, hh:mm a")
-                  : "Sin fecha."}
-              </Typography>
-            </Box>
+          <DescripcionVer descripcion={descripcion} />
+          {expositores?.length > 0 && (
+            <ExpositoresVer
+              expositores={expositores}
+              defaultValues={expositores}
+            />
           )}
-        </Box>
-        <DescripcionVer descripcion={descripcion} />
-        {expositores?.length > 0 && (
-          <ExpositoresVer
-            expositores={expositores}
-            defaultValues={expositores}
-          />
-        )}
-        {personasACargo?.length > 0 && (
-          <PersonasVer
-            personas={personasACargo}
-            defaultValues={personasACargo}
-          />
-        )}
-        {departamento?.length > 0 && (
-          <DepartamentoVer departamentos={departamento} />
-        )}
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: "500",
-            color: "#164dc9",
-            fontSize: "1.2rem",
-            mt: 2,
-            mb: 1,
-          }}
-        >
-          Acciones:
-        </Typography>
+          {personasACargo?.length > 0 && (
+            <PersonasVer
+              personas={personasACargo}
+              defaultValues={personasACargo}
+            />
+          )}
+          {departamento?.length > 0 && (
+            <DepartamentoVer departamentos={departamento} />
+          )}
+          {(permisoEditEvento ||
+            permisoDescargaArchivos) && (
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: "500",
+                color: "#164dc9",
+                fontSize: "1.2rem",
+                mt: 2,
+                mb: 1,
+              }}
+            >
+              Acciones:
+            </Typography>
+          )}
 
-        {permisoEditEvento && (
           <Box
             display={"flex"}
             flexDirection={"row"}
@@ -274,7 +326,7 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
             alignItems={"center"}
             flexWrap={"wrap"}
           >
-            {event?.data?.enlaces && (
+            {permisoDescargaArchivos && event?.data?.enlaces && (
               <Box sx={{ display: "flex", justifyContent: "start" }}>
                 <a
                   href={event.data.enlaces}
@@ -316,116 +368,155 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
                 flexDirection: "row",
               }}
             >
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<DownloadIcon />}
-                sx={{ backgroundColor: "#2c4175" }}
-                onClick={handleDownloadFiles}
-              >
-                Descargar Archivos
-              </Button>
+              {permisoDescargaArchivos && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<DownloadIcon />}
+                  sx={{ backgroundColor: "#2c4175" }}
+                  onClick={handleDownloadFiles}
+                >
+                  Descargar Archivos
+                </Button>
+              )}
             </Box>
-            <Box>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<EmojiPeopleIcon />}
-                sx={{
-                  backgroundColor:
-                    asistentesActualizados === null ||
+            {permisoEditEvento && (
+              <>
+                <Box>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<EmojiPeopleIcon />}
+                    sx={{
+                      backgroundColor:
+                        asistentesActualizados === null ||
+                        asistentesActualizados === 0
+                          ? "#d8872d"
+                          : "#2c4175",
+                    }}
+                    onClick={handleAddAsistentes}
+                  >
+                    {asistentesActualizados === null ||
                     asistentesActualizados === 0
-                      ? "#d8872d"
-                      : "#2c4175",
-                }}
-                onClick={handleAddAsistentes}
-              >
-                {asistentesActualizados === null || asistentesActualizados === 0
-                  ? "Agregar beneficiarios"
-                  : "Editar beneficiarios: " + asistentesActualizados}
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<HailIcon />}
-                sx={{
-                  backgroundColor:
-                    estudiantesActualizados === null ||
+                      ? "Agregar beneficiarios"
+                      : "Editar beneficiarios: " + asistentesActualizados}
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<HailIcon />}
+                    sx={{
+                      backgroundColor:
+                        estudiantesActualizados === null ||
+                        estudiantesActualizados === 0
+                          ? "#d8872d"
+                          : "#2c4175",
+                    }}
+                    onClick={handleAddEstudiantes}
+                  >
+                    {estudiantesActualizados === null ||
                     estudiantesActualizados === 0
-                      ? "#d8872d"
-                      : "#2c4175",
-                }}
-                onClick={handleAddEstudiantes}
-              >
-                {estudiantesActualizados === null ||
-                estudiantesActualizados === 0
-                  ? "Agregar estudiantes"
-                  : "Editar estudiantes: " + estudiantesActualizados}
-              </Button>
-            </Box>
+                      ? "Agregar estudiantes"
+                      : "Editar estudiantes: " + estudiantesActualizados}
+                  </Button>
+                </Box>
+              </>
+            )}
           </Box>
-        )}
-      </DialogContent>
-      <DialogActions>
-        {/* Editar dependiendo del rol */}
-        {permisoEditEvento && (
-          <ModalEditar
-            modalIsOpen={editModalIsOpen}
-            setModalIsOpen={setEditModalIsOpen}
-            event={event}
-            handleEditClose={handleEditClose}
-          />
-        )}
-        {/* Asistentes dependiendo del rol */}
-        {permisoEditEvento && (
-          <ModalAsistentes
-            open={addAsistentesModalIsOpen}
-            onClose={handleAddAsistentesClose}
-            eventoId={id}
-            handleEditClose={handleEditClose}
-            asistentesIniciales={asistentesActualizados}
-          />
-        )}
-        {permisoEditEvento && (
-          <ModalEstudiantes
-            open={addEstudiantesModalIsOpen}
-            onClose={handleAddEstudiantesClose}
-            eventoId={id}
-            handleEditClose={handleEditClose}
-            estudiantesIniciales={estudiantesActualizados}
-          />
-        )}
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-          <Button
-            onClick={handleClose}
-            variant="outlined"
-            sx={{ color: "red", border: "2px solid red" }}
-          >
-            Cerrar
-          </Button>
-          {permisoDeleteEvento && (
-            <Button
-              onClick={handleDelete}
-              variant="contained"
-              color="error"
-              startIcon={<DeleteIcon />}
-            >
-              Eliminar
-            </Button>
+        </DialogContent>
+        <DialogActions>
+          {/* Editar dependiendo del rol */}
+          {permisoEditEvento && (
+            <ModalEditar
+              modalIsOpen={editModalIsOpen}
+              setModalIsOpen={setEditModalIsOpen}
+              event={event}
+              handleEditClose={handleEditClose}
+            />
+          )}
+          {/* Asistentes dependiendo del rol */}
+          {permisoEditEvento && (
+            <ModalAsistentes
+              open={addAsistentesModalIsOpen}
+              onClose={handleAddAsistentesClose}
+              eventoId={id}
+              handleEditClose={handleEditClose}
+              asistentesIniciales={asistentesActualizados}
+            />
           )}
           {permisoEditEvento && (
-            <Button
-              onClick={() => setEditModalIsOpen(true)}
-              variant="contained"
-              sx={{ backgroundColor: "#2c4175" }}
-            >
-              Editar Detalles de evento
-            </Button>
+            <ModalEstudiantes
+              open={addEstudiantesModalIsOpen}
+              onClose={handleAddEstudiantesClose}
+              eventoId={id}
+              handleEditClose={handleEditClose}
+              estudiantesIniciales={estudiantesActualizados}
+            />
           )}
-        </Box>
-      </DialogActions>
-    </Dialog>
+          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+            <Button
+              onClick={handleClose}
+              variant="outlined"
+              sx={{ color: "red", border: "2px solid red" }}
+            >
+              Cerrar
+            </Button>
+            {permisoDeleteEvento && (
+              <Button
+                onClick={handleDelete}
+                variant="contained"
+                color="error"
+                startIcon={<DeleteIcon />}
+              >
+                Eliminar
+              </Button>
+            )}
+            {permisoEditEvento && (
+              <Button
+                onClick={() => setEditModalIsOpen(true)}
+                variant="contained"
+                sx={{ backgroundColor: "#2c4175" }}
+              >
+                Editar Detalles de evento
+              </Button>
+            )}
+          </Box>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showEditSuccessSnackbar}
+        onClose={() => setShowEditSuccessSnackbar(false)}
+        autoHideDuration={3000}
+      >
+        <Alert
+          onClose={() => setShowEditSuccessSnackbar(false)}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%", color: "white" }}
+        >
+          Evento editado exitosamente.
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={showDeleteSuccessSnackbar}
+        onClose={() => setShowDeleteSuccessSnackbar(false)}
+        autoHideDuration={3000}
+      >
+        <Alert
+          onClose={() => setShowDeleteSuccessSnackbar(false)}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%", color: "white" }}
+        >
+          Evento eliminado exitosamente.
+        </Alert>
+      </Snackbar>
+    </>
   );
 };

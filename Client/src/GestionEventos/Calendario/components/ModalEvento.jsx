@@ -31,7 +31,7 @@ export const ModalEvento = ({
   modalIsOpen,
   setModalIsOpen,
   handleAddEvent,
-  events
+  events,
 }) => {
   const methods = useForm({
     defaultValues: {
@@ -55,9 +55,8 @@ export const ModalEvento = ({
   const { departamentos, eventoCreacion } = useSelector(
     (state) => state.gestionEvento
   );
-  const { nivelFacultad, nivelDepartamento, departamentoNivelId } = useSelector(
-    (state) => state.adminAuth
-  );
+  const { nivelFacultad, nivelDepartamento, departamentoNivelId, nivelPropio } =
+    useSelector((state) => state.adminAuth);
   const { start, end } = useSelector(
     (state) => state.gestionEvento.eventoCreacion
   );
@@ -120,12 +119,12 @@ export const ModalEvento = ({
       alert("Comple la categoría.");
       return;
     }
-    
-    if (data.esquemasCategorias.some(esquema => esquema.esquemaId === '')) {
+
+    if (data.esquemasCategorias.some((esquema) => esquema.esquemaId === "")) {
       alert("Debe seleccionar al menos un esquema.");
       return;
     }
-    if (data.esquemasCategorias.some(esquema => esquema.categoriaId === '')) {
+    if (data.esquemasCategorias.some((esquema) => esquema.categoriaId === "")) {
       alert("Cada esquema debe tener su categoría.");
       return;
     }
@@ -164,11 +163,12 @@ export const ModalEvento = ({
     // Verificar si la fecha y hora coinciden con algún otro evento
     const isOverlapping = events.some(
       (event) =>
-        (startDate.isSame(event.start, 'day') && endDate.isSame(event.end, 'day')) &&
+        startDate.isSame(event.start, "day") &&
+        endDate.isSame(event.end, "day") &&
         (startDate.isBetween(event.start, event.end, null, "[)") ||
-        endDate.isBetween(event.start, event.end, null, "(]") ||
-        startDate.isSame(event.start) ||
-        endDate.isSame(event.end))
+          endDate.isBetween(event.start, event.end, null, "(]") ||
+          startDate.isSame(event.start) ||
+          endDate.isSame(event.end))
     );
 
     if (isOverlapping) {
@@ -272,24 +272,27 @@ export const ModalEvento = ({
               <Departamento />
             </>
           )}
-          {nivelDepartamento && departamentoNivelId && (
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: "500",
-                color: "#164dc9",
-                fontSize: "1.1rem",
-                mt: 0.5,
-              }}
-            >
-              {departamentos
-                ? ` ${
-                    departamentos.find((dep) => dep.id === departamentoNivelId)
-                      ?.departamento
-                  }`
-                : "Departamento no encontrado"}
-            </Typography>
-          )}
+
+          {((nivelPropio && nivelDepartamento)||(nivelPropio && !nivelFacultad)) &&
+            departamentoNivelId && (
+              <Typography
+                variant="h3"
+                sx={{
+                  fontWeight: "500",
+                  color: "#164dc9",
+                  fontSize: "1.1rem",
+                  mt: 0.5,
+                }}
+              >
+                {departamentos
+                  ? ` ${
+                      departamentos.find(
+                        (dep) => dep.id === departamentoNivelId
+                      )?.departamento
+                    }`
+                  : "Departamento no encontrado"}
+              </Typography>
+            )}
           <PersonaCargo />
           <TabArchivos
             sendFiles={sendFiles}
