@@ -209,7 +209,7 @@ const CustomEvent = ({ event }) => {
       ></Box>
       <Box
         display="flex"
-        sx={{ justifyContent: "space-between", width: "90%", gap: 1 }}
+        sx={{ justifyContent: "space-between", width: "90%", gap: 0.3 }}
       >
         <Box
           sx={{
@@ -227,7 +227,7 @@ const CustomEvent = ({ event }) => {
         <Box
           sx={{
             width: "auto",
-            maxWidth: "30%",
+            maxWidth: "20%",
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
