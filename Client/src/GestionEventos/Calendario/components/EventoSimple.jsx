@@ -9,6 +9,7 @@ import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 
 export const EventoSimple = ({ event }) => {
   const { title, start, end, data } = event;
@@ -121,25 +122,37 @@ export const EventoSimple = ({ event }) => {
               flex: 1,
             }}
           >
-            {depts?.map((dep) => (
+            {depts.length > 1 ? (
               <span
-                key={dep.id}
                 style={{
                   border: "0.5px solid rgba(0, 0, 0, 0.15)",
-                  backgroundColor:
-                    dep.id === 1
-                      ? "#4b99d2"
-                      : dep.id === 2
-                      ? "#a479b1"
-                      : dep.id === 3
-                      ? "#fbbc04"
-                      : "transparent",
+                  backgroundColor: "white",
                   display: "inline-flex",
                   width: "10px",
                   height: "15px",
                 }}
               ></span>
-            ))}
+            ) : (
+              depts.map((dep) => (
+                <span
+                  key={dep.id}
+                  style={{
+                    border: "0.5px solid rgba(0, 0, 0, 0.15)",
+                    backgroundColor:
+                      dep.id === 1
+                        ? "#4b99d2"
+                        : dep.id === 2
+                        ? "#a479b1"
+                        : dep.id === 3
+                        ? "#fbbc04"
+                        : "transparent",
+                    display: "inline-flex",
+                    width: "10px",
+                    height: "15px",
+                  }}
+                ></span>
+              ))
+            )}
           </Box>
         </Box>
         <Box
@@ -221,30 +234,49 @@ export const EventoSimple = ({ event }) => {
               )}
             </Box>
           ))}
-          {depts.map((dept, index) => (
-            <Box
-              key={index}
-              display="flex"
-              alignItems="center"
-              flexWrap="wrap"
-              sx={{ mb: { xs: 1, sm: 0 } }}
-            >
-              <Icon
+          {depts.length > 1 ? (
+            <Box display={"flex"} alignItems={"center"}>
+              <Icon sx={{ fontSize: "1.7rem", color: "black" }}>
+                <AccountBalanceOutlinedIcon />
+              </Icon>
+              <Typography
+                variant="body1"
                 sx={{
-                  fontSize: "1.2rem",
-                  color: obtenerColorPorDeptId(dept.id),
-                  width: "auto",
-                  height: "auto",
-                  pt: "0.3rem",
+                  ml: 1,
+                  fontWeight: "500",
+                  color: "black",
+                  fontSize: "1.1rem",
                 }}
               >
-                <ApartmentOutlinedIcon />
-              </Icon>
-              <Typography variant="body2" sx={{ ml: 1, color: "black" }}>
-                {dept.nombre}
+                FIEE
               </Typography>
             </Box>
-          ))}
+          ) : (
+            depts.map((dept, index) => (
+              <Box
+                key={index}
+                display="flex"
+                alignItems="center"
+                flexWrap="wrap"
+                sx={{ mb: { xs: 1, sm: 0 } }}
+              >
+                <Icon
+                  sx={{
+                    fontSize: "1.2rem",
+                    color: obtenerColorPorDeptId(dept.id),
+                    width: "auto",
+                    height: "auto",
+                    pt: "0.3rem",
+                  }}
+                >
+                  <ApartmentOutlinedIcon />
+                </Icon>
+                <Typography variant="body2" sx={{ ml: 1, color: "black" }}>
+                  {dept.nombre}
+                </Typography>
+              </Box>
+            ))
+          )}
         </Box>
       </Box>
     </Box>

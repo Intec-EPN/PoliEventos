@@ -24,6 +24,7 @@ import { TabArchivos } from "./Creacion/TabArchivos";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadingDepartamentos } from "../../../store/GestionEventos/thunk";
 
+// Inicializa la fecha de hoy usando dayjs
 const hoy = dayjs();
 
 export const ModalEvento = ({
@@ -32,6 +33,7 @@ export const ModalEvento = ({
   handleAddEvent,
   events,
 }) => {
+  // Configura el formulario con valores por defecto
   const methods = useForm({
     defaultValues: {
       esquemasCategorias: [],
@@ -47,9 +49,10 @@ export const ModalEvento = ({
   const [files, setFiles] = useState([]);
   const [sendFiles, setSendFiles] = useState(false);
 
+  // Carga los departamentos al montar el componente
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
-    // Seleccionar los tres departamentos por defecto
+    // Selecciona los tres departamentos por defecto
     methods.setValue("departamento", [1, 2, 3]);
   }, [dispatch, methods]);
 
@@ -66,6 +69,7 @@ export const ModalEvento = ({
     setFiles(newFiles);
   };
 
+  // Resetea el formulario y establece valores por defecto cuando se abre el modal
   useEffect(() => {
     if (modalIsOpen) {
       setLoading(true); // Iniciar carga
@@ -84,6 +88,7 @@ export const ModalEvento = ({
     }
   }, [modalIsOpen, methods]);
 
+  // Establece el departamento por defecto si el usuario tiene nivel de departamento
   useEffect(() => {
     if (nivelDepartamento && departamentoNivelId) {
       methods.setValue("departamento", [departamentoNivelId]);
@@ -93,10 +98,10 @@ export const ModalEvento = ({
   const onSubmit = (data) => {
     setSendFiles(true);
 
-    // Asegurarse de que data.departamento sea un array
+    // Asegura que data.departamento sea un array
     data.departamento = data.departamento || [departamentoNivelId];
 
-    // Establecer valores por defecto si no se selecciona nada
+    // Establece valores por defecto si no se selecciona nada
     if (!data.startTime || data.startTime === "hh:mm") {
       data.startTime = "08:00";
     }
@@ -161,7 +166,7 @@ export const ModalEvento = ({
     const startDateISO = startDate.toISOString();
     const endDateISO = endDate.toISOString();
 
-    // Verificar si la fecha y hora coinciden con algún otro evento
+    // Verifica si la fecha y hora coinciden con algún otro evento
     const isOverlapping = events.some(
       (event) =>
         startDate.isSame(event.start, "day") &&

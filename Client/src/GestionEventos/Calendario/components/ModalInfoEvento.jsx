@@ -131,20 +131,6 @@ export const ModalInfoEvento = ({ modalIsOpen, setModalIsOpen, event }) => {
   let permisoDescargaArchivosTemp = false;
 
 
-  // Incluyente:
-  // if (nivelDepartamento) {
-  //   permisoEditEventoTemp =
-  //     (permisos || []).some((permiso) => permiso.permisoId === 2) &&
-  //     (departamento || []).includes(departamentoNivelId);
-  //   permisoDeleteEventoTemp =
-  //     (permisos || []).some((permiso) => permiso.permisoId === 3) &&
-  //     (departamento || []).includes(departamentoNivelId);
-  //   permisoDescargaArchivosTemp =
-  //     (permisos || []).some((permiso) => permiso.permisoId === 5) &&
-  //     (departamento || []).includes(departamentoNivelId);
-  // }
-
-
   // Excluyente:
   if (nivelDepartamento && departamento) {
     permisoEditEventoTemp =
