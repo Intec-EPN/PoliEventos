@@ -31,7 +31,7 @@ const PORT = process.env.PORT || 5000;
 authenticateDB(); // Esto llamará a la función que autentica la base de datos
 
 // Sincronizar modelo y BDD
-sequelize.sync({force: true})
+sequelize.sync()
     .then(async () => {
         await agregarValoresIniciales();
         console.log('Base de datos sincronizada');
