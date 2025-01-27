@@ -17,6 +17,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CachedIcon from "@mui/icons-material/Cached";
 import { startLoadingUsuarios } from "../../../../../store/Administracion/Usuarios/thunks";
+import PopUpEliminar from "../../../../components/PopUpEliminar";
 
 function createData(nombre, correo, fecha, id, habilitado, conEventos) {
   return {
@@ -36,6 +37,7 @@ export const TablaUsuarios = () => {
   const [rows, setRows] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 960px)");
+  const [openPopup, setOpenPopup] = React.useState(false);
 
   React.useEffect(() => {
     const newRows = usuarios.map((usuario) => {
@@ -74,6 +76,11 @@ export const TablaUsuarios = () => {
   const handleActualizar = () => {
     dispatch(startLoadingUsuarios());
   }
+
+  const handleBorrarUsuario = () => {
+    setOpenPopup(true);
+    setTimeout(() => setOpenPopup(false), 2500);
+  };
 
   return (
     <Box>
@@ -172,11 +179,17 @@ export const TablaUsuarios = () => {
                 row={row.data}
                 roles={row.roles}
                 conEventos={row.data.conEventos}
+                onBorrarUsuario={handleBorrarUsuario}
               />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <PopUpEliminar
+        open={openPopup}
+        handleClose={() => setOpenPopup(false)}
+        component="Usuario eliminado exitosamente"
+      />
     </Box>
   );
 };

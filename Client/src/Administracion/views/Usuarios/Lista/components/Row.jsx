@@ -23,11 +23,12 @@ import { useNavigate } from "react-router-dom";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import PopUpEliminar from "../../../../components/PopUpEliminar";
 
 export const Row = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { row, roles, conEventos } = props;
+  const { row, roles, conEventos, onBorrarUsuario } = props;
   const [open, setOpen] = React.useState(false);
   const isMobileOrTablet = useMediaQuery("(max-width: 960px)");
   const { roles: rolesRecuperados } = useSelector((state) => state.rol);
@@ -59,12 +60,13 @@ export const Row = (props) => {
   };
 
   // Borrar usuario.
-  const onBorrarUsuario = (usuarioId) => {
+  const handleBorrarUsuario = (usuarioId) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este usuario?"
     );
     if (confirmDelete) {
       dispatch(startDeletingUsuario(usuarioId));
+      onBorrarUsuario();
     }
   };
 
@@ -154,7 +156,7 @@ export const Row = (props) => {
               </Box>
               <Box flex={2}>
                 {!conEventos ? (
-                  <IconButton onClick={() => onBorrarUsuario(row.id)}>
+                  <IconButton onClick={() => handleBorrarUsuario(row.id)}>
                     <DeleteIcon
                       sx={{ color: "white", display: "inline-flex" }}
                     />
