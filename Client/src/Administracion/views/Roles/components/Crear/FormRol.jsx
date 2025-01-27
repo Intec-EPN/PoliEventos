@@ -207,7 +207,7 @@ export const FormRol = () => {
                 clickable={true}
                 align={true}
                 onPermisoClick={manejarPermisoClick}
-                nivelSeleccionado={seleccionNivel} // Pasar la nueva prop
+                nivelSeleccionado={seleccionNivel} 
               />
             </Grid2>
             {seleccionNivel === "Departamento" && niveles.Departamento ? (
@@ -219,7 +219,7 @@ export const FormRol = () => {
                   dept={true}
                   align={true}
                   onPermisoClick={manejarPermisoClick}
-                  nivelSeleccionado={seleccionNivel} // Pasar la nueva prop
+                  nivelSeleccionado={seleccionNivel} 
                 />
               </Grid2>
             ) : niveles.Facultad ? (
@@ -230,7 +230,7 @@ export const FormRol = () => {
                   clickable={true}
                   align={true}
                   onPermisoClick={manejarPermisoClick}
-                  nivelSeleccionado={seleccionNivel} // Pasar la nueva prop
+                  nivelSeleccionado={seleccionNivel} 
                 />
               </Grid2>
             ) : (

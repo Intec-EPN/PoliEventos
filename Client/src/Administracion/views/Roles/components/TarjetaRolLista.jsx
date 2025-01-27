@@ -13,6 +13,7 @@ import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks"
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { startLoadingUsuarios } from "../../../../store/Administracion/Usuarios/thunks";
+import PopUpEliminarRol from "./PopUpEliminarRol";
 
 export const TarjetaRolLista = ({
   rol = "",
@@ -25,6 +26,7 @@ export const TarjetaRolLista = ({
   const { usuarios } = useSelector((state) => state.usuarios);
   const { facultades } = useSelector((state) => state.rol);
   const [usado, setUsado] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
     dispatch(startLoadingUsuarios());
@@ -45,109 +47,117 @@ export const TarjetaRolLista = ({
       window.confirm(`¿Estás seguro de que deseas eliminar el rol "${rol}"?`)
     ) {
       dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
+      setOpenPopup(true);
+      setTimeout(() => setOpenPopup(false), 2500);
     }
   };
 
   return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        boxShadow: "10px 0px 30px rgba(0, 0, 0, 0.15)",
-        margin: "0 auto",
-        overflow: "hidden",
-      }}
-    >
-      {/* Contenido principal del rol y descripción */}
-      <CardContent
+    <>
+      <Card
         sx={{
-          backgroundColor: "#004aad",
-          color: "white",
-          flex: 1,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: 2,
+          flexDirection: "row",
+          width: "100%",
+          boxShadow: "10px 0px 30px rgba(0, 0, 0, 0.15)",
+          margin: "0 auto",
+          overflow: "hidden",
         }}
       >
-        <Typography textAlign="center" variant="h5" fontSize="1.8rem">
-          {rol}
-        </Typography>
-        <Typography textAlign="justify">{descripcion}</Typography>
-        <Grid2 container justifyContent="center" alignItems="center" mt={2}>
-          {departamentos.length > 1 ? (
-            <Chip
-              label={facultades[0].nombre}
-              variant="outlined"
-              sx={{ backgroundColor: "#004aad", color: "white" }}
-            />
-          ) : (
-            departamentos.map((dep, index) => (
+        {/* Contenido principal del rol y descripción */}
+        <CardContent
+          sx={{
+            backgroundColor: "#004aad",
+            color: "white",
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: 2,
+          }}
+        >
+          <Typography textAlign="center" variant="h5" fontSize="1.8rem">
+            {rol}
+          </Typography>
+          <Typography textAlign="justify">{descripcion}</Typography>
+          <Grid2 container justifyContent="center" alignItems="center" mt={2}>
+            {departamentos.length > 1 ? (
               <Chip
-                key={index}
-                label={dep}
+                label={facultades[0].nombre}
                 variant="outlined"
                 sx={{ backgroundColor: "#004aad", color: "white" }}
               />
-            ))
-          )}
-        </Grid2>
-      </CardContent>
+            ) : (
+              departamentos.map((dep, index) => (
+                <Chip
+                  key={index}
+                  label={dep}
+                  variant="outlined"
+                  sx={{ backgroundColor: "#004aad", color: "white" }}
+                />
+              ))
+            )}
+          </Grid2>
+        </CardContent>
 
-      {/* Sección de permisos */}
-      <CardContent
-        sx={{
-          width: "100%",
-          flex: 3,
-          display: "flex",
-          alignItems: "center",
-          ml: 2,
-        }}
-      >
-        <SeccionPermisos
-          niveles={permisos}
-          departamentos={departamentos}
-          horizontal={horizontal}
-        />
-      </CardContent>
-
-      {/* Icono de eliminar */}
-      {!usado && (
-        <Box
+        {/* Sección de permisos */}
+        <CardContent
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            width: "10%",
-            maxWidth: "100%",
-          }}
-        >
-          <IconButton onClick={() => onBorrarRol(rol)}>
-            <DeleteIcon sx={{ color: "red", width: "100%" }} />
-          </IconButton>
-        </Box>
-      )}
-      {usado && (
-        <Box
-          sx={{
+            width: "100%",
+            flex: 3,
             display: "flex",
             alignItems: "center",
-            padding: 2,
-            maxWidth: "10%",
+            ml: 2,
           }}
         >
-          <Typography
-            textAlign="center"
-            variant="h6"
+          <SeccionPermisos
+            niveles={permisos}
+            departamentos={departamentos}
+            horizontal={horizontal}
+          />
+        </CardContent>
+
+        {/* Icono de eliminar */}
+        {!usado && (
+          <Box
             sx={{
-              color: "black",
-              fontSize: "0.9rem",
+              display: "flex",
+              justifyContent: "center",
+              width: "10%",
+              maxWidth: "100%",
             }}
           >
-            Rol con usuarios asignados (No se puede eliminar).
-          </Typography>
-        </Box>
-      )}
-    </Card>
+            <IconButton onClick={() => onBorrarRol(rol)}>
+              <DeleteIcon sx={{ color: "red", width: "100%" }} />
+            </IconButton>
+          </Box>
+        )}
+        {usado && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: 2,
+              maxWidth: "10%",
+            }}
+          >
+            <Typography
+              textAlign="center"
+              variant="h6"
+              sx={{
+                color: "black",
+                fontSize: "0.9rem",
+              }}
+            >
+              Rol con usuarios asignados (No se puede eliminar).
+            </Typography>
+          </Box>
+        )}
+      </Card>
+      <PopUpEliminarRol
+        open={openPopup}
+        handleClose={() => setOpenPopup(false)}
+      />
+    </>
   );
 };

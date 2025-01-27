@@ -13,6 +13,7 @@ import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks"
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
+import PopUpEliminarRol from "./PopUpEliminarRol";
 
 export const TarjetaRol = ({
   rol = "",
@@ -22,8 +23,12 @@ export const TarjetaRol = ({
   lista = false,
 }) => {
   const dispatch = useDispatch();
+  const [openPopup, setOpenPopup] = useState(false);
+
   const onBorrarRol = (rol) => {
     dispatch(startDeletingRol(rol.trim())); // Trimear el nombre del rol
+    setOpenPopup(true);
+    setTimeout(() => setOpenPopup(false), 2500);
   };
 
   const { usuarios } = useSelector((state) => state.usuarios);
@@ -100,6 +105,7 @@ export const TarjetaRol = ({
           <SeccionPermisos niveles={permisos} departamentos={departamentos} />
         </CardContent>
       </Card>
+      <PopUpEliminarRol open={openPopup} handleClose={() => setOpenPopup(false)} />
     </>
   );
 };

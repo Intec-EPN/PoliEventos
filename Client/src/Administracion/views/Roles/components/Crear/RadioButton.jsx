@@ -6,16 +6,24 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { handleSeleccion, reiniciarRol, resetDepartamentos } from "../../../../../store/Administracion/Roles/rolSlice";
+import {
+  handleSeleccion,
+  reiniciarRol,
+  resetDepartamentos,
+} from "../../../../../store/Administracion/Roles/rolSlice";
 import { startLoadingDepartamentosFacultades } from "../../../../../store/Administracion/Roles/thunks";
 import { SeleccionarDept } from "./SeleccionarDept";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const RadioButton = ({ reset }) => {
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    handleSeleccion("Facultad");
+  }, []);
+
   const [departamentoSeleccionado, setDepartamentoSeleccionado] =
-    useState(true);
+    useState(false);
   const onRadioChange = (e) => {
     // Reinicio de los campos del formulario cuando cambia el radioButton
     reset({
@@ -25,7 +33,7 @@ export const RadioButton = ({ reset }) => {
     setDepartamentoSeleccionado(!departamentoSeleccionado);
 
     dispatch(reiniciarRol());
-    
+
     const selectedValue = e.target.value;
     dispatch(handleSeleccion(selectedValue));
     if (selectedValue === "Facultad") {
@@ -44,18 +52,18 @@ export const RadioButton = ({ reset }) => {
         row
         aria-labelledby="demo-row-radio-buttons-group-label"
         name="row-radio-buttons-group"
-        defaultValue="Departamento"
+        defaultValue="Facultad"
         onChange={onRadioChange}
       >
-        <FormControlLabel
-          value="Departamento"
-          control={<Radio />}
-          label="Departamento"
-        />
         <FormControlLabel
           value="Facultad"
           control={<Radio />}
           label="Facultad"
+        />
+        <FormControlLabel
+          value="Departamento"
+          control={<Radio />}
+          label="Departamento"
         />
       </RadioGroup>
       {departamentoSeleccionado ? <SeleccionarDept /> : null}

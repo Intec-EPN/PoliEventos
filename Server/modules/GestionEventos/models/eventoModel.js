@@ -46,11 +46,9 @@ const EventosModel = sequelize.define('Eventos', {
     },
     createdAt: {
         type: DataTypes.DATE,
-        allowNull: true, // Permitir valores nulos temporalmente
     },
     updatedAt: {
         type: DataTypes.DATE,
-        allowNull: true, // Permitir valores nulos temporalmente
     },
 }, {
     tableName: 'eventos',
