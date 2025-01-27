@@ -22,16 +22,13 @@ export const CrearUsuarios = () => {
     setExito(false);
   };
   const onSubmit = async (data) => {
-    if (
-      data.primer_nombre.trim().toLowerCase() === "admn" ||
-      data.segundo_nombre.trim().toLowerCase() === "admn"
-    ) {
-      setError("El nombre o apellido no puede ser 'admn'");
+    if (data.nombre_apellido.trim().toLowerCase() === "admn") {
+      setError("El nombre y apellido no puede ser 'admn'");
       return;
     }
     try {
       const response = await axiosInstance.post("/auth/create", {
-        nombre: `${data.primer_nombre.trim()} ${data.segundo_nombre.trim()}`,
+        nombre: data.nombre_apellido.trim(),
         email: data.correo.trim(),
         password: data.contraseña.trim(),
       });
@@ -68,26 +65,15 @@ export const CrearUsuarios = () => {
             my="1rem"
             sx={{ width: "100%" }}
           >
-            <Box display="flex" gap={2} flexWrap={{ xs: "wrap", md: "nowrap" }}>
-              <TextField
-                sx={{ width: "100%" }}
-                label="Nombre"
-                {...register("primer_nombre", {
-                  required: "El nombre es obligatorio",
-                })}
-                error={!!errors.primer_nombre}
-                helperText={errors.primer_nombre?.message}
-              />
-              <TextField
-                sx={{ width: "100%" }}
-                label="Apellido"
-                {...register("segundo_nombre", {
-                  required: "El apellido es obligatorio",
-                })}
-                error={!!errors.segundo_nombre}
-                helperText={errors.segundo_nombre?.message}
-              />
-            </Box>
+            <TextField
+              sx={{ width: "100%" }}
+              label="Nombre y apellido"
+              {...register("nombre_apellido", {
+                required: "El nombre y apellido es obligatorio",
+              })}
+              error={!!errors.nombre_apellido}
+              helperText={errors.nombre_apellido?.message}
+            />
             <TextField
               label="Correo"
               {...register("correo", { required: "El correo es obligatorio" })}

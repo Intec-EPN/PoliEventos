@@ -14,13 +14,13 @@ export const Registrar = ({ onRegistroExitoso }) => {
   const [exito, setExito] = useState(false);
   const handleClose = () => setExito(false);
   const onSubmit = async (data) => {
-    if (data.primer_nombre.trim().toLowerCase() === "admn" || data.segundo_nombre.trim().toLowerCase() === "admn") {
-      setError("El nombre o apellido no puede ser 'admn'");
+    if (data.nombre_apellido.trim().toLowerCase() === "admn") {
+      setError("El nombre y apellido no puede ser 'admn'");
       return;
     }
     try {
       const response = await axiosInstance.post("/auth/create", {
-        nombre: `${data.primer_nombre.trim()} ${data.segundo_nombre.trim()}`,
+        nombre: data.nombre_apellido.trim(),
         email: data.correo.trim(),
         password: data.contraseña.trim(),
       });
@@ -47,7 +47,7 @@ export const Registrar = ({ onRegistroExitoso }) => {
             flexDirection: "column",
             alignItems: "center",
             gap: "0.3rem",
-            width: {xs: "80%", sm: "85%"},
+            width: {xs: "75%", sm: "95%"},
             margin: "0 auto",
           }}
         >
@@ -64,28 +64,15 @@ export const Registrar = ({ onRegistroExitoso }) => {
             my="1rem"
             sx={{ width: "100%", maxWidth: "40rem" }}
           >
-            <Box display="flex" gap={2} flexWrap={{ xs: "wrap", md: "nowrap" }}>
-              <TextField
-                sx={{ width: "100%" }}
-                label="Nombre"
-                variant="filled"
-                {...register("primer_nombre", {
-                  required: "El nombre es obligatorio",
-                })}
-                error={!!errors.primer_nombre}
-                helperText={errors.primer_nombre?.message}
-              />
-              <TextField
-                sx={{ width: "100%" }}
-                label="Apellido"
-                variant="filled"
-                {...register("segundo_nombre", {
-                  required: "El apellido es obligatorio",
-                })}
-                error={!!errors.segundo_nombre}
-                helperText={errors.segundo_nombre?.message}
-              />
-            </Box>
+            <TextField
+              label="Nombre y apellido"
+              variant="filled"
+              {...register("nombre_apellido", {
+                required: "El nombre y apellido es obligatorio",
+              })}
+              error={!!errors.nombre_apellido}
+              helperText={errors.nombre_apellido?.message}
+            />
             <TextField
               label="Correo"
               variant="filled"
