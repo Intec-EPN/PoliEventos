@@ -13,7 +13,7 @@ import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks"
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { startLoadingUsuarios } from "../../../../store/Administracion/Usuarios/thunks";
-import PopUpEliminarRol from "./PopUpEliminarRol";
+import PopUpEliminar from "../../../components/PopUpEliminar";
 
 export const TarjetaRolLista = ({
   rol = "",
@@ -154,9 +154,10 @@ export const TarjetaRolLista = ({
           </Box>
         )}
       </Card>
-      <PopUpEliminarRol
+      <PopUpEliminar
         open={openPopup}
         handleClose={() => setOpenPopup(false)}
+        component="Rol"
       />
     </>
   );

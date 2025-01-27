@@ -10,10 +10,9 @@ import {
 import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
 import { useDispatch, useSelector } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import PopUpEliminarRol from "./PopUpEliminarRol";
+import PopUpEliminar from "../../../components/PopUpEliminar";
 
 export const TarjetaRol = ({
   rol = "",
@@ -73,7 +72,7 @@ export const TarjetaRol = ({
             <Typography
               textAlign="center"
               variant="h6"
-              sx={{ color: "#eff5ff",fontSize: "0.9rem" }}
+              sx={{ color: "#eff5ff", fontSize: "0.9rem" }}
             >
               Rol con usuarios asignados (No se puede eliminar).
             </Typography>
@@ -105,7 +104,11 @@ export const TarjetaRol = ({
           <SeccionPermisos niveles={permisos} departamentos={departamentos} />
         </CardContent>
       </Card>
-      <PopUpEliminarRol open={openPopup} handleClose={() => setOpenPopup(false)} />
+      <PopUpEliminar
+        open={openPopup}
+        handleClose={() => setOpenPopup(false)}
+        component="Rol"
+      />
     </>
   );
 };

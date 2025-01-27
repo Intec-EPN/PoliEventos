@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemText,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -27,6 +28,7 @@ import {
   startCreatingEsquema,
   startDeletingEsquema,
 } from "../../../../store/Administracion/Categorizacion/thunks";
+import PopUpEliminar from "../../../components/PopUpEliminar";
 
 export const ListaCategorias = () => {
   const navigate = useNavigate();
@@ -112,6 +114,8 @@ export const ListaCategorias = () => {
     setAgregando(false);
   };
 
+  const [openPopup, setOpenPopup] = useState(false);
+
   // Lógica para obrrar un esquema:
   const onBorrar = (id) => {
     const confirmacion = window.confirm(
@@ -119,6 +123,8 @@ export const ListaCategorias = () => {
     );
     if (confirmacion) {
       dispatch(startDeletingEsquema(id));
+      setOpenPopup(true);
+      setTimeout(() => setOpenPopup(false), 2500);
     }
   };
 
@@ -145,38 +151,57 @@ export const ListaCategorias = () => {
                   bgcolor:
                     esquema.categorias.length === 0 ? "#dc8626" : "#2c4175",
                   mb: 2,
+                  height: { xs: "7rem", md: "5rem" },
                 }}
                 key={esquema.id}
                 secondaryAction={
-                  <>
+                  <Box
+                    display={"flex"}
+                    width={{ xs: 200, md: 300 }}
+                    alignItems={"center"}
+                  >
                     <IconButton
                       onClick={() =>
                         onEdit(esquema.nombre, esquema.descripcion)
                       }
+                      sx={{ flex: 1 }}
                     >
                       <EditIcon sx={{ color: "white" }} />
                     </IconButton>
 
-                    {esquema.visible ? (
-                      <IconButton
-                        onClick={() => onChangeVisibility(esquema.nombre)}
-                      >
-                        <VisibilityIcon sx={{ color: "white" }} />
-                      </IconButton>
-                    ) : (
-                      <IconButton
-                        onClick={() => onChangeVisibility(esquema.nombre)}
-                      >
-                        <VisibilityOffIcon sx={{ color: "white" }} />
-                      </IconButton>
-                    )}
+                    <Box sx={{ flex: 1 }}>
+                      {esquema.visible ? (
+                        <IconButton
+                          onClick={() => onChangeVisibility(esquema.nombre)}
+                        >
+                          <VisibilityIcon sx={{ color: "white" }} />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          onClick={() => onChangeVisibility(esquema.nombre)}
+                        >
+                          <VisibilityOffIcon sx={{ color: "white" }} />
+                        </IconButton>
+                      )}
+                    </Box>
 
-                    {!esquema.usado && (
-                      <IconButton onClick={() => onBorrar(esquema.id)}>
-                        <DeleteIcon sx={{ color: "white" }} />
-                      </IconButton>
-                    )}
-                  </>
+                    <Box
+                      sx={{ flex: 3 }}
+                      display="flex"
+                      justifyContent="center"
+                    >
+                      {!esquema.usado && (
+                        <IconButton onClick={() => onBorrar(esquema.id)}>
+                          <DeleteIcon sx={{ color: "white" }} />
+                        </IconButton>
+                      )}
+                      {esquema.usado && (
+                        <Typography color="white" textAlign={"center"}>
+                          No se puede eliminar (está siendo utilizado).
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
                 }
               >
                 <Tooltip title={esquema.descripcion}>
@@ -210,6 +235,12 @@ export const ListaCategorias = () => {
           </Button>
         </Box>
       )}
+
+      <PopUpEliminar
+        open={openPopup}
+        handleClose={() => setOpenPopup(false)}
+        component="Esquema de categorización"
+      />
     </Box>
   );
 };

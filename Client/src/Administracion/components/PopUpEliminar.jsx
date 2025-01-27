@@ -16,7 +16,7 @@ const style = {
   borderRadius: 3,
 };
 
-export default function PopUpEliminarRol({ open, handleClose }) {
+export default function PopUpEliminar({ open, handleClose, component }) {
   return (
     <Modal
       open={open}
@@ -31,7 +31,7 @@ export default function PopUpEliminarRol({ open, handleClose }) {
           component="h2"
           align="center"
         >
-          ¡Rol eliminado exitosamente!
+          ¡{component} eliminado exitosamente!
         </Typography>
       </Box>
     </Modal>
