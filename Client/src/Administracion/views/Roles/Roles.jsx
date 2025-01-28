@@ -10,7 +10,6 @@ export const Roles = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(startLoadingDepartamentos());
-    dispatch(startLoadingUsuarios());
     dispatch(startLoadingFacultades())
   }, [dispatch]);
   useEffect(() => {

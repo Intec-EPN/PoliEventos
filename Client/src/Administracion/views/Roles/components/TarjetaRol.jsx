@@ -11,7 +11,7 @@ import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
 import { useDispatch, useSelector } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PopUpEliminar from "../../../components/PopUpEliminar";
 
 export const TarjetaRol = ({
@@ -20,6 +20,7 @@ export const TarjetaRol = ({
   permisos = [],
   departamentos = [],
   lista = false,
+  usado = false,
 }) => {
   const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
@@ -30,25 +31,7 @@ export const TarjetaRol = ({
     setTimeout(() => setOpenPopup(false), 2500);
   };
 
-  const { usuarios } = useSelector((state) => state.usuarios);
   const { facultades } = useSelector((state) => state.rol);
-
-  const [usado, setUsado] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    setUsado(
-      usuarios.some((usuario) =>
-        usuario.roles.some((role) => {
-          return role.rol_nombre === rol;
-        })
-      ) || false
-    );
-  }, [rol]);
 
   return (
     <>
@@ -61,7 +44,7 @@ export const TarjetaRol = ({
         }}
       >
         <CardContent sx={{ backgroundColor: "#004aad", color: "white" }}>
-          {lista && isMounted && !usado && (
+          {lista && !usado && (
             <Box display="flex" justifyContent="center">
               <IconButton onClick={() => onBorrarRol(rol)}>
                 <DeleteIcon sx={{ color: "red" }} />

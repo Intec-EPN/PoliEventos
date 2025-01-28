@@ -11,8 +11,7 @@ import { SeccionPermisos } from "../../Permisos/components/SeccionPermisos";
 import { useDispatch, useSelector } from "react-redux";
 import { startDeletingRol } from "../../../../store/Administracion/Roles/thunks";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useEffect, useState } from "react";
-import { startLoadingUsuarios } from "../../../../store/Administracion/Usuarios/thunks";
+import { useState } from "react";
 import PopUpEliminar from "../../../components/PopUpEliminar";
 
 export const TarjetaRolLista = ({
@@ -21,26 +20,11 @@ export const TarjetaRolLista = ({
   permisos = [],
   departamentos = [],
   horizontal = false,
+  usado = false,
 }) => {
   const dispatch = useDispatch();
-  const { usuarios } = useSelector((state) => state.usuarios);
   const { facultades } = useSelector((state) => state.rol);
-  const [usado, setUsado] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
-
-  useEffect(() => {
-    dispatch(startLoadingUsuarios());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (usuarios.length > 0) {
-      const usado = usuarios.some(
-        (usuario) =>
-          usuario.roles.some((role) => role.rol_nombre === rol) || false
-      );
-      setUsado(usado);
-    }
-  }, [usuarios, rol]);
 
   const onBorrarRol = (rol) => {
     if (

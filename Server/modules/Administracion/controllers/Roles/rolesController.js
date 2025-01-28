@@ -8,6 +8,7 @@ const { obtenerNivelesArray } = require("./nivelesController");
 const { obtenerPermisosRol } = require("./permisosController");
 const { sequelize } = require('../../../../config/db');
 const FacultadesModel = require('../../models/Roles/facultadesModel');
+const UsuarioRolModel = require('../../../Auth/models/tablas-intermedias/usuario_rolesModel');
 
 const obtenerRolDescripcionId = async (req, res) => {
     const rolId = req.params.id; // Obtengo el id desde los params.
@@ -90,6 +91,9 @@ const obtenerRoles = async (req, res) => {
                 };
             });
 
+            // Verificar si el rol está siendo usado por algún usuario
+            const usado = await UsuarioRolModel.findOne({ where: { rol_id: rol.id } }) ? true : false;
+
             roles.push({
                 id: rol.id,
                 rol: rol.nombre,
@@ -97,7 +101,8 @@ const obtenerRoles = async (req, res) => {
                 departamentos: departamentos.map(dep => dep.departamento),
                 permisos: permisos,
                 facultad: facultad,
-                esFacultad: esFacultad
+                esFacultad: esFacultad,
+                usado: usado
             });
         }
         res.status(200).json(roles);
