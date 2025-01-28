@@ -46,7 +46,6 @@ export const EditarUsuario = () => {
   }, [usuario, setValue, originalValues]);
 
   const onSubmit = async (data) => {
-    console.log("Enviando datos:", data);
     const updatedData = {};
     for (const key in data) {
       if (data[key] !== originalValues[key] && data[key] !== "") {

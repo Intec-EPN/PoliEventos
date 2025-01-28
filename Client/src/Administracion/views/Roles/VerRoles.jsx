@@ -104,6 +104,7 @@ export const VerRoles = () => {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 12, sm: 12, md: 12 }}
         >
+          {console.log(rolesFiltrados)}
           <Box sx={{ display: { xs: "block", lg: "none" }, width: "100%" }}>
             <Grid2 container spacing={2}>
               {rolesFiltrados.map((rol, index) => (
