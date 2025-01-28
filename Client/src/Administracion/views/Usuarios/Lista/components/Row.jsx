@@ -60,12 +60,12 @@ export const Row = (props) => {
   };
 
   // Borrar usuario.
-  const handleBorrarUsuario = (usuarioId) => {
+  const handleBorrarUsuario = async (usuarioId) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este usuario?"
     );
     if (confirmDelete) {
-      dispatch(startDeletingUsuario(usuarioId));
+      await dispatch(startDeletingUsuario(usuarioId));
       onBorrarUsuario();
     }
   };

@@ -192,7 +192,7 @@ export const TablaUsuarios = () => {
       <PopUpEliminar
         open={openPopup}
         handleClose={() => setOpenPopup(false)}
-        component="Usuario eliminado exitosamente"
+        component="Usuario"
       />
     </Box>
   );
