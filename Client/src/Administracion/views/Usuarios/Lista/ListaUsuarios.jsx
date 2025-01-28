@@ -9,6 +9,7 @@ export const ListaUsuarios = () => {
   useEffect(() => {
     dispatch(opcionActual("Lista de usuarios"));
   }, [dispatch]);
+
   return (
     <Box ml={2} mt={2} width="97%">
       <TablaUsuarios />

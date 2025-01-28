@@ -40,6 +40,10 @@ export const TablaUsuarios = () => {
   const [openPopup, setOpenPopup] = React.useState(false);
 
   React.useEffect(() => {
+    dispatch(startLoadingUsuarios());
+  }, [dispatch]);
+
+  React.useEffect(() => {
     const newRows = usuarios.map((usuario) => {
       const fecha = usuario.fecha.slice(0, usuario.fecha.indexOf("T"));
 

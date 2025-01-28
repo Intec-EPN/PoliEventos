@@ -12,7 +12,8 @@ export const startLoadingUsuarios = () => {
             });
             dispatch(setUsuarios(response.data.sort((a, b) => a.nombre.localeCompare(b.nombre))));
         } catch (error) {
-            throw new Error("Error al cargar usuarios", error);
+            console.error("Error al cargar usuarios:", error.response?.data || error.message);
+            // Manejo de error más detallado
         }
     };
 }
