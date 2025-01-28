@@ -31,7 +31,6 @@ export const VerRoles = () => {
     dispatch(opcionActual("Lista de roles"));
   }, [dispatch]);
 
-  const nombresFacultades = facultades.map((facultad) => facultad.nombre);
 
   // Estado para roles filtrados
   const [rolesFiltrados, setRolesFiltrados] = useState([]);
