@@ -19,28 +19,23 @@ export const EditarUsuario = () => {
   const handleClose = () => setEdicionCompleta(false);
   const [error, setError] = useState(null);
 
+  const usuarios = useSelector((state) => state.usuarios.usuarios);
+
   useEffect(() => {
     dispatch(opcionActual("Editar usuario"));
-    dispatch(startLoadingUsuarios());
   }, [dispatch]);
 
-  const usuario = useSelector((state) =>
-    state.usuarios.usuarios.find((user) => user.id === usuarioId)
-  );
-  if (!usuario) {
-    return <div>Usuario no encontrado</div>;
-  }
-
+  const usuario = usuarios.find((user) => user.id === usuarioId);
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       nombre: "",
       correo: "",
-      contraseñá: "",
+      contraseña: "",
     },
   });
 
   useEffect(() => {
-    if (usuario) {
+    if (usuario && !originalValues.nombre && !originalValues.correo) {
       setValue("nombre", usuario.nombre);
       setValue("correo", usuario.correo);
       setOriginalValues({
@@ -48,9 +43,10 @@ export const EditarUsuario = () => {
         correo: usuario.correo,
       });
     }
-  }, [usuario, setValue]);
+  }, [usuario, setValue, originalValues]);
 
   const onSubmit = async (data) => {
+    console.log("Enviando datos:", data);
     const updatedData = {};
     for (const key in data) {
       if (data[key] !== originalValues[key] && data[key] !== "") {
