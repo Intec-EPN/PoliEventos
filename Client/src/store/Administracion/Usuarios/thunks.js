@@ -10,7 +10,7 @@ export const startLoadingUsuarios = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            dispatch(setUsuarios(response.data));
+            dispatch(setUsuarios(response.data.sort((a, b) => a.nombre.localeCompare(b.nombre))));
         } catch (error) {
             throw new Error("Error al cargar usuarios", error);
         }

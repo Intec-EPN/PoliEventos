@@ -10,7 +10,7 @@ export const startLoadingEsquemas = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            dispatch(setEsquemas(response.data))
+            dispatch(setEsquemas(response.data.sort((a, b) => a.nombre.localeCompare(b.nombre))));
         } catch (error) {
             throw new Error("Error al cargar", error);
         }

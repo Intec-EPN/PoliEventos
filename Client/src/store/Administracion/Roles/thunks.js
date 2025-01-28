@@ -10,7 +10,7 @@ export const startLoadingRoles = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            dispatch(setRoles(response.data));
+            dispatch(setRoles(response.data.sort((a, b) => a.rol.localeCompare(b.rol))));
         } catch (error) {
             throw new Error("Error al cargar", error);
         }
