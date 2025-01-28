@@ -3,6 +3,7 @@ import { CategoriaPermiso } from "../../../Permisos/components/CategoriaPermiso"
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  handleSeleccion,
   manejarPermiso,
   reiniciarRol,
   setDescripcion,
@@ -28,6 +29,10 @@ export const FormRol = () => {
   const dispatch = useDispatch();
   // Hook para navegar
   const navigate = useNavigate();
+
+  useEffect(() => {
+    handleSeleccion("Departamento");
+  }, []);
 
   // Estado para controlar la apertura del modal
   const [open, setOpen] = useState(false);
@@ -207,7 +212,7 @@ export const FormRol = () => {
                 clickable={true}
                 align={true}
                 onPermisoClick={manejarPermisoClick}
-                nivelSeleccionado={seleccionNivel} 
+                nivelSeleccionado={seleccionNivel}
               />
             </Grid2>
             {seleccionNivel === "Departamento" && niveles.Departamento ? (
@@ -219,7 +224,7 @@ export const FormRol = () => {
                   dept={true}
                   align={true}
                   onPermisoClick={manejarPermisoClick}
-                  nivelSeleccionado={seleccionNivel} 
+                  nivelSeleccionado={seleccionNivel}
                 />
               </Grid2>
             ) : niveles.Facultad ? (
@@ -230,7 +235,7 @@ export const FormRol = () => {
                   clickable={true}
                   align={true}
                   onPermisoClick={manejarPermisoClick}
-                  nivelSeleccionado={seleccionNivel} 
+                  nivelSeleccionado={seleccionNivel}
                 />
               </Grid2>
             ) : (

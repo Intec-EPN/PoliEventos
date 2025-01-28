@@ -74,59 +74,61 @@ export const VerRoles = () => {
 
   return (
     <>
-      <Box
-        display={{xs: "column", sm:"flex"}}
-        flexDirection="row"
-        width={{xs:"95%", sm:"94%", lg:"98%"}}
-        ml={2}
-        mt={2}
-        justifyContent={{xs: "center",sm:"space-between"}}
-        alignItems={"center"}
-      >
-        <IndicadoresRoles />
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "green",
-            display: "flex",
-            height: 55,
-            width:{xs:"100%",md:"15%"}
-          }}
-          onClick={handleCrearRol}
+      {facultades && (<>
+        <Box
+          display={{ xs: "column", sm: "flex" }}
+          flexDirection="row"
+          width={{ xs: "95%", sm: "94%", lg: "98%" }}
+          ml={2}
+          mt={2}
+          justifyContent={{ xs: "center", sm: "space-between" }}
+          alignItems={"center"}
         >
-          Crear Rol
-        </Button>
-      </Box>
-      <Grid2
-        container
-        margin={2}
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 12, sm: 12, md: 12 }}
-      >
-        <Box sx={{ display: { xs: "block", lg: "none" }, width: "100%" }}>
-          <Grid2 container spacing={2}>
+          <IndicadoresRoles />
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "green",
+              display: "flex",
+              height: 55,
+              width: { xs: "100%", md: "15%" },
+            }}
+            onClick={handleCrearRol}
+          >
+            Crear Rol
+          </Button>
+        </Box>
+        <Grid2
+          container
+          margin={2}
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 12, sm: 12, md: 12 }}
+        >
+          <Box sx={{ display: { xs: "block", lg: "none" }, width: "100%" }}>
+            <Grid2 container spacing={2}>
+              {rolesFiltrados.map((rol, index) => (
+                <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
+                  <TarjetaRol {...rol} id={index} lista={true} />
+                </Grid2>
+              ))}
+            </Grid2>
+          </Box>
+          <Box sx={{ display: { xs: "none", lg: "block" }, width: "100%" }}>
             {rolesFiltrados.map((rol, index) => (
-              <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
-                <TarjetaRol {...rol} id={index} lista={true} />
+              <Grid2 key={index} size={{ xs: 4, sm: 12 }}>
+                <Box
+                  my={2}
+                  display={"flex"}
+                  justifyContent={"center"}
+                  width="100%"
+                >
+                  <TarjetaRolLista {...rol} id={index} horizontal={true} />
+                </Box>
               </Grid2>
             ))}
-          </Grid2>
-        </Box>
-        <Box sx={{ display: { xs: "none", lg: "block" }, width: "100%" }}>
-          {rolesFiltrados.map((rol, index) => (
-            <Grid2 key={index} size={{ xs: 4, sm: 12 }}>
-              <Box
-                my={2}
-                display={"flex"}
-                justifyContent={"center"}
-                width="100%"
-              >
-                <TarjetaRolLista {...rol} id={index} horizontal={true} />
-              </Box>
-            </Grid2>
-          ))}
-        </Box>
-      </Grid2>
+          </Box>
+        </Grid2>
+      </>)}
     </>
   );
 };

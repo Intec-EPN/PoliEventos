@@ -19,11 +19,11 @@ export const RadioButton = ({ reset }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    handleSeleccion("Facultad");
+    handleSeleccion("Departamento");
   }, []);
 
   const [departamentoSeleccionado, setDepartamentoSeleccionado] =
-    useState(false);
+    useState(true);
   const onRadioChange = (e) => {
     // Reinicio de los campos del formulario cuando cambia el radioButton
     reset({
@@ -52,18 +52,18 @@ export const RadioButton = ({ reset }) => {
         row
         aria-labelledby="demo-row-radio-buttons-group-label"
         name="row-radio-buttons-group"
-        defaultValue="Facultad"
+        defaultValue="Departamento"
         onChange={onRadioChange}
       >
-        <FormControlLabel
-          value="Facultad"
-          control={<Radio />}
-          label="Facultad"
-        />
         <FormControlLabel
           value="Departamento"
           control={<Radio />}
           label="Departamento"
+        />
+        <FormControlLabel
+          value="Facultad"
+          control={<Radio />}
+          label="Facultad"
         />
       </RadioGroup>
       {departamentoSeleccionado ? <SeleccionarDept /> : null}

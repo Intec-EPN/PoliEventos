@@ -14,7 +14,7 @@ export const rolSlice = createSlice({
     },
     creandoRol: false,
     creandoRolEnBase: false,
-    seleccionNivel: 'Facultad',
+    seleccionNivel: 'Departamento',
     filtros: [],
     estructuraPermisos: [],
   },

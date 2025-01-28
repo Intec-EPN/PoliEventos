@@ -3,24 +3,25 @@ import { FormRol } from "./components/Crear/FormRol";
 import { VistaPrevia } from "./components/Crear/VistaPrevia";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { reiniciarRol } from "../../../store/Administracion/Roles/rolSlice";
+import { handleSeleccion, reiniciarRol } from "../../../store/Administracion/Roles/rolSlice";
 import { opcionActual } from "../../../store/Administracion/administracionSlice";
+import { startLoadingFacultades } from "../../../store/Administracion/Roles/thunks";
 
 export const CrearRol = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(reiniciarRol());
-    dispatch(opcionActual('Crea un rol'));
+    dispatch(opcionActual("Crea un rol"));
+    dispatch(startLoadingFacultades())
   }, [dispatch]);
+  useEffect(() => {
+    handleSeleccion("Departamento");
+  }, []);
 
   return (
-    <Box
-      display={{ md: "flex", xs: "block" }}
-      padding={2}
-      gap={1}
-    >
+    <Box display={{ md: "flex", xs: "block" }} padding={2} gap={1}>
       <Box flex={4}>
-        <FormRol/>
+        <FormRol />
       </Box>
       <hr />
       <Box flex={2}>
