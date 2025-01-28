@@ -3,7 +3,7 @@ import axios from 'axios';
 // Crear una instancia de Axios
 const axiosInstance = axios.create({
   // baseURL: import.meta.env.VITE_API_URL,
-  baseURL: "http://localhost:5000/api"
+  baseURL: "https://polieventos-api.onrender.com/api"
 });
 
 // Interceptores
