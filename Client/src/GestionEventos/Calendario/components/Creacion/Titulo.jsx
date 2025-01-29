@@ -20,11 +20,11 @@ export const Titulo = ({ defaultValue }) => {
         margin="dense"
         id="titulo"
         name="titulo"
-        placeholder="Título* (máximo 25 caracteres)"
+        placeholder="Título* (máximo 40 caracteres)"
         type="text"
         fullWidth
         variant="outlined"
-        slotProps={{ htmlInput: { maxLength: 25 } }}
+        slotProps={{ htmlInput: { maxLength: 40 } }}
         {...register("titulo")}
       />
     </Box>

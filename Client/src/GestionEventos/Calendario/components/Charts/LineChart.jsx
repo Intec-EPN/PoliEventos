@@ -1,11 +1,30 @@
 import { Box, Button, Tooltip, Typography } from "@mui/material";
-import { LineChart as MuiLineChart } from "@mui/x-charts/LineChart";
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, Title, Tooltip as ChartTooltip, Legend, PointElement } from 'chart.js';
 import ImageIcon from "@mui/icons-material/Image";
 import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 import PrintIcon from "@mui/icons-material/Print";
 import TableChartIcon from "@mui/icons-material/TableChart";
 
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, ChartTooltip, Legend, PointElement);
 
+const esquemaColors = [
+  "#4CAF50",
+  "#F44336",
+  "#2196F3",
+  "#FF9800",
+  "#9C27B0",
+  "#FFC107",
+  "#00BCD4",
+  "#E91E63",
+  "#607D8B",
+  "#795548",
+  "#3F51B5",
+  "#8BC34A",
+  "#FF5722",
+  "#673AB7",
+  "#009688",
+];
 
 const LineChart = ({
   chartData,
@@ -16,10 +35,53 @@ const LineChart = ({
   handleDownloadExcel,
   totalEvents,
 }) => {
+  const data = {
+    labels: chartData.xAxis,
+    datasets: chartData.series.map((serie, index) => ({
+      label: serie.label,
+      data: serie.data,
+      backgroundColor: esquemaColors[index % esquemaColors.length],
+      borderColor: esquemaColors[index % esquemaColors.length],
+      borderWidth: 1,
+      fill: false,
+      tension: 0.1,
+    }))
+  };
+
+  const options = {
+    plugins: {
+      legend: { display: true },
+      title: {
+        display: true,
+        text: "Eventos por fecha y categoría",
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: true,
+        },
+        title: {
+          display: true,
+          text: "Fechas",
+        },
+      },
+      y: {
+        grid: {
+          display: true,
+        },
+        title: {
+          display: true,
+          text: "Número de eventos",
+        },
+      },
+    },
+  };
+
   return (
     <>
-      <Box ref={chartRef}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+      <Box ref={chartRef} sx={{ width: "100%" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 2 }}>
           <Tooltip
             title="Recuerde que un evento puede tener varias categorizaciones."
             placement="right"
@@ -39,26 +101,8 @@ const LineChart = ({
             </Typography>
           </Tooltip>
         </Box>
-        <Box sx={{ width: "100%" }}>
-          <Box sx={{ width: { xs: 250, sm: 600, md: 700 }, margin:"0 auto" }}>
-            <MuiLineChart
-              xAxis={[
-                {
-                  scaleType: "band",
-                  data: chartData.xAxis,
-                  tickPlacement: "middle",
-                  tickLabelPlacement: "middle",
-                  tickLabelProps: {
-                    angle: -90,
-                    textAnchor: "end",
-                    whiteSpace: "normal",
-                  },
-                },
-              ]}
-              series={chartData.series}
-              height={300}
-            />
-          </Box>
+        <Box sx={{ width: { xs: 250, sm: 600, md: 700 }, margin: "0 auto" }}>
+          <Line data={data} options={options} />
         </Box>
       </Box>
       <Box

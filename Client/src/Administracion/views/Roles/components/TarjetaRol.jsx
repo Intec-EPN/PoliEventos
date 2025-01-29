@@ -66,11 +66,13 @@ export const TarjetaRol = ({
           <Typography textAlign="justify">{descripcion}</Typography>
           <Grid2 container justifyContent="center" alignItems="center" mt={2}>
             {departamentos.length > 1 ? (
-              <Chip
-                label={facultades[0].nombre}
-                variant="outlined"
-                sx={{ backgroundColor: "#004aad", color: "white" }}
-              />
+              facultades && facultades[0] ? (
+                <Chip
+                  label={facultades[0].nombre}
+                  variant="outlined"
+                  sx={{ backgroundColor: "#004aad", color: "white" }}
+                />
+              ) : null
             ) : (
               departamentos.map((dep, index) => (
                 <Chip

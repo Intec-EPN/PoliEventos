@@ -36,42 +36,54 @@ const esquemaColors = [
   "#009688",
 ];
 
-const groupEventsByTimeRange = (events, timeRange, selectedDepartments) => {
+const groupEventsByTimeRangeAndCategory = (
+  events,
+  selectedEsquema,
+  timeRange
+) => {
   const groupedData = {};
   events.forEach((event) => {
-    if (
-      selectedDepartments.length > 0 &&
-      (!event.departamentos ||
-        !event.departamentos.some((dep) => selectedDepartments.includes(dep)))
-    ) {
-      return;
-    }
-
-    const date = dayjs(event.date);
-    let key;
-
-    if (timeRange === "week") {
-      key = date.startOf("week").format("YYYY-MM-DD");
-    } else if (timeRange === "month") {
-      key = date.format("MMMM YYYY");
+    let dateKey;
+    if (timeRange === "month") {
+      dateKey = dayjs(event.date).format("YYYY-MM");
     } else if (timeRange === "year") {
-      key = date.format("YYYY");
+      dateKey = dayjs(event.date).format("YYYY");
     }
 
-    if (!groupedData[key]) {
-      groupedData[key] = {};
+    if (!groupedData[dateKey]) {
+      groupedData[dateKey] = {};
     }
 
     event.esquemasCategorias.forEach((esquemaCategoria) => {
-      const esquemaKey = esquemaCategoria.esquemaNombre;
-      if (!groupedData[key][esquemaKey]) {
-        groupedData[key][esquemaKey] = 0;
+      if (esquemaCategoria.esquemaId === selectedEsquema) {
+        const categoriaKey = esquemaCategoria.categoriaNombre;
+        if (!groupedData[dateKey][categoriaKey]) {
+          groupedData[dateKey][categoriaKey] = 0;
+        }
+        groupedData[dateKey][categoriaKey]++;
       }
-      groupedData[key][esquemaKey]++;
     });
   });
-
   return groupedData;
+};
+
+const getMonthName = (dateKey) => {
+  const monthNames = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+  const [year, month] = dateKey.split("-");
+  return `${monthNames[parseInt(month, 10) - 1]} ${year}`;
 };
 
 const convertToCSV = (data, departamentos) => {
@@ -127,14 +139,9 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   const [chartData, setChartData] = useState(null);
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [events, setEvents] = useState([]);
-  const [departamentosFijo, setDepartamentosFijo] = useState([]);
   const chartRef = useRef(null);
   const { eventos, departamentos } = useSelector(
     (state) => state.gestionEvento
-  );
-
-  const { nivelDepartamento, departamentoNivelId } = useSelector(
-    (state) => state.adminAuth
   );
 
   const dispatch = useDispatch();
@@ -204,7 +211,14 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
 
   const handleClose = () => {
     setModalIsOpen(false);
+    setChartData(null);
+    setSelectedDepartments([]);
+    setStartDate("");
+    setEndDate("");
+    setTabValue(0);
+    setSelectedEsquemaCategoria([{ esquemaId: null, categoriaId: null }]);
   };
+
   const arraysEqual = (a, b) => {
     if (a.length !== b.length) return false;
     for (let i = 0; i < a.length; i++) {
@@ -214,28 +228,23 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
   };
 
   const filterEvents = (startDate, endDate) => {
-
     return events.filter((event) => {
       const eventDate = dayjs(event.date);
-      const start = startDate ? dayjs(startDate) : null;
-      const end = endDate ? dayjs(endDate) : null;
+      const start = startDate ? dayjs(startDate).startOf("month") : null;
+      const end = endDate ? dayjs(endDate).endOf("month") : null;
       const matchesDepartment =
         selectedDepartments.length === 0 ||
         arraysEqual(selectedDepartments, event.departamentos);
-      // Categorización en caso de que no se haya seleccionado un esquema
+
       const matchesEsquemaCategoria =
         selectedEsquemaCategoria.length === 0 ||
-        // En vez de every, si se usa some agrega TODOS los que coincida, every solo si coincide.
-        selectedEsquemaCategoria.every(
-          (selected) =>
-            !selected.esquemaId ||
+        selectedEsquemaCategoria.some((selected) => {
+          const result = selected.esquemaId &&
             event.esquemasCategorias.some(
-              (ec) =>
-                ec.esquemaId === selected.esquemaId &&
-                (!selected.categoriaId ||
-                  ec.categoriaId === selected.categoriaId)
-            )
-        );
+              (ec) => ec.esquemaId === selected.esquemaId
+            );
+          return result;
+        });
 
       return (
         (!start || eventDate.isSameOrAfter(start)) &&
@@ -246,74 +255,75 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
     });
   };
 
-  useEffect(() => {
-    if (departamentoNivelId != null) {
-      setDepartamentosFijo(
-        events.filter((event) =>
-          event.departamentos.includes(departamentoNivelId)
-        )
-      );
-    }
-  }, [events]);
-
   const handleGenerateChart = (timeRange, startDate, endDate) => {
     setStartDate(startDate);
     setEndDate(endDate);
     const filteredEvents = filterEvents(startDate, endDate);
 
-    const groupedData = groupEventsByTimeRange(
+    const selectedEsquema = selectedEsquemaCategoria[0].esquemaId;
+    const groupedData = groupEventsByTimeRangeAndCategory(
       filteredEvents,
-      timeRange,
-      selectedDepartments
+      selectedEsquema,
+      timeRange
     );
 
-    const sortedKeys = Object.keys(groupedData).sort((a, b) =>
+    const sortedDates = Object.keys(groupedData).sort((a, b) =>
       dayjs(a).isBefore(dayjs(b)) ? -1 : 1
     );
 
-    const seriesData = esquemasCategorias.map((esquema, index) => ({
-      label: esquema.label,
-      data: sortedKeys.map((key) => groupedData[key][esquema.label] || 0),
-      color: esquemaColors[index % esquemaColors.length],
+    const categories = Array.from(
+      new Set(
+        filteredEvents.flatMap((event) =>
+          event.esquemasCategorias
+            .filter((ec) => ec.esquemaId === selectedEsquema)
+            .map((ec) => ec.categoriaNombre)
+        )
+      )
+    );
+
+    const seriesData = categories.map((category, index) => ({
+      label: category,
+      data: sortedDates.map((date) => groupedData[date][category] || 0),
+      backgroundColor: esquemaColors[index % esquemaColors.length],
+      borderColor: esquemaColors[index % esquemaColors.length],
+      borderWidth: 1,
     }));
 
-    const pieChartData = esquemasCategorias.map((esquema, index) => ({
+    const pieChartData = categories.map((category, index) => ({
       id: index,
       value: filteredEvents.reduce((acc, event) => {
         const count = event.esquemasCategorias.filter(
-          (ec) => ec.esquemaNombre === esquema.label
+          (ec) => ec.categoriaNombre === category
         ).length;
         return acc + count;
       }, 0),
-      label: esquema.label,
+      label: category,
     }));
 
-    const asistentesData = esquemasCategorias.map((esquema) => ({
-      label: esquema.label,
+    const asistentesData = categories.map((category) => ({
+      label: category,
       asistentes: filteredEvents.reduce((acc, event) => {
         const count = event.esquemasCategorias.filter(
-          (ec) => ec.esquemaNombre === esquema.label
+          (ec) => ec.categoriaNombre === category
         ).length;
         return acc + count * event.asistentes;
       }, 0),
     }));
 
-    const estudiantesData = esquemasCategorias.map((esquema) => ({
-      label: esquema.label,
+    const estudiantesData = categories.map((category) => ({
+      label: category,
       estudiantes: filteredEvents.reduce((acc, event) => {
         const count = event.esquemasCategorias.filter(
-          (ec) => ec.esquemaNombre === esquema.label
+          (ec) => ec.categoriaNombre === category
         ).length;
         return acc + count * event.estudiantes;
       }, 0),
     }));
 
     setChartData({
-      xAxis: sortedKeys,
-      series: seriesData.map((serie) => ({
-        ...serie,
-        data: serie.data.map((value) => (isNaN(value) ? 0 : value)),
-      })),
+      xAxis:
+        timeRange === "month" ? sortedDates.map(getMonthName) : sortedDates,
+      series: seriesData,
       pieChartData,
       totalEvents: filteredEvents.length,
       asistentesData,
@@ -396,13 +406,13 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
           },
           height: {
             xs: "90vh",
-            md: "80vh",
-            lg: "70vh",
+            md: "90vh",
+            lg: "90vh",
           },
           maxHeight: {
             xs: "90vh",
-            md: "80vh",
-            lg: "70vh",
+            md: "90vh",
+            lg: "90vh",
           },
         },
       }}
@@ -419,16 +429,19 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
           selectedEsquemaCategoria={selectedEsquemaCategoria}
           setSelectedEsquemaCategoria={setSelectedEsquemaCategoria}
         />
-        <FormReporte onGenerateChart={handleGenerateChart} />
+        <FormReporte
+          onGenerateChart={handleGenerateChart}
+          selectedEsquemaCategoria={selectedEsquemaCategoria}
+        />
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={tabValue}
             onChange={handleTabChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Barras" {...a11yProps(0)} />
+            <Tab label="Líneas" {...a11yProps(0)} />
             <Tab label="Pastel" {...a11yProps(1)} />
-            <Tab label="Líneas" {...a11yProps(2)} />
+            <Tab label="Barras" {...a11yProps(2)} />
             <Tab label="Beneficiarios" {...a11yProps(3)} />
             <Tab label="Estudiantes" {...a11yProps(4)} />
           </Tabs>
@@ -442,7 +455,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
                 justifyContent: "center",
               }}
             >
-              <BarChart
+              <LineChart
                 chartData={chartData}
                 chartRef={chartRef}
                 handleSaveImage={handleSaveImage}
@@ -454,6 +467,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             </Box>
           )}
         </CustomTabPanel>
+
         <CustomTabPanel value={tabValue} index={1}>
           {chartData && (
             <Box
@@ -484,7 +498,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
                 justifyContent: "center",
               }}
             >
-              <LineChart
+              <BarChart
                 chartData={chartData}
                 chartRef={chartRef}
                 handleSaveImage={handleSaveImage}
@@ -538,6 +552,11 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             </Box>
           )}
         </CustomTabPanel>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+          <Button variant="contained" color="error" onClick={handleClose}>
+            Cancelar
+          </Button>
+        </Box>
       </Box>
     </Dialog>
   );
