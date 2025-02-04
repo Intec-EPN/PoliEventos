@@ -1,0 +1,65 @@
+@startuml
+
+package "node_modules" {
+    folder "node_modules" {
+    }
+}
+
+package "public" {
+    folder "public" {
+        file "favicon.svg"
+    }
+}
+
+package "src" {
+    folder "src" {
+        folder "Administracion, Eventos, GestionEventos" {
+            folder "components" {
+            }
+            folder "layout" {
+            }
+            folder "pages" {
+            }
+            folder "themes" {
+            }
+            folder "views" {
+            }
+        }
+
+        folder "Auth" {
+            folder "components" {
+            }
+            folder "layout" {
+            }
+            folder "pages" {
+            }
+            folder "themes" {
+            }
+            folder "views" {
+            }
+        }
+
+        folder "components" {
+        }
+        
+
+        folder "routes" {
+            file "Routes.jsx"
+        }
+
+        folder "store" {
+        }
+    }
+    file "AppPoliEventos.jsx"
+    file "dayjsConfig.jsx"
+    file "index.css"
+    file "main.jsx"
+
+}        
+        file ".gitignore"
+        file ".env"
+        file "index.html"
+        file "package.json"
+        file "package-lock.json"
+
+@enduml

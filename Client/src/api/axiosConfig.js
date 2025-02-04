@@ -3,7 +3,7 @@ import axios from 'axios';
 // Crear una instancia de Axios
 const axiosInstance = axios.create({
   // baseURL: import.meta.env.VITE_API_URL,
-  baseURL: "http://localhost:5000/api"
+  baseURL: "https://polieventos-api.onrender.com/api"
 });
 
 // Interceptores
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
     // Si el token ha expirado, redirigir a la página de inicio de sesión
     if (error.response && error.response.status === 401 && error.response.data.message === 'El token ha expirado.') {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      window.location.href = '/login'; 
     }
     // Si el token es inválido o está mal formado, mostrar un alert y reiniciar la página
     if (error.response && error.response.status === 400 && error.response.data.message === 'El token es inválido o está mal formado.') {

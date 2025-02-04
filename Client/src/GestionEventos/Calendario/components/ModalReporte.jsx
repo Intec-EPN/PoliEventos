@@ -552,7 +552,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             </Box>
           )}
         </CustomTabPanel>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", my: 2, pb:2 }}>
           <Button variant="contained" color="error" onClick={handleClose}>
             Cancelar
           </Button>

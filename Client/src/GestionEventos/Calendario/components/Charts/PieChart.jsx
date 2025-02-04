@@ -46,24 +46,9 @@ const PieChart = ({
     <>
       <Box ref={chartRef}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <Tooltip
-            title="Recuerde que un evento puede tener varias categorizaciones."
-            placement="right"
-            slotProps={{
-              tooltip: {
-                sx: {
-                  backgroundColor: "#0842a0",
-                  color: "#ffffff",
-                  fontSize: "0.875rem",
-                  fontFamily: "Roboto, sans-serif",
-                },
-              },
-            }}
-          >
             <Typography variant="h6" sx={{ fontSize: "0.9rem" }}>
               Número de eventos: {totalEvents}
             </Typography>
-          </Tooltip>
         </Box>
         <Box
           sx={{

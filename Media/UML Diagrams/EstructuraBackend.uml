@@ -1,0 +1,48 @@
+@startuml
+
+package "node_modules" {
+    folder "node_modules" {
+    }
+}
+
+package "config" {
+    folder "config" {
+        file "db.js"
+        file "valoresIniciales.js"
+    }
+}
+
+package "init_sql" {
+    folder "init_sql" {
+        file "scripts.sql"
+    }
+}
+
+package "archivosEventos" {
+    folder "archivosEventos" {
+        file "eventos.js"
+    }
+}
+
+package "modules" {
+    package "Administración, Auth, GestiónEventos" {
+        folder "controllers" {
+        }
+        folder "middleware" {
+        }
+        folder "models" {
+        }
+        folder "routes" {
+        }
+        file "routes.js"
+    }
+}
+
+file "server.js"
+file "esperardb.sh"
+file ".env"
+file ".gitignore"
+file "package.json"
+file "package-lock.json"
+
+@enduml
