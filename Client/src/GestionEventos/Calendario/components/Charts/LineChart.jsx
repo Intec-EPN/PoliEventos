@@ -70,7 +70,7 @@ const LineChart = ({
       legend: { display: true },
       title: {
         display: true,
-        text: "Eventos por fecha y categoría",
+        text: "Eventos por fecha y categoría a lo largo del tiempo.",
       },
     },
     scales: {

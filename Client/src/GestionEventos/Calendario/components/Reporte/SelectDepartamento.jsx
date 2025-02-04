@@ -85,10 +85,9 @@ const SelectDepartamento = ({
             fontWeight: "500",
             color: "#164dc9",
             fontSize: "1.1rem",
-            ml: 1,
           }}
         >
-          En
+          En departamento 
           {departamentos
             ? ` ${
                 departamentos.find((dep) => dep.id === departamentoNivelId)

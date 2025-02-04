@@ -1,5 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { Box, Dialog, DialogTitle, Button, Tabs, Tab } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogTitle,
+  Button,
+  Tabs,
+  Tab,
+  Typography,
+} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import FormReporte from "./Reporte/FormReporte";
 import SelectDepartamento from "./Reporte/SelectDepartamento";
@@ -239,7 +247,8 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       const matchesEsquemaCategoria =
         selectedEsquemaCategoria.length === 0 ||
         selectedEsquemaCategoria.some((selected) => {
-          const result = selected.esquemaId &&
+          const result =
+            selected.esquemaId &&
             event.esquemasCategorias.some(
               (ec) => ec.esquemaId === selected.esquemaId
             );
@@ -302,22 +311,28 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
 
     const asistentesData = categories.map((category) => ({
       label: category,
-      asistentes: filteredEvents.reduce((acc, event) => {
-        const count = event.esquemasCategorias.filter(
-          (ec) => ec.categoriaNombre === category
-        ).length;
-        return acc + count * event.asistentes;
-      }, 0),
+      data: sortedDates.map((date) =>
+        filteredEvents.reduce((acc, event) => {
+          const count = event.esquemasCategorias.filter(
+            (ec) => ec.categoriaNombre === category && dayjs(event.date).format(timeRange === "month" ? "YYYY-MM" : "YYYY") === date
+          ).length;
+          const totalAsistentes = acc + count * (event.asistentes || 0);
+          return totalAsistentes;
+        }, 0)
+      ),
     }));
 
     const estudiantesData = categories.map((category) => ({
       label: category,
-      estudiantes: filteredEvents.reduce((acc, event) => {
-        const count = event.esquemasCategorias.filter(
-          (ec) => ec.categoriaNombre === category
-        ).length;
-        return acc + count * event.estudiantes;
-      }, 0),
+      data: sortedDates.map((date) =>
+        filteredEvents.reduce((acc, event) => {
+          const count = event.esquemasCategorias.filter(
+            (ec) => ec.categoriaNombre === category && dayjs(event.date).format(timeRange === "month" ? "YYYY-MM" : "YYYY") === date
+          ).length;
+          const totalEstudiantes = acc + count * (event.estudiantes || 0);
+          return totalEstudiantes;
+        }, 0)
+      ),
     }));
 
     setChartData({
@@ -326,8 +341,14 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
       series: seriesData,
       pieChartData,
       totalEvents: filteredEvents.length,
-      asistentesData,
-      estudiantesData,
+      asistentesData: {
+        labels: timeRange === "month" ? sortedDates.map(getMonthName) : sortedDates,
+        datasets: asistentesData,
+      },
+      estudiantesData: {
+        labels: timeRange === "month" ? sortedDates.map(getMonthName) : sortedDates,
+        datasets: estudiantesData,
+      },
     });
   };
 
@@ -439,35 +460,60 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             onChange={handleTabChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Líneas" {...a11yProps(0)} />
-            <Tab label="Pastel" {...a11yProps(1)} />
-            <Tab label="Barras" {...a11yProps(2)} />
-            <Tab label="Beneficiarios" {...a11yProps(3)} />
-            <Tab label="Estudiantes" {...a11yProps(4)} />
+            <Tab label=" # de eventos realizados" {...a11yProps(0)} />
+            <Tab label="% de eventos por categoría" {...a11yProps(1)} />
+            <Tab label="# de beneficiarios en eventos" {...a11yProps(2)} />
+            <Tab label="# de estudiantes en eventos" {...a11yProps(3)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={tabValue} index={0}>
           {chartData && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <LineChart
-                chartData={chartData}
-                chartRef={chartRef}
-                handleSaveImage={handleSaveImage}
-                handleDownloadCSV={handleDownloadCSV}
-                handleDownloadFiles={handleDownloadFiles}
-                handleDownloadExcel={handleDownloadExcel}
-                totalEvents={chartData.totalEvents}
-              />
-            </Box>
+            <>
+              <Typography variant="h6">Líneas</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  mb: 4,
+                }}
+              >
+                <LineChart
+                  chartData={chartData}
+                  chartRef={chartRef}
+                  handleSaveImage={handleSaveImage}
+                  handleDownloadCSV={handleDownloadCSV}
+                  handleDownloadFiles={handleDownloadFiles}
+                  handleDownloadExcel={handleDownloadExcel}
+                  totalEvents={chartData.totalEvents}
+                />
+              </Box>
+            </>
+          )}
+
+          {chartData && (
+            <>
+              <Typography variant="h6">Barras</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <BarChart
+                  chartData={chartData}
+                  chartRef={chartRef}
+                  handleSaveImage={handleSaveImage}
+                  handleDownloadCSV={handleDownloadCSV}
+                  handleDownloadFiles={handleDownloadFiles}
+                  handleDownloadExcel={handleDownloadExcel}
+                  totalEvents={chartData.totalEvents}
+                />
+              </Box>
+            </>
           )}
         </CustomTabPanel>
-
         <CustomTabPanel value={tabValue} index={1}>
           {chartData && (
             <Box
@@ -498,27 +544,6 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
                 justifyContent: "center",
               }}
             >
-              <BarChart
-                chartData={chartData}
-                chartRef={chartRef}
-                handleSaveImage={handleSaveImage}
-                handleDownloadCSV={handleDownloadCSV}
-                handleDownloadFiles={handleDownloadFiles}
-                handleDownloadExcel={handleDownloadExcel}
-                totalEvents={chartData.totalEvents}
-              />
-            </Box>
-          )}
-        </CustomTabPanel>
-        <CustomTabPanel value={tabValue} index={3}>
-          {chartData && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
               <AsistentesChart
                 chartData={chartData.asistentesData}
                 chartRef={chartRef}
@@ -531,7 +556,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             </Box>
           )}
         </CustomTabPanel>
-        <CustomTabPanel value={tabValue} index={4}>
+        <CustomTabPanel value={tabValue} index={3}>
           {chartData && (
             <Box
               sx={{
@@ -552,7 +577,7 @@ export const ModalReporte = ({ modalIsOpen, setModalIsOpen }) => {
             </Box>
           )}
         </CustomTabPanel>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", my: 2, pb:2 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", my: 2, pb: 2 }}>
           <Button variant="contained" color="error" onClick={handleClose}>
             Cancelar
           </Button>

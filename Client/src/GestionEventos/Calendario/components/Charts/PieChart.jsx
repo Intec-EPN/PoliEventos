@@ -45,9 +45,12 @@ const PieChart = ({
   return (
     <>
       <Box ref={chartRef}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 2, flexDirection: "column" }}>
             <Typography variant="h6" sx={{ fontSize: "0.9rem" }}>
               Número de eventos: {totalEvents}
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: "0.8rem", fontWeight: "500", color: "#5a5a5a" }}>
+              Porcentaje del número de eventos por categoría.
             </Typography>
         </Box>
         <Box

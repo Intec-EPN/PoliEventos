@@ -35,36 +35,49 @@ const EstudiantesChart = ({
   handleDownloadExcel,
   totalEvents,
 }) => {
+  if (!chartData || !chartData.datasets.length) {
+    return null;
+  }
+
   const data = {
-    labels: chartData.map((data) => data.label),
-    datasets: [{
-      data: chartData.map((data) => data.estudiantes),
-      backgroundColor: chartData.map((_, index) => esquemaColors[index % esquemaColors.length]),
-      borderColor: chartData.map((_, index) => esquemaColors[index % esquemaColors.length]),
-      borderWidth: 1
-    }]
+    labels: chartData.labels,
+    datasets: chartData.datasets.map((serie, index) => ({
+      label: serie.label,
+      data: serie.data,
+      backgroundColor: esquemaColors[index % esquemaColors.length],
+      borderColor: esquemaColors[index % esquemaColors.length],
+      borderWidth: 1,
+    })),
   };
 
   const options = {
     plugins: {
-      legend: { display: false },
+      legend: { display: true },
       title: {
         display: true,
-        text: "Estudiantes por tipo de esquema de categorización"
-      }
+        text: "Estudiantes por fecha y categoría a lo largo del tiempo.",
+      },
     },
     scales: {
       x: {
         grid: {
-          display: false
-        }
+          display: true,
+        },
+        title: {
+          display: true,
+          text: "Fechas",
+        },
       },
       y: {
         grid: {
-          display: false
-        }
-      }
-    }
+          display: true,
+        },
+        title: {
+          display: true,
+          text: "Número de estudiantes",
+        },
+      },
+    },
   };
 
   return (

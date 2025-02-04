@@ -32,6 +32,14 @@ const SelectEsquemaCategorias = ({
       }))
     : [];
 
+  useEffect(() => {
+    if (esquemasCategorias.length > 0 && esquemaId === null) {
+      const firstEsquema = esquemasCategorias[0].value;
+      setEsquemaId(firstEsquema);
+      setSelectedEsquemaCategoria([{ esquemaId: firstEsquema, categoriaId: null }]);
+    }
+  }, [esquemasCategorias, esquemaId, setSelectedEsquemaCategoria]);
+
   const handleEsquemaChange = (event) => {
     const selectedEsquema = event.target.value;
     setEsquemaId(selectedEsquema);
@@ -41,7 +49,7 @@ const SelectEsquemaCategorias = ({
   return (
     <Box sx={{ width: "100%", mb: 2 }}>
       <Typography variant="h6" sx={{ mb: 1, fontSize: "0.9rem" }}>
-        Filtra por categorización
+        Filtra por esquema de categorización
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
         <FormControl sx={{ width: "100%"}}>
@@ -52,6 +60,7 @@ const SelectEsquemaCategorias = ({
             value={esquemaId || ""}
             onChange={handleEsquemaChange}
             label="Esquema"
+            
           >
             {esquemasCategorias.map((esquema) => (
               <MenuItem key={esquema.value} value={esquema.value}>
